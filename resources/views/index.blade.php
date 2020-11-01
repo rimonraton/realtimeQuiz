@@ -8,15 +8,16 @@
                 <div class="card-body">
                     <div class="Flex" id="InfographicContainer">
                         <div class="FlexCell Cell-2 TextCenter">
+                            <h1>Select Game Mode</h1>
                             <svg xml:space="preserve" enable-background="new 0 0 700 1024" width="1200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" id="HowWeWorkInfographic" height="1024px" viewBox="150 500 700 1024">
-                                <line fill="none" stroke="#333333" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="739.789" x2="429.854" y2="721.58"></line>
-                                <polygon fill="#333333" points="434.412,719.086 424.78,716.506 427.36,726.137"></polygon>
-                                <line fill="none" stroke="#333333" stroke-width="2" stroke-miterlimit="10" x1="589.486" y1="739.789" x2="607.696" y2="721.58"></line>
-                                <polygon fill="#333333" points="610.189,726.137 612.77,716.506 603.139,719.086  "></polygon>
-                                <line fill="none" stroke="#333333" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="881.211" x2="429.854" y2="899.42"></line>
-                                <polygon fill="#333333" points="427.361,894.863 424.781,904.496 434.413,901.916     "></polygon>
-                                <line fill="none" stroke="#333333" stroke-width="2" stroke-miterlimit="10" x1="589.486" y1="881.211" x2="607.696" y2="899.42"></line>
-                                <polygon fill="#333333" points="603.139,901.914 612.771,904.494 610.19,894.863  "></polygon>
+                                <line fill="none" stroke="#ec0b43" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="739.789" x2="429.854" y2="721.58"></line>
+                                <polygon fill="#ec0b43" points="434.412,719.086 424.78,716.506 427.36,726.137"></polygon>
+                                <line fill="none" stroke="#4f772d" stroke-width="2" stroke-miterlimit="10" x1="589.486" y1="739.789" x2="607.696" y2="721.58"></line>
+                                <polygon fill="#4f772d" points="610.189,726.137 612.77,716.506 603.139,719.086  "></polygon>
+                                <line fill="none" stroke="#037fdb" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="881.211" x2="429.854" y2="899.42"></line>
+                                <polygon fill="#037fdb" points="427.361,894.863 424.781,904.496 434.413,901.916     "></polygon>
+                                <line fill="none" stroke="#4361ee" stroke-width="2" stroke-miterlimit="10" x1="589.486" y1="881.211" x2="607.696" y2="899.42"></line>
+                                <polygon fill="#4361ee" points="603.139,901.914 612.771,904.494 610.19,894.863  "></polygon>
                                 <g aria-label="Click to learn about some of the individuals we assist" tabindex="0">
                                     <path fill="#333333" d="M534.73,770.242h-4.289v2.625h4.289c1.483,0,2.69, 1.205,2.69,2.688v7.396c0, 1.48-1.207, 2.688-2.69,2.688h-1.186l-0.004,11.422h2.625v-9c2.23-0.629,3.88-2.684,3.88-5.109v-7.396C540.046,772.633,537.654,770.242,534.73,770.242"></path>
                                     <path fill="#333333" d="M502.562,772.867h4.226v-2.625h-4.226c-2.924,0-5.314,2.391-5.314, 
@@ -33,7 +34,7 @@
                                     <circle fill="transparent" stroke="#333333" stroke-width="6" stroke-miterlimit="10" cx="518.776" cy="811.43" r="100" class="BGCircleInner"></circle>
                                 </g>
                                 <g id="Practice" aria-label="Click to learn about employment at Bosma" tabindex="0">
-                                    <path fill="#333333" d="M363.771,711.506c15.621,15.621,40.948,15.621,56.569,0s15.621-40.949,0-56.57s-40.948-15.621-56.569,0C348.149,670.557,348.149,695.885,363.771,711.506" class="BGCircle"></path>
+                                    <path fill="#ec0b43" d="M363.771,711.506c15.621,15.621,40.948,15.621,56.569,0s15.621-40.949,0-56.57s-40.948-15.621-56.569,0C348.149,670.557,348.149,695.885,363.771,711.506" class="BGCircle"></path>
                                     <text class="font-n" transform="matrix(1 0 0 1 230.1685 687.5234)">Practice</text>
                                     <path fill="#FFFFFF" d="M382.403,675.689c-2.975,0-5.386,2.412-5.386,5.387s2.411,5.387,5.386,5.387s5.382-2.412,5.382-5.387S385.378,675.689,382.403,675.689 M382.403,683.838c-1.523,0-2.761-1.238-2.761-2.762s1.238-2.762,2.761-2.762c1.52,0,2.757,1.238,2.757,2.762S383.923,683.838,382.403,683.838"></path>
                                     <path fill="#FFFFFF" d="M408.016,680.807h-13.301c-0.725,0-1.312-0.588-1.312-1.313s0.587-1.313,1.312-1.313h13.301c0.725,0,1.312,0.588,1.312,1.313S408.741,680.807,408.016,680.807"></path>
@@ -44,7 +45,7 @@
                                     <rect x="230" y="630" fill="transparent" width="220" height="95"></rect>
                                 </g>
                                 <g id="Challenge" aria-label="Click to learn about our community efforts" tabindex="0">
-                                    <path fill="#333333" d="M674.339,711.506c-15.621,15.621-40.948,15.621-56.569,0s-15.621-40.949,0-56.57s40.948-15.621,56.569,0 S689.96,695.885,674.339,711.506" class="BGCircle"></path>
+                                    <path fill="#4f772d" d="M674.339,711.506c-15.621,15.621-40.948,15.621-56.569,0s-15.621-40.949,0-56.57s40.948-15.621,56.569,0 S689.96,695.885,674.339,711.506" class="BGCircle"></path>
                                     <text class="font-n" transform="matrix(1 0 0 1 697.1504 687.5254)" fill="#333333">Chalange</text>
                                     <path fill="#FFFFFF" d="M639.193,673.703c0-1.447,1.178-2.625,2.625-2.625h8.473c1.448,0,2.625,1.178,2.625,2.625v3.012h2.625v-3.012c0-2.887-2.362-5.25-5.25-5.25h-8.473c-2.888,0-5.25,2.363-5.25,5.25v3.012h2.625V673.703z"></path>
                                     <path fill="#FFFFFF" d="M624.943,699.756c0-1.447,1.178-2.625,2.625-2.625h8.473c1.447,0,2.625,1.178,2.625,2.625v3.311h2.625v-3.311c0-2.889-2.362-5.25-5.25-5.25h-8.473c-2.888,0-5.25,2.361-5.25,5.25v3.311h2.625V699.756z"></path>
@@ -56,7 +57,7 @@
                                     <rect x="600" y="630" fill="transparent" width="220" height="95"></rect>
                                 </g>
                                 <g id="Group" aria-label="Click to learn about how we teach self-sufficiency" tabindex="0">
-                                    <path fill="#333333" d="M363.771,966.064c15.621,15.621,40.948,15.621,56.569,0s15.621-40.949,0-56.57s-40.948-15.621-56.569,0C348.149,925.115,348.149,950.443,363.771,966.064" class="BGCircle"></path>
+                                    <path fill="#037fdb" d="M363.771,966.064c15.621,15.621,40.948,15.621,56.569,0s15.621-40.949,0-56.57s-40.948-15.621-56.569,0C348.149,925.115,348.149,950.443,363.771,966.064" class="BGCircle"></path>
                                     <text class="font-n" transform="matrix(1 0 0 1 250 944)">Group</text>
                                     <path fill="#FFFFFF" d="M409.321,917.707c-2.949,0-5.338,2.389-5.338,5.334c0,2.947,2.389,5.336,5.338,5.336c2.95,0,5.339-2.389,5.339-5.336C414.66,920.096,412.271,917.707,409.321,917.707 M409.321,925.752c-1.496,0-2.713-1.217-2.713-2.711s1.217-2.709,2.713-2.709c1.497,0,2.714,1.215,2.714,2.709S410.818,925.752,409.321,925.752"></path>
                                     <path fill="#FFFFFF" d="M394.584,955.594v-8.506c0-0.725-0.588-1.313-1.312-1.313h-7.892c-0.725,0-1.312,0.588-1.312,1.313v8.506h-8.565v-15.359l13.787-12.348l9.832,8.752v-0.727c0-0.85,0.148-1.664,0.407-2.428l-9.37-8.338c-0.498-0.443-1.251-0.443-1.748,0.004l-15.097,13.52c-0.278,0.248-0.436,0.604-0.436,0.977v17.26c0,0.727,0.587,1.313,1.312,1.313h12.497l0.006-9.818h5.266l0.004,9.818h10.329v-2.625H394.584z"></path>
@@ -65,7 +66,7 @@
                                     <rect x="195" y="890" fill="transparent" width="240" height="95"></rect>
                                 </g>
                                 <g id="Moderator" aria-label="Click to learn about the many confidence building experiences we provide" tabindex="0">
-                                    <path fill="#333333" d="M674.339,966.064c-15.621,15.621-40.948,15.621-56.569,0s-15.621-40.949,0-56.57s40.948-15.621,56.569,0S689.96,950.443,674.339,966.064" class="BGCircle"></path>
+                                    <path fill="#4361ee" d="M674.339,966.064c-15.621,15.621-40.948,15.621-56.569,0s-15.621-40.949,0-56.57s40.948-15.621,56.569,0S689.96,950.443,674.339,966.064" class="BGCircle"></path>
                                     <text class="font-n" transform="matrix(1 0 0 1 697.1504 943.502)" fill="#333333">Moderator</text>
                                     <polygon fill="#FFFFFF" points="626.42,954.762 626.42,920.85 623.795,920.85 623.795,957.291 623.801,957.387 668.282,957.387668.282,954.762"></polygon>
                                     <path fill="#FFFFFF" d="M633.285,942.838c0-0.518,0.42-0.938,0.937-0.938h2.412c0.517,0,0.938,0.42,0.938,0.938v8.201h2.625v-8.201c0-1.965-1.599-3.564-3.563-3.564h-2.412c-1.964,0-3.562,1.6-3.562,3.564v8.201h2.625V942.838z"></path>
