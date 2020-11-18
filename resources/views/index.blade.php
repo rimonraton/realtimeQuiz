@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <div class="Flex" id="InfographicContainer">
                         <div class="FlexCell Cell-2 TextCenter">
-                            <h1>Select Game Mode</h1>
+                            <h1 class="text-center">Select Game Mode</h1>
                             <svg xml:space="preserve" enable-background="new 0 0 700 1024" width="1200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" id="HowWeWorkInfographic" height="1024px" viewBox="150 500 700 1024">
                                 <line fill="none" stroke="#ec0b43" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="739.789" x2="429.854" y2="721.58"></line>
                                 <polygon fill="#ec0b43" points="434.412,719.086 424.78,716.506 427.36,726.137"></polygon>
@@ -46,7 +46,7 @@
                                 </g>
                                 <g id="Challenge" aria-label="Click to learn about our community efforts" tabindex="0">
                                     <path fill="#4f772d" d="M674.339,711.506c-15.621,15.621-40.948,15.621-56.569,0s-15.621-40.949,0-56.57s40.948-15.621,56.569,0 S689.96,695.885,674.339,711.506" class="BGCircle"></path>
-                                    <text class="font-n" transform="matrix(1 0 0 1 697.1504 687.5254)" fill="#333333">Chalange</text>
+                                    <text class="font-n" transform="matrix(1 0 0 1 697.1504 687.5254)" fill="#333333">Challenge</text>
                                     <path fill="#FFFFFF" d="M639.193,673.703c0-1.447,1.178-2.625,2.625-2.625h8.473c1.448,0,2.625,1.178,2.625,2.625v3.012h2.625v-3.012c0-2.887-2.362-5.25-5.25-5.25h-8.473c-2.888,0-5.25,2.363-5.25,5.25v3.012h2.625V673.703z"></path>
                                     <path fill="#FFFFFF" d="M624.943,699.756c0-1.447,1.178-2.625,2.625-2.625h8.473c1.447,0,2.625,1.178,2.625,2.625v3.311h2.625v-3.311c0-2.889-2.362-5.25-5.25-5.25h-8.473c-2.888,0-5.25,2.361-5.25,5.25v3.311h2.625V699.756z"></path>
                                     <path fill="#FFFFFF" d="M652.551,686.977c-0.076-0.338-0.279-0.625-0.564-0.807l-4.566-3.156c-0.057-0.035-0.092-0.1-0.092-0.168v-5.277c0-0.715-0.581-1.297-1.297-1.297c-0.715,0-1.297,0.582-1.297,1.297v5.309c0,0.068-0.035,0.133-0.101,0.174l-4.501,3.113c-0.294,0.188-0.498,0.475-0.574,0.813c-0.074,0.336-0.016,0.684,0.17,0.979c0.372,0.586,1.182,0.787,1.797,0.4l4.424-3.068c0.065-0.041,0.152-0.037,0.205-0.004l4.438,3.076c0.208,0.131,0.446,0.201,0.691,0.201c0.447,0,0.858-0.227,1.1-0.605C652.566,687.66,652.626,687.313,652.551,686.977"></path>

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 <style type="text/css">
+  
     .card:hover{
        box-shadow: 0 0 3px #007bff;
     }
@@ -41,8 +42,6 @@
       color:#8fd9ff;
     }
 
-    
-
     /* Transitioning */
     .folder-wrap{
       position: absolute;
@@ -67,6 +66,33 @@
     .folder-wrap.level-down{
       transform: scale(0.8);  
     }
+    .iframe-size{
+      width: 90vw;
+      height: 90vh;
+      left: 3vw;
+    }
+    .hide_share{
+      position: absolute;
+      left: 3%;
+      top: -25px;
+      height: 40px;
+      width: 300px;
+      overflow: hidden;
+      transition: .3s linear;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .show_share {
+      position: absolute;
+      left: 3%;
+      top: -25px;
+      height: 40px;
+      width: 300px;
+      overflow: hidden;
+      transition:  .5s linear;
+      opacity: 1;
+
+    }
 </style>
 @section('content')
 <div class="container">
@@ -74,13 +100,20 @@
     <div class="row justify-content-center ml-0">
         @foreach($exams as $exam)
             <div class="col-md-4 col-sm-12 text-center">
-                <div class="card border-secondary mb-3">
+                <div class="card border-secondary my-3">
                   <div class="card-body text-secondary">
-                    <h5 class="card-title">Quiz</h5>
+                    <h5 class="card-title">Quiz2</h5>
                     <p class="card-text">{{ $exam->exam_name }}</p>
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">Start</a>
-                    {{-- <a class="btn btn-sm btn-outline-success " href="{{ url('game/'.$exam->id . '/'. Auth::id()) }}">Start</a> --}}
+                    <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">Share</a>
+                    @if($type == 'Challenge')
+                      <div id="shareBtn{{ $exam->id }}" class="hide_share shareBtnDiv">
+                        <iframe src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" class="iframe-size"></iframe>
+                      </div>
+                    @endif
+
+                    {{-- <iframe id="shareBtn{{ $exam->id }}" class="hide" src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" style="position: absolute; top: 25%; left: 2%; width: 96%; background: transparent;"></iframe> --}}
                   </div>
                 </div>
             </div>
@@ -96,7 +129,14 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-      
+      $('.shareBtn').on('click', function(){
+        let id = $(this).attr('data-id');
+        let hasShow = $('#shareBtn'+id).hasClass('show_share');
+
+        $('.shareBtnDiv').removeClass('show_share').addClass('hide_share');
+        if(hasShow){ return; }
+        $('#shareBtn'+id).removeClass('hide_share').addClass('show_share');
+      });
   });
 
 </script>

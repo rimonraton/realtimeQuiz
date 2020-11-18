@@ -1,32 +1,11 @@
 <template>
     <div class="container">
-        <div class="waiting" v-if="screen.waiting">
-            <div class="card" style="width: 24rem; ">
-                <div class="card-header">Player Joined. 
-                    <code v-if="user.id != uid" class="ml-2">Please Wait until Game Start..</code>
-                </div>
-                <div class="card-body" style="max-height:90vh; overflow:auto">
-                    <ul class="list-group ">
-                        <li class="list-group-item"
-                            v-for="u in users" :key="u.id"
-                            :class="{active : u.id == user.id}"
-                            >
-                            <img :src="u.avatar" :alt="getAvatarAlt(u.name)" class="circle mr-2">
-                            <span class="ml-5">{{ u.name }}</span>
-                            <button v-if="( u.id != user.id) && (user.id == uid)" @click="kickUser(u.id)" class="float-right btn btn-sm btn-outline-danger">
-                                Kick
-                            </button>
-                        </li>
-                    </ul>
-                    <a @click="gameReset" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a>
-                    <a @click="gameStart" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
-                </div>
-                <div class="card-footer">
-                    <div v-if="user.id == uid" class="sharethis-inline-share-buttons"></div>
-                </div>
-            </div>
-
-        </div>
+        <waiting :uid='uid' :users='users' :user='user' 
+                @kickingUser="kickUser($event)"
+                @gameStart="gameStart"
+                @gameReset="gameReset"
+                v-if="screen.waiting">                       
+        </waiting>
 
         <div class="loading" v-if="screen.loading">
             <div class="row justify-content-center">
@@ -112,7 +91,10 @@
             </div>
             <div class="col-md-4">
                 <div class="card my-4">
-                    <div class="card-header">User List</div>
+                    <div class="card-header">
+                        User List
+                        <a @click="gameReset" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
+                    </div>
                     <div class="card-body">
                         <ul class="list-group ">
                             <li class="list-group-item user-list"
@@ -124,6 +106,9 @@
                         </ul>
                     </div>
                 </div>
+
+                
+
                 
             
             </div>
@@ -134,9 +119,13 @@
 
 <script>
     
+    import waiting from '../helper/waiting'
 
     export default {
+
         props : ['id', 'uid', 'user', 'questions'],
+
+        components: { waiting },
 
         data() {
             return {
@@ -218,31 +207,31 @@
 
         },
 
-        beforeMount() {
-            window.addEventListener("beforeunload", this.preventNav);
-            this.$once("hook:beforeDestroy", () => {
-              window.removeEventListener("beforeunload", this.preventNav);
-            });
-          },
+        // beforeMount() {
+        //     window.addEventListener("beforeunload", this.preventNav);
+        //     this.$once("hook:beforeDestroy", () => {
+        //       window.removeEventListener("beforeunload", this.preventNav);
+        //     });
+        //   },
 
-        beforeRouteLeave(to, from, next) {
-            if (this.game_start) {
-              if (!window.confirm("Do You Realy Want to Leave This Game?")) {
-                return;
-              }
-            }
-            next();
-        },
+        // beforeRouteLeave(to, from, next) {
+        //     if (this.game_start) {
+        //       if (!window.confirm("Do You Realy Want to Leave This Game?")) {
+        //         return;
+        //       }
+        //     }
+        //     next();
+        // },
 
 
         methods: {
 
-            preventNav(event) {
-              if (!this.game_start) return;
-              event.preventDefault();
-              // Chrome requires returnValue to be set.
-              event.returnValue = "";
-            },
+            // preventNav(event) {
+            //   if (!this.game_start) return;
+            //   event.preventDefault();
+            //   // Chrome requires returnValue to be set.
+            //   event.returnValue = "";
+            // },
 
             gameStart(){
                 let gd = { channel: this.channel, gameStart:1 }
@@ -255,6 +244,16 @@
 
             },
             gameReset(){
+                this.questionInit()
+                this.screen.waiting = 1
+                this.answered_user_data = []
+                this.results = []
+                this.qid = 0
+                this.gamedata = {}
+                this.score = []
+                this.user_ranking = null
+                this.game_start = 0
+                this.current = this.questions[this.qid].id
 
             },
             QuestionTimer(){
@@ -394,9 +393,7 @@
 
                 }
             },
-            getAvatarAlt(name){
-                return name.substring(0, 2);
-            },
+            
             externalJS(){
                 let confetti = document.createElement('script')
                 confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
@@ -485,19 +482,7 @@
     .list-group-item.user-list{
         padding: 0 10px !important;
     }
-    .circle{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        text-align: center;
-        position: absolute;
-        top: 4px;
-        left: 15px;
-        font-size: 1.5rem;
-        background: gray;
-        color: white;
-        
-    }
+    
     .q_num {
         position: absolute;
         right: 5px;

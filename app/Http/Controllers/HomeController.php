@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Category;
 use App\Exam;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 class HomeController extends Controller
 {
@@ -17,12 +18,15 @@ class HomeController extends Controller
 
     public function Mode($type)
     {
+        $user = Auth::user();
         $ce = Category::with('exams')->get();
         $exams = Exam::where('subject_id', 153)
                         ->where('course_id', 44)
                         ->where('exam_type', 'mcq')
                         ->where('is_site', 1)
                         ->paginate(9);
+        
+
         return view('mode', compact('exams', 'user', 'ce', 'type'));   
     }
 
@@ -37,6 +41,7 @@ class HomeController extends Controller
 
     public function home()
     {
+        $user = Auth::user();
         $ce = Category::with('exams')->get();
         $exams = Exam::where('subject_id', 153)
                         ->where('course_id', 44)
@@ -58,5 +63,13 @@ class HomeController extends Controller
         $questions = $exam->questions()->with('options')->get();
         $user = Auth::user();
         return view('singleGame', compact('id', 'user', 'questions'));
+    }
+
+    public function shareBtnLink($type, $id, $uid)
+    {
+        if (Auth::id() != $uid){
+            return redirect('Mode/'. $type .'/'. $id . '/' .$uid);
+        }
+        return view('share_btn_link', compact('type', 'id', 'uid'));
     }
 }

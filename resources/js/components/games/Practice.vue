@@ -34,6 +34,19 @@
                             </li>
                         </ul> 
 
+
+                        <!-- <div v-for="me in menu">
+                            <p v-if="mc != menu.length">
+                               {{  me.mn }}
+                               
+                            
+                            <ul class="list-group" v-for="m in menu">
+                                <li v-if="me.mid == m.pid" class="list-group-item">{{  m.mn }}</li>
+                            </ul>
+                            </p>
+                            
+                        </div> -->
+
                     </div>
 
                 </transition>                 
@@ -143,6 +156,27 @@
                 wrong:0,
                 answer_seconds:0,
                 answer_minutes:0,
+                mc:0,
+                menu:[
+                    {mn:'Dashboard', mid:2, pid:1},
+                    {mn:'HRM', mid:4, pid:1},
+                    {mn:'Security', mid:3, pid:1},
+                    {mn:'Attendance', mid:14, pid:1},
+                    {mn:'Dashboard', mid:8, pid:2},
+                    {mn:'Menu Setup', mid:5, pid:3},
+                    {mn:'Role Setup', mid:6, pid:3},
+                    {mn:'Employee Setup', mid:7, pid:4},
+                    {mn:'Job Type Setup', mid:9, pid:4},
+                    {mn:'Designation Setup', mid:10, pid:4},
+                    {mn:'Role Mapping', mid:11, pid:3},
+                    {mn:'Menu Mapping', mid:12, pid:3},
+                    {mn:'Department Setup', mid:13, pid:4},
+                    {mn:'Out Call', mid:15, pid:14},
+                    {mn:'Attendance Status', mid:16, pid:14},
+                    {mn:'Absent Status', mid:17, pid:14},
+                    {mn:'Late Status', mid:18, pid:14},
+
+                ],
             };
         },
 

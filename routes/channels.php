@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,10 @@ Broadcast::channel('chat', function ($user) {
 });
 
 Broadcast::channel('game.{id}.{uid}', function ($user, $id, $uid) {
+	$geoip = new GeoIPLocation(); 
+    // $geoip->setIP('37.99.166.48');
+    $country =strtolower($geoip->getCountryCode());
+    $user['country'] =  $country;
     return $user;
 });
 
