@@ -24,8 +24,14 @@
                 </div>
             </div>
         </div>
-        <transition name="fade">
-        <div class="result" v-if="screen.result">
+        <!-- <transition name="fade"> -->
+            <result :results='results' :lastQuestion='(qid + 1) == questions.length'
+                    v-if="screen.result">                       
+            </result>
+        <!-- <div class="result" v-if="screen.result">
+            <div class="card bg-dark text-white">
+              <img class="card-img" :src="addImage()">
+            </div>
             <div class="card" style="width: 24rem;">
                 <div class="card-header">Results</div>
                 <div class="card-body">
@@ -45,8 +51,8 @@
                     <a href="http://quiz.erendevu.net/" class="btn btn-sm btn-secondary text-center">Game List</a>
                 </div>
             </div>
-        </div>
-        </transition>
+        </div> -->
+        <!-- </transition> -->
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
                 <h1 class="text-center">Congratulation ! </h1>
@@ -120,12 +126,13 @@
 <script>
     
     import waiting from '../helper/waiting'
+    import result from '../helper/result'
 
     export default {
 
         props : ['id', 'uid', 'user', 'questions'],
 
-        components: { waiting },
+        components: { waiting, result },
 
         data() {
             return {
