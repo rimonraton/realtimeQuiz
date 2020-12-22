@@ -16,6 +16,11 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function registerFunction1(Request $r)
+    {
+        return $r->all();
+    }
+
     public function Mode($type)
     {
         $user = Auth::user();

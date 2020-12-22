@@ -19,7 +19,13 @@ Route::get('/', function(){
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@home')->name('home');
+Route::get('/home', function(){
+	return redirect('/');
+});
+
+
+
+// Route::get('/home', 'HomeController@home')->name('home');
 
 Route::get('Mode/{type}', 'HomeController@Mode');
 

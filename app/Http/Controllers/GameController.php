@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
 use App\Events\GameStartEvent;
 use App\Events\KickUserEvent;
+use App\Events\NextQuestionEvent;
+use App\Events\AnswerPredictEvent;
 use Auth;
 
 class GameController extends Controller
@@ -28,4 +30,19 @@ class GameController extends Controller
 		broadcast(new KickUserEvent($request))->toOthers();
 	    return $request;
 	}
+
+	public function nextQuestion(Request $request)
+	{
+		broadcast(new NextQuestionEvent($request))->toOthers();
+	    return $request;
+	}
+
+	public function answerPredict(Request $request)
+	{
+		broadcast(new AnswerPredictEvent($request))->toOthers();
+	    return $request;
+	}
+
+
+	
 }

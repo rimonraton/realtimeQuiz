@@ -3,7 +3,7 @@
         <div class="card bg-dark text-white">
           <img class="card-img" :src="addImage()">
         </div>
-        <div class="card" style="width: 24rem;">
+        <div class="card mt-5" style="width: 24rem;">
             <div class="card-header">Results</div>
             <div class="card-body">
                 <ul class="list-group">

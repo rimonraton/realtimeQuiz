@@ -102,7 +102,7 @@
             <div class="col-md-4 col-sm-12 text-center">
                 <div class="card border-secondary my-3">
                   <div class="card-body text-secondary">
-                    <h5 class="card-title">Quiz2</h5>
+                    <h5 class="card-title">Quiz</h5>
                     <p class="card-text">{{ $exam->exam_name }}</p>
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">Start</a>

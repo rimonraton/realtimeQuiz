@@ -22,4 +22,9 @@ Route::post('questionClick', 'GameController@questionClick');
 Route::post('gameStart', 'GameController@gameStart');
 Route::post('kickUser', 'GameController@kickUser');
 
+//Moderator 
+Route::post('nextQuestion', 'GameController@nextQuestion');
+Route::post('answerPredict', 'GameController@answerPredict');
+
+
 

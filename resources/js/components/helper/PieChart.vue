@@ -1,43 +1,16 @@
 <script>
-  import { Pie } from 'vue-chartjs'
+  import { Pie, mixins } from 'vue-chartjs'
+  const { reactiveProp } = mixins
+
 
   export default {
     extends: Pie,
-    props:['ans', 'qoptions'],
-    data () {
-      return {
-        chartData: {
-          labels: this.qoptions.map(o => { return o.option }),
-          datasets: [{
-              borderWidth: 1,
-              borderColor: [
-              '#7fdbda',
-              '#ade498',
-              '#ede682',
-              '#febf63'            
-              ],
-              backgroundColor: [
-              '#7fdbda',
-              '#ade498',
-              '#ede682',
-              '#febf63',                
-              ],
-              data: this.ans
-            }]
-        },
-        options: {
-          legend: {
-            display: true
-          },
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }
-    },
+    mixins: [reactiveProp],
     mounted () {
       this.renderChart(this.chartData, this.options)
-    },
-    
+    }    
 
   };
+
+
 </script>

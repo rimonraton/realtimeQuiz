@@ -22,11 +22,19 @@ Broadcast::channel('chat', function ($user) {
     return $user;
 });
 
-Broadcast::channel('game.{id}.{uid}', function ($user, $id, $uid) {
+Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation(); 
     // $geoip->setIP('37.99.166.48');
-    $country =strtolower($geoip->getCountryCode());
+    $country = strtolower($geoip->getCountryCode());
     $user['country'] =  $country;
+    return $user;
+});
+
+Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
+	$geoip = new GeoIPLocation(); 
+    $country = strtolower($geoip->getCountryCode());
+    $user['country'] =  $country;
+    $user['group'] =  $user->groups[0]->id;
     return $user;
 });
 

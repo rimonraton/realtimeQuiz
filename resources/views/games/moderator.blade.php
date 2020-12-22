@@ -8,7 +8,7 @@
                 {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
                 {{-- <h2 class="q_num text-right text-muted">Moderator Mode</h2> --}}
 
-                <div class="card-body">
+                <div class="card-body px-sm-0">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}

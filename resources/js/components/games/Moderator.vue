@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="winner" v-if="winner_screen">
+        <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
                 <h1 class="text-center">Congratulation ! </h1>
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
@@ -12,78 +12,28 @@
             <div v-else>
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
-            <button @click="winner_screen = 0" class="btn btn-sm btn-secondary">Close</button>
+            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
             
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="container-fluid">
-                    <div class="modal-dialog">
-                        <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
-                            <div class="modal-header" style="justify-content:flex-start">
-                                <div class="col-xs-1 my-1 element-animation0">
-                                    <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
-                                </div>
-                                <div class="col-xs-11">
-                                    <h6 class="pl-1 element-animation0"> {{ ToText(question.question_text) }}</h6>
-                                </div>
-                                
-                            </div>
-                            <div class="modal-body">
-                                <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
-                                    <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
-                                </div>
-                                
-                                <ul class="list-group" v-for="(option, index) in question.options">
-                                    <li @click="clickSelect(index, option)" 
-                                        class="list-group-item list-group-item-action cursor my-1"
-                                        :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
-                                        {{ ToText(option.option) }}
-                                    </li>
-                                   <!--  <li 
-                                        @click="checkAnswer(question.id, option.option, option.correct)" 
-                                        class="list-group-item list-group-item-action cursor my-1"
-                                        :class="`element-animation${index + 1} ` {selected:selected == index}">
-                                        {{ ToText(option.option) }}
-                                    </li> -->
-                                </ul> 
-                            </div>
-                            <div class="modal-footer text-muted">
-                                <button class="btn btn-success float-right rounded-pill element-animation5" 
-                                    :class="{disabled:qoption.selected == null}"
-                                    @click="submitAnswer">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+        <result :results='results' :lastQuestion='(qid + 1) == questions.length'
+                v-if="screen.result">                       
+        </result>
 
+        <div class="row justify-content-center" v-if="user.id == uid">
+            <div class="col-md-7">
+                <questions :questions="questions" :qid="qid" ></questions>
             </div>
-            <div class="col-md-6" >
-                <div class="card text-white bg-secondary my-4">
-                  <div class="card-header text-center card-title"> 
-                    <strong>Information</strong>
-                    <a @click="reloadPage" class="btn btn-sm btn-warning float-right" >Reset</a>
+
+            <div class="col-md-5">
+                <div class="card text-white bg-secondary">
+                  <div class="card-header card-title d-flex justify-content-between"> 
+                    <a @click="reloadPage" class="btn btn-sm btn-warning" >Reset</a>
+                    <!-- <strong>Information</strong> -->
+                    <a class="btn btn-sm btn-warning" @click="nextQuestion">NEXT QUESTION</a>
                   </div>
                     <div class="card-body">
                         <ul class="list-group text-dark">
-                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Time Taken 
-                            <span class="badge badge-light badge-pill">
-                                {{ minutes }}: {{ (seconds > 9) ? seconds : ('0' + seconds)  }} 
-                            </span>
-                          </li>
-                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Correct
-                            <span class="badge badge-success badge-pill">{{ correct }}</span>
-                          </li>
-                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Wrong
-                            <span class="badge badge-danger badge-pill">{{ wrong }}</span>
-                          </li>
                           <li class="list-group-item d-flex justify-content-between align-items-center p-0">
                             <div id="accordion" class="w-100">
                                 <div class="card text-white bg-secondary">
@@ -132,43 +82,130 @@
                           </li>
                         </ul>
                     </div>
-                    <div class="card-footer bg-transparent border-success">
-                        <a class="btn btn-sm btn-warning float-right" @click="nextQuestion">NEXT QUESTION</a>
-                    </div> 
                 </div>
-                <div class="card my-4" v-for="question in questions" v-if="question.id == current" >
-                    <pie-chart :ans='answer()' :qoptions='question.options'></pie-chart>
+
+                <div class="leaderboard mt-4">
+                  <h3 class="text-white p-2">
+                    <i class="fa fa-trophy" aria-hidden="true"></i>
+                    Leader Board
+                  </h3>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <mark>Rasel Mia</mark>
+                      <small class="text-white">8</small>
+                    </li>
+                    <li class="list-group-item">
+                      <mark>Motaharul Islam</mark>
+                      <small class="text-white">7</small>
+                    </li>
+                    <li class="list-group-item">
+                      <mark>Mahmudul Hassan</mark>
+                      <small class="text-white">6</small>
+                    </li>
+                    <li class="list-group-item">
+                      <mark>Abul Bashar</mark>
+                      <small class="text-white">5</small>
+                    </li>
+                    
+                    <li class="list-group-item">
+                      <mark>Zulfiker Ali</mark>
+                      <small class="text-white">1</small>
+                    </li>
+                  </ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row justify-content-center" v-if="user.id != uid">
+            <div class="col-md-8">
+                <div class="container-fluid">
+                    <!-- <div class="modal-dialog"> -->
+                        <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
+                            <div class="modal-header" style="justify-content:flex-start">
+                                <div class="col-xs-1 my-1 element-animation0">
+                                    <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
+                                </div>
+                                <div class="col-xs-11">
+                                    <h6 class="pl-1 element-animation0"> {{ ToText(question.question_text) }}</h6>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
+                                    <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
+                                </div>
+                                
+                                <ul class="list-group" v-for="(option, index) in question.options">
+                                    <li @click="clickSelect(index, option)" 
+                                        class="list-group-item list-group-item-action cursor my-1"
+                                        :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
+                                        {{ ToText(option.option) }}
+                                    </li>
+                                </ul> 
+                            </div>
+                            <div class="modal-footer text-muted d-flex justify-content-between">
+                                <button class="btn btn-secondary rounded-pill element-animation5" 
+                                    :class="{disabled: !qoption.selected }"
+                                    @click="predictAnswer">
+                                    Group Predict
+                                </button>
+                                <button class="btn btn-success float-right rounded-pill element-animation5" 
+                                    :class="{disabled:qoption.selected == null}"
+                                    @click="submitAnswer">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    <!-- </div> -->
                 </div>
             </div>
-            
-           
+            <div class="col-md-4" >
+                <div class="card mb-4" v-for="question in questions" v-if="question.id == current && groupPredict()" >
+                    <span class="text-center"> <strong>Group Prediction</strong></span>
+                    <pie-chart :chart-data="datacollection"></pie-chart>
+                </div>
 
+                <div class="card">
+                    <div class="card-header">Group Member</div>
+                    <div class="card-body p-0">
+                        <ul class="list-group" v-for="gu in users">
+                            <li class="list-group-item py-1" v-if="user.gid == gu.gid">{{ gu.name }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    
-import PieChart from '../helper/PieChart'
-    export default {
-        props : ['id', 'user', 'questions'],
+    import PieChart from '../helper/PieChart'
+    import questions from '../helper/moderator/questions'
+    import result from '../helper/result'
 
-        components: { PieChart },
+
+    export default {
+        props : ['id', 'uid', 'user', 'questions'],
+
+        components: { PieChart, questions, result },
 
         data() {
             return {
+                users: [],
+                datacollection: null,
                 qoption:{
                     selected: null,
                     id: null,
                     option: null,
                     correct: null,
                 },
-                ans: [2,5,1,3],
+
+                prediction: [],
                 
                 results: [],
                 current: 0,
                 qid: 0,
-                winner_screen: false,
                 score: 0,
                 gamedata:{},
                 timer:null,
@@ -179,6 +216,13 @@ import PieChart from '../helper/PieChart'
                 answer_seconds:0,
                 answer_minutes:0,
                 mc:0,
+                pie_data: [],
+                screen:{
+                    waiting: 0,
+                    loading: 0,
+                    result: 0,
+                    winner: 0,
+                },
             };
         },
 
@@ -187,30 +231,84 @@ import PieChart from '../helper/PieChart'
 
             this.current = this.questions[this.qid].id
 
-            // let confetti = document.createElement('script')
-            // confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
-            // document.head.appendChild(confetti)
+            this.fillPie()
 
-            // this.startTimer()
-            
+
+            Echo.join(`team.${this.id}.${this.uid}`)
+                .here((users) => {
+                    this.users = users;
+                })
+                .joining((user) => {
+                    this.users.push(user);
+                    console.log(`${user.name} join`);
+
+                    if(this.game_start){
+                        this.kickUser(user.id)
+                    }
+                })
+                .leaving((user) => {
+                    this.users = this.users.filter(u => u.id != user.id);
+                    console.log(`${user.name} leaving`);
+                });
+
+            this.current = this.questions[this.qid].id
+
+
         },
 
-        methods: {
-            ToText(HTML){
-              var input = HTML;
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');  
-            },
 
-            answer(){
-                return [1,3];
-            },
+        created(){
+            Echo.channel(this.channel)
+                .listen('GameStartEvent', (data) => {
+                    console.log('GameStartEvent.............')
+                    this.game_start = 1 // Game Start from Game Owner...
+                    this.screen.waiting = 0
+                    this.QuestionTimer() // Set and Start QuestionTimer
+
+                })
+                .listen('NextQuestionEvent', (data) => {
+                    console.log('NextQuestionEvent.............')
+                    this.qid = data.qid
+                    this.current = this.questions[this.qid].id // Next Question from Moderator...
+                    this.pie_data = []
+                    this.prediction = []
+                    this.qoption.selected = null
+                    this.fillPie()
+
+                })
+                .listen('AnswerPredictEvent', (data) => {
+                    console.log('AnswerPredictEvent.............')
+                    this.prediction.push(data)
+                    this.getPredict()
+                    this.fillPie()
+                })
+                .listen('QuestionClickedEvent', (data) => {
+                    console.log('QuestionClickedEvent.............')
+                    this.answered_user_data.push(data)
+                    this.answered_user ++
+                    this.loadingScreen()
+                })
+                .listen('KickUserEvent', (data) => {
+                    console.log('KickUserEvent.............')
+                    this.users = this.users.filter( u => u.id !== data.uid )
+
+                    if(this.user.id == data.uid){
+                        window.location.href = "http://quiz.erendevu.net"
+                    }
+                    
+                });
+
+        },
+       
+
+        methods: {
             
             checkAnswer(q, a, rw){
                 this.right_wrong = rw
                 this.gamedata.['id'] = this.qid + 1
-                this.gamedata.['question'] = this.questions[this.qid].question_text
-                this.gamedata.['answer'] = this.getCorrectAnswertext()
-                this.gamedata.['selected'] = a
+                this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
+                this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
+                this.gamedata.['selected'] = this.ToText(a)
                 this.gamedata.['isCorrect'] = rw
                 this.gamedata.['time'] = this.answer_minutes +':'+ this.answer_seconds 
                 rw ==1 ? this.correct ++ : this.wrong ++
@@ -231,6 +329,7 @@ import PieChart from '../helper/PieChart'
             },
 
             nextQuestion(){
+                console.log('NextQuestion Clicked')
                 
                 this.answer_minutes = 0
                 this.answer_seconds = 0
@@ -243,14 +342,71 @@ import PieChart from '../helper/PieChart'
 
                 this.qid ++
                 this.current = this.questions[this.qid].id
+                this.fillPie()
+
+                let next = { channel: this.channel, qid: this.qid }
+
+                axios.post(`/api/nextQuestion`, next)
+
             },
             submitAnswer(){
                 if(this.qoption.selected == null){
                     alert('Please select an option first!')
                     return;
                 }
-
                 this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
+                this.qoption.selected = null
+                this.qoption.id = null
+                this.qoption.option = null
+                this.qoption.correct = null
+                this.fillPie()
+                this.screen.result = 1
+
+            },
+
+            predictAnswer(){
+
+                let pre = { 
+                    ans: this.ToText(this.qoption.option),
+                    user:this.user,
+                    channel: this.channel,
+                }
+
+                if (this.isPredict()){
+
+                    this.prediction.push(pre)
+
+                    axios.post(`/api/answerPredict`, pre)
+
+                    this.getPredict()
+
+                    this.fillPie()
+                }
+
+            },
+            isPredict(){
+                return !this.prediction.find(p => p.user.id === this.user.id)
+            },
+            groupPredict(){
+                return this.prediction.find(p => p.user.gid === this.user.gid)
+            },
+
+            getPredict(){
+                var counts = {};
+                let options = this.questions[this.qid].options
+                this.prediction.forEach(p => { 
+                    if(p.user.gid === this.user.gid){
+                        counts[p.ans] = (counts[p.ans] || 0)+1; 
+                    }
+                });
+
+                this.pie_data = options.map(o => {
+                    var c = counts[this.ToText(o.option)]
+                    if(c === undefined)
+                        return 0
+                    return c 
+                })
+
             },
 
             getCorrectAnswertext(){
@@ -259,7 +415,7 @@ import PieChart from '../helper/PieChart'
 
             winner(){
                 this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
-                this.winner_screen = 1
+                this.screen.winner = 1
                 if(this.wrong == 0 ){
                     confetti({
                         zIndex:999999,
@@ -302,8 +458,36 @@ import PieChart from '../helper/PieChart'
                     this.qoption.option= option.option
                     this.qoption.correct= option.correct
                 }
+                console.log(this.isPredict())
 
-            }
+            },
+
+            fillPie() {
+                this.datacollection = {
+                    labels: this.questions[this.qid].options.map(o => { return this.ToText(o.option) }),
+                    datasets: [{
+                      borderWidth: 1,
+                      borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+                      backgroundColor: [ '#7fdbda', '#ade498', '#ede682', '#febf63'],
+                      data: this.pie_data,
+                    }]
+                }
+            },
+
+            ToText(input){
+              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');  
+            },
+
+            answer(){
+                return this.ans;
+            },
+            
+        },
+
+        computed: {
+            channel(){
+                return `team.${this.id}.${this.uid}`
+            },
         }
         
 
@@ -357,142 +541,297 @@ import PieChart from '../helper/PieChart'
     }
 
 
-#qid {
-  padding: 10px 16px;
-  -moz-border-radius: 50px;
-  -webkit-border-radius: 50px;
-  border-radius: 20px;
-}
-
-
-
-
-.element-animation0 {
-    animation: animationFrames ease .6s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease .6s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease .6s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-.element-animation1 {
-    animation: animationFrames ease .8s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease .8s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease .8s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-.element-animation2 {
-    animation: animationFrames ease 1s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease 1s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease 1s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-.element-animation3 {
-    animation: animationFrames ease 1.2s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease 1.2s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease 1.2s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-.element-animation4 {
-    animation: animationFrames ease 1.4s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease 1.4s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease 1.4s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-.element-animation5 {
-    animation: animationFrames ease 1.6s;
-    animation-iteration-count: 1;
-    transform-origin: 50% 50%;
-    -webkit-animation: animationFrames ease 1.6s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-transform-origin: 50% 50%;
-    -ms-animation: animationFrames ease 1.6s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%
-}
-@keyframes animationFrames {
-    0% {
-        opacity: 0;
-        transform: translate(-1500px,0px)
+    #qid {
+      padding: 10px 16px;
+      -moz-border-radius: 50px;
+      -webkit-border-radius: 50px;
+      border-radius: 20px;
     }
 
-    60% {
-        opacity: 1;
-        transform: translate(30px,0px)
+
+
+    .element-animation0 {
+        animation: animationFrames ease .6s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease .6s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease .6s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    .element-animation1 {
+        animation: animationFrames ease .8s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease .8s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease .8s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    .element-animation2 {
+        animation: animationFrames ease 1s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease 1s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease 1s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    .element-animation3 {
+        animation: animationFrames ease 1.2s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease 1.2s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease 1.2s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    .element-animation4 {
+        animation: animationFrames ease 1.4s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease 1.4s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease 1.4s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    .element-animation5 {
+        animation: animationFrames ease 1.6s;
+        animation-iteration-count: 1;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease 1.6s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease 1.6s;
+        -ms-animation-iteration-count: 1;
+        -ms-transform-origin: 50% 50%
+    }
+    @keyframes animationFrames {
+        0% {
+            opacity: 0;
+            transform: translate(-1500px,0px)
+        }
+
+        60% {
+            opacity: 1;
+            transform: translate(30px,0px)
+        }
+
+        80% {
+            transform: translate(-10px,0px)
+        }
+
+        100% {
+            opacity: 1;
+            transform: translate(0px,0px)
+        }
     }
 
-    80% {
-        transform: translate(-10px,0px)
+    @-webkit-keyframes animationFrames {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate(-1500px,0px)
+        }
+        60% {
+            opacity: 1;
+            -webkit-transform: translate(30px,0px)
+        }
+
+        80% {
+            -webkit-transform: translate(-10px,0px)
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: translate(0px,0px)
+        }
     }
 
-    100% {
-        opacity: 1;
-        transform: translate(0px,0px)
-    }
-}
+    @-ms-keyframes animationFrames {
+        0% {
+            opacity: 0;
+            -ms-transform: translate(-1500px,0px)
+        }
 
-@-webkit-keyframes animationFrames {
-    0% {
-        opacity: 0;
-        -webkit-transform: translate(-1500px,0px)
-    }
-    60% {
-        opacity: 1;
-        -webkit-transform: translate(30px,0px)
-    }
+        60% {
+            opacity: 1;
+            -ms-transform: translate(30px,0px)
+        }
+        80% {
+            -ms-transform: translate(-10px,0px)
+        }
 
-    80% {
-        -webkit-transform: translate(-10px,0px)
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: translate(0px,0px)
-    }
-}
-
-@-ms-keyframes animationFrames {
-    0% {
-        opacity: 0;
-        -ms-transform: translate(-1500px,0px)
+        100% {
+            opacity: 1;
+            -ms-transform: translate(0px,0px)
+        }
     }
 
-    60% {
-        opacity: 1;
-        -ms-transform: translate(30px,0px)
-    }
-    80% {
-        -ms-transform: translate(-10px,0px)
+    .leaderboard {
+      position: relative;
+      background: -webkit-linear-gradient(top, #3a404d, #181c26);
+      background: linear-gradient(to bottom, #3a404d, #181c26);
+      border-radius: 10px;
+      /*box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);*/
     }
 
-    100% {
-        opacity: 1;
-        -ms-transform: translate(0px,0px)
+
+    .leaderboard ul li {
+      position: relative;
+      z-index: 1;
+      font-size: 14px;
+      counter-increment: leaderboard;
+      padding: 18px 10px 18px 50px;
+      cursor: pointer;
+      -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
+      -webkit-transform: translateZ(0) scale(1, 1);
+              transform: translateZ(0) scale(1, 1);
     }
-}
+    .leaderboard ul li::before {
+      content: counter(leaderboard);
+      position: absolute;
+      z-index: 2;
+      top: 15px;
+      left: 15px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      color: #c24448;
+      background: #fff;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .leaderboard ul li mark {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 18px 10px 18px 50px;
+      margin: 0;
+      background: none;
+      color: #fff;
+    }
+    .leaderboard ul li mark::before, .leaderboard ul li mark::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      bottom: -11px;
+      left: -9px;
+      border-top: 10px solid #c24448;
+      border-left: 10px solid transparent;
+      -webkit-transition: all .1s ease-in-out;
+      transition: all .1s ease-in-out;
+      opacity: 0;
+    }
+    .leaderboard ul li mark::after {
+      left: auto;
+      right: -9px;
+      border-left: none;
+      border-right: 10px solid transparent;
+    }
+    .leaderboard ul li small {
+      position: relative;
+      z-index: 2;
+      display: block;
+      text-align: right;
+    }
+    .leaderboard ul li::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fa6855;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
+      -webkit-transition: all .3s ease-in-out;
+      transition: all .3s ease-in-out;
+      opacity: 0;
+    }
+    .leaderboard ul li:nth-child(1) {
+      background: #fa6855;
+    }
+    .leaderboard ul li:nth-child(1)::after {
+      background: #fa6855;
+    }
+    .leaderboard ul li:nth-child(2) {
+      background: #e0574f;
+    }
+    .leaderboard ul li:nth-child(2)::after {
+      background: #e0574f;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+    }
+    .leaderboard ul li:nth-child(2) mark::before, .leaderboard ul li:nth-child(2) mark::after {
+      border-top: 6px solid #ba4741;
+      bottom: -7px;
+    }
+    .leaderboard ul li:nth-child(3) {
+      background: #d7514d;
+    }
+    .leaderboard ul li:nth-child(3)::after {
+      background: #d7514d;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.11);
+    }
+    .leaderboard ul li:nth-child(3) mark::before, .leaderboard ul li:nth-child(3) mark::after {
+      border-top: 2px solid #b0433f;
+      bottom: -3px;
+    }
+    .leaderboard ul li:nth-child(4) {
+      background: #cd4b4b;
+    }
+    .leaderboard ul li:nth-child(4)::after {
+      background: #cd4b4b;
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    }
+    .leaderboard ul li:nth-child(4) mark::before, .leaderboard ul li:nth-child(4) mark::after {
+      top: -7px;
+      bottom: auto;
+      border-top: none;
+      border-bottom: 6px solid #a63d3d;
+    }
+    .leaderboard ul li:nth-child(5) {
+      background: #c24448;
+      border-radius: 0 0 10px 10px;
+    }
+    .leaderboard ul li:nth-child(5)::after {
+      background: #c24448;
+      box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);
+      border-radius: 0 0 10px 10px;
+    }
+    .leaderboard ul li:nth-child(5) mark::before, .leaderboard ul li:nth-child(5) mark::after {
+      top: -9px;
+      bottom: auto;
+      border-top: none;
+      border-bottom: 8px solid #993639;
+    }
+    .leaderboard ul li:hover {
+      z-index: 2;
+      overflow: visible;
+    }
+    .leaderboard ul li:hover::after {
+      opacity: 1;
+      -webkit-transform: scaleX(1.06) scaleY(1.03);
+              transform: scaleX(1.06) scaleY(1.03);
+    }
+    .leaderboard ul li:hover mark::before, .leaderboard ul li:hover mark::after {
+      opacity: 1;
+      -webkit-transition: all .35s ease-in-out;
+      transition: all .35s ease-in-out;
+    }
 
 
 </style>

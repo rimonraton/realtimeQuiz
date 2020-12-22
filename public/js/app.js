@@ -2111,7 +2111,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     var _this2 = this;
 
-    Echo.join("game.".concat(this.id, ".").concat(this.uid)).here(function (users) {
+    Echo.join("challenge.".concat(this.id, ".").concat(this.uid)).here(function (users) {
       _this2.users = users;
     }).joining(function (user) {
       _this2.users.push(user);
@@ -2368,7 +2368,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     channel: function channel() {
-      return "game.".concat(this.id, ".").concat(this.uid);
+      return "challenge.".concat(this.id, ".").concat(this.uid);
     },
     progressClass: function progressClass() {
       return this.progress > 66 ? 'bg-success' : this.progress > 33 ? 'bg-info' : 'bg-danger';
@@ -2870,6 +2870,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/PieChart */ "./resources/js/components/helper/PieChart.vue");
+/* harmony import */ var _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/moderator/questions */ "./resources/js/components/helper/moderator/questions.vue");
+/* harmony import */ var _helper_result__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/result */ "./resources/js/components/helper/result.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3025,25 +3027,62 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['id', 'user', 'questions'],
+  props: ['id', 'uid', 'user', 'questions'],
   components: {
-    PieChart: _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__["default"]
+    PieChart: _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__["default"],
+    questions: _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__["default"],
+    result: _helper_result__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
+      users: [],
+      datacollection: null,
       qoption: {
         selected: null,
         id: null,
         option: null,
         correct: null
       },
-      ans: [2, 5, 1, 3],
+      prediction: [],
       results: [],
       current: 0,
       qid: 0,
-      winner_screen: false,
       score: 0,
       gamedata: {},
       timer: null,
@@ -3053,30 +3092,95 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       wrong: 0,
       answer_seconds: 0,
       answer_minutes: 0,
-      mc: 0
+      mc: 0,
+      pie_data: [],
+      screen: {
+        waiting: 0,
+        loading: 0,
+        result: 0,
+        winner: 0
+      }
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     console.log('timer start');
-    this.current = this.questions[this.qid].id; // let confetti = document.createElement('script')
-    // confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
-    // document.head.appendChild(confetti)
-    // this.startTimer()
+    this.current = this.questions[this.qid].id;
+    this.fillPie();
+    Echo.join("team.".concat(this.id, ".").concat(this.uid)).here(function (users) {
+      _this.users = users;
+    }).joining(function (user) {
+      _this.users.push(user);
+
+      console.log("".concat(user.name, " join"));
+
+      if (_this.game_start) {
+        _this.kickUser(user.id);
+      }
+    }).leaving(function (user) {
+      _this.users = _this.users.filter(function (u) {
+        return u.id != user.id;
+      });
+      console.log("".concat(user.name, " leaving"));
+    });
+    this.current = this.questions[this.qid].id;
+  },
+  created: function created() {
+    var _this2 = this;
+
+    Echo.channel(this.channel).listen('GameStartEvent', function (data) {
+      console.log('GameStartEvent.............');
+      _this2.game_start = 1; // Game Start from Game Owner...
+
+      _this2.screen.waiting = 0;
+
+      _this2.QuestionTimer(); // Set and Start QuestionTimer
+
+    }).listen('NextQuestionEvent', function (data) {
+      console.log('NextQuestionEvent.............');
+      _this2.qid = data.qid;
+      _this2.current = _this2.questions[_this2.qid].id; // Next Question from Moderator...
+
+      _this2.pie_data = [];
+      _this2.prediction = [];
+      _this2.qoption.selected = null;
+
+      _this2.fillPie();
+    }).listen('AnswerPredictEvent', function (data) {
+      console.log('AnswerPredictEvent.............');
+
+      _this2.prediction.push(data);
+
+      _this2.getPredict();
+
+      _this2.fillPie();
+    }).listen('QuestionClickedEvent', function (data) {
+      console.log('QuestionClickedEvent.............');
+
+      _this2.answered_user_data.push(data);
+
+      _this2.answered_user++;
+
+      _this2.loadingScreen();
+    }).listen('KickUserEvent', function (data) {
+      console.log('KickUserEvent.............');
+      _this2.users = _this2.users.filter(function (u) {
+        return u.id !== data.uid;
+      });
+
+      if (_this2.user.id == data.uid) {
+        window.location.href = "http://quiz.erendevu.net";
+      }
+    });
   },
   methods: {
-    ToText: function ToText(HTML) {
-      var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '');
-    },
-    answer: function answer() {
-      return [1, 3];
-    },
     checkAnswer: function checkAnswer(q, a, rw) {
       this.right_wrong = rw;
       this.gamedata['id'] = this.qid + 1;
-      this.gamedata['question'] = this.questions[this.qid].question_text;
-      this.gamedata['answer'] = this.getCorrectAnswertext();
-      this.gamedata['selected'] = a;
+      this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text);
+      this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext());
+      this.gamedata['selected'] = this.ToText(a);
       this.gamedata['isCorrect'] = rw;
       this.gamedata['time'] = this.answer_minutes + ':' + this.answer_seconds;
       rw == 1 ? this.correct++ : this.wrong++;
@@ -3097,6 +3201,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.current = this.questions[this.qid].id;
     },
     nextQuestion: function nextQuestion() {
+      console.log('NextQuestion Clicked');
       this.answer_minutes = 0;
       this.answer_seconds = 0;
 
@@ -3108,6 +3213,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.qid++;
       this.current = this.questions[this.qid].id;
+      this.fillPie();
+      var next = {
+        channel: this.channel,
+        qid: this.qid
+      };
+      axios.post("/api/nextQuestion", next);
     },
     submitAnswer: function submitAnswer() {
       if (this.qoption.selected == null) {
@@ -3116,6 +3227,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
+      this.qoption.selected = null;
+      this.qoption.id = null;
+      this.qoption.option = null;
+      this.qoption.correct = null;
+      this.fillPie();
+      this.screen.result = 1;
+    },
+    predictAnswer: function predictAnswer() {
+      var pre = {
+        ans: this.ToText(this.qoption.option),
+        user: this.user,
+        channel: this.channel
+      };
+
+      if (this.isPredict()) {
+        this.prediction.push(pre);
+        axios.post("/api/answerPredict", pre);
+        this.getPredict();
+        this.fillPie();
+      }
+    },
+    isPredict: function isPredict() {
+      var _this3 = this;
+
+      return !this.prediction.find(function (p) {
+        return p.user.id === _this3.user.id;
+      });
+    },
+    groupPredict: function groupPredict() {
+      var _this4 = this;
+
+      return this.prediction.find(function (p) {
+        return p.user.gid === _this4.user.gid;
+      });
+    },
+    getPredict: function getPredict() {
+      var _this5 = this;
+
+      var counts = {};
+      var options = this.questions[this.qid].options;
+      this.prediction.forEach(function (p) {
+        if (p.user.gid === _this5.user.gid) {
+          counts[p.ans] = (counts[p.ans] || 0) + 1;
+        }
+      });
+      this.pie_data = options.map(function (o) {
+        var c = counts[_this5.ToText(o.option)];
+
+        if (c === undefined) return 0;
+        return c;
+      });
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
       return this.questions[this.qid].options.find(function (o) {
@@ -3123,12 +3285,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).option;
     },
     winner: function winner() {
-      var _this = this;
+      var _this6 = this;
 
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this.user.id;
+        return w.id == _this6.user.id;
       });
-      this.winner_screen = 1;
+      this.screen.winner = 1;
 
       if (this.wrong == 0) {
         confetti({
@@ -3142,22 +3304,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     startTimer: function startTimer() {
-      var _this2 = this;
+      var _this7 = this;
 
       console.log('timer start');
       this.timer = setInterval(function () {
-        _this2.seconds++;
+        _this7.seconds++;
 
-        if (_this2.seconds > 59) {
-          _this2.seconds = 0;
-          _this2.minutes++;
+        if (_this7.seconds > 59) {
+          _this7.seconds = 0;
+          _this7.minutes++;
         }
 
-        _this2.answer_seconds++;
+        _this7.answer_seconds++;
 
-        if (_this2.answer_seconds > 59) {
-          _this2.answer_seconds = 0;
-          _this2.answer_minutes++;
+        if (_this7.answer_seconds > 59) {
+          _this7.answer_seconds = 0;
+          _this7.answer_minutes++;
         }
       }, 1000);
     },
@@ -3176,6 +3338,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.qoption.option = option.option;
         this.qoption.correct = option.correct;
       }
+
+      console.log(this.isPredict());
+    },
+    fillPie: function fillPie() {
+      var _this8 = this;
+
+      this.datacollection = {
+        labels: this.questions[this.qid].options.map(function (o) {
+          return _this8.ToText(o.option);
+        }),
+        datasets: [{
+          borderWidth: 1,
+          borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+          backgroundColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+          data: this.pie_data
+        }]
+      };
+    },
+    ToText: function ToText(input) {
+      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+    },
+    answer: function answer() {
+      return this.ans;
+    }
+  },
+  computed: {
+    channel: function channel() {
+      return "team.".concat(this.id, ".").concat(this.uid);
     }
   }
 });
@@ -3524,33 +3714,74 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
 
+var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["mixins"].reactiveProp;
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
-  props: ['ans', 'qoptions'],
-  data: function data() {
-    return {
-      chartData: {
-        labels: this.qoptions.map(function (o) {
-          return o.option;
-        }),
-        datasets: [{
-          borderWidth: 1,
-          borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
-          backgroundColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
-          data: this.ans
-        }]
-      },
-      options: {
-        legend: {
-          display: true
-        },
-        responsive: true,
-        maintainAspectRatio: false
-      }
-    };
-  },
+  mixins: [reactiveProp],
   mounted: function mounted() {
     this.renderChart(this.chartData, this.options);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['questions', 'qid'],
+  methods: {
+    ToText: function ToText(input) {
+      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+    }
   }
 });
 
@@ -24320,7 +24551,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.cursor[data-v-ef1a3fc8]{\n        cursor: pointer;\n}\n.list-group-item p[data-v-ef1a3fc8] {\n        margin: 0 !important;\n}\n.loading[data-v-ef1a3fc8], .result[data-v-ef1a3fc8], .winner[data-v-ef1a3fc8] {\n        position: fixed;\n        z-index: 9999;\n        top: 0;\n        width: 100vw;\n        height: 100vh;\n        background: white;\n        left: 0;\n        display: flex;\n        flex-direction: column;\n        justify-content: center;\n        align-items: center;\n        /*background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);*/\n}\n.q_num[data-v-ef1a3fc8] {\n        position: absolute;\n        right: 5px;\n        width: 100%;\n        top: 0px;\n}\n.fade-leave-active[data-v-ef1a3fc8], .fade-enter-active[data-v-ef1a3fc8] {\n      transition: 0.3s ease-out;\n}\n.fade-enter[data-v-ef1a3fc8], .fade-leave-to[data-v-ef1a3fc8] /* .fade-leave-active below version 2.1.8 */ {\n      opacity: 0;\n}\n.f-13[data-v-ef1a3fc8]{\n        font-size: 13px;\n}\n.selected[data-v-ef1a3fc8]{\n        background: #38c172;\n        color: white;\n        font-weight: bold;\n}\n#qid[data-v-ef1a3fc8] {\n  padding: 10px 16px;\n  border-radius: 20px;\n}\n.element-animation0[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation1[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation2[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation3[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation4[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation5[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n@keyframes animationFrames-data-v-ef1a3fc8 {\n0% {\n        opacity: 0;\n        transform: translate(-1500px,0px)\n}\n60% {\n        opacity: 1;\n        transform: translate(30px,0px)\n}\n80% {\n        transform: translate(-10px,0px)\n}\n100% {\n        opacity: 1;\n        transform: translate(0px,0px)\n}\n}\n@-webkit-keyframes animationFrames-data-v-ef1a3fc8 {\n0% {\n        opacity: 0;\n        -webkit-transform: translate(-1500px,0px)\n}\n60% {\n        opacity: 1;\n        -webkit-transform: translate(30px,0px)\n}\n80% {\n        -webkit-transform: translate(-10px,0px)\n}\n100% {\n        opacity: 1;\n        -webkit-transform: translate(0px,0px)\n}\n}\n\n\n", ""]);
+exports.push([module.i, "\n.cursor[data-v-ef1a3fc8]{\n    cursor: pointer;\n}\n.list-group-item p[data-v-ef1a3fc8] {\n    margin: 0 !important;\n}\n.loading[data-v-ef1a3fc8], .result[data-v-ef1a3fc8], .winner[data-v-ef1a3fc8] {\n    position: fixed;\n    z-index: 9999;\n    top: 0;\n    width: 100vw;\n    height: 100vh;\n    background: white;\n    left: 0;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    /*background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);*/\n}\n.q_num[data-v-ef1a3fc8] {\n    position: absolute;\n    right: 5px;\n    width: 100%;\n    top: 0px;\n}\n.fade-leave-active[data-v-ef1a3fc8], .fade-enter-active[data-v-ef1a3fc8] {\n  transition: 0.3s ease-out;\n}\n.fade-enter[data-v-ef1a3fc8], .fade-leave-to[data-v-ef1a3fc8] /* .fade-leave-active below version 2.1.8 */ {\n  opacity: 0;\n}\n.f-13[data-v-ef1a3fc8]{\n    font-size: 13px;\n}\n.selected[data-v-ef1a3fc8]{\n    background: #38c172;\n    color: white;\n    font-weight: bold;\n}\n#qid[data-v-ef1a3fc8] {\n  padding: 10px 16px;\n  border-radius: 20px;\n}\n.element-animation0[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease .6s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation1[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease .8s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation2[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation3[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.2s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation4[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.4s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n.element-animation5[data-v-ef1a3fc8] {\n    animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    animation-iteration-count: 1;\n    transform-origin: 50% 50%;\n    -webkit-animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    -webkit-animation-iteration-count: 1;\n    -webkit-transform-origin: 50% 50%;\n    -ms-animation: animationFrames-data-v-ef1a3fc8 ease 1.6s;\n    -ms-animation-iteration-count: 1;\n    -ms-transform-origin: 50% 50%\n}\n@keyframes animationFrames-data-v-ef1a3fc8 {\n0% {\n        opacity: 0;\n        transform: translate(-1500px,0px)\n}\n60% {\n        opacity: 1;\n        transform: translate(30px,0px)\n}\n80% {\n        transform: translate(-10px,0px)\n}\n100% {\n        opacity: 1;\n        transform: translate(0px,0px)\n}\n}\n@-webkit-keyframes animationFrames-data-v-ef1a3fc8 {\n0% {\n        opacity: 0;\n        -webkit-transform: translate(-1500px,0px)\n}\n60% {\n        opacity: 1;\n        -webkit-transform: translate(30px,0px)\n}\n80% {\n        -webkit-transform: translate(-10px,0px)\n}\n100% {\n        opacity: 1;\n        -webkit-transform: translate(0px,0px)\n}\n}\n.leaderboard[data-v-ef1a3fc8] {\n  position: relative;\n  background: linear-gradient(to bottom, #3a404d, #181c26);\n  border-radius: 10px;\n  /*box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);*/\n}\n.leaderboard ul li[data-v-ef1a3fc8] {\n  position: relative;\n  z-index: 1;\n  font-size: 14px;\n  counter-increment: leaderboard;\n  padding: 18px 10px 18px 50px;\n  cursor: pointer;\n  -webkit-backface-visibility: hidden;\n          backface-visibility: hidden;\n  transform: translateZ(0) scale(1, 1);\n}\n.leaderboard ul li[data-v-ef1a3fc8]::before {\n  content: counter(leaderboard);\n  position: absolute;\n  z-index: 2;\n  top: 15px;\n  left: 15px;\n  width: 20px;\n  height: 20px;\n  line-height: 20px;\n  color: #c24448;\n  background: #fff;\n  border-radius: 20px;\n  text-align: center;\n}\n.leaderboard ul li mark[data-v-ef1a3fc8] {\n  position: absolute;\n  z-index: 2;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  padding: 18px 10px 18px 50px;\n  margin: 0;\n  background: none;\n  color: #fff;\n}\n.leaderboard ul li mark[data-v-ef1a3fc8]::before, .leaderboard ul li mark[data-v-ef1a3fc8]::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  bottom: -11px;\n  left: -9px;\n  border-top: 10px solid #c24448;\n  border-left: 10px solid transparent;\n  transition: all .1s ease-in-out;\n  opacity: 0;\n}\n.leaderboard ul li mark[data-v-ef1a3fc8]::after {\n  left: auto;\n  right: -9px;\n  border-left: none;\n  border-right: 10px solid transparent;\n}\n.leaderboard ul li small[data-v-ef1a3fc8] {\n  position: relative;\n  z-index: 2;\n  display: block;\n  text-align: right;\n}\n.leaderboard ul li[data-v-ef1a3fc8]::after {\n  content: '';\n  position: absolute;\n  z-index: 1;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: #fa6855;\n  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);\n  transition: all .3s ease-in-out;\n  opacity: 0;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(1) {\n  background: #fa6855;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(1)::after {\n  background: #fa6855;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(2) {\n  background: #e0574f;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(2)::after {\n  background: #e0574f;\n  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);\n}\n.leaderboard ul li:nth-child(2) mark[data-v-ef1a3fc8]::before, .leaderboard ul li:nth-child(2) mark[data-v-ef1a3fc8]::after {\n  border-top: 6px solid #ba4741;\n  bottom: -7px;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(3) {\n  background: #d7514d;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(3)::after {\n  background: #d7514d;\n  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.11);\n}\n.leaderboard ul li:nth-child(3) mark[data-v-ef1a3fc8]::before, .leaderboard ul li:nth-child(3) mark[data-v-ef1a3fc8]::after {\n  border-top: 2px solid #b0433f;\n  bottom: -3px;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(4) {\n  background: #cd4b4b;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(4)::after {\n  background: #cd4b4b;\n  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);\n}\n.leaderboard ul li:nth-child(4) mark[data-v-ef1a3fc8]::before, .leaderboard ul li:nth-child(4) mark[data-v-ef1a3fc8]::after {\n  top: -7px;\n  bottom: auto;\n  border-top: none;\n  border-bottom: 6px solid #a63d3d;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(5) {\n  background: #c24448;\n  border-radius: 0 0 10px 10px;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:nth-child(5)::after {\n  background: #c24448;\n  box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);\n  border-radius: 0 0 10px 10px;\n}\n.leaderboard ul li:nth-child(5) mark[data-v-ef1a3fc8]::before, .leaderboard ul li:nth-child(5) mark[data-v-ef1a3fc8]::after {\n  top: -9px;\n  bottom: auto;\n  border-top: none;\n  border-bottom: 8px solid #993639;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:hover {\n  z-index: 2;\n  overflow: visible;\n}\n.leaderboard ul li[data-v-ef1a3fc8]:hover::after {\n  opacity: 1;\n  transform: scaleX(1.06) scaleY(1.03);\n}\n.leaderboard ul li:hover mark[data-v-ef1a3fc8]::before, .leaderboard ul li:hover mark[data-v-ef1a3fc8]::after {\n  opacity: 1;\n  transition: all .35s ease-in-out;\n}\n\n\n", ""]);
 
 // exports
 
@@ -84879,481 +85110,512 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _vm.winner_screen
-      ? _c("div", { staticClass: "winner" }, [
-          _vm.user_ranking == 0
-            ? _c("div", [
-                _c("h1", { staticClass: "text-center" }, [
-                  _vm._v("Congratulation ! ")
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _vm.screen.winner
+        ? _c("div", { staticClass: "winner" }, [
+            _vm.user_ranking == 0
+              ? _c("div", [
+                  _c("h1", { staticClass: "text-center" }, [
+                    _vm._v("Congratulation ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you won this game.")
+                  ])
+                ])
+              : _vm.user_ranking == 1
+              ? _c("div", [
+                  _c("h1", { staticClass: "text-center" }, [
+                    _vm._v("Well Played ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you got second place")
+                  ])
+                ])
+              : _c("div", [
+                  _c("h3", { staticClass: "text-center" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you need more concentration ")
+                  ])
                 ]),
-                _vm._v(" "),
-                _c("h3", [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you won this game.")
-                ])
-              ])
-            : _vm.user_ranking == 1
-            ? _c("div", [
-                _c("h1", { staticClass: "text-center" }, [
-                  _vm._v("Well Played ! ")
-                ]),
-                _vm._v(" "),
-                _c("h3", [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you got second place")
-                ])
-              ])
-            : _c("div", [
-                _c("h3", { staticClass: "text-center" }, [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you need more concentration ")
-                ])
-              ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-secondary",
-              on: {
-                click: function($event) {
-                  _vm.winner_screen = 0
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-secondary",
+                on: {
+                  click: function($event) {
+                    _vm.screen.winner = 0
+                  }
                 }
-              }
-            },
-            [_vm._v("Close")]
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c(
-            "div",
-            { staticClass: "modal-dialog" },
-            _vm._l(_vm.questions, function(question) {
-              return question.id == _vm.current
-                ? _c("div", { staticClass: "modal-content" }, [
+              },
+              [_vm._v("Close")]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.result
+        ? _c("result", {
+            attrs: {
+              results: _vm.results,
+              lastQuestion: _vm.qid + 1 == _vm.questions.length
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.user.id == _vm.uid
+        ? _c("div", { staticClass: "row justify-content-center" }, [
+            _c(
+              "div",
+              { staticClass: "col-md-7" },
+              [
+                _c("questions", {
+                  attrs: { questions: _vm.questions, qid: _vm.qid }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-5" }, [
+              _c("div", { staticClass: "card text-white bg-secondary" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "card-header card-title d-flex justify-content-between"
+                  },
+                  [
                     _c(
-                      "div",
+                      "a",
                       {
-                        staticClass: "modal-header",
-                        staticStyle: { "justify-content": "flex-start" }
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: _vm.reloadPage }
+                      },
+                      [_vm._v("Reset")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: _vm.nextQuestion }
+                      },
+                      [_vm._v("NEXT QUESTION")]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c("ul", { staticClass: "list-group text-dark" }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass:
+                          "list-group-item d-flex justify-content-between align-items-center p-0"
                       },
                       [
                         _c(
                           "div",
-                          { staticClass: "col-xs-1 my-1 element-animation0" },
+                          { staticClass: "w-100", attrs: { id: "accordion" } },
                           [
                             _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "bg-success text-white rounded-circle",
-                                attrs: { id: "qid" }
-                              },
-                              [_vm._v(_vm._s(_vm.qid + 1))]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-xs-11" }, [
-                          _c("h6", { staticClass: "pl-1 element-animation0" }, [
-                            _vm._v(
-                              " " + _vm._s(_vm.ToText(question.question_text))
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "modal-body" },
-                      [
-                        question.more_info_link
-                          ? _c(
                               "div",
-                              {
-                                staticClass:
-                                  "col-md-8 offset-md-2 element-animation1"
-                              },
+                              { staticClass: "card text-white bg-secondary" },
                               [
-                                _c("img", {
-                                  staticClass: "image w-100 mb-2 rounded",
-                                  staticStyle: { "max-height": "40vh" },
-                                  attrs: { src: question.more_info_link }
-                                })
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm._l(question.options, function(option, index) {
-                          return _c("ul", { staticClass: "list-group" }, [
-                            _c(
-                              "li",
-                              {
-                                staticClass:
-                                  "list-group-item list-group-item-action cursor my-1",
-                                class: [
-                                  "element-animation" + (index + 1),
-                                  { selected: _vm.qoption.selected == index }
-                                ],
-                                on: {
-                                  click: function($event) {
-                                    return _vm.clickSelect(index, option)
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(_vm.ToText(option.option)) +
-                                    "\n                                "
+                                _vm._m(0),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "collapse show",
+                                    attrs: {
+                                      id: "collapseOne",
+                                      "aria-labelledby": "headingOne",
+                                      "data-parent": "#accordion"
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "card-body p-0" },
+                                      [
+                                        _c(
+                                          "ul",
+                                          {
+                                            staticClass: "list-group text-dark",
+                                            staticStyle: {
+                                              "max-height": "380px",
+                                              overflow: "auto"
+                                            }
+                                          },
+                                          _vm._l(_vm.results, function(result) {
+                                            return _c(
+                                              "li",
+                                              {
+                                                key: result.id,
+                                                staticClass:
+                                                  "list-group-item d-flex justify-content-between align-items-center p-1"
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "font-weight-light f-13"
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "span",
+                                                      {
+                                                        staticClass:
+                                                          "font-weight-bold"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                    " +
+                                                            _vm._s(
+                                                              _vm.ToText(
+                                                                result.question
+                                                              )
+                                                            ) +
+                                                            "\n                                                "
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    result.isCorrect
+                                                      ? _c("p", [
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "font-weight-light font-italic"
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                " " +
+                                                                  _vm._s(
+                                                                    _vm.ToText(
+                                                                      result.selected
+                                                                    )
+                                                                  )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("i", {
+                                                            staticClass:
+                                                              "fa fa-check text-success",
+                                                            attrs: {
+                                                              "aria-hidden":
+                                                                "true"
+                                                            }
+                                                          })
+                                                        ])
+                                                      : _c("p", [
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "font-weight-light font-italic"
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                        " +
+                                                                  _vm._s(
+                                                                    _vm.ToText(
+                                                                      result.selected
+                                                                    )
+                                                                  ) +
+                                                                  "\n                                                    "
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("i", {
+                                                            staticClass:
+                                                              "fa fa-times text-danger",
+                                                            attrs: {
+                                                              "aria-hidden":
+                                                                "true"
+                                                            }
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c("br"),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "font-weight-light font-italic"
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                " " +
+                                                                  _vm._s(
+                                                                    _vm.ToText(
+                                                                      result.answer
+                                                                    )
+                                                                  )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("i", {
+                                                            staticClass:
+                                                              "fa fa-check text-success",
+                                                            attrs: {
+                                                              "aria-hidden":
+                                                                "true"
+                                                            }
+                                                          })
+                                                        ])
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass:
+                                                      "badge badge-light badge-pill"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                                " +
+                                                        _vm._s(result.time) +
+                                                        " \n                                            "
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          }),
+                                          0
+                                        )
+                                      ]
+                                    )
+                                  ]
                                 )
                               ]
                             )
-                          ])
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "modal-footer text-muted" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-success float-right rounded-pill element-animation5",
-                          class: { disabled: _vm.qoption.selected == null },
-                          on: { click: _vm.submitAnswer }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                Submit\n                            "
-                          )
-                        ]
-                      )
-                    ])
-                  ])
-                : _vm._e()
-            }),
-            0
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-6" },
-        [
-          _c("div", { staticClass: "card text-white bg-secondary my-4" }, [
-            _c("div", { staticClass: "card-header text-center card-title" }, [
-              _c("strong", [_vm._v("Information")]),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-sm btn-warning float-right",
-                  on: { click: _vm.reloadPage }
-                },
-                [_vm._v("Reset")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("ul", { staticClass: "list-group text-dark" }, [
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center"
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Time Taken \n                        "
-                    ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-light badge-pill" },
-                      [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.minutes) +
-                            ": " +
-                            _vm._s(
-                              _vm.seconds > 9 ? _vm.seconds : "0" + _vm.seconds
-                            ) +
-                            " \n                        "
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center"
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Correct\n                        "
-                    ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-success badge-pill" },
-                      [_vm._v(_vm._s(_vm.correct))]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center"
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Wrong\n                        "
-                    ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-danger badge-pill" },
-                      [_vm._v(_vm._s(_vm.wrong))]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center p-0"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "w-100", attrs: { id: "accordion" } },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "card text-white bg-secondary" },
-                          [
-                            _vm._m(0),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "collapse show",
-                                attrs: {
-                                  id: "collapseOne",
-                                  "aria-labelledby": "headingOne",
-                                  "data-parent": "#accordion"
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "card-body p-0" }, [
-                                  _c(
-                                    "ul",
-                                    {
-                                      staticClass: "list-group text-dark",
-                                      staticStyle: {
-                                        "max-height": "380px",
-                                        overflow: "auto"
-                                      }
-                                    },
-                                    _vm._l(_vm.results, function(result) {
-                                      return _c(
-                                        "li",
-                                        {
-                                          key: result.id,
-                                          staticClass:
-                                            "list-group-item d-flex justify-content-between align-items-center p-1"
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "font-weight-light f-13"
-                                            },
-                                            [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "font-weight-bold"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                                    " +
-                                                      _vm._s(
-                                                        _vm.ToText(
-                                                          result.question
-                                                        )
-                                                      ) +
-                                                      "\n                                                "
-                                                  )
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              result.isCorrect
-                                                ? _c("p", [
-                                                    _c(
-                                                      "span",
-                                                      {
-                                                        staticClass:
-                                                          "font-weight-light font-italic"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          " " +
-                                                            _vm._s(
-                                                              _vm.ToText(
-                                                                result.selected
-                                                              )
-                                                            )
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-check text-success",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    })
-                                                  ])
-                                                : _c("p", [
-                                                    _c(
-                                                      "span",
-                                                      {
-                                                        staticClass:
-                                                          "font-weight-light font-italic"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                                        " +
-                                                            _vm._s(
-                                                              _vm.ToText(
-                                                                result.selected
-                                                              )
-                                                            ) +
-                                                            "\n                                                    "
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-times text-danger",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("br"),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "span",
-                                                      {
-                                                        staticClass:
-                                                          "font-weight-light font-italic"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          " " +
-                                                            _vm._s(
-                                                              _vm.ToText(
-                                                                result.answer
-                                                              )
-                                                            )
-                                                        )
-                                                      ]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-check text-success",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    })
-                                                  ])
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass:
-                                                "badge badge-light badge-pill"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                                " +
-                                                  _vm._s(result.time) +
-                                                  " \n                                            "
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                ])
-                              ]
-                            )
                           ]
                         )
                       ]
                     )
-                  ]
-                )
-              ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.user.id != _vm.uid
+        ? _c("div", { staticClass: "row justify-content-center" }, [
+            _c("div", { staticClass: "col-md-8" }, [
+              _c(
+                "div",
+                { staticClass: "container-fluid" },
+                _vm._l(_vm.questions, function(question) {
+                  return question.id == _vm.current
+                    ? _c("div", { staticClass: "modal-content" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-header",
+                            staticStyle: { "justify-content": "flex-start" }
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "col-xs-1 my-1 element-animation0"
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "bg-success text-white rounded-circle",
+                                    attrs: { id: "qid" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.qid + 1))]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-xs-11" }, [
+                              _c(
+                                "h6",
+                                { staticClass: "pl-1 element-animation0" },
+                                [
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(_vm.ToText(question.question_text))
+                                  )
+                                ]
+                              )
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "modal-body" },
+                          [
+                            question.more_info_link
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "col-md-8 offset-md-2 element-animation1"
+                                  },
+                                  [
+                                    _c("img", {
+                                      staticClass: "image w-100 mb-2 rounded",
+                                      staticStyle: { "max-height": "40vh" },
+                                      attrs: { src: question.more_info_link }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm._l(question.options, function(option, index) {
+                              return _c("ul", { staticClass: "list-group" }, [
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass:
+                                      "list-group-item list-group-item-action cursor my-1",
+                                    class: [
+                                      "element-animation" + (index + 1),
+                                      {
+                                        selected: _vm.qoption.selected == index
+                                      }
+                                    ],
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.clickSelect(index, option)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.ToText(option.option)) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              ])
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "modal-footer text-muted d-flex justify-content-between"
+                          },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-secondary rounded-pill element-animation5",
+                                class: { disabled: !_vm.qoption.selected },
+                                on: { click: _vm.predictAnswer }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Group Predict\n                            "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-success float-right rounded-pill element-animation5",
+                                class: {
+                                  disabled: _vm.qoption.selected == null
+                                },
+                                on: { click: _vm.submitAnswer }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Submit\n                            "
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                }),
+                0
+              )
             ]),
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "card-footer bg-transparent border-success" },
+              { staticClass: "col-md-4" },
               [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-sm btn-warning float-right",
-                    on: { click: _vm.nextQuestion }
-                  },
-                  [_vm._v("NEXT QUESTION")]
-                )
-              ]
+                _vm._l(_vm.questions, function(question) {
+                  return question.id == _vm.current && _vm.groupPredict()
+                    ? _c(
+                        "div",
+                        { staticClass: "card mb-4" },
+                        [
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c("pie-chart", {
+                            attrs: { "chart-data": _vm.datacollection }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _vm._v("Group Member")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body p-0" },
+                    _vm._l(_vm.users, function(gu) {
+                      return _c("ul", { staticClass: "list-group" }, [
+                        _vm.user.gid == gu.gid
+                          ? _c("li", { staticClass: "list-group-item py-1" }, [
+                              _vm._v(_vm._s(gu.name))
+                            ])
+                          : _vm._e()
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ],
+              2
             )
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.questions, function(question) {
-            return question.id == _vm.current
-              ? _c(
-                  "div",
-                  { staticClass: "card my-4" },
-                  [
-                    _c("pie-chart", {
-                      attrs: { ans: _vm.answer(), qoptions: question.options }
-                    })
-                  ],
-                  1
-                )
-              : _vm._e()
-          })
-        ],
-        2
-      )
-    ])
-  ])
+          ])
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -85380,6 +85642,60 @@ var staticRenderFns = [
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "leaderboard mt-4" }, [
+      _c("h3", { staticClass: "text-white p-2" }, [
+        _c("i", {
+          staticClass: "fa fa-trophy",
+          attrs: { "aria-hidden": "true" }
+        }),
+        _vm._v("\n                Leader Board\n              ")
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "list-group" }, [
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Rasel Mia")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("8")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Motaharul Islam")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("7")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Mahmudul Hassan")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("6")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Abul Bashar")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("5")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Zulfiker Ali")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("1")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-center" }, [
+      _c("strong", [_vm._v("Group Prediction")])
+    ])
   }
 ]
 render._withStripped = true
@@ -85838,6 +86154,139 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.questions, function(question, index) {
+      return _c(
+        "div",
+        { staticClass: "w-100 mb-2", attrs: { id: "accordion" + index } },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "card text-white",
+              class: index == _vm.qid ? "bg-success" : "bg-secondary"
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "card-header p-1 cursor",
+                  class: index == _vm.qid ? "bg-success" : "bg-secondary",
+                  attrs: {
+                    id: "heading" + index,
+                    "data-toggle": "collapse",
+                    "data-target": "#collapse" + index,
+                    "aria-expanded": "true",
+                    "aria-controls": "collapse" + index
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "text-white rounded-circle",
+                      class: { qid: index == _vm.qid }
+                    },
+                    [_vm._v(_vm._s(index + 1))]
+                  ),
+                  _vm._v(
+                    "\n\t              " +
+                      _vm._s(_vm.ToText(question.question_text)) +
+                      "\n\t        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "collapse",
+                  class: { show: index == _vm.qid },
+                  attrs: {
+                    id: "collapse" + index,
+                    "aria-labelledby": "heading" + index,
+                    "data-parent": "#accordion" + index
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card-body p-0" }, [
+                    question.more_info_link
+                      ? _c("div", { staticClass: "col-md-8 offset-md-2" }, [
+                          _c("img", {
+                            staticClass: "image w-100 mb-2 rounded",
+                            staticStyle: { "max-height": "40vh" },
+                            attrs: { src: question.more_info_link }
+                          })
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "list-group text-dark" },
+                      _vm._l(question.options, function(option, index) {
+                        return _c(
+                          "li",
+                          {
+                            key: option.id,
+                            staticClass:
+                              "list-group-item d-flex justify-content-between align-items-center p-1"
+                          },
+                          [
+                            _c("small", [
+                              _vm._v(
+                                "\n\t                        " +
+                                  _vm._s(_vm.ToText(option.option)) +
+                                  "\n\t                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            option.correct
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "fa fa-check text-success",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/result.vue?vue&type=template&id=3dc21663&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/result.vue?vue&type=template&id=3dc21663& ***!
@@ -85858,7 +86307,7 @@ var render = function() {
       _c("img", { staticClass: "card-img", attrs: { src: _vm.addImage() } })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "card", staticStyle: { width: "24rem" } }, [
+    _c("div", { staticClass: "card mt-5", staticStyle: { width: "24rem" } }, [
       _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -98697,6 +99146,75 @@ component.options.__file = "resources/js/components/helper/PieChart.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PieChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/PieChart.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/moderator/questions.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/helper/moderator/questions.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./questions.vue?vue&type=template&id=46cbeb26& */ "./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26&");
+/* harmony import */ var _questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./questions.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/moderator/questions.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=template&id=46cbeb26& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

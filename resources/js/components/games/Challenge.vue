@@ -193,7 +193,7 @@
         },
        
         mounted() {
-            Echo.join(`game.${this.id}.${this.uid}`)
+            Echo.join(`challenge.${this.id}.${this.uid}`)
                 .here((users) => {
                     this.users = users;
                 })
@@ -446,7 +446,7 @@
 
         computed: {
             channel(){
-                return `game.${this.id}.${this.uid}`
+                return `challenge.${this.id}.${this.uid}`
             },
             progressClass(){
                 return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
