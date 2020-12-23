@@ -354,6 +354,7 @@
                     alert('Please select an option first!')
                     return;
                 }
+                
                 this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
                 this.qoption.selected = null
                 this.qoption.id = null

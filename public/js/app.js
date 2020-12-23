@@ -3381,6 +3381,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/practice/resultdetails */ "./resources/js/components/helper/practice/resultdetails.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3524,8 +3525,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['id', 'user', 'questions'],
+  components: {
+    resultdetails: _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       results: [],
@@ -3541,76 +3548,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       wrong: 0,
       answer_seconds: 0,
       answer_minutes: 0,
-      mc: 0,
-      menu: [{
-        mn: 'Dashboard',
-        mid: 2,
-        pid: 1
-      }, {
-        mn: 'HRM',
-        mid: 4,
-        pid: 1
-      }, {
-        mn: 'Security',
-        mid: 3,
-        pid: 1
-      }, {
-        mn: 'Attendance',
-        mid: 14,
-        pid: 1
-      }, {
-        mn: 'Dashboard',
-        mid: 8,
-        pid: 2
-      }, {
-        mn: 'Menu Setup',
-        mid: 5,
-        pid: 3
-      }, {
-        mn: 'Role Setup',
-        mid: 6,
-        pid: 3
-      }, {
-        mn: 'Employee Setup',
-        mid: 7,
-        pid: 4
-      }, {
-        mn: 'Job Type Setup',
-        mid: 9,
-        pid: 4
-      }, {
-        mn: 'Designation Setup',
-        mid: 10,
-        pid: 4
-      }, {
-        mn: 'Role Mapping',
-        mid: 11,
-        pid: 3
-      }, {
-        mn: 'Menu Mapping',
-        mid: 12,
-        pid: 3
-      }, {
-        mn: 'Department Setup',
-        mid: 13,
-        pid: 4
-      }, {
-        mn: 'Out Call',
-        mid: 15,
-        pid: 14
-      }, {
-        mn: 'Attendance Status',
-        mid: 16,
-        pid: 14
-      }, {
-        mn: 'Absent Status',
-        mid: 17,
-        pid: 14
-      }, {
-        mn: 'Late Status',
-        mid: 18,
-        pid: 14
-      }]
+      mc: 0
     };
   },
   mounted: function mounted() {
@@ -3624,7 +3562,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     ToText: function ToText(HTML) {
       var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '');
+      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
     },
     startTimer: function startTimer() {
       var _this = this;
@@ -3781,6 +3719,73 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     ToText: function ToText(input) {
       return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['results'],
+  methods: {
+    ToText: function ToText(HTML) {
+      var input = HTML;
+      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
     }
   }
 });
@@ -85721,49 +85726,62 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _vm.winner_screen
-      ? _c("div", { staticClass: "winner" }, [
-          _vm.user_ranking == 0
-            ? _c("div", [
-                _c("h1", { staticClass: "text-center" }, [
-                  _vm._v("Congratulation ! ")
+      ? _c(
+          "div",
+          { staticClass: "winner" },
+          [
+            _vm.user_ranking == 0
+              ? _c("div", [
+                  _c("h2", [_vm._v("Quiz Game Over")]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "text-center" }, [
+                    _vm._v("Congratulation ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you won this game.")
+                  ])
+                ])
+              : _vm.user_ranking == 1
+              ? _c("div", [
+                  _c("h2", [_vm._v("Quiz Game Over")]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "text-center" }, [
+                    _vm._v("Well Played ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you got second place")
+                  ])
+                ])
+              : _c("div", [
+                  _c("h2", [_vm._v("Quiz Game Over")]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "text-center" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you need more concentration ")
+                  ])
                 ]),
-                _vm._v(" "),
-                _c("h3", [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you won this game.")
-                ])
-              ])
-            : _vm.user_ranking == 1
-            ? _c("div", [
-                _c("h1", { staticClass: "text-center" }, [
-                  _vm._v("Well Played ! ")
-                ]),
-                _vm._v(" "),
-                _c("h3", [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you got second place")
-                ])
-              ])
-            : _c("div", [
-                _c("h3", { staticClass: "text-center" }, [
-                  _c("b", [_vm._v(_vm._s(_vm.user.name))]),
-                  _vm._v(", you need more concentration ")
-                ])
-              ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-secondary",
-              on: {
-                click: function($event) {
-                  _vm.winner_screen = 0
+            _vm._v(" "),
+            _c("resultdetails", { attrs: { results: _vm.results } }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-secondary my-3 w-25",
+                on: {
+                  click: function($event) {
+                    _vm.winner_screen = 0
+                  }
                 }
-              }
-            },
-            [_vm._v("Close")]
-          )
-        ])
+              },
+              [_vm._v("Close")]
+            )
+          ],
+          1
+        )
       : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row justify-content-center" }, [
@@ -85805,37 +85823,29 @@ var render = function() {
                               })
                             : _vm._e(),
                           _vm._v(" "),
-                          _c("p", { staticClass: "my-1 font-bold" }, [
-                            _vm._v(
-                              _vm._s(_vm.ToText(question.question_text)) + " "
-                            )
-                          ]),
+                          _c("p", {
+                            staticClass: "my-1 font-bold",
+                            domProps: {
+                              innerHTML: _vm._s(question.question_text)
+                            }
+                          }),
                           _vm._v(" "),
                           _vm._l(question.options, function(option) {
                             return _c("ul", { staticClass: "list-group" }, [
-                              _c(
-                                "li",
-                                {
-                                  staticClass:
-                                    "list-group-item list-group-item-action cursor my-1",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.checkAnswer(
-                                        question.id,
-                                        option.option,
-                                        option.correct
-                                      )
-                                    }
+                              _c("li", {
+                                staticClass:
+                                  "list-group-item list-group-item-action cursor my-1",
+                                domProps: { innerHTML: _vm._s(option.option) },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.checkAnswer(
+                                      question.id,
+                                      option.option,
+                                      option.correct
+                                    )
                                   }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(_vm.ToText(option.option)) +
-                                      "\n                        "
-                                  )
-                                ]
-                              )
+                                }
+                              })
                             ])
                           })
                         ],
@@ -85852,21 +85862,25 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-5" }, [
-        _c("div", { staticClass: "card text-white bg-secondary my-4" }, [
-          _c("div", { staticClass: "card-header text-center card-title" }, [
-            _c("strong", [_vm._v("Information")]),
-            _vm._v(" "),
-            _vm.qid > 0
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "btn btn-sm btn-warning float-right",
-                    on: { click: _vm.reloadPage }
-                  },
-                  [_vm._v("Reset")]
-                )
-              : _vm._e()
-          ]),
+        _c("div", { staticClass: "card my-4" }, [
+          _c(
+            "div",
+            { staticClass: "card-header text-center card-title py-1" },
+            [
+              _c("strong", [_vm._v("Information")]),
+              _vm._v(" "),
+              _vm.qid > 0
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "btn btn-sm btn-warning float-right",
+                      on: { click: _vm.reloadPage }
+                    },
+                    [_vm._v("Reset")]
+                  )
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("ul", { staticClass: "list-group text-dark" }, [
@@ -85936,179 +85950,140 @@ var render = function() {
                         "div",
                         { staticClass: "w-100", attrs: { id: "accordion" } },
                         [
-                          _c(
-                            "div",
-                            { staticClass: "card text-white bg-secondary" },
-                            [
-                              _vm._m(0),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "collapse show",
-                                  attrs: {
-                                    id: "collapseOne",
-                                    "aria-labelledby": "headingOne",
-                                    "data-parent": "#accordion"
-                                  }
-                                },
-                                [
-                                  _c("div", { staticClass: "card-body p-0" }, [
-                                    _c(
-                                      "ul",
-                                      {
-                                        staticClass: "list-group text-dark",
-                                        staticStyle: {
-                                          "max-height": "380px",
-                                          overflow: "auto"
-                                        }
-                                      },
-                                      _vm._l(_vm.results, function(result) {
-                                        return _c(
-                                          "li",
-                                          {
-                                            key: result.id,
-                                            staticClass:
-                                              "list-group-item d-flex justify-content-between align-items-center p-1"
-                                          },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass:
-                                                  "font-weight-light f-13"
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "font-weight-bold"
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                                " +
-                                                        _vm._s(
-                                                          _vm.ToText(
-                                                            result.question
-                                                          )
-                                                        ) +
-                                                        "\n                                            "
-                                                    )
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                result.isCorrect
-                                                  ? _c("p", [
-                                                      _c(
-                                                        "span",
-                                                        {
-                                                          staticClass:
-                                                            "font-weight-light font-italic"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            " " +
-                                                              _vm._s(
-                                                                _vm.ToText(
-                                                                  result.selected
-                                                                )
-                                                              )
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c("i", {
-                                                        staticClass:
-                                                          "fa fa-check text-success",
-                                                        attrs: {
-                                                          "aria-hidden": "true"
-                                                        }
-                                                      })
-                                                    ])
-                                                  : _c("p", [
-                                                      _c(
-                                                        "span",
-                                                        {
-                                                          staticClass:
-                                                            "font-weight-light font-italic"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "\n                                                    " +
-                                                              _vm._s(
-                                                                _vm.ToText(
-                                                                  result.selected
-                                                                )
-                                                              ) +
-                                                              "\n                                                "
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c("i", {
-                                                        staticClass:
-                                                          "fa fa-times text-danger",
-                                                        attrs: {
-                                                          "aria-hidden": "true"
-                                                        }
-                                                      }),
-                                                      _vm._v(" "),
-                                                      _c("br"),
-                                                      _vm._v(" "),
-                                                      _c(
-                                                        "span",
-                                                        {
-                                                          staticClass:
-                                                            "font-weight-light font-italic"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            " " +
-                                                              _vm._s(
-                                                                _vm.ToText(
-                                                                  result.answer
-                                                                )
-                                                              )
-                                                          )
-                                                        ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c("i", {
-                                                        staticClass:
-                                                          "fa fa-check text-success",
-                                                        attrs: {
-                                                          "aria-hidden": "true"
-                                                        }
-                                                      })
-                                                    ])
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-light badge-pill"
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                            " +
-                                                    _vm._s(result.time) +
-                                                    " \n                                        "
-                                                )
-                                              ]
-                                            )
-                                          ]
-                                        )
-                                      }),
-                                      0
-                                    )
-                                  ])
-                                ]
-                              )
-                            ]
-                          )
+                          _c("div", { staticClass: "card " }, [
+                            _vm._m(0),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "collapse show",
+                                attrs: {
+                                  id: "collapseOne",
+                                  "aria-labelledby": "headingOne",
+                                  "data-parent": "#accordion"
+                                }
+                              },
+                              [
+                                _c("div", { staticClass: "card-body p-0" }, [
+                                  _c(
+                                    "ul",
+                                    {
+                                      staticClass: "list-group text-dark",
+                                      staticStyle: {
+                                        "max-height": "380px",
+                                        overflow: "auto"
+                                      }
+                                    },
+                                    _vm._l(_vm.results, function(result) {
+                                      return _c(
+                                        "li",
+                                        {
+                                          key: result.id,
+                                          staticClass:
+                                            "list-group-item d-flex justify-content-between align-items-center p-1"
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "font-weight-light f-13"
+                                            },
+                                            [
+                                              _c("span", {
+                                                staticClass: "font-weight-bold",
+                                                domProps: {
+                                                  innerHTML: _vm._s(
+                                                    result.question
+                                                  )
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              result.isCorrect
+                                                ? _c("p", [
+                                                    _c("span", {
+                                                      staticClass:
+                                                        "font-weight-light font-italic",
+                                                      domProps: {
+                                                        innerHTML: _vm._s(
+                                                          result.selected
+                                                        )
+                                                      }
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "fa fa-check text-success",
+                                                      attrs: {
+                                                        "aria-hidden": "true"
+                                                      }
+                                                    })
+                                                  ])
+                                                : _c("p", [
+                                                    _c("span", {
+                                                      staticClass:
+                                                        "font-weight-light font-italic",
+                                                      domProps: {
+                                                        innerHTML: _vm._s(
+                                                          result.selected
+                                                        )
+                                                      }
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "fa fa-times text-danger",
+                                                      attrs: {
+                                                        "aria-hidden": "true"
+                                                      }
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c("br"),
+                                                    _vm._v(" "),
+                                                    _c("span", {
+                                                      staticClass:
+                                                        "font-weight-light font-italic",
+                                                      domProps: {
+                                                        innerHTML: _vm._s(
+                                                          result.answer
+                                                        )
+                                                      }
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "fa fa-check text-success",
+                                                      attrs: {
+                                                        "aria-hidden": "true"
+                                                      }
+                                                    })
+                                                  ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "badge badge-light badge-pill"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(result.time) +
+                                                  " \n                                        "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                ])
+                              ]
+                            )
+                          ])
                         ]
                       )
                     ]
@@ -86129,7 +86104,7 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "card-header py-1 bg-secondary",
+        staticClass: "card-header py-1 ",
         attrs: {
           id: "headingOne",
           "data-toggle": "collapse",
@@ -86281,6 +86256,164 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "accordion" } }, [
+    _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "collapse show",
+          attrs: {
+            id: "collapseOne",
+            "aria-labelledby": "headingOne",
+            "data-parent": "#accordion"
+          }
+        },
+        [
+          _c("div", { staticClass: "card-body p-0" }, [
+            _c(
+              "ul",
+              {
+                staticClass: "list-group text-dark",
+                staticStyle: { "max-height": "380px", overflow: "auto" }
+              },
+              _vm._l(_vm.results, function(result) {
+                return _c(
+                  "li",
+                  {
+                    key: result.id,
+                    staticClass:
+                      "list-group-item d-flex justify-content-between align-items-center p-1"
+                  },
+                  [
+                    _c("div", { staticClass: "font-weight-light f-13" }, [
+                      _c("span", { staticClass: "font-weight-bold" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.ToText(result.question)) +
+                            "\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      result.isCorrect
+                        ? _c("p", [
+                            _c(
+                              "span",
+                              { staticClass: "font-weight-light font-italic" },
+                              [
+                                _vm._v(
+                                  " " + _vm._s(_vm.ToText(result.selected))
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("i", {
+                              staticClass: "fa fa-check text-success",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                        : _c("p", [
+                            _c(
+                              "span",
+                              { staticClass: "font-weight-light font-italic" },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(_vm.ToText(result.selected)) +
+                                    "\n                            "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("i", {
+                              staticClass: "fa fa-times text-danger",
+                              attrs: { "aria-hidden": "true" }
+                            }),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "font-weight-light font-italic" },
+                              [_vm._v(" " + _vm._s(_vm.ToText(result.answer)))]
+                            ),
+                            _vm._v(" "),
+                            _c("i", {
+                              staticClass: "fa fa-check text-success",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "badge badge-light badge-pill" },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(result.time) +
+                            " \n                    "
+                        )
+                      ]
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "card-header py-1 ",
+        attrs: {
+          id: "headingOne",
+          "data-toggle": "collapse",
+          "data-target": "#collapseOne",
+          "aria-expanded": "true",
+          "aria-controls": "collapseOne"
+        }
+      },
+      [
+        _c("small", { staticClass: "mb-0 cursor" }, [
+          _vm._v("\n              Result Details\n          ")
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -99213,6 +99346,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/practice/resultdetails.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/helper/practice/resultdetails.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./resultdetails.vue?vue&type=template&id=e17e6c12& */ "./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12&");
+/* harmony import */ var _resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./resultdetails.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/practice/resultdetails.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./resultdetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./resultdetails.vue?vue&type=template&id=e17e6c12& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=template&id=e17e6c12&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_template_id_e17e6c12___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
