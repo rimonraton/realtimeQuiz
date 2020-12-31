@@ -34,7 +34,7 @@ Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation(); 
     $country = strtolower($geoip->getCountryCode());
     $user['country'] =  $country;
-    $user['group'] =  $user->groups[0]->id;
+    $user['group'] =  $user->group;
     return $user;
 });
 

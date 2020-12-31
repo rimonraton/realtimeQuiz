@@ -39,7 +39,7 @@ class HomeController extends Controller
     {
         $exam = \App\Exam::findOrFail($id);
         $questions = $exam->questions()->with('options')->get();
-        $user = Auth::user();
+        $user = Auth::user()->load('group');
         return view('games.'.strtolower($type), compact('id', 'user', 'questions', 'uid'));
     }
 

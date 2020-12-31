@@ -16,9 +16,12 @@
             
         </div>
 
-        <result :results='results' :lastQuestion='(qid + 1) == questions.length'
+        <group-result 
+            :results='results' 
+            :groupName='user.group.name' 
+            :lastQuestion='(qid + 1) == questions.length'
                 v-if="screen.result">                       
-        </result>
+        </group-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -34,43 +37,39 @@
                   </div>
                     <div class="card-body">
                         <ul class="list-group text-dark">
-                          <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                            <div id="accordion" class="w-100">
+                          <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
+                            <div :id="'accordion' + key" class="w-100">
                                 <div class="card text-white bg-secondary">
-                                    <div class="card-header py-1 bg-secondary" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                      <small class="mb-0 cursor">
-                                          Result Details
-                                      </small>
+                                    <div class="card-header py-1 bg-secondary d-flex justify-content-between" 
+                                        :id="'heading' + key" data-toggle="collapse" 
+                                        :data-target="'#collapse' + key" aria-expanded="true" 
+                                        :aria-controls="'collapse' + key">
+                                        <small class="mb-0 cursor">
+                                            {{ result.name }}
+                                        </small>
+                                        <span class="badge badge-success badge-pill">
+                                            {{ result.score  }} 
+                                        </span>
                                     </div>
 
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div :id="'collapse' + key" class="collapse show" 
+                                        :aria-labelledby="'heading' + key" 
+                                        :data-parent="'#accordion' + key">
                                       <div class="card-body p-0">
                                         <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
-                                            <li v-for="result in results" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
+                                            <li v-for="(answer, key) in result.answers" :key="key" class="list-group-item d-flex justify-content-between align-items-center p-1">
                                                 <div class="font-weight-light f-13">
-                                                    <span class="font-weight-bold">
-                                                        {{ ToText(result.question) }}
+                                                    <!-- <span class="font-weight-bold">
+                                                        {{ answer.question }}
+                                                    </span> -->
+                                                    <span class="font-weight-light font-italic"> 
+                                                        {{ answer.user.name + ' - ' + answer.selected }}
                                                     </span>
-                                                    <p v-if="result.isCorrect">
-                                                     <span class="font-weight-light font-italic"> {{ ToText(result.selected) }}</span>
-                                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                                    </p>
-                                                    <p v-else>
-                                                        <span class="font-weight-light font-italic">
-                                                            {{ ToText(result.selected) }}
-                                                        </span>
-                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                                                        <br>
-
-                                                        <span class="font-weight-light font-italic"> {{ ToText(result.answer) }}</span>
-                                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-
-                                                    </p>
-
+                                        <i v-if="answer.isCorrect" class="fa fa-check text-success" aria-hidden="true" ></i>
+                                        <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
+                                                    
                                                 </div>
-                                                 <span class="badge badge-light badge-pill">
-                                                    {{ result.time  }} 
-                                                </span>
+                                                
                                             </li>
                                           
                                         </ul>
@@ -85,40 +84,55 @@
                 </div>
 
                 <div class="leaderboard mt-4">
-                  <h3 class="text-white p-2">
-                    <i class="fa fa-trophy" aria-hidden="true"></i>
-                    Leader Board
-                  </h3>
-                  <ul class="list-group">
-                    <li class="list-group-item">
-                      <mark>Rasel Mia</mark>
-                      <small class="text-white">8</small>
-                    </li>
-                    <li class="list-group-item">
-                      <mark>Motaharul Islam</mark>
-                      <small class="text-white">7</small>
-                    </li>
-                    <li class="list-group-item">
-                      <mark>Mahmudul Hassan</mark>
-                      <small class="text-white">6</small>
-                    </li>
-                    <li class="list-group-item">
-                      <mark>Abul Bashar</mark>
-                      <small class="text-white">5</small>
-                    </li>
-                    
-                    <li class="list-group-item">
-                      <mark>Zulfiker Ali</mark>
-                      <small class="text-white">1</small>
-                    </li>
-                  </ul>
+                    <div class=" mt-4">
+                      <h3 class="text-white p-2">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        Participant Group
+                      </h3>
+                        <ul class="list-group" >
+                            <li class="list-group-item">
+                              
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                    <h3 class="text-white p-2">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        Leader Board
+                    </h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                          <mark>Rasel Mia</mark>
+                          <small class="text-white">8</small>
+                        </li>
+                        <li class="list-group-item">
+                          <mark>Motaharul Islam</mark>
+                          <small class="text-white">7</small>
+                        </li>
+                        <li class="list-group-item">
+                          <mark>Mahmudul Hassan</mark>
+                          <small class="text-white">6</small>
+                        </li>
+                        <li class="list-group-item">
+                          <mark>Abul Bashar</mark>
+                          <small class="text-white">5</small>
+                        </li>
+                        
+                        <li class="list-group-item">
+                          <mark>Zulfiker Ali</mark>
+                          <small class="text-white">1</small>
+                        </li>
+                    </ul>
                 </div>
+
+                
                 
             </div>
         </div>
         <div class="row justify-content-center" v-if="user.id != uid">
             <div class="col-md-8">
-                <div class="container-fluid">
+                <div class="container-fluid px-0">
                     <!-- <div class="modal-dialog"> -->
                         <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
                             <div class="modal-header" style="justify-content:flex-start">
@@ -165,11 +179,15 @@
                     <pie-chart :chart-data="datacollection"></pie-chart>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">Group Member</div>
+                <div class="card my-2" v-for="ug in userGroup" v-if="ug.group != 'undefined'">
+                    <div class="card-header py-1 text-primary">{{ ug.group }} group member</div>
                     <div class="card-body p-0">
-                        <ul class="list-group" v-for="gu in users">
-                            <li class="list-group-item py-1" v-if="user.gid == gu.gid">{{ gu.name }}</li>
+                        <ul class="list-group" v-for="member in ug.members" >
+                            <li class="list-group-item py-1" 
+                                :class="{'text-success': member.id == user.id}"
+                                >
+                                {{ member.name }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -182,13 +200,13 @@
 <script>
     import PieChart from '../helper/PieChart'
     import questions from '../helper/moderator/questions'
-    import result from '../helper/result'
+    import groupResult from '../helper/groupResult'
 
 
     export default {
         props : ['id', 'uid', 'user', 'questions'],
 
-        components: { PieChart, questions, result },
+        components: { PieChart, questions, groupResult },
 
         data() {
             return {
@@ -200,22 +218,14 @@
                     option: null,
                     correct: null,
                 },
-
                 prediction: [],
-                
-                results: [],
                 current: 0,
                 qid: 0,
-                score: 0,
+                results: [],
+                answered_user_data: [],
+                answers:{},
+                groupresult:[],
                 gamedata:{},
-                timer:null,
-                minutes:0,
-                seconds:0,
-                correct:0,
-                wrong:0,
-                answer_seconds:0,
-                answer_minutes:0,
-                mc:0,
                 pie_data: [],
                 screen:{
                     waiting: 0,
@@ -227,7 +237,7 @@
         },
 
         mounted() {
-            console.log('timer start')
+            // window.onblur = alert('blurd')
 
             this.current = this.questions[this.qid].id
 
@@ -236,15 +246,15 @@
 
             Echo.join(`team.${this.id}.${this.uid}`)
                 .here((users) => {
-                    this.users = users;
+                    this.users = users.filter(u => u.id != this.uid)
                 })
                 .joining((user) => {
-                    this.users.push(user);
-                    console.log(`${user.name} join`);
+                    if(user.id != this.uid)
+                        this.users.push(user);
+                        console.log(`${user.name} join`);
 
-                    if(this.game_start){
+                    if(this.game_start)
                         this.kickUser(user.id)
-                    }
                 })
                 .leaving((user) => {
                     this.users = this.users.filter(u => u.id != user.id);
@@ -273,6 +283,7 @@
                     this.pie_data = []
                     this.prediction = []
                     this.qoption.selected = null
+                    this.screen.result = 0
                     this.fillPie()
 
                 })
@@ -288,13 +299,20 @@
                     this.answered_user ++
                     this.loadingScreen()
                 })
-                .listen('KickUserEvent', (data) => {
-                    console.log('KickUserEvent.............')
-                    this.users = this.users.filter( u => u.id !== data.uid )
+                .listen('GroupAnsSubEvent', (req) => {
 
-                    if(this.user.id == data.uid){
-                        window.location.href = "http://quiz.erendevu.net"
-                    }
+                        this.answered_user_data.push(req.data)
+                        this.getResult()
+                        if(req.data.user.group_id == this.user.group_id && this.user.id != this.uid){
+                            this.screen.result = 1
+                        }
+                            
+                    // console.log(JSON.stringify(this.answered_user_data))
+
+                })
+                .listen('PageReloadEvent', (data) => {
+                    console.log('PageReloadEvent.............')
+                    window.location.reload()
                     
                 });
 
@@ -303,37 +321,9 @@
 
         methods: {
             
-            checkAnswer(q, a, rw){
-                this.right_wrong = rw
-                this.gamedata.['id'] = this.qid + 1
-                this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
-                this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
-                this.gamedata.['selected'] = this.ToText(a)
-                this.gamedata.['isCorrect'] = rw
-                this.gamedata.['time'] = this.answer_minutes +':'+ this.answer_seconds 
-                rw ==1 ? this.correct ++ : this.wrong ++
-                
-                let clone = {...this.gamedata}
-                this.results.push(clone)
-                this.answer_minutes = 0
-                this.answer_seconds = 0
-
-                if(this.qid+1 == this.questions.length){
-                    clearInterval(this.timer);
-                        this.winner()
-                        return
-                }
-
-                this.qid ++
-                this.current = this.questions[this.qid].id
-            },
-
             nextQuestion(){
                 console.log('NextQuestion Clicked')
                 
-                this.answer_minutes = 0
-                this.answer_seconds = 0
-
                 if(this.qid+1 == this.questions.length){
                     clearInterval(this.timer);
                         this.winner()
@@ -360,9 +350,35 @@
                 this.qoption.id = null
                 this.qoption.option = null
                 this.qoption.correct = null
-                this.fillPie()
                 this.screen.result = 1
 
+            },
+
+            checkAnswer(q, a, rw){
+                this.gamedata.['id'] = this.qid + 1
+                this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
+                this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
+                this.gamedata.['selected'] = this.ToText(a)
+                this.gamedata.['isCorrect'] = rw
+                this.gamedata.['user'] = this.user
+                this.gamedata.['channel'] = this.channel
+                this.gamedata.['group'] = this.user.group.name
+                let clone = {...this.gamedata}
+                this.answered_user_data.push(clone)
+                axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
+
+            },
+            getResult(){
+                this.results = _(this.answered_user_data).groupBy('group')
+                                .map((answers, name) => ({
+                                    name: name,
+                                    score: _.sumBy(answers, 'isCorrect'),
+                                    answers: _.orderBy(answers, ['id'],['desc'])
+                                }))
+                                .sortBy('score')
+                                .value()
+                    console.log(JSON.stringify(this.results))
+                
             },
 
             predictAnswer(){
@@ -389,14 +405,14 @@
                 return !this.prediction.find(p => p.user.id === this.user.id)
             },
             groupPredict(){
-                return this.prediction.find(p => p.user.gid === this.user.gid)
+                return this.prediction.find(p => p.user.group_id === this.user.group_id)
             },
 
             getPredict(){
                 var counts = {};
                 let options = this.questions[this.qid].options
                 this.prediction.forEach(p => { 
-                    if(p.user.gid === this.user.gid){
+                    if(p.user.group_id === this.user.group_id){
                         counts[p.ans] = (counts[p.ans] || 0)+1; 
                     }
                 });
@@ -426,26 +442,13 @@
                     });
                 }
             },
-            startTimer(){
-                console.log('timer start')
-                this.timer = 
-                    setInterval(() => {
-                        this.seconds ++
-                        if(this.seconds >59) {
-                            this.seconds = 0
-                            this.minutes ++
-                        }
 
-                        this.answer_seconds ++
-                        if(this.answer_seconds >59) {
-                            this.answer_seconds = 0
-                            this.answer_minutes ++
-                        }
-                        
-                    }, 1000);
-            },
             reloadPage(){
-                window.location.reload()
+                axios.post(`/api/pageReload`, {channel: this.channel})
+                .then((response) =>{
+                    console.log(['page reload event log ', response])
+                    window.location.reload()    
+                }) 
             },
             clickSelect(index, option){
                 if(this.qoption.selected == index){
@@ -462,6 +465,7 @@
                 console.log(this.isPredict())
 
             },
+
 
             fillPie() {
                 this.datacollection = {
@@ -489,6 +493,12 @@
             channel(){
                 return `team.${this.id}.${this.uid}`
             },
+            userGroup(){
+                return _(this.users)
+                        .groupBy('group.name')
+                        .map((value, key) => ({ group: key, members: value }))
+                        .value()
+            },
         }
         
 
@@ -498,341 +508,5 @@
 
 
 <style type="text/css" scoped="">
-    .cursor{
-        cursor: pointer;
-    }
-    .list-group-item p {
-        margin: 0 !important;
-    }
-    .loading, .result, .winner {
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        background: white;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /*background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);*/
-    }
-    .q_num {
-        position: absolute;
-        right: 5px;
-        width: 100%;
-        top: 0px;
-    }
-    .fade-leave-active, .fade-enter-active {
-      transition: 0.3s ease-out;
-    }
-    
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-      opacity: 0;
-
-    }
-    .f-13{
-        font-size: 13px;
-    }
-    .selected{
-        background: #38c172;
-        color: white;
-        font-weight: bold;
-    }
-
-
-    #qid {
-      padding: 10px 16px;
-      -moz-border-radius: 50px;
-      -webkit-border-radius: 50px;
-      border-radius: 20px;
-    }
-
-
-
-    .element-animation0 {
-        animation: animationFrames ease .6s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease .6s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease .6s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    .element-animation1 {
-        animation: animationFrames ease .8s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease .8s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease .8s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    .element-animation2 {
-        animation: animationFrames ease 1s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease 1s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease 1s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    .element-animation3 {
-        animation: animationFrames ease 1.2s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease 1.2s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease 1.2s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    .element-animation4 {
-        animation: animationFrames ease 1.4s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease 1.4s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease 1.4s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    .element-animation5 {
-        animation: animationFrames ease 1.6s;
-        animation-iteration-count: 1;
-        transform-origin: 50% 50%;
-        -webkit-animation: animationFrames ease 1.6s;
-        -webkit-animation-iteration-count: 1;
-        -webkit-transform-origin: 50% 50%;
-        -ms-animation: animationFrames ease 1.6s;
-        -ms-animation-iteration-count: 1;
-        -ms-transform-origin: 50% 50%
-    }
-    @keyframes animationFrames {
-        0% {
-            opacity: 0;
-            transform: translate(-1500px,0px)
-        }
-
-        60% {
-            opacity: 1;
-            transform: translate(30px,0px)
-        }
-
-        80% {
-            transform: translate(-10px,0px)
-        }
-
-        100% {
-            opacity: 1;
-            transform: translate(0px,0px)
-        }
-    }
-
-    @-webkit-keyframes animationFrames {
-        0% {
-            opacity: 0;
-            -webkit-transform: translate(-1500px,0px)
-        }
-        60% {
-            opacity: 1;
-            -webkit-transform: translate(30px,0px)
-        }
-
-        80% {
-            -webkit-transform: translate(-10px,0px)
-        }
-
-        100% {
-            opacity: 1;
-            -webkit-transform: translate(0px,0px)
-        }
-    }
-
-    @-ms-keyframes animationFrames {
-        0% {
-            opacity: 0;
-            -ms-transform: translate(-1500px,0px)
-        }
-
-        60% {
-            opacity: 1;
-            -ms-transform: translate(30px,0px)
-        }
-        80% {
-            -ms-transform: translate(-10px,0px)
-        }
-
-        100% {
-            opacity: 1;
-            -ms-transform: translate(0px,0px)
-        }
-    }
-
-    .leaderboard {
-      position: relative;
-      background: -webkit-linear-gradient(top, #3a404d, #181c26);
-      background: linear-gradient(to bottom, #3a404d, #181c26);
-      border-radius: 10px;
-      /*box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);*/
-    }
-
-
-    .leaderboard ul li {
-      position: relative;
-      z-index: 1;
-      font-size: 14px;
-      counter-increment: leaderboard;
-      padding: 18px 10px 18px 50px;
-      cursor: pointer;
-      -webkit-backface-visibility: hidden;
-              backface-visibility: hidden;
-      -webkit-transform: translateZ(0) scale(1, 1);
-              transform: translateZ(0) scale(1, 1);
-    }
-    .leaderboard ul li::before {
-      content: counter(leaderboard);
-      position: absolute;
-      z-index: 2;
-      top: 15px;
-      left: 15px;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      color: #c24448;
-      background: #fff;
-      border-radius: 20px;
-      text-align: center;
-    }
-    .leaderboard ul li mark {
-      position: absolute;
-      z-index: 2;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      padding: 18px 10px 18px 50px;
-      margin: 0;
-      background: none;
-      color: #fff;
-    }
-    .leaderboard ul li mark::before, .leaderboard ul li mark::after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      bottom: -11px;
-      left: -9px;
-      border-top: 10px solid #c24448;
-      border-left: 10px solid transparent;
-      -webkit-transition: all .1s ease-in-out;
-      transition: all .1s ease-in-out;
-      opacity: 0;
-    }
-    .leaderboard ul li mark::after {
-      left: auto;
-      right: -9px;
-      border-left: none;
-      border-right: 10px solid transparent;
-    }
-    .leaderboard ul li small {
-      position: relative;
-      z-index: 2;
-      display: block;
-      text-align: right;
-    }
-    .leaderboard ul li::after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fa6855;
-      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
-      -webkit-transition: all .3s ease-in-out;
-      transition: all .3s ease-in-out;
-      opacity: 0;
-    }
-    .leaderboard ul li:nth-child(1) {
-      background: #fa6855;
-    }
-    .leaderboard ul li:nth-child(1)::after {
-      background: #fa6855;
-    }
-    .leaderboard ul li:nth-child(2) {
-      background: #e0574f;
-    }
-    .leaderboard ul li:nth-child(2)::after {
-      background: #e0574f;
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
-    }
-    .leaderboard ul li:nth-child(2) mark::before, .leaderboard ul li:nth-child(2) mark::after {
-      border-top: 6px solid #ba4741;
-      bottom: -7px;
-    }
-    .leaderboard ul li:nth-child(3) {
-      background: #d7514d;
-    }
-    .leaderboard ul li:nth-child(3)::after {
-      background: #d7514d;
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.11);
-    }
-    .leaderboard ul li:nth-child(3) mark::before, .leaderboard ul li:nth-child(3) mark::after {
-      border-top: 2px solid #b0433f;
-      bottom: -3px;
-    }
-    .leaderboard ul li:nth-child(4) {
-      background: #cd4b4b;
-    }
-    .leaderboard ul li:nth-child(4)::after {
-      background: #cd4b4b;
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
-    }
-    .leaderboard ul li:nth-child(4) mark::before, .leaderboard ul li:nth-child(4) mark::after {
-      top: -7px;
-      bottom: auto;
-      border-top: none;
-      border-bottom: 6px solid #a63d3d;
-    }
-    .leaderboard ul li:nth-child(5) {
-      background: #c24448;
-      border-radius: 0 0 10px 10px;
-    }
-    .leaderboard ul li:nth-child(5)::after {
-      background: #c24448;
-      box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);
-      border-radius: 0 0 10px 10px;
-    }
-    .leaderboard ul li:nth-child(5) mark::before, .leaderboard ul li:nth-child(5) mark::after {
-      top: -9px;
-      bottom: auto;
-      border-top: none;
-      border-bottom: 8px solid #993639;
-    }
-    .leaderboard ul li:hover {
-      z-index: 2;
-      overflow: visible;
-    }
-    .leaderboard ul li:hover::after {
-      opacity: 1;
-      -webkit-transform: scaleX(1.06) scaleY(1.03);
-              transform: scaleX(1.06) scaleY(1.03);
-    }
-    .leaderboard ul li:hover mark::before, .leaderboard ul li:hover mark::after {
-      opacity: 1;
-      -webkit-transition: all .35s ease-in-out;
-      transition: all .35s ease-in-out;
-    }
-
-
+    @import '/css/moderator.css';
 </style>

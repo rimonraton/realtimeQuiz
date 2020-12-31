@@ -11,12 +11,6 @@
                         {{ v.name + ' : ' + v.score }}
                     </li>
                 </ul>
-                <div id="counter" class="mt-5" v-if="counter">
-                    <h1 class="text-center" style="color:#1BAA8F; height: 4rem;">
-                        {{ counter }}
-                    </h1>
-                </div>
-                <h1></h1>
             </div>
             <div class="card-footer" v-if="lastQuestion">
                 <a href="http://quiz.erendevu.net/" class="btn btn-sm btn-secondary text-center">Game List</a>

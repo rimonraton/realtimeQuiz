@@ -33,7 +33,7 @@ Route::get('Mode/{type}/{id}/{user}', 'HomeController@Game');
 
 Route::get('Mode/{type}/{id}/{user}/share', 'HomeController@shareBtnLink');
 
-Route::get('game/{id}/{user}', 'HomeController@game');
+// Route::get('game/{id}/{user}', 'HomeController@game');
 
 Route::get('singleGame/{id}/{user}', 'HomeController@singleGame');
 
