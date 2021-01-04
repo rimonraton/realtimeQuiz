@@ -3077,6 +3077,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3089,8 +3098,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      answered_user_data: [],
+      answered_group: [],
       users: [],
       datacollection: null,
+      progress: {},
       qoption: {
         selected: null,
         id: null,
@@ -3101,9 +3113,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       current: 0,
       qid: 0,
       results: [],
-      answered_user_data: [],
-      answers: {},
-      groupresult: [],
       gamedata: {},
       pie_data: [],
       screen: {
@@ -3175,14 +3184,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       _this2.loadingScreen();
     }).listen('GroupAnsSubEvent', function (req) {
+      console.log('GroupAnsSubEvent....');
+
       _this2.answered_user_data.push(req.data);
 
       _this2.getResult();
 
       if (req.data.user.group_id == _this2.user.group_id && _this2.user.id != _this2.uid) {
         _this2.screen.result = 1;
-      } // console.log(JSON.stringify(this.answered_user_data))
+      }
 
+      if (_this2.user.id == _this2.uid) {
+        _this2.answered_group.push(req.data);
+      }
     }).listen('PageReloadEvent', function (data) {
       console.log('PageReloadEvent.............');
       window.location.reload();
@@ -3201,6 +3215,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.qid++;
       this.current = this.questions[this.qid].id;
       this.fillPie();
+      this.answered_group = [];
       var next = {
         channel: this.channel,
         qid: this.qid
@@ -3376,6 +3391,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           members: value
         };
       }).value();
+    },
+    setProgress: function setProgress() {
+      return {
+        'width': 100 / this.userGroup.length + '%'
+      };
     }
   }
 });
@@ -85255,8 +85275,27 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
+    { staticClass: "container mt-n2" },
     [
+      _vm.uid == _vm.user.id
+        ? _c(
+            "div",
+            { staticClass: "progress mb-3" },
+            _vm._l(_vm.answered_group, function(group, i) {
+              return _c(
+                "div",
+                {
+                  staticClass: "progress-bar",
+                  class: [i % 2 == 0 ? "bg-danger" : "bg-success"],
+                  style: _vm.setProgress
+                },
+                [_vm._v("\n          " + _vm._s(group.group) + "\n        ")]
+              )
+            }),
+            0
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _vm.screen.winner
         ? _c("div", { staticClass: "winner" }, [
             _vm.user_ranking == 0

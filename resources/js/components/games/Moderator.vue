@@ -1,5 +1,13 @@
 <template>
-    <div class="container">
+    <div class="container mt-n2">
+        <div class="progress mb-3" v-if="uid == user.id">
+            <div class="progress-bar"
+                v-for="(group, i) in answered_group"
+                :class="[ i % 2 == 0 ? 'bg-danger' : 'bg-success' ]"
+                :style="setProgress">
+              {{ group.group }}
+            </div>
+        </div>
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
                 <h1 class="text-center">Congratulation ! </h1>
@@ -25,6 +33,7 @@
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
+
                 <questions :questions="questions" :qid="qid" ></questions>
             </div>
 
@@ -210,8 +219,11 @@
 
         data() {
             return {
+                answered_user_data: [],
+                answered_group:[],
                 users: [],
                 datacollection: null,
+                progress:{},
                 qoption:{
                     selected: null,
                     id: null,
@@ -222,9 +234,6 @@
                 current: 0,
                 qid: 0,
                 results: [],
-                answered_user_data: [],
-                answers:{},
-                groupresult:[],
                 gamedata:{},
                 pie_data: [],
                 screen:{
@@ -300,14 +309,16 @@
                     this.loadingScreen()
                 })
                 .listen('GroupAnsSubEvent', (req) => {
+                    console.log('GroupAnsSubEvent....')
 
                         this.answered_user_data.push(req.data)
                         this.getResult()
                         if(req.data.user.group_id == this.user.group_id && this.user.id != this.uid){
                             this.screen.result = 1
                         }
-                            
-                    // console.log(JSON.stringify(this.answered_user_data))
+                        if(this.user.id == this.uid){
+                            this.answered_group.push(req.data)
+                        }
 
                 })
                 .listen('PageReloadEvent', (data) => {
@@ -333,6 +344,7 @@
                 this.qid ++
                 this.current = this.questions[this.qid].id
                 this.fillPie()
+                this.answered_group = []
 
                 let next = { channel: this.channel, qid: this.qid }
 
@@ -499,6 +511,10 @@
                         .map((value, key) => ({ group: key, members: value }))
                         .value()
             },
+            setProgress(){
+                return {'width': 100 / this.userGroup.length  + '%', }
+            },
+            
         }
         
 
