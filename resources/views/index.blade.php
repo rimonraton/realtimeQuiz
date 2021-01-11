@@ -9,7 +9,10 @@
                     <div class="Flex" id="InfographicContainer">
                         <div class="FlexCell Cell-2 TextCenter">
                             <h1 class="text-center">Select Game Mode</h1>
-                            <svg xml:space="preserve" enable-background="new 0 0 700 1024" width="1200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" id="HowWeWorkInfographic" height="1024px" viewBox="150 500 700 1024">
+                            <div class="text-center">
+                                <img src="{{asset('images/quiz.jpg')}}" width="20%" alt="">
+                            </div>
+                            <svg xml:space="preserve" enable-background="new 0 0 700 1024" width="1200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" id="HowWeWorkInfographic" height="1024px" viewBox="150 640 700 1024">
                                 <line fill="none" stroke="#ec0b43" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="739.789" x2="429.854" y2="721.58"></line>
                                 <polygon fill="#ec0b43" points="434.412,719.086 424.78,716.506 427.36,726.137"></polygon>
                                 <line fill="none" stroke="#4f772d" stroke-width="2" stroke-miterlimit="10" x1="589.486" y1="739.789" x2="607.696" y2="721.58"></line>
