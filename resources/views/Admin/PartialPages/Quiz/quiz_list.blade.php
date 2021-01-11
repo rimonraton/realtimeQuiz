@@ -1,0 +1,101 @@
+@extends('Admin.Layout.dashboard')
+@section('css')
+<style>
+    .custom-select {
+        display: inline-block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem 1.75rem .375rem .75rem;
+        font-size: .875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #54667a;
+        vertical-align: middle;
+        background: #fff url("{{asset('images/custom-select.png')}}") no-repeat right .75rem center/8px 5px;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        appearance: none;
+    }
+</style>
+@endsection
+@section('content')
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center">Quiz List</h4>
+                <hr>
+                <div class="d-flex flex-row bd-highlight mb-3 justify-content-center">
+                    <div class=" bd-highlight pt-3">Topic :</div>
+                    <div class="p-2 bd-highlight w-50">
+                        <select class="form-control custom-select category" id="topic">
+                            <option value="0">Select Topic</option>
+                            @foreach($category as $c)
+                            <option value="{{$c->id}}">{{$c->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div id="viewData"></div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div id="quiz-info" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Quiz Info</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <h4 class="card-title text-center" id="quesHeader"></h4>
+                <hr>
+                <div class="row d-flex justify-content-center" id="QuestionLoad">
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@endsection
+@section('js')
+<script>
+    $(function() {
+        $('#topic').on('change', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "{{url('quiz/quiz/list')}}/" + id,
+                type: "GET",
+                success: function(data) {
+                    $('#viewData').html(data);
+                    console.log(data);
+                }
+            })
+        })
+
+        $(document).on('click', '.view', function() {
+            var Question = $(this).attr('data-question');
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: "{{url('quiz/quiz')}}/" + id,
+                type: "GET",
+                success: function(data) {
+                    $('#quesHeader').html("Quiz Name :" + Question);
+                    $('#QuestionLoad').html(data);
+                    console.log(data);
+                }
+            })
+            $('#quiz-info').modal('show');
+        })
+
+        $(document).on('click', '.remove', function() {
+
+        })
+    })
+</script>
+@endsection

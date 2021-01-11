@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Category;
 use App\Exam;
+use App\Question;
+use App\Quiz;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 class HomeController extends Controller
@@ -23,24 +25,26 @@ class HomeController extends Controller
 
     public function Mode($type)
     {
+        $exams =  Quiz::paginate(9);
         $user = Auth::user();
         $ce = Category::with('exams')->get();
-        $exams = Exam::where('subject_id', 153)
-                        ->where('course_id', 44)
-                        ->where('exam_type', 'mcq')
-                        ->where('is_site', 1)
-                        ->paginate(9);
-        
+        // return  $exams = Exam::where('subject_id', 153)
+        //     ->where('course_id', 44)
+        //     ->where('exam_type', 'mcq')
+        //     ->where('is_site', 1)
+        //     ->paginate(9);
 
-        return view('mode', compact('exams', 'user', 'ce', 'type'));   
+
+        return view('mode', compact('exams', 'user', 'ce', 'type'));
     }
 
-    public function Game($type, $id, $uid)
+    public function Game($type, Quiz $quiz, $uid)
     {
-        $exam = \App\Exam::findOrFail($id);
-        $questions = $exam->questions()->with('options')->get();
-        $user = Auth::user()->load('group');
-        return view('games.'.strtolower($type), compact('id', 'user', 'questions', 'uid'));
+        $id = $quiz->id;
+        $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
+        //  $questions = $exam->questions()->with('options')->get();
+        $user = Auth::user();
+        return view('games.' . strtolower($type), compact('id', 'user', 'questions', 'uid'));
     }
 
 
@@ -49,10 +53,10 @@ class HomeController extends Controller
         $user = Auth::user();
         $ce = Category::with('exams')->get();
         $exams = Exam::where('subject_id', 153)
-                        ->where('course_id', 44)
-                        ->where('exam_type', 'mcq')
-                        ->where('is_site', 1)
-                        ->paginate(9);
+            ->where('course_id', 44)
+            ->where('exam_type', 'mcq')
+            ->where('is_site', 1)
+            ->paginate(9);
         return view('home', compact('exams', 'user', 'ce'));
     }
     public function game2($id, $uid)
@@ -72,8 +76,8 @@ class HomeController extends Controller
 
     public function shareBtnLink($type, $id, $uid)
     {
-        if (Auth::id() != $uid){
-            return redirect('Mode/'. $type .'/'. $id . '/' .$uid);
+        if (Auth::id() != $uid) {
+            return redirect('Mode/' . $type . '/' . $id . '/' . $uid);
         }
         return view('share_btn_link', compact('type', 'id', 'uid'));
     }

@@ -9,6 +9,9 @@
                     <div class="Flex" id="InfographicContainer">
                         <div class="FlexCell Cell-2 TextCenter">
                             <h1 class="text-center">{{ __('msg.SGM') }} </h1>
+                            <div class="text-center">
+                                <img src="{{asset('images/quiz.jpg')}}" width="20%" alt="">
+                            </div>
                             <svg xml:space="preserve" enable-background="new 0 0 700 1024" width="1200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" id="HowWeWorkInfographic" height="1024px" viewBox="150 500 700 1024">
                                 <line fill="none" stroke="#ec0b43" stroke-width="2" stroke-miterlimit="10" x1="448.065" y1="739.789" x2="429.854" y2="721.58"></line>
                                 <polygon fill="#ec0b43" points="434.412,719.086 424.78,716.506 427.36,726.137"></polygon>
@@ -93,48 +96,49 @@
 @endsection
 
 <style>
+    #HowWeWorkInfographic g:focus .BGCircle,
+    #HowWeWorkInfographic g:hover .BGCircle,
+    #HowWeWorkInfographic g.Active .BGCircle {
+        fill: #00b179;
+    }
 
-#HowWeWorkInfographic g:focus .BGCircle,
-#HowWeWorkInfographic g:hover .BGCircle,
-#HowWeWorkInfographic g.Active .BGCircle {
-  fill: #00b179;
-}
-#HowWeWorkInfographic g:focus .BGCircleInner,
-#HowWeWorkInfographic g:hover .BGCircleInner,
-#HowWeWorkInfographic g.Active .BGCircleInner {
-  stroke: #00b179;
-}
-#HowWeWorkInfographic g:hover {
-  cursor: pointer;
-}
-#HowWeWorkInfographic g.Active .SecondaryGreenFill {
-  fill: #00b179;
-}
-#HowWeWorkInfographic g.Active .SecondaryGreenStroke {
-  stroke: #00b179;
-}
-#HowWeWorkInfoGraphicText {
-  position: relative;
-}
+    #HowWeWorkInfographic g:focus .BGCircleInner,
+    #HowWeWorkInfographic g:hover .BGCircleInner,
+    #HowWeWorkInfographic g.Active .BGCircleInner {
+        stroke: #00b179;
+    }
 
-#InfographicContainer {
-  position: relative;
-}
-#InfographicContainer svg {
-  max-width: 100%;
-}
-.font-n{
-    font-size: 2em;
-}
+    #HowWeWorkInfographic g:hover {
+        cursor: pointer;
+    }
 
+    #HowWeWorkInfographic g.Active .SecondaryGreenFill {
+        fill: #00b179;
+    }
 
+    #HowWeWorkInfographic g.Active .SecondaryGreenStroke {
+        stroke: #00b179;
+    }
 
+    #HowWeWorkInfoGraphicText {
+        position: relative;
+    }
 
+    #InfographicContainer {
+        position: relative;
+    }
 
+    #InfographicContainer svg {
+        max-width: 100%;
+    }
+
+    .font-n {
+        font-size: 2em;
+    }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
         $("#HowWeWorkInfographic g").click(function(e) {
             $("#HowWeWorkInfographic g").attr("class", "");
@@ -149,22 +153,22 @@
             if ($(window).width() < 1024) {
                 $("#HowWeWorkInfographic g").attr("class", "");
             }
-            
+
         });
 
         function ToggleText(TextElement) {
             $("#HowWeWorkInfoGraphicText div").fadeOut(250);
-            var FromTop = $("#"+TextElement).position().top - 40;
-            if ((FromTop + $("#"+TextElement+"Text").outerHeight()) > $("#HowWeWorkInfoGraphicText").outerHeight()){
-                var FromTop = ($("#HowWeWorkInfoGraphicText").outerHeight() - ($("#"+TextElement+"Text").outerHeight()) - 40);
+            var FromTop = $("#" + TextElement).position().top - 40;
+            if ((FromTop + $("#" + TextElement + "Text").outerHeight()) > $("#HowWeWorkInfoGraphicText").outerHeight()) {
+                var FromTop = ($("#HowWeWorkInfoGraphicText").outerHeight() - ($("#" + TextElement + "Text").outerHeight()) - 40);
             }
-            $("#"+TextElement+"Text").css("top", FromTop);
-            setTimeout(function(){
-                $("#"+TextElement+"Text").fadeIn();
-                $("#"+TextElement+"Text").focus();
-            },2500); 
-            window.location = '/Mode/'+TextElement;    
-            
+            $("#" + TextElement + "Text").css("top", FromTop);
+            setTimeout(function() {
+                $("#" + TextElement + "Text").fadeIn();
+                $("#" + TextElement + "Text").focus();
+            }, 2500);
+            window.location = '/Mode/' + TextElement;
+
         }
     });
 </script>
