@@ -70,10 +70,16 @@ Route::get('Mode/{type}/{quiz}/{user}', 'HomeController@Game');
 
 Route::get('Mode/{type}/{id}/{user}/share', 'HomeController@shareBtnLink');
 
-Route::get('game/{id}/{user}', 'HomeController@game');
+// Route::get('game/{id}/{user}', 'HomeController@game');
 
 Route::get('singleGame/{id}/{user}', 'HomeController@singleGame');
 
 
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('setLanguage/{locale}', function ($locale) {
+	    App::setLocale($locale);
+	    session(['locale' => $locale]);
+    return redirect()->back();
+});

@@ -25,6 +25,8 @@ Route::post('kickUser', 'GameController@kickUser');
 //Moderator 
 Route::post('nextQuestion', 'GameController@nextQuestion');
 Route::post('answerPredict', 'GameController@answerPredict');
+Route::post('pageReload', 'GameController@pageReload');
+Route::post('submitAnswerGroup', 'GameController@submitAnswerGroup');
 
 
 

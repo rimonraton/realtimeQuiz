@@ -2,17 +2,22 @@
     <div class="container">
         <div class="winner" v-if="winner_screen">
             <div v-if="user_ranking == 0">
-                <h1 class="text-center">Congratulation ! </h1>
+                <h2>Quiz Game Over</h2>
+                <h4 class="text-center">Congratulation ! </h4>
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
             </div>
             <div v-else-if="user_ranking == 1">
-                <h1 class="text-center">Well Played ! </h1>
+                <h2>Quiz Game Over</h2>
+                <h4 class="text-center">Well Played ! </h4>
                 <h3><b>{{ user.name }}</b>, you got second place</h3>
             </div>
             <div v-else>
-                <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
+                <h2>Quiz Game Over</h2>
+                <h4 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h4>
             </div>
-            <button @click="winner_screen = 0" class="btn btn-sm btn-secondary">Close</button>
+
+            <resultdetails :results='results'/>
+            <button @click="winner_screen = 0" class="btn btn-sm btn-secondary my-3 w-25">Close</button>
             
         </div>
 
@@ -25,12 +30,12 @@
 
                         <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
 
-                        <p class="my-1 font-bold">{{ ToText(question.question_text) }} </p> 
+                        <p class="my-1 font-bold" v-html="question.question_text"></p> 
+                        <!-- <p class="my-1 font-bold">{{ ToText(question.question_text) }} </p>  -->
 
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, option.option, option.correct)" 
-                                class="list-group-item list-group-item-action cursor my-1">
-                                {{ ToText(option.option) }}
+                                class="list-group-item list-group-item-action cursor my-1" v-html="option.option">
                             </li>
                         </ul> 
 
@@ -53,8 +58,8 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="card text-white bg-secondary my-4">
-                  <div class="card-header text-center card-title"> 
+                <div class="card my-4">
+                  <div class="card-header text-center card-title py-1"> 
                     <strong>Information</strong>
                     <div class="btn btn-sm btn-warning float-right"
                         v-if="qid > 0"
@@ -78,8 +83,8 @@
                       </li>
                       <li v-if="qid > 0" class="list-group-item d-flex justify-content-between align-items-center p-0">
                         <div id="accordion" class="w-100">
-                            <div class="card text-white bg-secondary">
-                                <div class="card-header py-1 bg-secondary" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <div class="card ">
+                                <div class="card-header py-1 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                   <small class="mb-0 cursor">
                                       Result Details
                                   </small>
@@ -90,21 +95,18 @@
                                     <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
                                         <li v-for="result in results" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
                                             <div class="font-weight-light f-13">
-                                                <span class="font-weight-bold">
-                                                    {{ ToText(result.question) }}
-                                                </span>
+                                                <span class="font-weight-bold" v-html="result.question"></span>
                                                 <p v-if="result.isCorrect">
-                                                 <span class="font-weight-light font-italic"> {{ ToText(result.selected) }}</span>
+                                                 <span class="font-weight-light font-italic" v-html="result.selected"></span>
                                                     <i class="fa fa-check text-success" aria-hidden="true"></i>
                                                 </p>
                                                 <p v-else>
-                                                    <span class="font-weight-light font-italic">
-                                                        {{ ToText(result.selected) }}
+                                                    <span class="font-weight-light font-italic" v-html="result.selected">
                                                     </span>
                                                     <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                                     <br>
 
-                                                    <span class="font-weight-light font-italic"> {{ ToText(result.answer) }}</span>
+                                                    <span class="font-weight-light font-italic" v-html="result.answer" ></span>
                                                     <i class="fa fa-check text-success" aria-hidden="true"></i>
 
                                                 </p>
@@ -136,10 +138,13 @@
 </template>
 
 <script>
+
+    import resultdetails from '../helper/practice/resultdetails'
     
 
     export default {
         props : ['id', 'user', 'questions'],
+        components: { resultdetails },
 
         data() {
             return {
@@ -157,26 +162,6 @@
                 answer_seconds:0,
                 answer_minutes:0,
                 mc:0,
-                menu:[
-                    {mn:'Dashboard', mid:2, pid:1},
-                    {mn:'HRM', mid:4, pid:1},
-                    {mn:'Security', mid:3, pid:1},
-                    {mn:'Attendance', mid:14, pid:1},
-                    {mn:'Dashboard', mid:8, pid:2},
-                    {mn:'Menu Setup', mid:5, pid:3},
-                    {mn:'Role Setup', mid:6, pid:3},
-                    {mn:'Employee Setup', mid:7, pid:4},
-                    {mn:'Job Type Setup', mid:9, pid:4},
-                    {mn:'Designation Setup', mid:10, pid:4},
-                    {mn:'Role Mapping', mid:11, pid:3},
-                    {mn:'Menu Mapping', mid:12, pid:3},
-                    {mn:'Department Setup', mid:13, pid:4},
-                    {mn:'Out Call', mid:15, pid:14},
-                    {mn:'Attendance Status', mid:16, pid:14},
-                    {mn:'Absent Status', mid:17, pid:14},
-                    {mn:'Late Status', mid:18, pid:14},
-
-                ],
             };
         },
 
@@ -196,7 +181,7 @@
         methods: {
             ToText(HTML){
               var input = HTML;
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');  
+              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&lsquo;/g,'').replace(/&rsquo;/g,'');  
             },
             startTimer(){
                 console.log('timer start')

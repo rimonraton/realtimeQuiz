@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{ App::setLocale(session('locale')) }}
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,6 +23,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css')}}">
     <style type="text/css">
         .cursor{
             cursor: pointer;
@@ -74,6 +76,25 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
                                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img src="https://www.countryflags.io/{{ app()->getLocale() }}/flat/24.png" >
+                                </a>
+                                
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
+                                        <img src="https://www.countryflags.io/gb/flat/24.png" >
+                                        {{ __('english') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
+                                        <img src="https://www.countryflags.io/bd/flat/24.png">
+                                        {{ __('bangla') }}
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     
                                     {{ Auth::user()->name }}
                                 </a>
@@ -83,7 +104,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('auth.logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -96,6 +117,9 @@
                                     <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="avatar">
                                 @endif
                             </li>
+                           
+
+                            
 
 
 

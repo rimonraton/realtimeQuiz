@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fa88e38a8a1a1e0c797efad707109d8",
+    "content-hash": "2d292097112e4a53a62adad6127d47de",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -934,6 +934,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v7.30.0",
             "source": {
                 "type": "git",
@@ -944,6 +945,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/629c36a0fe87b66d8dccd3c82927950d0f59d3f9",
                 "reference": "629c36a0fe87b66d8dccd3c82927950d0f59d3f9",
+=======
+            "version": "v7.30.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "e73855b18dcfc645c36d2474f437e4e73dd3c11d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/e73855b18dcfc645c36d2474f437e4e73dd3c11d",
+                "reference": "e73855b18dcfc645c36d2474f437e4e73dd3c11d",
+>>>>>>> 84f20237a74a7492deef281489b0673504ef4291
                 "shasum": ""
             },
             "require": {
@@ -1088,7 +1101,11 @@
                 "framework",
                 "laravel"
             ],
+<<<<<<< HEAD
             "time": "2020-12-01T15:01:25+00:00"
+=======
+            "time": "2020-12-22T17:00:45+00:00"
+>>>>>>> 84f20237a74a7492deef281489b0673504ef4291
         },
         {
             "name": "laravel/socialite",

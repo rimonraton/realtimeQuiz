@@ -8,6 +8,7 @@ use App\Events\GameStartEvent;
 use App\Events\KickUserEvent;
 use App\Events\NextQuestionEvent;
 use App\Events\AnswerPredictEvent;
+// use App\Events\AnswerPredictEvent;
 use Auth;
 
 class GameController extends Controller
@@ -42,6 +43,19 @@ class GameController extends Controller
 		broadcast(new AnswerPredictEvent($request))->toOthers();
 	    return $request;
 	}
+
+	public function pageReload(Request $request)
+	{
+		broadcast(new \App\Events\PageReloadEvent($request))->toOthers();
+	    return $request;
+	}
+
+	public function submitAnswerGroup(Request $request)
+	{
+		broadcast(new \App\Events\GroupAnsSubEvent($request))->toOthers();
+		return $request;
+	}
+
 
 
 	
