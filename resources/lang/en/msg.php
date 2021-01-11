@@ -15,5 +15,9 @@ return [
 
     'SGM' => 'Select Game Mode',
     'practice' => 'Practice',
+    'challenge' => 'Challenge',
+    'moderator' => 'Moderator',
+    'team' => 'Team',
+
 
 ];

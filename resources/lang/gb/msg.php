@@ -18,6 +18,11 @@ return [
     'challenge' => 'Challenge',
     'moderator' => 'Moderator',
     'team' => 'Team',
+    'start' => 'Start',
+    'share' => 'Share',
+    'quiz' => 'Quiz',
+    'slogan' => 'LEARN WITH FUN',
+
 
 
 ];

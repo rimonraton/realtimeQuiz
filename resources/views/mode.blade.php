@@ -100,13 +100,13 @@
     <div class="row justify-content-center ml-0">
         @foreach($exams as $exam)
             <div class="col-md-4 col-sm-12 text-center">
-                <div class="card border-secondary my-3">
+                <div class="card my-3">
                   <div class="card-body text-secondary">
-                    <h5 class="card-title">Quiz</h5>
+                    <h5 class="card-title">{{ __('msg.quiz') }}</h5>
                     <p class="card-text">{{ $exam->exam_name }}</p>
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
-                       class="btn btn-sm btn-outline-success">Start</a>
-                    <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">Share</a>
+                       class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
+                    <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>
                     @if($type == 'Challenge')
                       <div id="shareBtn{{ $exam->id }}" class="hide_share shareBtnDiv">
                         <iframe src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" class="iframe-size"></iframe>

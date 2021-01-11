@@ -26,14 +26,14 @@ Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation(); 
     // $geoip->setIP('37.99.166.48');
     $country = strtolower($geoip->getCountryCode());
-    $user['country'] =  $country;
+    $user['country'] =  $country == null ? 'bd': $country;
     return $user;
 });
 
 Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation(); 
     $country = strtolower($geoip->getCountryCode());
-    $user['country'] =  $country;
+    $user['country'] = $country == null ? 'bd': $country;
     $user['group'] =  $user->group;
     return $user;
 });
