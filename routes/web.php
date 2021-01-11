@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function(){
+	App::setLocale(session('locale'));
+	// return App::getLocale();
 	return view('index');
 });
 
@@ -40,3 +42,9 @@ Route::get('singleGame/{id}/{user}', 'HomeController@singleGame');
 
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('setLanguage/{locale}', function ($locale) {
+	    App::setLocale($locale);
+	    session(['locale' => $locale]);
+    return redirect()->back();
+});
