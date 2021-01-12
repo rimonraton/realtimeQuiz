@@ -47,7 +47,8 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Group');
     }
 
-
-
-
+    public function info()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
 }

@@ -17,6 +17,7 @@ use Victorybiz\GeoIPLocation\GeoIPLocation;
 Route::get('/', function () {
 	return view('index');
 });
+Route::get('landing/page','LandingPageController@index');
 Route::get('dashboard', 'AdminController@index');
 // Question Category
 Route::get('question/category', 'QuestionController@index');

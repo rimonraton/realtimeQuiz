@@ -1,13 +1,80 @@
 @extends('Admin.Layout.dashboard')
+@section('css')
+<style>
+    picture-container {
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .picture {
+        width: 100px;
+        height: 100px;
+        /* position: absolute; */
+        /* background-color: #999999; */
+        /* border: 4px solid #CCCCCC; */
+        /* color: #FFFFFF; */
+        /* border-radius: 50%; */
+        margin: 0px auto;
+        /*  overflow: hidden; */
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .picture {
+            position: relative;
+        }
+    }
+
+    .picture:hover {
+        border-color: #2ca8ff;
+    }
+
+    .content.ct-wizard-green .picture:hover {
+        border-color: #05ae0e;
+    }
+
+    .content.ct-wizard-blue .picture:hover {
+        border-color: #3472f7;
+    }
+
+    .content.ct-wizard-orange .picture:hover {
+        border-color: #ff9500;
+    }
+
+    .content.ct-wizard-red .picture:hover {
+        border-color: #ff3b30;
+    }
+
+    .picture input[type="file"] {
+        cursor: pointer;
+        display: block;
+        height: 40%;
+        left: 0;
+        opacity: 0 !important;
+        position: absolute;
+        align-items: center;
+        top: 8%;
+        width: 100%;
+    }
+
+    .picture-src {
+        width: 100%;
+
+    }
+</style>
+@endsection
 @section('content')
 <div class="row">
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body">
-                <center class="mt-4"> <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.jpg')}}" class="rounded-circle" width="150" />
+                <center class="mt-4">
+                    <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.jpg')}}" class="rounded-circle" width="150" />
                     <h4 class="card-title mt-2">{{$userInfo->name}}</h4>
-                    <h6 class="card-subtitle"></h6>
+                    <h6 class="card-subtitle">{{$userInfo->info?$userInfo->info->slogan:''}}</h6>
                 </center>
             </div>
             <div>
@@ -61,11 +128,12 @@
                             </div>
                             <div class="col-md-3 col-xs-6"> <strong>Location</strong>
                                 <br>
-                                <p class="text-muted">Bangladesh</p>
+                                <p class="text-muted"><img src="https://www.countryflags.io/{{$geoip->getCountryCode()}}/flat/24.png"> {{$geoip->getCountry()}}</p>
+                                <!-- <img src="https://www.countryflags.io/bd/flat/24.png"> -->
                             </div>
                         </div>
                         <hr>
-                        <p class="mt-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione unde corporis voluptas molestiae, enim voluptates architecto? Quo enim explicabo praesentium atque fugiat necessitatibus minima voluptatibus, molestiae maxime, totam animi amet?</p>
+                        <p class="mt-4">{{$userInfo->info->about}}</p>
                         <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries </p>
                         <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> -->
                         <!-- <h4 class="font-medium mt-4">Skill Set</h4>
@@ -90,8 +158,17 @@
                 </div>
                 <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                     <div class="card-body">
-                        <form class="form-horizontal form-material" method="Post" action="{{url('profile/update')}}">
+                        <form class="form-horizontal form-material" method="Post" action="{{url('profile/update')}}" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" value="{{$userInfo->id}}" name="uid">
+                            <div class="form-group">
+                                <div class="picture-container">
+                                    <div class="picture">
+                                        <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.jpg')}}" class="picture-src rounded-circle" id="wizardPicturePreview" title="">
+                                        <input type="file" id="wizard-picture" name="file" class="" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
                             <input type="hidden" value="{{$userInfo->id}}" name="uid">
                             <div class="form-group">
                                 <label class="col-md-12">Full Name</label>
@@ -114,27 +191,21 @@
                             <div class="form-group">
                                 <label class="col-md-12">Phone No</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="01732223222" name="mobile" class="form-control form-control-line">
+                                    <input type="text" value="{{$userInfo->info->mobile}}" name="mobile" class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">Message</label>
+                                <label class="col-md-12">Slogan</label>
                                 <div class="col-md-12">
-                                    <textarea rows="5" name="msg" class="form-control form-control-line"></textarea>
+                                    <textarea rows="5" name="slogan" class="form-control form-control-line">{{$userInfo->info->slogan}}</textarea>
                                 </div>
                             </div>
-                            <!-- <div class="form-group">
-                                <label class="col-sm-12">Select Country</label>
-                                <div class="col-sm-12">
-                                    <select class="form-control form-control-line">
-                                        <option>London</option>
-                                        <option>India</option>
-                                        <option>Usa</option>
-                                        <option>Canada</option>
-                                        <option>Thailand</option>
-                                    </select>
+                            <div class="form-group">
+                                <label class="col-md-12">About</label>
+                                <div class="col-md-12">
+                                    <textarea rows="5" name="about" class="form-control form-control-line">{{$userInfo->info->about}}</textarea>
                                 </div>
-                            </div> -->
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <button type="submit" class="btn btn-success">Update Profile</button>
@@ -148,4 +219,25 @@
     </div>
     <!-- Column -->
 </div>
+@endsection
+@section('js')
+<script>
+    $(document).ready(function() {
+        // Prepare the preview for profile picture
+        $("#wizard-picture").change(function() {
+            readURL(this);
+        });
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 @endsection

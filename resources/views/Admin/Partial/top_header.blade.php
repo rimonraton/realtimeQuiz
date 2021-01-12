@@ -110,7 +110,7 @@
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{asset('Admin/assets/images/users/1.jpg')}}" alt="user" width="30" class="profile-pic rounded-circle" />
+                        <img src="{{asset(auth()->user()->avatar?auth()->user()->avatar:'Admin/assets/images/users/1.jpg')}}" alt="user" width="30" class="profile-pic rounded-circle" />
                     </a>
                     <div class="dropdown-menu mailbox dropdown-menu-right scale-up">
                         <ul class="dropdown-user list-style-none">
