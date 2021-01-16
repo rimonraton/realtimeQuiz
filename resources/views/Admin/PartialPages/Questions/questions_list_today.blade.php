@@ -84,7 +84,7 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         <!-- <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->question_text}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a> -->
-                                                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
+                                                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" data-cid="{{$id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                                                                         <!-- <a class="edit" href="" title="Edit"><i class="fas fa-pencil-alt"></i></a> -->
                                                                                         <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
 
@@ -136,6 +136,7 @@
                     <form class="form-horizontal form-material" method="POST" action="{{url('question/update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="uqid" name="qid">
+                        <input type="hidden" id="ucid" name="cid">
                         <div id="quistion_view">
                         </div>
                         <div class="modal-footer">
@@ -230,7 +231,9 @@
         }
         $(document).on('click', '.edit', function() {
             var id = $(this).attr('data-id');
+            var cid = $(this).attr('data-cid');
             $('#uqid').val(id);
+            $('#ucid').val(cid);
             $.ajax({
                 url: "{{url('question/edit')}}/" + id,
                 type: 'GET',
@@ -270,6 +273,13 @@
 
                 }
             })
+        });
+        $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+            if (state == true) {
+                $(this).closest("div.bt-switch").find(".hi").val('1');
+            } else {
+                $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
+            }
         });
     </script>
     @endsection

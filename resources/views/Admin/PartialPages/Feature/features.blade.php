@@ -4,45 +4,24 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions Catagories</h4>
+                <h4 class="card-title text-center">Features List</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Category</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Feature</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Category</h4>
+                                <h4 class="modal-title" id="myModalLabel">Add New Feature</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
-                                <form class="form-horizontal form-material" method="POST" action="{{url('question/savecategory')}}" autocomplete="off">
+                                <form class="form-horizontal form-material" method="POST" action="{{url('features/save')}}" autocomplete="off">
                                     @csrf
                                     <div class="form-group">
                                         <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type category" require>
+                                            <input type="text" class="form-control" name="name" placeholder="Type feature name" require>
                                         </div>
-                                        <!-- <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Email">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Phone">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Designation"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Age">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Date of joining"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Salary"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light btn-sm">
-                                                <span><i class="ion-upload m-r-5"></i>Upload Contact
-                                                    Image</span>
-                                                <input type="file" class="upload"> </div>
-                                        </div> -->
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-info waves-effect">Save</button>
                                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
@@ -62,7 +41,6 @@
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                @if($category->count() > 0)
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
@@ -72,13 +50,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($category as $c)
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$c->name}}</td>
+                                        @foreach($features as $f)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$f->feature_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                <a class="edit" href="" data-id="{{$f->id}}" data-name="{{$f->feature_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="delete" style="cursor: pointer;" data-id="{{$f->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -91,13 +69,11 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                                @else
                                 <div class="text-center">
                                     <p>
                                         No Data Found..
                                     </p>
                                 </div>
-                                @endif
                             </div>
                         </div>
 
@@ -108,15 +84,15 @@
     </div>
 </div>
 
-<div id="edit-category" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="edit-feature" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Category</h4>
+                <h4 class="modal-title" id="myModalLabel">Update Feature</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}">
+                <form class="form-horizontal form-material" method="POST" action="{{url('features/update')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
@@ -146,7 +122,7 @@
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
-            $('#edit-category').modal('show');
+            $('#edit-feature').modal('show');
         })
 
         $(".delete").click(function() {
@@ -163,7 +139,7 @@
                     var $this = $(this);
                     var id = $this.attr('data-id');
                     $.ajax({
-                        url: "{{url('question/deletecategory')}}/" + id,
+                        url: "{{url('features/delete')}}/" + id,
                         type: "GET",
                         success: function(data) {
                             // $(this).parent().parent().remove();
@@ -182,5 +158,15 @@
             })
         });
     })
+
+    function deleteCategory(id) {
+        $.ajax({
+            url: "{{url('question/updatecategory')}}/" + id,
+            type: "GET",
+            success: function() {
+                $(this).parent().parent().remove();
+            }
+        })
+    }
 </script>
 @endsection

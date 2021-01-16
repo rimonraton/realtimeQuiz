@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Victorybiz\GeoIPLocation\GeoIPLocation;
+// use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +14,24 @@ use Victorybiz\GeoIPLocation\GeoIPLocation;
 |
 */
 
-Route::get('/', function () {
-	return view('index');
-});
-Route::get('landing/page','LandingPageController@index');
+// Route::get('/', function () {
+// 	return view('index');
+// });
+Route::get('/', 'LandingPageController@index');
+// Route::get('landing/page', 'LandingPageController@index');
+// website setup
+Route::get('features', 'SetupController@features');
+Route::post('features/save', 'SetupController@featureStore');
+Route::post('features/update', 'SetupController@featureUpdate');
+Route::get('features/delete/{id}', 'SetupController@featureDelete');
+Route::get('faq', 'SetupController@faq');
+// dashboard
 Route::get('dashboard', 'AdminController@index');
 // Question Category
 Route::get('question/category', 'QuestionController@index');
 Route::post('question/savecategory', 'QuestionController@store');
 Route::post('question/updatecategory', 'QuestionController@update');
-Route::get('question/updatecategory/{id}', 'QuestionController@delete');
+Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 // Questions
 Route::get('question/list', 'QuestionController@list');
 Route::get('question/create', 'QuestionController@create');
@@ -81,7 +89,7 @@ Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('setLanguage/{locale}', function ($locale) {
-	  App::setLocale($locale);
-	  session(['locale' => $locale]);
-    return redirect()->back();
+	App::setLocale($locale);
+	session(['locale' => $locale]);
+	return redirect()->back();
 });

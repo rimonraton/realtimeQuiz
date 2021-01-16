@@ -9,6 +9,7 @@ use App\QuestionsOption;
 use App\QuizCategory;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class QuestionController extends Controller
@@ -94,6 +95,7 @@ class QuestionController extends Controller
             'question_text' => $request->question,
             'question_file_link' => $imgPath,
             'answer_explanation' => $request->explenation,
+            'user_id' => Auth::user()->id,
             // 'created_at' => Carbon::,
         ]);
         foreach ($request->option as  $k => $o) {
@@ -122,17 +124,21 @@ class QuestionController extends Controller
     public function updateQuestion(Request $request)
     {
         // return $request->all();
+        // return $request->cid;
         Question::where('id', $request->qid)->update([
             'question_text' => $request->question
         ]);
         foreach ($request->option as  $k => $o) {
             QuestionsOption::where('id', $request->oid[$k])->update([
-                'option' => $o
+                'option' => $o,
+                'correct' => $request->ans[$k]
             ]);
         }
-        // return $data;
-
-        return redirect('question/list');
+        if ($request->cid) {
+            return redirect('question/list/view/' . $request->cid);
+        } else {
+            return redirect('question/list');
+        }
     }
 
     public function deleteQuestion($id)
@@ -150,7 +156,7 @@ class QuestionController extends Controller
             $q->where('created_at', '>', $today);
             $q->where('category_id', $id);
         }, 'questions.options'])->get();
-        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions'));
+        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id'));
     }
     // End Questins
 }

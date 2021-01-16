@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Maharah Quiz</title>
+    <title>Gynkosh</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -27,6 +27,7 @@
 
     <!-- Template Main CSS File -->
     <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- <style>
         *,
         :before,
@@ -134,6 +135,132 @@
             text-align: var(--wide, var(--parity, right));
         }
     </style> -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        ul,
+        ol {
+            list-style-type: none;
+        }
+
+        /* body {
+            background-color: #0273c7;
+            font-family: 'cambria', sans-serif;
+        } */
+
+        @media (min-width:768px) {
+            .container1 {
+                width: 900px;
+            }
+
+        }
+
+        .container1 {
+            /* margin: 10px auto; */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-title {
+            margin: 17px auto;
+            text-align: center;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        .page-title h1 {
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .page-title a {
+            color: #ff7777;
+            text-decoration: none;
+        }
+
+        .page-title a:hover {
+            text-decoration: underline;
+            color: #ff3333;
+        }
+
+        .circle-menu-box {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            /* margin: 5px auto; */
+            margin-bottom: 30px;
+        }
+
+        .menu-red {
+            background-color: #EC0B43;
+        }
+
+        .menu-green {
+            background-color: #4F772D;
+        }
+
+        .menu-blue {
+            background-color: #037FDB;
+        }
+
+        .menu-purple {
+            background-color: #4361EE;
+        }
+
+        .circle-menu-box a.menu-item {
+            display: block;
+            text-decoration: none;
+            border-radius: 100%;
+            margin: 20px;
+            text-align: center;
+            width: 100px;
+            height: 100px;
+            /* background-color: black; */
+            color: #777;
+            padding: 30px 0;
+            line-height: 1;
+            position: absolute;
+            font-size: 30px;
+
+            transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+        }
+
+        .circle-menu-box a.menu-item:hover {
+            transform: scale(1.2);
+            -webkit-transform: scale(1.2);
+            -moz-transform: scale(1.2);
+            -o-transform: scale(1.2);
+            color: #fff;
+            background: #00B179;
+        }
+
+        .borogoldiv {
+            left: 31%;
+            top: 31%;
+            width: 230px;
+            height: 230px;
+            border: 1px solid gray;
+            position: absolute;
+            border-radius: 100%;
+            font-size: 25px;
+            text-transform: uppercase;
+        }
+    </style>
+
 
     <!-- =======================================================
   * Template Name: Bootslander - v2.3.0
@@ -150,7 +277,8 @@
         <div class="container d-flex align-items-center">
 
             <div class="logo mr-auto">
-                <h1 class="text-light"><a href="#hero"><span>Learn With Fun</span></a></h1>
+
+                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> Gynkosh</span></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="{{asset('Landing/assets/img/logo.png')}}" alt="" class="img-fluid"></a>-->
             </div>
@@ -160,6 +288,7 @@
                     <li class="active"><a href="#hero">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#features">Features</a></li>
+                    <li><a href="#topics">Topics</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <!-- <li><a href="#gallery">Gallery</a></li> -->
                     <!-- <li><a href="#team">Team</a></li>
@@ -182,8 +311,8 @@
                         </ul>
                     </li> -->
                     <li><a href="#contact">Contact</a></li>
-                    <li><a href="#">Register</a></li>
-                    <li><a href="#">Login</a></li>
+                    <li><a href="{{ route('register') }}" id="reg">Register</a></li>
+                    <li><a href="{{ route('login') }}" id="login">Login</a></li>
 
                 </ul>
             </nav><!-- .nav-menu -->
@@ -198,8 +327,8 @@
             <div class="row">
                 <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
                     <div data-aos="zoom-out">
-                        <h1>Build Yourself With <span>Quiz</span></h1>
-                        <h2>Fun with Game</h2>
+                        <h1 style="font-size: 42px;">Build Yourself With <span>Gynkosh</span></h1>
+                        <h2>Learn with Fun</h2>
                         <!-- <div class="text-center text-lg-left">
                             <a href="#about" class="btn-get-started scrollto">Get Started</a>
                         </div> -->
@@ -241,8 +370,7 @@
                     </div>
 
                     <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
-                        <h3>Enim quis est voluptatibus aliquid consequatur fugiat</h3>
-                        <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p>
+                        <!-- <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p>
 
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                             <div class="icon"><i class="bx bx-fingerprint"></i></div>
@@ -260,7 +388,58 @@
                             <div class="icon"><i class="bx bx-atom"></i></div>
                             <h4 class="title"><a href="">Dine Pad</a></h4>
                             <p class="description">Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus aut eligendi omnis</p>
+                        </div> -->
+                        <!-- <h3>{{ __('msg.SGM') }}</h3> -->
+                        <div class="container1 d-flex justify-content-center">
+                            <div class="menu-container">
+                                <h3 class="text-center">{{ __('msg.SGM') }}</h3>
+
+                                <!-- <div class="circle-menu-box">
+                                    <a href="#" class="menu-item menu-red">
+                                        <i class="fas fa-address-card text-white"></i>
+                                    </a>
+
+                                    <a href="#" class="menu-item menu-green">
+                                        <i class="fas fa-people-arrows text-white"></i>
+                                    </a>
+
+                                    <a href="#" class="menu-item menu-blue">
+                                        <i class="fas fa-user text-white"></i>
+                                    </a>
+
+                                    <a href="#" class="menu-item menu-purple">
+                                        <i class="fas fa-users text-white"></i>
+                                    </a>
+
+                                </div> -->
+                                <div class="circle-menu-box">
+                                    <p style="left: 48%; top: 4%;position:absolute;"><strong>Practice</strong></p>
+                                    <p style="right: 3%; top: 39%;position:absolute;"><strong>Challenge</strong></p>
+                                    <p style="left: 15%; top: 39%;position:absolute;"> <strong>Team</strong></p>
+                                    <p style="left: 46%; top: 99%;position:absolute;"><strong>Modaretor</strong></p>
+                                    <a href="{{url('Mode/Practice')}}" class="menu-item menu-red" style="left: 40%; top: 5%;">
+                                        <i class="fas fa-address-card text-white"></i>
+                                    </a>
+                                    <div class="borogoldiv d-flex justify-content-center align-items-center">
+                                        Maharah Quiz
+                                    </div>
+
+                                    <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green" style="left: 75%; top: 40%;">
+                                        <i class="fas fa-people-arrows text-white"></i>
+                                    </a>
+
+                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue" style="left: 40%; top: 75%;">
+                                        <i class="fas fa-user text-white"></i>
+                                    </a>
+
+                                    <a href="{{url('Mode/Group')}}" class="menu-item menu-purple" style="left: 5%; top: 40%;">
+                                        <i class="fas fa-users text-white"></i>
+                                    </a>
+
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -490,8 +669,8 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="count-box">
                             <i class="icofont-simple-smile"></i>
-                            <span data-toggle="counter-up">232</span>
-                            <p>Happy Clients</p>
+                            <span data-toggle="counter-up">1,463</span>
+                            <p>Participants</p>
                         </div>
                     </div>
 
@@ -499,15 +678,15 @@
                         <div class="count-box">
                             <i class="icofont-document-folder"></i>
                             <span data-toggle="counter-up">521</span>
-                            <p>Projects</p>
+                            <p>Teams</p>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
                             <i class="icofont-live-support"></i>
-                            <span data-toggle="counter-up">1,463</span>
-                            <p>Hours Of Support</p>
+                            <span data-toggle="counter-up">200</span>
+                            <p>Quizzes</p>
                         </div>
                     </div>
 
@@ -515,7 +694,7 @@
                         <div class="count-box">
                             <i class="icofont-users-alt-5"></i>
                             <span data-toggle="counter-up">15</span>
-                            <p>Hard Workers</p>
+                            <p>Winners</p>
                         </div>
                     </div>
 
@@ -1159,6 +1338,13 @@
 
     <!-- Template Main JS File -->
     <script src="{{asset('Landing/assets/js/main.js')}}"></script>
+    <script>
+        $(function() {
+            // $('#reg').click(function(){
+            //     window.href = "{{route('register')}}";
+            // })
+        })
+    </script>
 
 </body>
 

@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.jpg') }}"/>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.jpg') }}" />
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{  config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -25,28 +26,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css')}}">
     <style type="text/css">
-        .cursor{
+        .cursor {
             cursor: pointer;
         }
 
         .avatar {
-          vertical-align: middle;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
         }
-        .brand-text{
+
+        .brand-text {
             color: #00A988;
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('images/logo.jpg') }}" style="width: 50px;">
-                    <small class="brand-text" >{{ __('msg.slogan') }}</small>
+                    <small class="brand-text">{{ __('msg.slogan') }}</small>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -62,69 +65,58 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
                         @else
-                            
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="https://www.countryflags.io/{{ session('locale') }}/flat/24.png" >
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <img src="https://www.countryflags.io/{{ session('locale') }}/flat/24.png">
+                            </a>
+
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
+                                    <img src="https://www.countryflags.io/gb/flat/24.png">
+                                    {{ __('english') }}
                                 </a>
-                                
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
-                                        <img src="https://www.countryflags.io/gb/flat/24.png" >
-                                        {{ __('english') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
-                                        <img src="https://www.countryflags.io/bd/flat/24.png">
-                                        {{ __('bangla') }}
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    
-                                    {{ Auth::user()->name }}
+                                <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
+                                    <img src="https://www.countryflags.io/bd/flat/24.png">
+                                    {{ __('bangla') }}
                                 </a>
-                                
+                            </div>
+                        </li>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+
+                                {{ Auth::user()->name }}
+                            </a>
+
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('auth.logout') }}
-                                    </a>
+                                    {{ __('auth.logout') }}
+                                </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                @if(Auth::user()->avatar)
-                                    <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="avatar">
-                                @endif
-                            </li>
-                           
-
-                            
-
-
-
-    
-
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            @if(Auth::user()->avatar)
+                            <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="avatar">
+                            @endif
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -136,4 +128,5 @@
         </main>
     </div>
 </body>
+
 </html>

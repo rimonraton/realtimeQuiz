@@ -180,18 +180,10 @@
                                         <label class="custom-control-label" for="customRadio5">Video</label>
                                     </div>
                                 </label>
-                                <!-- <label class="btn btn-primary active">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio6" name="customRadio" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio6">Radio
-                                            3</label>
-                                    </div>
-                                </label> -->
                             </div>
                         </div>
                         <div class="form-group row pb-3">
                             <div class="file-upload">
-                                <!-- <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button> -->
                                 <div class="image-upload-wrap">
                                     <input class="file-upload-input ipf" name="file" type='file' accept="image/*" />
                                     <div class="drag-text">
@@ -283,40 +275,6 @@
                                 <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation"></textarea>
                             </div>
                         </div>
-                        <!-- <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-4 text-right control-label col-form-label">
-                                <a class="waves-effect waves-light" id="createNew" href="">Add New Option</a>
-                            </label>
-                        </div>
-                        <div class="form-group row  pb-3 pl-5">
-                            <label for="option1" class="col-sm-4 text-right control-label col-form-label">
-                                <input type="checkbox" class="filled-in chk-col-indigo material-inputs" id="explenation">
-                                <label style="font-size: .9rem;" for="explenation">Answer Explenation</label>
-                            </label>
-                        </div>
-                        <div class="form-group row pb-3 exl" style="display: none;">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-4 text-right control-label col-form-label">
-                                <a class="waves-effect waves-light" id="createNew" href="">Add Another Question</a>
-                            </label>
-                        </div> -->
-                        <!-- <div class="form-group row pb-3">
-                            <div class="col-sm-6 text-right">
-                                <label for="option1" class="text-right control-label col-form-label">
-                                    <a class="waves-effect waves-light" id="createNew" href="">Add New Option</a>
-                                </label>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="option1" class="text-right control-label col-form-label">
-                                    <a class="waves-effect waves-light" id="createNewQuestion" href="">Add Another Question</a>
-                                </label>
-                            </div>
-                        </div> -->
                         <div class="form-group mb-0 text-right">
                             <button type="submit" class="btn btn-info waves-effect waves-light smt">Create Question</button>
                             <a class="btn btn-success waves-effect waves-light text-white" href="{{url('question/list')}}">Go to List</a>
@@ -333,7 +291,6 @@
 @endsection
 @section('js')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!-- <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
 <script>
     $.noConflict();
     $(function() {
@@ -350,27 +307,24 @@
                 $('#smtform').submit();
             } else {
                 e.preventDefault();
-                // alert('Please give must one answer');
                 Swal.fire({
                     type: 'error',
                     title: 'Oops...',
                     text: 'Please select the answer.',
-                    // footer: '<a href>Why do I have this issue?</a>'
                 })
             }
         })
-        $('#category').on('change', function() {
-            if ($(this).val() == '3') {
-                $('.opt3').hide();
-                // $('.opt3').removeAttr('required');​​​​​
-                $('.optiontf').removeAttr('required');
+        // $('#category').on('change', function() {
+        //     if ($(this).val() == '3') {
+        //         $('.opt3').hide();
+        //         $('.optiontf').removeAttr('required');
 
-            } else {
-                $('.opt3').show();
-                $('.optiontf').attr('required', 'required');
+        //     } else {
+        //         $('.opt3').show();
+        //         $('.optiontf').attr('required', 'required');
 
-            }
-        });
+        //     }
+        // });
         $('#createNew').on('click', function(e) {
             e.preventDefault();
             var data = '';
