@@ -6,6 +6,38 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    <h1 class="text-center">{{ __('msg.SGM') }} </h1>
+                            <div class="text-center">
+                                <img src="{{asset('images/quiz.jpg')}}" width="20%" alt="">
+                            </div>
+                    <div class="test">
+                        
+                        <article style="--c0: #f6ba96; --c1: #e2795b">
+                          <h3 class="pt-2">
+                              <a href="{{ url('Mode/Practice') }}">{{ __('msg.practice') }}</a>
+                          </h3>
+                          <p>Soufflé cake brownie ice cream</p>
+                        </article>
+                        <article style="--c0: #a2d5d0; --c1: #8dcbbc">
+                            <h3 class="pt-2">
+                                <a href="{{ url('Mode/Challenge') }}">{{ __('msg.challenge') }}</a>
+                            </h3>
+                          <p>Soufflé cake brownie ice cream</p>
+                        </article>
+                        <article style="--c0: #9cc884; --c1: #86b744">
+                            <h3 class="pt-2">
+                                <a href="{{ url('Mode/Moderator') }}">{{ __('msg.moderator') }}</a>
+                            </h3>
+
+                          <p>Soufflé cake brownie ice cream</p>
+                        </article>
+                        <article style="--c0: #fae791; --c1: #f5d357">
+                            <h3 class="pt-2">
+                                <a href="{{ url('Mode/Team') }}">{{ __('msg.team') }}</a>
+                            </h3>
+                          <p>Soufflé cake brownie ice cream</p>
+                        </article>
+                    </div>
                     <div class="Flex" id="InfographicContainer">
                         <div class="FlexCell Cell-2 TextCenter">
                             <h1 class="text-center">{{ __('msg.SGM') }} </h1>
@@ -96,6 +128,72 @@
 @endsection
 
 <style>
+
+
+@media (max-width: 200px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+article {
+  --wide: 0;
+  --base: calc(var(--wide)*5rem);
+  --size: 1.25rem;
+  --left: calc(.5*(1 + var(--wide))*5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin: 2em auto;
+  padding-left: calc(var(--wide)*7.5rem);
+  width: 32em;
+  max-width: 90%;
+  min-height: 6.25rem;
+  font: 1em/1.25 roboto, trebuchet ms, verdana, arial, sans-serif;
+  counter-increment: art;
+  filter: drop-shadow(-1px 3px 3px rgba(0, 0, 0, 0.15));
+}
+@media (min-width: 640px) {
+  article {
+    --wide: 1 ;
+  }
+}
+article:before, article:after {
+  position: absolute;
+}
+article:before {
+  left: 0.25em;
+  color: #fff;
+  font-size: var(--base);
+  content: "0" counter(art);
+}
+article:after {
+  --grad: linear-gradient(#fff, #e0e0e0);
+  top: 0;
+  right: 0;
+  bottom: -1.25em;
+  left: 0;
+  z-index: -1;
+  padding-left: inherit;
+  border-bottom: solid 0.9375em transparent;
+  transform: skewx(calc(var(--wide)*-22.5deg));
+  background: var(--grad) 100% 50%/calc(100% - (var(--base) + var(--left) + var(--wide)*var(--size)) + 1px) 100% no-repeat padding-box, var(--grad) calc(var(--base) + (1 + 2*var(--wide))*var(--size)) 50%/var(--size) 100% no-repeat padding-box, radial-gradient(ellipse at 100% 50%, rgba(0, 0, 0, 0.13), transparent 35%) 0 50%/var(--size) 250% content-box, linear-gradient(var(--c0) 50%, var(--c1) 0) padding-box, radial-gradient(rgba(0, 0, 0, 0.1), transparent 70%) 100% 100%/calc(100% - (var(--base) + 2*var(--size))) 1.25em border-box no-repeat;
+  content: "";
+}
+
+h3, p {
+  padding-left: var(--left);
+}
+
+h3 {
+  background: linear-gradient(var(--c0), var(--c1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-transform: capitalize;
+  filter: brightness(0.85);
+}
     #HowWeWorkInfographic g:focus .BGCircle,
     #HowWeWorkInfographic g:hover .BGCircle,
     #HowWeWorkInfographic g.Active .BGCircle {

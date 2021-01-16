@@ -76,7 +76,7 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
                                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="https://www.countryflags.io/{{ session('locale') }}/flat/24.png" >
+                                    <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
                                 </a>
                                 
 

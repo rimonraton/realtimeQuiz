@@ -34,25 +34,25 @@ return [
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
         'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
-        'redirect' => 'http://quiz.erendevu.net/login/github/callback',
+        'redirect' => 'https://gyankosh.org/login/github/callback',
     ],
 
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),         // Your GitHub Client ID
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'), // Your GitHub Client Secret
-        'redirect' => 'http://quiz.erendevu.net/login/facebook/callback',
+        'redirect' => 'https://gyankosh.org/login/facebook/callback',
     ],
 
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),         // Your GitHub Client ID
         'client_secret' => env('GOOGLE_CLIENT_SECRET'), // Your GitHub Client Secret
-        'redirect' => 'http://quiz.erendevu.net/login/google/callback',
+        'redirect' => 'https://gyankosh.org/login/google/callback',
     ],
     
     'twitter' => [
         'client_id' => env('TWITTER_CLIENT_ID'),         // Your twitter Client ID
         'client_secret' => env('TWITTER_CLIENT_SECRET'), // Your twitter Client Secret
-        'redirect' => 'http://quiz.erendevu.net/login/twitter/callback',
+        'redirect' => 'https://gyankosh.org/login/twitter/callback',
     ],
 
 ];
