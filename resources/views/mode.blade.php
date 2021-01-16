@@ -103,7 +103,7 @@
                 <div class="card my-3">
                   <div class="card-body text-secondary">
                     <h5 class="card-title">{{ __('msg.quiz') }}</h5>
-                    <p class="card-text">{{ $exam->exam_name }}</p>
+                    <p class="card-text">{{ $exam->quiz_name }}</p>
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
                     <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>

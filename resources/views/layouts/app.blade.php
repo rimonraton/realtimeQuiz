@@ -75,6 +75,33 @@
                         </li>
                         @endif
                         @else
+                            
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
+                                </a>
+                                
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
+                                        <img src="https://www.countryflags.io/gb/flat/24.png" >
+                                        {{ __('english') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
+                                        <img src="https://www.countryflags.io/bd/flat/24.png">
+                                        {{ __('bangla') }}
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    
+                                    {{ Auth::user()->name }}
+                                </a>
+                                
 
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
