@@ -10,7 +10,7 @@
   <meta name="author" content="">
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/logo.jpg')}}">
-  <title>{{ config('app.name', 'Gynkosh') }}</title>
+  <title>{{ config('app.name', 'Gyankosh') }}</title>
   <link rel="canonical" href="https://www.wrappixel.com/templates/xtremeadmin/" />
   <link href="{{asset('Admin/assets/libs/chartist/dist/chartist.min.css')}}" rel="stylesheet">
   <link href="{{asset('Admin/dist/js/pages/chartist/chartist-init.css')}}" rel="stylesheet">

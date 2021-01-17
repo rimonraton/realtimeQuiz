@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Gynkosh</title>
+    <title>Gyankosh</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -253,7 +253,7 @@
             top: 31%;
             width: 230px;
             height: 230px;
-            border: 1px solid gray;
+            border: 10px solid indigo;
             position: absolute;
             border-radius: 100%;
             font-size: 25px;
@@ -278,7 +278,7 @@
 
             <div class="logo mr-auto">
 
-                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> Gynkosh</span></a></h1>
+                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> Gyankosh</span></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="{{asset('Landing/assets/img/logo.png')}}" alt="" class="img-fluid"></a>-->
             </div>
@@ -311,8 +311,16 @@
                         </ul>
                     </li> -->
                     <li><a href="#contact">Contact</a></li>
+                    @guest
                     <li><a href="{{ route('register') }}" id="reg">Register</a></li>
                     <li><a href="{{ route('login') }}" id="login">Login</a></li>
+                    @endguest
+                    @auth
+                    <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Log Out</a></li>
+                    @endauth
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
 
                 </ul>
             </nav><!-- .nav-menu -->
@@ -327,7 +335,7 @@
             <div class="row">
                 <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
                     <div data-aos="zoom-out">
-                        <h1 style="font-size: 42px;">Build Yourself With <span>Gynkosh</span></h1>
+                        <h1 style="font-size: 40px;">Build Yourself With <span>Gyankosh</span></h1>
                         <h2>Learn with Fun</h2>
                         <!-- <div class="text-center text-lg-left">
                             <a href="#about" class="btn-get-started scrollto">Get Started</a>
@@ -337,6 +345,8 @@
                 <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="300">
                     <!-- <img src="{{asset('Landing/assets/img/hero-img.png')}}" class="img-fluid animated" alt=""> -->
                     <img src="{{asset('images/logo3.png')}}" class="img-fluid animated" alt="">
+                    <!-- <img src="{{asset('Landing/hero/7.gif')}}" class="img-fluid animated" alt=""> -->
+                    <!-- <img src="{{asset('Landing/hero/6.gif')}}" class="img-fluid animated" alt=""> -->
                 </div>
             </div>
         </div>
@@ -419,9 +429,10 @@
                                     <p style="left: 46%; top: 99%;position:absolute;"><strong>Modaretor</strong></p>
                                     <a href="{{url('Mode/Practice')}}" class="menu-item menu-red" style="left: 40%; top: 5%;">
                                         <i class="fas fa-address-card text-white"></i>
+                                        <!-- <span class="pb-5" style="font-size: 16px;">Practice</span> -->
                                     </a>
                                     <div class="borogoldiv d-flex justify-content-center align-items-center">
-                                        Maharah Quiz
+                                        Gyankosh
                                     </div>
 
                                     <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green" style="left: 75%; top: 40%;">

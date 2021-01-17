@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FAQ;
 use App\Feature;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,7 @@ class SetupController extends Controller
     }
     public function faq()
     {
-        return 'faq';
+        $faq = FAQ::all();
+       return view('Admin.PartialPages.FAQ.faq', compact('faq'));
     }
 }
