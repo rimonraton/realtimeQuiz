@@ -4,7 +4,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Features List</h4>
+                <h4 class="card-title text-center">FAQ Question List</h4>
                 <hr>
                 <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Feature</button>
                 <!-- Add Contact Popup Model -->
@@ -12,7 +12,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Feature</h4>
+                                <h4 class="modal-title" id="myModalLabel">Add New FAQ Question</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
