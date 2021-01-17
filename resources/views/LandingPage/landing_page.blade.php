@@ -259,6 +259,119 @@
             font-size: 25px;
             text-transform: uppercase;
         }
+
+        .top-text {
+            left: 48%;
+            top: 4%;
+            position: absolute;
+        }
+
+        .bottom-text {
+            left: 46%;
+            bottom: -8%;
+            position: absolute;
+        }
+
+        .left-text {
+            left: 15%;
+            top: 39%;
+            position: absolute;
+        }
+
+        .right-text {
+            right: 3%;
+            top: 39%;
+            position: absolute;
+        }
+
+        .left-cercle {
+            left: 5%;
+            top: 40%;
+        }
+
+        .right-cercle {
+            right: -3%;
+            top: 40%;
+        }
+
+        .top-cercle {
+            left: 40%;
+            top: 5%;
+        }
+
+        .bottom-cercle {
+            left: 40%;
+            bottom: -3%;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .circle-menu-box {
+                width: 500px;
+                height: 300px;
+                position: relative;
+            }
+
+            .circle-menu-box a.menu-item {
+
+                width: 60px;
+                height: 60px;
+                padding: 15px 0px;
+
+            }
+
+            .borogoldiv {
+                left: 35%;
+                top: 30%;
+                width: 150px;
+                height: 150px;
+                border: 4px solid indigo;
+            }
+
+            .left-cercle {
+                left: 15%;
+                top: 35%;
+            }
+
+            .right-cercle {
+                right: 15%;
+                top: 35%;
+            }
+
+            .top-cercle {
+                left: 40%;
+                top: 0%;
+            }
+
+            .bottom-cercle {
+                left: 40%;
+                bottom: -11%;
+            }
+
+            .top-text {
+                left: 45%;
+                top: -2%;
+                position: absolute;
+            }
+
+            .bottom-text {
+                left: 42%;
+                bottom: -17%;
+                position: absolute;
+            }
+
+            .left-text {
+                left: 21%;
+                top: 33%;
+                position: absolute;
+            }
+
+            .right-text {
+                right: 17%;
+                top: 33%;
+                position: absolute;
+            }
+
+        }
     </style>
 
 
@@ -278,7 +391,7 @@
 
             <div class="logo mr-auto">
 
-                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> Gyankosh</span></a></h1>
+                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="{{asset('Landing/assets/img/logo.png')}}" alt="" class="img-fluid"></a>-->
             </div>
@@ -292,8 +405,8 @@
                     <li><a href="#faq">FAQ</a></li>
                     <!-- <li><a href="#gallery">Gallery</a></li> -->
                     <!-- <li><a href="#team">Team</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li class="drop-down"><a href="">Drop Down</a>
+                    <li><a href="#pricing">Pricing</a></li> -->
+                    <!-- <li class="drop-down"><a href="">Drop Down</a>
                         <ul>
                             <li><a href="#">Drop Down 1</a></li>
                             <li class="drop-down"><a href="#">Drop Down 2</a>
@@ -310,6 +423,7 @@
                             <li><a href="#">Drop Down 5</a></li>
                         </ul>
                     </li> -->
+
                     <li><a href="#contact">Contact</a></li>
                     @guest
                     <li><a href="{{ route('register') }}" id="reg">Register</a></li>
@@ -321,7 +435,25 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-
+                    <li class="drop-down">
+                        <a href="#">
+                            <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ url('setLanguage/gb') }}">
+                                    <img src="https://www.countryflags.io/gb/flat/24.png">
+                                    {{ __('english') }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('setLanguage/bd') }}">
+                                    <img src="https://www.countryflags.io/bd/flat/24.png">
+                                    {{ __('bangla') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav><!-- .nav-menu -->
 
@@ -335,8 +467,8 @@
             <div class="row">
                 <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
                     <div data-aos="zoom-out">
-                        <h1 style="font-size: 40px;">Build Yourself With <span>Gyankosh</span></h1>
-                        <h2>Learn with Fun</h2>
+                        <h1 style="font-size: 2.2em;">{{__('msg.motivation')}}</h1>
+                        <h2>{{__('msg.slogan')}}</h2>
                         <!-- <div class="text-center text-lg-left">
                             <a href="#about" class="btn-get-started scrollto">Get Started</a>
                         </div> -->
@@ -423,27 +555,27 @@
 
                                 </div> -->
                                 <div class="circle-menu-box">
-                                    <p style="left: 48%; top: 4%;position:absolute;"><strong>Practice</strong></p>
-                                    <p style="right: 3%; top: 39%;position:absolute;"><strong>Challenge</strong></p>
-                                    <p style="left: 15%; top: 39%;position:absolute;"> <strong>Team</strong></p>
-                                    <p style="left: 46%; top: 99%;position:absolute;"><strong>Modaretor</strong></p>
-                                    <a href="{{url('Mode/Practice')}}" class="menu-item menu-red" style="left: 40%; top: 5%;">
+                                    <p class="top-text"><strong>{{__('msg.practice')}}</strong></p>
+                                    <p class="right-text"><strong>{{__('msg.challenge')}}</strong></p>
+                                    <p class="left-text"> <strong>{{__('msg.team')}}</strong></p>
+                                    <p class="bottom-text"><strong>{{__('msg.moderator')}}</strong></p>
+                                    <a href="{{url('Mode/Practice')}}" class="menu-item menu-red top-cercle">
                                         <i class="fas fa-address-card text-white"></i>
                                         <!-- <span class="pb-5" style="font-size: 16px;">Practice</span> -->
                                     </a>
                                     <div class="borogoldiv d-flex justify-content-center align-items-center">
-                                        Gyankosh
+                                        {{__('msg.logo')}}
                                     </div>
 
-                                    <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green" style="left: 75%; top: 40%;">
+                                    <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green right-cercle">
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
 
-                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue" style="left: 40%; top: 75%;">
+                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
 
-                                    <a href="{{url('Mode/Group')}}" class="menu-item menu-purple" style="left: 5%; top: 40%;">
+                                    <a href="{{url('Mode/Group')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
 

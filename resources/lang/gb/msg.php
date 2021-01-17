@@ -22,7 +22,6 @@ return [
     'share' => 'Share',
     'quiz' => 'Quiz',
     'slogan' => 'LEARN WITH FUN',
-
-
-
+    'logo'  => 'Gyankosh',
+    'motivation' => "Enrich yourself through Gyankosh",
 ];
