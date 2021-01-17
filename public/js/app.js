@@ -3564,46 +3564,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['id', 'user', 'questions'],
@@ -86146,148 +86106,8 @@ var render = function() {
                       staticClass:
                         "list-group-item d-flex justify-content-between align-items-center p-0"
                     },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "w-100", attrs: { id: "accordion" } },
-                        [
-                          _c("div", { staticClass: "card " }, [
-                            _vm._m(0),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "collapse show",
-                                attrs: {
-                                  id: "collapseOne",
-                                  "aria-labelledby": "headingOne",
-                                  "data-parent": "#accordion"
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "card-body p-0" }, [
-                                  _c(
-                                    "ul",
-                                    {
-                                      staticClass: "list-group text-dark",
-                                      staticStyle: {
-                                        "max-height": "380px",
-                                        overflow: "auto"
-                                      }
-                                    },
-                                    _vm._l(_vm.results, function(result) {
-                                      return _c(
-                                        "li",
-                                        {
-                                          key: result.id,
-                                          staticClass:
-                                            "list-group-item d-flex justify-content-between align-items-center p-1"
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "font-weight-light f-13"
-                                            },
-                                            [
-                                              _c("span", {
-                                                staticClass: "font-weight-bold",
-                                                domProps: {
-                                                  innerHTML: _vm._s(
-                                                    result.question
-                                                  )
-                                                }
-                                              }),
-                                              _vm._v(" "),
-                                              result.isCorrect
-                                                ? _c("p", [
-                                                    _c("span", {
-                                                      staticClass:
-                                                        "font-weight-light font-italic",
-                                                      domProps: {
-                                                        innerHTML: _vm._s(
-                                                          result.selected
-                                                        )
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-check text-success",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    })
-                                                  ])
-                                                : _c("p", [
-                                                    _c("span", {
-                                                      staticClass:
-                                                        "font-weight-light font-italic",
-                                                      domProps: {
-                                                        innerHTML: _vm._s(
-                                                          result.selected
-                                                        )
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-times text-danger",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("br"),
-                                                    _vm._v(" "),
-                                                    _c("span", {
-                                                      staticClass:
-                                                        "font-weight-light font-italic",
-                                                      domProps: {
-                                                        innerHTML: _vm._s(
-                                                          result.answer
-                                                        )
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("i", {
-                                                      staticClass:
-                                                        "fa fa-check text-success",
-                                                      attrs: {
-                                                        "aria-hidden": "true"
-                                                      }
-                                                    })
-                                                  ])
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass:
-                                                "badge badge-light badge-pill"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                            " +
-                                                  _vm._s(result.time) +
-                                                  " \n                                        "
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                ])
-                              ]
-                            )
-                          ])
-                        ]
-                      )
-                    ]
+                    [_c("resultdetails", { attrs: { results: _vm.results } })],
+                    1
                   )
                 : _vm._e()
             ])
@@ -86297,33 +86117,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card-header py-1 ",
-        attrs: {
-          id: "headingOne",
-          "data-toggle": "collapse",
-          "data-target": "#collapseOne",
-          "aria-expanded": "true",
-          "aria-controls": "collapseOne"
-        }
-      },
-      [
-        _c("small", { staticClass: "mb-0 cursor" }, [
-          _vm._v(
-            "\n                                  Result Details\n                              "
-          )
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -86692,7 +86486,7 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      result.isCorrect
+                      result.isCorrect != 0
                         ? _c("p", [
                             _c(
                               "span",
