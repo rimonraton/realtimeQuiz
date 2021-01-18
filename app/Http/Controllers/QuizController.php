@@ -137,7 +137,7 @@ class QuizController extends Controller
     {
         $q = Quiz::find($id);
         $Questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
-        return view('Admin.PartialPages.Quiz.partial.questionwithOption', compact('Questions'));
+        return view('Admin.PartialPages.Quiz.Partial.questionwithOption', compact('Questions'));
     }
 
     public function quizList($id)

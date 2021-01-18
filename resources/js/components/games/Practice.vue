@@ -16,7 +16,7 @@
                 <h4 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h4>
             </div>
 
-            <resultdetails :results='results'/>
+            <resultdetails :results='results' />
             <button @click="winner_screen = 0" class="btn btn-sm btn-secondary my-3 w-25">Close</button>
             
         </div>

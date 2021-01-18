@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div class="card-footer" v-if="lastQuestion">
-                <a href="/" class="btn btn-sm btn-secondary text-center">Game List</a>
+                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>
             </div>
         </div>
     </div>

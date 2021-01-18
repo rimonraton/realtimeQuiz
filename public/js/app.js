@@ -86635,7 +86635,7 @@ var render = function() {
               "a",
               {
                 staticClass: "btn btn-sm btn-secondary text-center",
-                attrs: { href: "/" }
+                attrs: { href: "/#about" }
               },
               [_vm._v("Game List")]
             )
