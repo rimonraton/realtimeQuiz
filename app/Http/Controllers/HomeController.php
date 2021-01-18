@@ -28,13 +28,6 @@ class HomeController extends Controller
         $exams =  Quiz::paginate(9);
         $user = Auth::user();
         $ce = Category::with('exams')->get();
-        // return  $exams = Exam::where('subject_id', 153)
-        //     ->where('course_id', 44)
-        //     ->where('exam_type', 'mcq')
-        //     ->where('is_site', 1)
-        //     ->paginate(9);
-
-
         return view('mode', compact('exams', 'user', 'ce', 'type'));
     }
 

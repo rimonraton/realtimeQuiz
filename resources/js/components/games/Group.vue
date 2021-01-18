@@ -131,7 +131,6 @@
 
 <script>
     
-
     export default {
         props : ['id', 'uid', 'user', 'questions'],
 

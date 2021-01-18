@@ -107,7 +107,7 @@
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
                     <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>
-                    @if($type == 'Challenge')
+                    @if($type == 'Challenge' || $type == 'Group')
                       <div id="shareBtn{{ $exam->id }}" class="hide_share shareBtnDiv">
                         <iframe src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" class="iframe-size"></iframe>
                       </div>
