@@ -768,7 +768,7 @@ section {
 
 .about .video-box {
   background: url("../../../images/quiz.jpg") center center no-repeat;
-  background-size: contain;
+  /* background-size: contain; */
   min-height: 300px;
 }
 

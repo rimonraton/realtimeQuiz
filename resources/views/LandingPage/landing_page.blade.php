@@ -305,6 +305,10 @@
         }
 
         @media only screen and (max-width: 600px) {
+            .about .video-box {
+                background-size: contain;
+            }
+
             .circle-menu-box {
                 width: 500px;
                 height: 300px;
@@ -398,11 +402,11 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li class="active"><a href="#hero">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#topics">Topics</a></li>
-                    <li><a href="#faq">FAQ</a></li>
+                    <li class="active"><a href="#hero">{{__('msg.home')}}</a></li>
+                    <li><a href="#about">{{__('msg.about')}}</a></li>
+                    <li><a href="#features">{{__('msg.features')}}</a></li>
+                    <li><a href="#topics">{{__('msg.topics')}}</a></li>
+                    <li><a href="#faq">{{__('msg.faq')}}</a></li>
                     <!-- <li><a href="#gallery">Gallery</a></li> -->
                     <!-- <li><a href="#team">Team</a></li>
                     <li><a href="#pricing">Pricing</a></li> -->
@@ -424,10 +428,10 @@
                         </ul>
                     </li> -->
 
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#contact">{{__('msg.contact')}}</a></li>
                     @guest
-                    <li><a href="{{ route('register') }}" id="reg">Register</a></li>
-                    <li><a href="{{ route('login') }}" id="login">Login</a></li>
+                    <li><a href="{{ route('register') }}" id="reg">{{__('msg.register')}}</a></li>
+                    <li><a href="{{ route('login') }}" id="login">{{__('msg.login')}}</a></li>
                     @endguest
                     @auth
                     <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Log Out</a></li>
@@ -443,13 +447,13 @@
                             <li>
                                 <a href="{{ url('setLanguage/gb') }}">
                                     <img src="https://www.countryflags.io/gb/flat/24.png">
-                                    {{ __('english') }}
+                                    {{ __('msg.english') }}
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ url('setLanguage/bd') }}">
                                     <img src="https://www.countryflags.io/bd/flat/24.png">
-                                    {{ __('bangla') }}
+                                    {{ __('msg.bangla') }}
                                 </a>
                             </li>
                         </ul>
@@ -507,53 +511,16 @@
             <div class="container-fluid">
 
                 <div class="row">
-                    <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right">
-                        <a href="https://www.youtube.com/embed/A4jqX3Psbig?rel=0&showinfo=0&autoplay=1" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
-                    </div>
-
-                    <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
-                        <!-- <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p>
-
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="icon"><i class="bx bx-fingerprint"></i></div>
-                            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                    <div class="col-8 m-auto icon-boxes d-flex flex-column align-items-stretch justify-content-center" data-aos="fade-left">
+                        <div class="video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right">
+                            <h3 class="text-center">{{ __('msg.SGM') }}</h3>
+                            <a href="https://www.youtube.com/embed/A4jqX3Psbig?rel=0&showinfo=0&autoplay=1" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
                         </div>
 
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
-                            <div class="icon"><i class="bx bx-gift"></i></div>
-                            <h4 class="title"><a href="">Nemo Enim</a></h4>
-                            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-                        </div>
-
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
-                            <div class="icon"><i class="bx bx-atom"></i></div>
-                            <h4 class="title"><a href="">Dine Pad</a></h4>
-                            <p class="description">Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus aut eligendi omnis</p>
-                        </div> -->
-                        <!-- <h3>{{ __('msg.SGM') }}</h3> -->
-                        <div class="container1 d-flex justify-content-center">
+                        <div class="d-flex justify-content-center">
                             <div class="menu-container">
-                                <h3 class="text-center">{{ __('msg.SGM') }}</h3>
 
-                                <!-- <div class="circle-menu-box">
-                                    <a href="#" class="menu-item menu-red">
-                                        <i class="fas fa-address-card text-white"></i>
-                                    </a>
 
-                                    <a href="#" class="menu-item menu-green">
-                                        <i class="fas fa-people-arrows text-white"></i>
-                                    </a>
-
-                                    <a href="#" class="menu-item menu-blue">
-                                        <i class="fas fa-user text-white"></i>
-                                    </a>
-
-                                    <a href="#" class="menu-item menu-purple">
-                                        <i class="fas fa-users text-white"></i>
-                                    </a>
-
-                                </div> -->
                                 <div class="circle-menu-box">
                                     <p class="top-text"><strong>{{__('msg.practice')}}</strong></p>
                                     <p class="right-text"><strong>{{__('msg.challenge')}}</strong></p>
@@ -565,6 +532,8 @@
                                     </a>
                                     <div class="borogoldiv d-flex justify-content-center align-items-center">
                                         {{__('msg.logo')}}
+                                        <!-- <i class="icofont-globe-alt"></i> -->
+                                        <!-- <img src="{{asset('Landing/hero/brain.png')}}" alt=""> -->
                                     </div>
 
                                     <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green right-cercle">
@@ -633,85 +602,70 @@
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
-                    <h2>Features</h2>
-                    <p>Check The Features</p>
+                    <h2>{{__('msg.features')}}</h2>
+                    <p>{{__('msg.checkfeatures')}}</p>
                 </div>
 
-                <div class="row" data-aos="fade-left">
+                <div class="row justify-content-center" data-aos="fade-left">
                     <div class="col-lg-3 col-md-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
-                            <i class="ri-store-line" style="color: #ffbb2c;"></i>
-                            <h3><a href="">Lorem Ipsum</a></h3>
+                            <i class="fas fa-address-card" style="color: #ffbb2c;"></i>
+                            <h3>
+                                <a href="">Practice</a>
+                            </h3>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Morbi leo risus</li>
+                            <li class="list-group-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li class="list-group-item"></li> -->
+                        </ul>
                     </div>
                     <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
-                            <i class="ri-bar-chart-box-line" style="color: #5578ff;"></i>
-                            <h3><a href="">Dolor Sitema</a></h3>
+                            <i class="fas fa-people-arrows" style="color: #5578ff;"></i>
+                            <h3><a href="">Challenge</a></h3>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Morbi leo risus</li>
+                            <li class="list-group-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li class="list-group-item"></li> -->
+                        </ul>
                     </div>
                     <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="150">
-                            <i class="ri-calendar-todo-line" style="color: #e80368;"></i>
-                            <h3><a href="">Sed perspiciatis</a></h3>
+                            <i class="fas fa-users" style="color: #e80368;"></i>
+                            <h3><a href="">Team</a></h3>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Morbi leo risus</li>
+                            <li class="list-group-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li class="list-group-item"></li> -->
+                        </ul>
                     </div>
                     <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
-                            <i class="ri-paint-brush-line" style="color: #e361ff;"></i>
-                            <h3><a href="">Magni Dolores</a></h3>
+                            <i class="fas fa-user" style="color: #e361ff;"></i>
+                            <h3><a href="">Moderator</a></h3>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="250">
-                            <i class="ri-database-2-line" style="color: #47aeff;"></i>
-                            <h3><a href="">Nemo Enim</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
-                            <i class="ri-gradienter-line" style="color: #ffa76e;"></i>
-                            <h3><a href="">Eiusmod Tempor</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="350">
-                            <i class="ri-file-list-3-line" style="color: #11dbcf;"></i>
-                            <h3><a href="">Midela Teren</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
-                            <i class="ri-price-tag-2-line" style="color: #4233ff;"></i>
-                            <h3><a href="">Pira Neve</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="450">
-                            <i class="ri-anchor-line" style="color: #b2904f;"></i>
-                            <h3><a href="">Dirada Pack</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="500">
-                            <i class="ri-disc-line" style="color: #b20969;"></i>
-                            <h3><a href="">Moton Ideal</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="550">
-                            <i class="ri-base-station-line" style="color: #ff5828;"></i>
-                            <h3><a href="">Verdo Park</a></h3>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="600">
-                            <i class="ri-fingerprint-line" style="color: #29cc61;"></i>
-                            <h3><a href="">Flavor Nivelanda</a></h3>
-                        </div>
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Morbi leo risus</li>
+                            <li class="list-group-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li class="list-group-item"></li> -->
+                        </ul>
                     </div>
                 </div>
-
             </div>
         </section><!-- End Features Section -->
         <!-- ======= Topics Section ======= -->
@@ -719,8 +673,8 @@
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
-                    <h2>Topics</h2>
-                    <p>Check The Topics</p>
+                    <h2>{{__('msg.topics')}}</h2>
+                    <p>{{__('msg.checktopics')}}</p>
                 </div>
 
                 <div class="row justify-content-center" data-aos="fade-left">
@@ -811,25 +765,25 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="count-box">
-                            <i class="icofont-simple-smile"></i>
+                            <i class="icofont-brainstorming"></i>
                             <span data-toggle="counter-up">1,463</span>
-                            <p>Participants</p>
+                            <p>{{__('msg.participants')}}</p>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
                         <div class="count-box">
-                            <i class="icofont-document-folder"></i>
+                            <i class="icofont-group"></i>
                             <span data-toggle="counter-up">521</span>
-                            <p>Teams</p>
+                            <p>{{__('msg.teams')}}</p>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
-                            <i class="icofont-live-support"></i>
+                            <i class="icofont-globe-alt"></i>
                             <span data-toggle="counter-up">200</span>
-                            <p>Quizzes</p>
+                            <p>{{__('msg.quiz')}}</p>
                         </div>
                     </div>
 
@@ -837,7 +791,7 @@
                         <div class="count-box">
                             <i class="icofont-users-alt-5"></i>
                             <span data-toggle="counter-up">15</span>
-                            <p>Winners</p>
+                            <p>{{__('msg.winner')}}</p>
                         </div>
                     </div>
 
@@ -1029,17 +983,17 @@
                 <div class="owl-carousel testimonials-carousel" data-aos="zoom-in">
 
                     <div class="testimonial-item">
-                        <img src="{{asset('Landing/assets/img/testimonials/testimonials-1.jpg')}}" class="testimonial-img" alt="">
-                        <h3>Saul Goodman</h3>
-                        <h4>Ceo &amp; Founder</h4>
+                        <!-- <img src="{{asset('Landing/assets/img/testimonials/testimonials-1.jpg')}}" class="testimonial-img" alt=""> -->
+                        <!-- <h3>Saul Goodman</h3> -->
+                        <!-- <h4>Ceo &amp; Founder</h4> -->
                         <p>
                             <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                            Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                            Gyankosh
                             <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                         </p>
                     </div>
 
-                    <div class="testimonial-item">
+                    <!-- <div class="testimonial-item">
                         <img src="{{asset('Landing/assets/img/testimonials/testimonials-2.jpg')}}" class="testimonial-img" alt="">
                         <h3>Sara Wilsson</h3>
                         <h4>Designer</h4>
@@ -1048,9 +1002,9 @@
                             Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
                             <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                         </p>
-                    </div>
+                    </div> -->
 
-                    <div class="testimonial-item">
+                    <!-- <div class="testimonial-item">
                         <img src="{{asset('Landing/assets/img/testimonials/testimonials-3.jpg')}}" class="testimonial-img" alt="">
                         <h3>Jena Karlis</h3>
                         <h4>Store Owner</h4>
@@ -1059,9 +1013,9 @@
                             Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
                             <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                         </p>
-                    </div>
+                    </div> -->
 
-                    <div class="testimonial-item">
+                    <!-- <div class="testimonial-item">
                         <img src="{{asset('Landing/assets/img/testimonials/testimonials-4.jpg')}}" class="testimonial-img" alt="">
                         <h3>Matt Brandon</h3>
                         <h4>Freelancer</h4>
@@ -1070,9 +1024,9 @@
                             Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
                             <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                         </p>
-                    </div>
+                    </div> -->
 
-                    <div class="testimonial-item">
+                    <!-- <div class="testimonial-item">
                         <img src="{{asset('Landing/assets/img/testimonials/testimonials-5.jpg')}}" class="testimonial-img" alt="">
                         <h3>John Larson</h3>
                         <h4>Entrepreneur</h4>
@@ -1081,7 +1035,7 @@
                             Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
                             <i class="bx bxs-quote-alt-right quote-icon-right"></i>
                         </p>
-                    </div>
+                    </div> -->
 
                 </div>
 
@@ -1260,8 +1214,8 @@
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
-                    <h2>F.A.Q</h2>
-                    <p>Frequently Asked Questions</p>
+                    <h2>{{__('msg.faq')}}</h2>
+                    <p>{{__('msg.checkfaq')}}</p>
                 </div>
 
                 <div class="faq-list">
@@ -1322,8 +1276,8 @@
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
-                    <h2>Contact</h2>
-                    <p>Contact Us</p>
+                    <h2>{{__('msg.contact')}}</h2>
+                    <p>{{__('msg.checkcontact')}}</p>
                 </div>
 
                 <div class="row">
@@ -1332,19 +1286,19 @@
                         <div class="info">
                             <div class="address">
                                 <i class="icofont-google-map"></i>
-                                <h4>Location:</h4>
+                                <h4>{{__('msg.location')}}:</h4>
                                 <p>House: 1150, Road: 9/A, Avenue:11, Mirpur DOHS, Dhaka-1216</p>
                             </div>
 
                             <div class="email">
                                 <i class="icofont-envelope"></i>
-                                <h4>Email:</h4>
+                                <h4>{{__('msg.email')}}:</h4>
                                 <p>info@maharah.online</p>
                             </div>
 
                             <div class="phone">
                                 <i class="icofont-phone"></i>
-                                <h4>Call:</h4>
+                                <h4>{{__('msg.call')}}:</h4>
                                 <p>+880 9617171125</p>
                             </div>
 
@@ -1357,20 +1311,20 @@
                         <form action="forms/contact.php" method="post" role="form" class="php-email-form">
                             <div class="form-row">
                                 <div class="col-md-6 form-group">
-                                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                                    <input type="text" name="name" class="form-control" id="name" placeholder="{{__('msg.contactName')}}" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
                                     <div class="validate"></div>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="{{__('msg.contactEmail')}}" data-rule="email" data-msg="Please enter a valid email" />
                                     <div class="validate"></div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="{{__('msg.contactSubject')}}" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
                                 <div class="validate"></div>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="{{__('msg.contactMessage')}}"></textarea>
                                 <div class="validate"></div>
                             </div>
                             <div class="mb-3">
@@ -1378,7 +1332,7 @@
                                 <div class="error-message"></div>
                                 <div class="sent-message">Your message has been sent. Thank you!</div>
                             </div>
-                            <div class="text-center"><button type="submit">Send Message</button></div>
+                            <div class="text-center"><button type="submit">{{__('msg.sendmessage')}}</button></div>
                         </form>
 
                     </div>
@@ -1415,19 +1369,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-1 col-md-6 footer-links">
 
-                    <div class="col-lg-2 col-md-6 footer-links">
-                        <h4>Useful Links</h4>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#hero">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#about">Quiz</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#features">Features</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#topics">Topics</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#faq">FAQ</a></li>
                         </ul>
                     </div>
 
-                    <div class="col-lg-2 col-md-6 footer-links">
+                    <!-- <div class="col-lg-2 col-md-6 footer-links">
                         <h4>Our Services</h4>
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
@@ -1436,14 +1392,15 @@
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
                         </ul>
-                    </div>
+                    </div> -->
 
-                    <div class="col-lg-4 col-md-6 footer-newsletter">
-                        <h4>Our Newsletter</h4>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="{{asset('images/logo3.png')}}" class="img-fluid animated" alt="">
+                        <!-- <h4>Our Newsletter</h4>
                         <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
                         <form action="" method="post">
                             <input type="email" name="email"><input type="submit" value="Subscribe">
-                        </form>
+                        </form> -->
 
                     </div>
 
