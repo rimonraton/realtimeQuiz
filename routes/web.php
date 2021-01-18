@@ -54,6 +54,7 @@ Route::get('quiz/create', 'QuizController@create');
 Route::get('quiz/list/{topic}/{category?}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
 Route::get('quiz/getlist/{topic}', 'QuizController@getlistbytopic');
+Route::get('quiz/delete/{id}','QuizController@deleteQuiz');
 
 // Quiz with Option by id
 Route::get('quiz/quiz/{id}', 'QuizController@quiz');

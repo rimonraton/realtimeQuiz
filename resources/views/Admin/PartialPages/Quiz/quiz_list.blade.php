@@ -93,8 +93,38 @@
             $('#quiz-info').modal('show');
         })
 
-        $(document).on('click', '.remove', function() {
+        $(document).on('click', '.delete', function() {
 
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    var $this = $(this);
+                    var id = $this.attr('data-id')
+                    $.ajax({
+                        url: "{{url('quiz/delete')}}/" + id,
+                        type: "GET",
+                        success: function(data) {
+                            // $(this).parent().parent().remove();
+                            // alert($this.parent().parent());
+                            $this.closest("tr").remove();
+                            Swal.fire({
+                                text: data,
+                                type: 'success',
+                                timer: 1000,
+                                showConfirmButton: false
+                            })
+                        }
+                    })
+
+                }
+            })
         })
     })
 </script>
