@@ -15,7 +15,7 @@
                             <span class="font-weight-bold">
                                 {{ ToText(result.question) }}
                             </span>
-                            <p v-if="result.isCorrect">
+                            <p v-if="result.isCorrect !=0">
                              <span class="font-weight-light font-italic"> {{ ToText(result.selected) }}</span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
                             </p>

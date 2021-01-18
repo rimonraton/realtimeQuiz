@@ -76,42 +76,14 @@
                         @endif
                         @else
                             
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
-                                </a>
-                                
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
-                                        <img src="https://www.countryflags.io/gb/flat/24.png" >
-                                        {{ __('english') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
-                                        <img src="https://www.countryflags.io/bd/flat/24.png">
-                                        {{ __('bangla') }}
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    
-                                    {{ Auth::user()->name }}
-                                </a>
-                                
-
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <img src="https://www.countryflags.io/{{ session('locale') }}/flat/24.png">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
                             </a>
-
-
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
-                                    <img src="https://www.countryflags.io/gb/flat/24.png">
+                                    <img src="https://www.countryflags.io/gb/flat/24.png" >
                                     {{ __('english') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
@@ -122,18 +94,14 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </a>
-
-
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('auth.logout') }}
                                 </a>
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
