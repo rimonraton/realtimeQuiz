@@ -26,6 +26,12 @@
                     <li class="sidebar-item"><a href="{{url('quiz/categorylist')}}" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu">Quiz Type</span></a></li>
                 </ul>
             </li>
+            <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu">Game</span></a>
+                <ul aria-expanded="false" class="collapse  first-level">
+                    <li class="sidebar-item"><a href="{{url('game/setup')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Game Setup </span></a></li>
+                    <li class="sidebar-item"><a href="{{url('game/perform-message')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Perform Message Setup</span></a></li>
+                </ul>
+            </li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Participants</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('profile')}}" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">Profile</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>

@@ -27,358 +27,8 @@
 
     <!-- Template Main CSS File -->
     <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('Landing/assets/css/landing.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-    <!-- <style>
-        *,
-        :before,
-        :after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            --i: var(--wide, 1);
-            --j: calc(1 - var(--i));
-            --k: var(--narr, 0);
-            overflow-x: hidden;
-            min-width: 100%;
-            background: #afafaf;
-        }
-
-        @media (max-width: 36.5em) {
-            html {
-                --wide: 0;
-            }
-        }
-
-        @media (max-width: 250px) {
-            html {
-                --narr: 1;
-            }
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            transform-style: preserve-3d;
-        }
-
-        article {
-            --p: var(--parity, 1);
-            --q: calc(1 - var(--p));
-            --s: calc(1 - 2*var(--p));
-            display: var(--narr, grid);
-            grid-template-columns: calc(var(--i)*calc(var(--q)*7em + var(--p)*21em) + var(--j)*calc(var(--q)*2em + var(--p)*calc(100% - 0.5em - 2em))) calc(var(--i)*calc(var(--p)*7em + var(--q)*21em) + var(--j)*calc(var(--p)*2em + var(--q)*calc(100% - 0.5em - 2em)));
-            grid-gap: calc(var(--j)*0.5em) calc(var(--i)*1.25em + var(--j)*0.5em);
-            grid-auto-flow: var(--wide, dense column);
-            place-content: var(--parity, center end);
-            position: relative;
-            padding: calc(var(--i)*0.75em + var(--j)*5vw);
-            max-width: 36.5em;
-            border-radius: var(--wide, calc(var(--q)*4.25em) calc(var(--p)*4.25em) calc(var(--p)*4.25em) calc(var(--q)*4.25em));
-            transform-style: preserve-3d;
-            transform-origin: calc(var(--q)*100%) 100%;
-            transform: rotatex(1deg);
-            background: linear-gradient(calc(var(--s)*90deg), #fff, #afafaf);
-            font: 600 1em/1.25 work sans, sans-serif;
-            counter-increment: idx;
-        }
-
-        article:before {
-            display: grid;
-            place-content: center;
-            grid-row: 1/span calc(1 + var(--i));
-            grid-column: calc(1 + var(--p))/span 1;
-            margin: 0 auto;
-            border: solid 0.125em var(--c0);
-            width: 2em;
-            height: 2em;
-            border-radius: 50%;
-            background: linear-gradient(90deg, var(--c1), var(--c2));
-            font-size: calc((var(--i)*3.5 + var(--j)*1)*1em);
-            font-weight: 300;
-            color: #fff;
-            content: counter(idx, decimal-leading-zero);
-        }
-
-        article:after {
-            position: absolute;
-            width: 100%;
-            height: 8.5em;
-            max-height: 100%;
-            border-radius: inherit;
-            transform-origin: inherit;
-            transform: translate3d(calc(var(--s)*-20%), 0, -1px) rotate(calc(var(--s)*-1.5deg)) scale(0.8, 0.9);
-            background: rgba(0, 0, 0, 0.35);
-            filter: blur(9px);
-            content: var(--wide, "");
-        }
-
-        article:nth-child(odd) {
-            --parity: 0;
-        }
-
-        h3 {
-            align-self: center;
-            justify-self: var(--parity, self-end);
-            padding: calc(var(--k)*0.25em) 0;
-            font-size: 1.5em;
-            text-transform: capitalize;
-        }
-
-        p {
-            grid-column-end: span calc(1 + var(--j));
-            text-align: var(--wide, var(--parity, right));
-        }
-    </style> -->
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            -box-sizing: border-box;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        ul,
-        ol {
-            list-style-type: none;
-        }
-
-        /* body {
-            background-color: #0273c7;
-            font-family: 'cambria', sans-serif;
-        } */
-
-        @media (min-width:768px) {
-            .container1 {
-                width: 900px;
-            }
-
-        }
-
-        .container1 {
-            /* margin: 10px auto; */
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-title {
-            margin: 17px auto;
-            text-align: center;
-            color: #fff;
-            font-size: 17px;
-        }
-
-        .page-title h1 {
-            font-size: 40px;
-            line-height: 1;
-        }
-
-        .page-title a {
-            color: #ff7777;
-            text-decoration: none;
-        }
-
-        .page-title a:hover {
-            text-decoration: underline;
-            color: #ff3333;
-        }
-
-        .circle-menu-box {
-            width: 500px;
-            height: 500px;
-            position: relative;
-            /* margin: 5px auto; */
-            margin-bottom: 30px;
-        }
-
-        .menu-red {
-            background-color: #EC0B43;
-        }
-
-        .menu-green {
-            background-color: #4F772D;
-        }
-
-        .menu-blue {
-            background-color: #037FDB;
-        }
-
-        .menu-purple {
-            background-color: #4361EE;
-        }
-
-        .circle-menu-box a.menu-item {
-            display: block;
-            text-decoration: none;
-            border-radius: 100%;
-            margin: 20px;
-            text-align: center;
-            width: 100px;
-            height: 100px;
-            /* background-color: black; */
-            color: #777;
-            padding: 30px 0;
-            line-height: 1;
-            position: absolute;
-            font-size: 30px;
-
-            transition: all 0.5s;
-            -moz-transition: all 0.5s;
-            -webkit-transition: all 0.5s;
-            -o-transition: all 0.5s;
-        }
-
-        .circle-menu-box a.menu-item:hover {
-            transform: scale(1.2);
-            -webkit-transform: scale(1.2);
-            -moz-transform: scale(1.2);
-            -o-transform: scale(1.2);
-            color: #fff;
-            background: #00B179;
-        }
-
-        .borogoldiv {
-            left: 31%;
-            top: 31%;
-            width: 230px;
-            height: 230px;
-            border: 10px solid indigo;
-            position: absolute;
-            border-radius: 100%;
-            font-size: 25px;
-            text-transform: uppercase;
-        }
-
-        .top-text {
-            left: 48%;
-            top: 4%;
-            position: absolute;
-        }
-
-        .bottom-text {
-            left: 46%;
-            bottom: -8%;
-            position: absolute;
-        }
-
-        .left-text {
-            left: 15%;
-            top: 39%;
-            position: absolute;
-        }
-
-        .right-text {
-            right: 3%;
-            top: 39%;
-            position: absolute;
-        }
-
-        .left-cercle {
-            left: 5%;
-            top: 40%;
-        }
-
-        .right-cercle {
-            right: -3%;
-            top: 40%;
-        }
-
-        .top-cercle {
-            left: 40%;
-            top: 5%;
-        }
-
-        .bottom-cercle {
-            left: 40%;
-            bottom: -3%;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .about .video-box {
-                background-size: contain;
-            }
-
-            .circle-menu-box {
-                width: 500px;
-                height: 300px;
-                position: relative;
-            }
-
-            .circle-menu-box a.menu-item {
-
-                width: 60px;
-                height: 60px;
-                padding: 15px 0px;
-
-            }
-
-            .borogoldiv {
-                left: 35%;
-                top: 30%;
-                width: 150px;
-                height: 150px;
-                border: 4px solid indigo;
-            }
-
-            .left-cercle {
-                left: 15%;
-                top: 35%;
-            }
-
-            .right-cercle {
-                right: 15%;
-                top: 35%;
-            }
-
-            .top-cercle {
-                left: 40%;
-                top: 0%;
-            }
-
-            .bottom-cercle {
-                left: 40%;
-                bottom: -11%;
-            }
-
-            .top-text {
-                left: 45%;
-                top: -2%;
-                position: absolute;
-            }
-
-            .bottom-text {
-                left: 42%;
-                bottom: -17%;
-                position: absolute;
-            }
-
-            .left-text {
-                left: 21%;
-                top: 33%;
-                position: absolute;
-            }
-
-            .right-text {
-                right: 17%;
-                top: 33%;
-                position: absolute;
-            }
-
-        }
-    </style>
-
-
     <!-- =======================================================
   * Template Name: Bootslander - v2.3.0
   * Template URL: https://bootstrapmade.com/bootslander-free-bootstrap-landing-page-template/
@@ -395,18 +45,18 @@
 
             <div class="logo mr-auto">
 
-                <h1 class="text-light"><a href="#hero"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
+                <h1 class="text-light"><a href="{{url('/')}}"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="{{asset('Landing/assets/img/logo.png')}}" alt="" class="img-fluid"></a>-->
             </div>
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li class="active"><a href="#hero">{{__('msg.home')}}</a></li>
+                    <li class="active"><a href="#">{{__('msg.home')}}</a></li>
                     <li><a href="#about">{{__('msg.about')}}</a></li>
                     <li><a href="#features">{{__('msg.features')}}</a></li>
                     <li><a href="#topics">{{__('msg.topics')}}</a></li>
-                    <li><a href="#faq">{{__('msg.faq')}}</a></li>
+                    <!-- <li><a href="#faq">{{__('msg.faq')}}</a></li> -->
                     <!-- <li><a href="#gallery">Gallery</a></li> -->
                     <!-- <li><a href="#team">Team</a></li>
                     <li><a href="#pricing">Pricing</a></li> -->
@@ -465,7 +115,7 @@
     </header><!-- End Header -->
 
     <!-- ======= Hero Section ======= -->
-    <section id="hero">
+    <section id="home">
 
         <div class="container">
             <div class="row">
@@ -607,62 +257,60 @@
                 </div>
 
                 <div class="row justify-content-center" data-aos="fade-left">
-                    <div class="col-lg-3 col-md-4">
+                    <div class="col-lg-6 col-md-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
                             <i class="fas fa-address-card" style="color: #ffbb2c;"></i>
-                            <h3>
-                                <a href="">Practice</a>
-                            </h3>
+                            <h3><a href="">{{__('msg.practice')}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <!-- <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item"></li> -->
+                            <li class="list-group-item">অনুশীলনী সেশনে বিভিন্ন বিষয়ে অনুশীলন করতে পারে</li>
+                            <li class="list-group-item">অনুশীলনের সময় সঠিক ও ভূল উত্তর দেখতে পারে</li>
+                            <li class="list-group-item">প্রতিটি প্রশ্নের উত্তর দিতে সময় দেখতে পারে</li>
+                            <li class="list-group-item">সঠিক ও ভূল উত্তরের সংখ্যা দেখতে পারে</li>
+                            <li class="list-group-item">অনুশীলন শেষে সম্পূর্ন অনুশীলনের রিপোর্ট দেখতে পারে</li>
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+                    <div class="col-lg-6 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                             <i class="fas fa-people-arrows" style="color: #5578ff;"></i>
-                            <h3><a href="">Challenge</a></h3>
+                            <h3><a href="">{{__('msg.challenge')}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <!-- <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item"></li> -->
+                            <li class="list-group-item">প্রতিযোগিতা সেশনে প্রতিযোগিতার জন্য কুইজ শেয়ার করতে পারে</li>
+                            <li class="list-group-item">প্রতিযোগিদের লিস্ট দেখতে পারে</li>
+                            <li class="list-group-item">সঠিক উত্তরদাতা দেখতে পারে</li>
+                            <li class="list-group-item">প্রতিটি প্রশ্নের জন্য নির্দিষ্ট সময় থাকে</li>
+                            <!-- <li class="list-group-item">প্রতিযোগিতা শেষে সম্পূর্ন রিপোর্ট দেখতে পারে</li> -->
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+                    <div class="col-lg-6 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="150">
                             <i class="fas fa-users" style="color: #e80368;"></i>
-                            <h3><a href="">Team</a></h3>
+                            <h3><a href="">{{__('msg.team')}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <!-- <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item"></li> -->
+                            <li class="list-group-item">দল সেশনে নিয়ন্ত্রক কুইজ শেয়ার করতে পারে</li>
+                            <li class="list-group-item">কুইজ শেয়ার এর লিংক এ ক্লিক করে দল হিসেবে যোগ করতে পারে</li>
+                            <li class="list-group-item">নির্দিষ্ট সময়ে নিয়ন্ত্রক কুইজ শুরু করতে পারে</li>
+                            <li class="list-group-item">কুইজ ভবিষ্যদ্বাণী করতে পারে</li>
+                            <li class="list-group-item">নিয়ন্ত্রক প্রতিটি দলের উত্তর দেখতে পারে</li>
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
+                    <div class="col-lg-6 col-md-4 mt-4 mt-lg-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
                             <i class="fas fa-user" style="color: #e361ff;"></i>
-                            <h3><a href="">Moderator</a></h3>
+                            <h3><a href="">{{__('msg.moderator')}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <!-- <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item"></li> -->
+                        <li class="list-group-item">নিয়ন্ত্রক সেশনে নিয়ন্ত্রক কুইজ শেয়ার করতে পারে</li>
+                            <li class="list-group-item">কুইজ শেয়ার এর লিংক এ ক্লিক করে প্রতিযোগি হিসেবে যোগ করতে পারে</li>
+                            <li class="list-group-item">নির্দিষ্ট সময়ে নিয়ন্ত্রক কুইজ শুরু করতে পারে</li>
+                            <li class="list-group-item">কুইজ ভবিষ্যদ্বাণী করতে পারে</li>
+                            <li class="list-group-item">নিয়ন্ত্রক প্রতিটি দলের উত্তর দেখতে পারে</li>
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
                 </div>
@@ -1210,7 +858,7 @@
         <!-- End Pricing Section -->
 
         <!-- ======= F.A.Q Section ======= -->
-        <section id="faq" class="faq section-bg">
+        <!-- <section id="faq" class="faq section-bg">
             <div class="container">
 
                 <div class="section-title" data-aos="fade-up">
@@ -1269,7 +917,8 @@
                 </div>
 
             </div>
-        </section><!-- End F.A.Q Section -->
+        </section> -->
+        <!-- End F.A.Q Section -->
 
         <!-- ======= Contact Section ======= -->
         <section id="contact" class="contact">
@@ -1375,7 +1024,7 @@
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#hero">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#about">Quiz</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#features">Features</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#topics">Topics</a></li>

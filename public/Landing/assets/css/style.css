@@ -394,16 +394,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------------------------------------------------
-# Hero Section
+# home Section
 --------------------------------------------------------------*/
-#hero {
+#home {
   width: 100%;
   background: url("../img/hero-bg.jpg");
   position: relative;
   padding: 120px 0 0 0;
 }
 
-#hero:before {
+#home:before {
   content: "";
   background: rgba(2, 5, 161, 0.91);
   position: absolute;
@@ -413,7 +413,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
 }
 
-#hero h1 {
+#home h1 {
   margin: 0 0 20px 0;
   font-size: 48px;
   font-weight: 700;
@@ -421,18 +421,18 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 0.8);
 }
 
-#hero h1 span {
+#home h1 span {
   color: #fff;
   border-bottom: 4px solid #1acc8d;
 }
 
-#hero h2 {
+#home h2 {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 40px;
   font-size: 24px;
 }
 
-#hero .btn-get-started {
+#home .btn-get-started {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -445,40 +445,40 @@ h1, h2, h3, h4, h5, h6 {
   background: #1acc8d;
 }
 
-#hero .btn-get-started:hover {
+#home .btn-get-started:hover {
   background: #17b57d;
 }
 
-#hero .animated {
+#home .animated {
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
 }
 
 @media (min-width: 1024px) {
-  #hero {
+  #home {
     background-attachment: fixed;
   }
 }
 
 @media (max-width: 991px) {
-  #hero {
+  #home {
     padding-top: 80px;
   }
-  #hero .animated {
+  #home .animated {
     -webkit-animation: none;
     animation: none;
   }
-  #hero .hero-img {
+  #home .hero-img {
     text-align: center;
   }
-  #hero .hero-img img {
+  #home .hero-img img {
     max-width: 50%;
   }
-  #hero h1 {
+  #home h1 {
     font-size: 28px;
     line-height: 32px;
     margin-bottom: 10px;
   }
-  #hero h2 {
+  #home h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
@@ -486,7 +486,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 575px) {
-  #hero .hero-img img {
+  #home .hero-img img {
     width: 80%;
   }
 }

@@ -148,7 +148,11 @@ class QuizController extends Controller
         }])->get();
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
-
+    public function deleteQuiz($id)
+    {
+        Quiz::where('id', $id)->delete();
+        return "Deleted Successfully";
+    }
     public function getlistbytopic($topic)
     {
         return 'success';
