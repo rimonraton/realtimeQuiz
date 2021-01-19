@@ -64,6 +64,13 @@ Route::get('quiz/quiz/list/{id}', 'QuizController@quizList');
 Route::get('profile', 'ProfileController@index');
 Route::post('profile/update', 'ProfileController@update');
 
+// Game
+Route::get('perform-message','PerformController@index');
+Route::get('game/setup','PerformController@gamesetup');
+Route::post('game/gamemode/save','PerformController@gamemodestore');
+Route::post('game/gamemode/update','PerformController@gamemodeupdate');
+Route::get('game/gamemode/delete/{id}','PerformController@gamemodedelete');
+Route::get('game/perform-message','PerformController@performmessagesetup');
 
 Auth::routes();
 
