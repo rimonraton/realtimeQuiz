@@ -1,24 +1,10 @@
 <template>
     <div class="container">
         <div class="winner" v-if="winner_screen">
-            <div v-if="user_ranking == 0">
-                <h2>Quiz Game Over</h2>
-                <h4 class="text-center">Congratulation ! </h4>
-                <h3><b>{{ user.name }}</b>, you won this game.</h3>
-            </div>
-            <div v-else-if="user_ranking == 1">
-                <h2>Quiz Game Over</h2>
-                <h4 class="text-center">Well Played ! </h4>
-                <h3><b>{{ user.name }}</b>, you got second place</h3>
-            </div>
-            <div v-else>
-                <h2>Quiz Game Over</h2>
-                <h4 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h4>
-            </div>
+            <h2 class="text-center">Quiz Game Over</h2>
+            <h3><b>{{ pm.perform_message }} </b></h3>
+            <resultdetails :results='results' :ws="winner_screen" />
 
-            <resultdetails :results='results' />
-            <button @click="winner_screen = 0" class="btn btn-sm btn-secondary my-3 w-25">Close</button>
-            
         </div>
 
         <div class="row justify-content-center">
@@ -38,19 +24,6 @@
                                 class="list-group-item list-group-item-action cursor my-1" v-html="option.option">
                             </li>
                         </ul> 
-
-
-                        <!-- <div v-for="me in menu">
-                            <p v-if="mc != menu.length">
-                               {{  me.mn }}
-                               
-                            
-                            <ul class="list-group" v-for="m in menu">
-                                <li v-if="me.mid == m.pid" class="list-group-item">{{  m.mn }}</li>
-                            </ul>
-                            </p>
-                            
-                        </div> -->
 
                     </div>
 
@@ -82,7 +55,7 @@
                         <span class="badge badge-danger badge-pill">{{ wrong }}</span>
                       </li>
                       <li v-if="qid > 0" class="list-group-item d-flex justify-content-between align-items-center p-0">
-                        <resultdetails :results='results'/>
+                        <resultdetails :results='results' :ws="winner_screen" />
                       </li>
                     </ul>
 
@@ -103,7 +76,7 @@
     
 
     export default {
-        props : ['id', 'user', 'questions'],
+        props : ['id', 'user', 'questions', 'gmsg'],
         components: { resultdetails },
 
         data() {
@@ -112,7 +85,6 @@
                 current: 0,
                 qid: 0,
                 winner_screen: false,
-                score: 0,
                 gamedata:{},
                 timer:null,
                 minutes:0,
@@ -122,6 +94,7 @@
                 answer_seconds:0,
                 answer_minutes:0,
                 mc:0,
+                pm:''
             };
         },
 
@@ -168,7 +141,7 @@
                 this.gamedata.['selected'] = a
                 this.gamedata.['isCorrect'] = rw
                 this.gamedata.['time'] = this.answer_minutes +':'+ this.answer_seconds 
-                rw ==1 ? this.correct ++ : this.wrong ++
+                rw == 1 ? this.correct ++ : this.wrong ++
                 
                 let clone = {...this.gamedata}
                 this.results.push(clone)
@@ -190,14 +163,26 @@
             },
 
             winner(){
-                this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+                var perform = this.correct / this.questions.length * 100
+
+                this.pm = this.gmsg.filter(g => g.perform_status >= perform)
+                                    .reduce(function(prev, curr) {
+                                     return prev.perform_status < curr.perform_status ? prev : curr;
+                                 });
                 this.winner_screen = 1
-                if(this.wrong == 0 ){
+                if(perform == 100 ){
                     confetti({
-                        zIndex:999999,
-                        particleCount: 200,
-                        spread: 120,
-                        origin: { y: 0.6 }
+                        zIndex:999999, particleCount: 200, spread: 120, origin: { y: 0.6 }
+                    });
+                }
+                if(perform >= 75 ){
+                    var colors = ['#bb0000', '#0AE84E'];
+
+                    confetti({ 
+                        zIndex:999999, particleCount: 100, angle: 60, spread: 55, origin: { x: 0 }, colors: colors
+                    });
+                    confetti({
+                        zIndex:999999, particleCount: 100, angle: 120, spread: 55, origin: { x: 1 }, colors: colors
                     });
                 }
             },
@@ -231,7 +216,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        /*background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);*/
+        background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
     }
     .q_num {
         position: absolute;

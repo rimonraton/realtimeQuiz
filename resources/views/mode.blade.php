@@ -1,4 +1,5 @@
 @extends('layouts.app')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 <style type="text/css">
   
     .card:hover{
@@ -96,18 +97,39 @@
 </style>
 @section('content')
 <div class="container">
-    {{-- <button class="btn btn-secondary btn-sm m-3 back">Back to Main</button> --}}
+  <div class="row justify-content-center ml-0">
+    <div class="btn-group" role="group" aria-label="Game Mode">
+      <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'success':'secondary' }}">
+        <i class="fas fa-address-card text-white"></i>
+        {{ __('msg.practice') }}
+      </a>
+      <a href="{{ url('Mode/Challenge') }}" class="btn btn-{{ $type =='Challenge' ? 'success':'secondary' }}">
+        <i class="fas fa-people-arrows text-white"></i>
+        {{ __('msg.challenge') }}
+      </a>
+      <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'success':'secondary' }}">
+        <i class="fas fa-user text-white"></i>
+        {{ __('msg.moderator') }}
+      </a>
+      <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'success':'secondary' }}">
+        <i class="fas fa-users text-white"></i>
+        {{ __('msg.team') }}
+      </a>
+    </div>
+  </div>
     <div class="row justify-content-center ml-0">
         @foreach($exams as $exam)
             <div class="col-md-4 col-sm-12 text-center">
                 <div class="card my-3">
                   <div class="card-body text-secondary">
                     <h5 class="card-title">{{ __('msg.quiz') }}</h5>
+                    <h5 class="card-title">{{ $exam->quizCategory->name }}</h5>
                     <p class="card-text">{{ $exam->quiz_name }}</p>
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
-                    <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>
-                    @if($type == 'Challenge' || $type == 'Group')
+                    
+                    @if($type != 'Practice')
+                      <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>
                       <div id="shareBtn{{ $exam->id }}" class="hide_share shareBtnDiv">
                         <iframe src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" class="iframe-size"></iframe>
                       </div>

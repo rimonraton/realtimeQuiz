@@ -96,7 +96,7 @@ return [
          * When the clean-command is executed, all recorded statistics older than
          * the number of days specified here will be deleted.
          */
-        'delete_statistics_older_than_days' => 60,
+        'delete_statistics_older_than_days' => 30,
 
         /*
          * Use an DNS resolver to make the requests to the statistics logger

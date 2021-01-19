@@ -1,5 +1,5 @@
 <template>
-    <div id="accordion">
+    <div id="accordion" class="w-100">
         <div class="card">
             <div class="card-header py-1 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <small class="mb-0 cursor">
@@ -40,18 +40,28 @@
                 </ul>
               </div>
             </div>
+            <div class="card-footer" v-if="ws==1">
+                <button @click="back" class="btn btn-sm btn-success">New Quiz</button>
+                <button @click="reloadPage" class="btn btn-sm btn-secondary float-right">Replay</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['results'],
+        props: ['results', 'ws'],
 
         methods: {
             ToText(HTML){
               var input = HTML;
               return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&lsquo;/g,'').replace(/&rsquo;/g,'');  
+            },
+            reloadPage(){
+                window.location.reload()
+            },
+            back(){
+                window.history.back()
             },
         }
 
@@ -59,5 +69,8 @@
 </script>
 
 <style>
+#accordion{
+    max-width: 500px !important;
+}
     
 </style>
