@@ -12,7 +12,15 @@
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                    @endif
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <a href="{{ url('password/reset') }}" class="btn btn-warning">
+                                    Retry Password Reset 
+                                </a>
+                            </div>
+                        </div>
+
+                    @else
 
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
@@ -30,7 +38,6 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                {{-- <input type="email" class="form-control" name="email" value="{{ old('email') }}" > --}}
                             </div>
                         </div>
 
@@ -40,13 +47,10 @@
                                     {{ __('Send Password Reset Link') }}
                                 </button>
                             </div>
-                            {{-- <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-warning">
-                                    Resend Password Reset Link
-                                </button>
-                            </div> --}}
                         </div>
                     </form>
+
+                    @endif
                 </div>
             </div>
         </div>
