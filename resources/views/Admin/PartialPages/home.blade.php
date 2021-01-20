@@ -7,6 +7,76 @@
             <div class="card-body">
                 <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
+                        <i class="fas fa-address-card"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Practice')}}">Practice</a></h3>
+                        <!-- <h5 class="text-muted mb-0">Total Quizzes</h5> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-warning">
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Challenge')}}">Challenge</a></h3>
+                        <!-- <h5 class="text-muted mb-0">Publish Quizzes</h5> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Group')}}">Team</a></h3>
+                        <!-- <h5 class="text-muted mb-0">Participants</h5> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Moderator')}}">Moderator</a></h3>
+                        <!-- <h5 class="text-muted mb-0">Active Participants</h5> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
                         <i class="ti-wallet"></i>
                     </div>
                     <div class="ml-2 align-self-center">
@@ -24,7 +94,8 @@
             <div class="card-body">
                 <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-warning">
-                        <i class="mdi mdi-cellphone-link"></i></div>
+                        <i class="mdi mdi-cellphone-link"></i>
+                    </div>
                     <div class="ml-2 align-self-center">
                         <h3 class="mb-0 font-weight-light">2376</h3>
                         <h5 class="text-muted mb-0">Publish Quizzes</h5>
@@ -40,7 +111,8 @@
             <div class="card-body">
                 <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
-                        <i class="mdi mdi-cart-outline"></i></div>
+                        <i class="mdi mdi-cart-outline"></i>
+                    </div>
                     <div class="ml-2 align-self-center">
                         <h3 class="mb-0 font-weight-light">1795</h3>
                         <h5 class="text-muted mb-0">Participants</h5>
@@ -56,7 +128,8 @@
             <div class="card-body">
                 <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
-                        <i class="mdi mdi-bullseye"></i></div>
+                        <i class="mdi mdi-bullseye"></i>
+                    </div>
                     <div class="ml-2 align-self-center">
                         <h3 class="mb-0 font-weight-light">687</h3>
                         <h5 class="text-muted mb-0">Active Participants</h5>
@@ -68,7 +141,7 @@
     <!-- Column -->
 </div>
 <!-- Row -->
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="">
@@ -89,7 +162,6 @@
                                         <div class="calendar-events mb-3" data-class="bg-warning"><i class="fa fa-circle text-warning mr-2"></i>Event Four
                                         </div>
                                     </div>
-                                    <!-- checkbox -->
                                     <div class="checkbox checkbox-info">
                                         <input type="checkbox" id="drop-remove" class="material-inputs">
                                         <label for="drop-remove"> <span>Remove after drop</span> </label>
@@ -110,9 +182,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- BEGIN MODAL -->
-<div class="modal none-border" id="my-event">
+<!-- <div class="modal none-border" id="my-event">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -128,9 +200,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Modal Add Category -->
-<div class="modal fade none-border" id="add-new-event">
+<!-- <div class="modal fade none-border" id="add-new-event">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,7 +236,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- END MODAL -->
 <!-- Row -->
 @endsection

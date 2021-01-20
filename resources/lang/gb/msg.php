@@ -50,7 +50,6 @@ return [
     'contactEmail' => 'Your Email',
     'contactSubject' => 'Subject',
     'contactMessage' => 'Message',
-
-    
+    'logout' => 'Log Out',
 
 ];

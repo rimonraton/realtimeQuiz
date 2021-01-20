@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!-- Favicon icon -->
-  <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/logo.jpg')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
   <title>{{ config('app.name', 'Gyankosh') }}</title>
   <link rel="canonical" href="https://www.wrappixel.com/templates/xtremeadmin/" />
   <link href="{{asset('Admin/assets/libs/chartist/dist/chartist.min.css')}}" rel="stylesheet">

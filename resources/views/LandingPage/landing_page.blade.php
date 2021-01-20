@@ -10,8 +10,9 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{asset('images/logo.jpg')}}" rel="icon">
-    <link href="{{asset('Landing/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+    <link href="{{asset('images/favicon.png')}}" rel="icon">
+    <link href="{{asset('images/favicon.png')}}" rel="apple-touch-icon">
+    <!-- <link href="{{asset('Landing/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon"> -->
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -85,7 +86,7 @@
                     <li><a href="{{ route('login') }}" id="login">{{__('msg.login')}}</a></li>
                     @endguest
                     @auth
-                    <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Log Out</a></li>
+                    <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{__('msg.logout')}}</a></li>
                     @endauth
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf

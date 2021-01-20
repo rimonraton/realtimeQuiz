@@ -39,7 +39,32 @@ class PerformController extends Controller
     public function performmessagesetup()
     {
         //    $perfom_message = PerformMessage::all();
-         $perfom_message = Game::with('perform_messages')->get();
+        $perfom_message = Game::with('perform_messages')->get();
         return view('Admin.PartialPages.GameSetup.performsetup', compact('perfom_message'));
+    }
+    public function performmessagesstore(Request $request)
+    {
+        // return $request->all();
+        PerformMessage::create([
+            'game_id' => $request->game_id,
+            'perform_status' => $request->perform_status,
+            'perform_message' => $request->message,
+        ]);
+        return redirect('game/perform-message');
+    }
+
+    public function performmessagesupdate(Request $request)
+    {
+        PerformMessage::where('id',$request->id)->update([
+            'perform_status' => $request->perform_status,
+            'perform_message' => $request->message,
+        ]);
+        return redirect('game/perform-message');
+    }
+
+    public function performmessagesdelete($id)
+    {
+        PerformMessage::where('id',$id)->delete();
+        return "Deleted Successfully";
     }
 }

@@ -157,4 +157,30 @@ class QuizController extends Controller
     {
         return 'success';
     }
+
+    public function quizEdit($id)
+    {
+        $quiz = Quiz::find($id);
+        $Questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
+        return view('Admin.PartialPages.Quiz.Edit/quiz_edit', compact(['Questions', 'quiz']));
+    }
+    public function quizUpdate(Request $request)
+    {
+        $questions = implode(',', $request->questions);
+        Quiz::where('id', $request->quiz_id)->update([
+            "questions" => $questions
+        ]);
+        return redirect('quiz/' . $request->quiz_id . '/edit');
+    }
+    public function quizdelete($quiz_id, $question_id)
+    {
+        $quiz = Quiz::find($quiz_id);
+        $questions = explode(",", $quiz->questions);
+        array_splice($questions, array_search($question_id, $questions), 1);
+        $q = implode(',', $questions);
+        Quiz::where('id', $quiz_id)->update([
+            "questions" => $q
+        ]);
+        return redirect()->back();
+    }
 }

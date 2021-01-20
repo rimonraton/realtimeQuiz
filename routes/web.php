@@ -54,7 +54,10 @@ Route::get('quiz/create', 'QuizController@create');
 Route::get('quiz/list/{topic}/{category?}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
 Route::get('quiz/getlist/{topic}', 'QuizController@getlistbytopic');
-Route::get('quiz/delete/{id}','QuizController@deleteQuiz');
+Route::get('quiz/delete/{id}', 'QuizController@deleteQuiz');
+Route::get('quiz/{id}/edit', 'QuizController@quizEdit');
+Route::post('quiz/update', 'QuizController@quizUpdate');
+Route::get('quiz/{quiz_id}/{question_id}/delete', 'QuizController@quizdelete');
 
 // Quiz with Option by id
 Route::get('quiz/quiz/{id}', 'QuizController@quiz');
@@ -65,12 +68,15 @@ Route::get('profile', 'ProfileController@index');
 Route::post('profile/update', 'ProfileController@update');
 
 // Game
-Route::get('perform-message','PerformController@index');
-Route::get('game/setup','PerformController@gamesetup');
-Route::post('game/gamemode/save','PerformController@gamemodestore');
-Route::post('game/gamemode/update','PerformController@gamemodeupdate');
-Route::get('game/gamemode/delete/{id}','PerformController@gamemodedelete');
-Route::get('game/perform-message','PerformController@performmessagesetup');
+Route::get('perform-message', 'PerformController@index');
+Route::get('game/setup', 'PerformController@gamesetup');
+Route::post('game/gamemode/save', 'PerformController@gamemodestore');
+Route::post('game/gamemode/update', 'PerformController@gamemodeupdate');
+Route::get('game/gamemode/delete/{id}', 'PerformController@gamemodedelete');
+Route::get('game/perform-message', 'PerformController@performmessagesetup');
+Route::post('game/perform-message/save', 'PerformController@performmessagesstore');
+Route::post('game/perform-message/edit', 'PerformController@performmessagesupdate');
+Route::get('game/perform-message/delete/{id}', 'PerformController@performmessagesdelete');
 
 Auth::routes();
 
