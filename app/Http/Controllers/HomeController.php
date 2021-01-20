@@ -25,7 +25,7 @@ class HomeController extends Controller
 
     public function Mode($type)
     {
-        $exams =  Quiz::paginate(9);
+        $exams =  Quiz::with('quizCategory')->paginate(9);
         $user = Auth::user();
         $ce = Category::with('exams')->get();
         return view('mode', compact('exams', 'user', 'ce', 'type'));
@@ -33,11 +33,13 @@ class HomeController extends Controller
 
     public function Game($type, Quiz $quiz, $uid)
     {
+        $game = \DB::table('games')->where('game_name', $type)->first();
+        $gmsg = \DB::table('perform_messages')->where('game_id', $game->id)->get();
         $id = $quiz->id;
         $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
         //  $questions = $exam->questions()->with('options')->get();
         $user = Auth::user();
-        return view('games.' . strtolower($type), compact('id', 'user', 'questions', 'uid'));
+        return view('games.' . strtolower($type), compact('id', 'user', 'questions', 'uid', 'gmsg'));
     }
 
 
