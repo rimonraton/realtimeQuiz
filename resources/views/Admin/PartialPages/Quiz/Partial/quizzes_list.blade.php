@@ -40,7 +40,7 @@
                                                 <td>{{$qs->quiz_name}}</td>
                                                 <td class="text-center">
                                                     <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->quiz_name}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a>
-                                                    <!-- <a class="edit" style="cursor: pointer; color:black;" data-id="" title="edit"><i class="fas fa-pencil-alt"></i></a> -->
+                                                    <a class="edit" href="{{url('quiz/'.$qs->id.'/edit')}}" style="cursor: pointer; color:black;" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                                     <!-- <a class="edit" href="" title="Edit"><i class="fas fa-pencil-alt"></i></a> -->
                                                     <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
 

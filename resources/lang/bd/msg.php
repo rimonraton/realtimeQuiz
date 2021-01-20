@@ -50,6 +50,7 @@ return [
     'contactEmail' => 'আপনার ইমেইল টাইপ করুন',
     'contactSubject' => 'যোগাযোগের বিষয়টি টাইপ করুন',
     'contactMessage' => 'যোগাযোগের বার্তা টাইপ করুন',
+    'logout' => 'প্রস্থান',
 
 
 
