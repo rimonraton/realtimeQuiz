@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-{{--     <link href="{{asset('Landing/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    {{-- <link href="{{asset('Landing/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('Landing/assets/vendor/icofont/icofont.min.css')}}" rel="stylesheet">
     <link href="{{asset('Landing/assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
     <link href="{{asset('Landing/assets/vendor/venobox/venobox.css')}}" rel="stylesheet">
@@ -27,7 +27,7 @@
     <link href="{{asset('Landing/assets/vendor/aos/aos.css')}}" rel="stylesheet"> --}}
 
     <!-- Template Main CSS File -->
-{{--     <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
+    {{-- <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('Landing/assets/css/landing.css')}}" rel="stylesheet"> --}}
     <link href="{{asset('css/theme.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
@@ -37,6 +37,9 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -94,6 +97,7 @@
                     <li class="drop-down">
                         <a href="#">
                             <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                            <i class="fas fa-angle-down"></i>
                         </a>
                         <ul>
                             <li>
@@ -130,9 +134,9 @@
                         </div> -->
                     </div>
                 </div>
-                <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="300">
+                <div id="logoimg" class="col-lg-5 order-1 order-lg-2 hero-img text-md-right" data-aos="zoom-out" data-aos-delay="300">
                     <!-- <img src="{{asset('Landing/assets/img/hero-img.png')}}" class="img-fluid animated" alt=""> -->
-                    <img src="{{asset('images/logo3.png')}}" class="img-fluid animated" alt="">
+                    <img src="{{asset('images/logo3.png')}}" class="img-fluid animated " alt="" width="115px">
                     <!-- <img src="{{asset('Landing/hero/7.gif')}}" class="img-fluid animated" alt=""> -->
                     <!-- <img src="{{asset('Landing/hero/6.gif')}}" class="img-fluid animated" alt=""> -->
                 </div>
@@ -166,7 +170,6 @@
                     <div class="col-8 m-auto icon-boxes d-flex flex-column align-items-stretch justify-content-center" data-aos="fade-left">
                         <div class="video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right">
                             <h3 class="text-center">{{ __('msg.SGM') }}</h3>
-                            <a href="https://www.youtube.com/embed/A4jqX3Psbig?rel=0&showinfo=0&autoplay=1" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
                         </div>
 
                         <div class="d-flex justify-content-center">
@@ -183,7 +186,9 @@
                                         <!-- <span class="pb-5" style="font-size: 16px;">Practice</span> -->
                                     </a>
                                     <div class="borogoldiv d-flex justify-content-center align-items-center">
-                                        {{__('msg.logo')}}
+                                        <!-- <a href="https://www.youtube.com/embed/A4jqX3Psbig?rel=0&showinfo=0&autoplay=1" class="venobox play-btn mb-4 yt" data-vbtype="video" data-autoplay="true"></a> -->
+                                        <a data-url="A4jqX3Psbig" href="#" class="play-btn mb-4 yt"></a>
+
                                         <!-- <i class="icofont-globe-alt"></i> -->
                                         <!-- <img src="{{asset('Landing/hero/brain.png')}}" alt=""> -->
                                     </div>
@@ -307,7 +312,7 @@
                             <h3><a href="">{{__('msg.moderator')}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
-                        <li class="list-group-item">নিয়ন্ত্রক সেশনে নিয়ন্ত্রক কুইজ শেয়ার করতে পারে</li>
+                            <li class="list-group-item">নিয়ন্ত্রক সেশনে নিয়ন্ত্রক কুইজ শেয়ার করতে পারে</li>
                             <li class="list-group-item">কুইজ শেয়ার এর লিংক এ ক্লিক করে প্রতিযোগি হিসেবে যোগ করতে পারে</li>
                             <li class="list-group-item">নির্দিষ্ট সময়ে নিয়ন্ত্রক কুইজ শুরু করতে পারে</li>
                             <li class="list-group-item">কুইজ ভবিষ্যদ্বাণী করতে পারে</li>
@@ -331,7 +336,8 @@
                     @foreach($category as $c)
                     <div class="col-lg-3 col-md-4 mt-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
-                            <i class="ri-store-line" style="color: #ffbb2c;"></i>
+                            <!-- <i class="ri-store-line" style="color: #ffbb2c;"></i> -->
+                            <i class="fas fa-book"></i>
                             <h3><a href="">{{$c->name}}</a></h3>
                         </div>
                     </div>
@@ -415,7 +421,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="count-box">
-                            <i class="icofont-brainstorming"></i>
+                            <i class="fas fa-user"></i>
                             <span data-toggle="counter-up">1,463</span>
                             <p>{{__('msg.participants')}}</p>
                         </div>
@@ -423,7 +429,7 @@
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
                         <div class="count-box">
-                            <i class="icofont-group"></i>
+                            <i class="fas fa-users"></i>
                             <span data-toggle="counter-up">521</span>
                             <p>{{__('msg.teams')}}</p>
                         </div>
@@ -431,7 +437,7 @@
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
-                            <i class="icofont-globe-alt"></i>
+                            <i class="fas fa-brain"></i>
                             <span data-toggle="counter-up">200</span>
                             <p>{{__('msg.quiz')}}</p>
                         </div>
@@ -439,7 +445,7 @@
 
                     <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                         <div class="count-box">
-                            <i class="icofont-users-alt-5"></i>
+                            <i class="fas fa-trophy"></i>
                             <span data-toggle="counter-up">15</span>
                             <p>{{__('msg.winner')}}</p>
                         </div>
@@ -637,9 +643,11 @@
                         <!-- <h3>Saul Goodman</h3> -->
                         <!-- <h4>Ceo &amp; Founder</h4> -->
                         <p>
-                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                            <!-- <i class="bx bxs-quote-alt-left quote-icon-left"></i> -->
+                            <i class="fas fa-quote-left"></i>
                             Gyankosh
-                            <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            <i class="fas fa-quote-right"></i>
+                            <!-- <i class="bx bxs-quote-alt-right quote-icon-right"></i> -->
                         </p>
                     </div>
 
@@ -936,19 +944,19 @@
                     <div class="col-lg-4" data-aos="fade-right" data-aos-delay="100">
                         <div class="info">
                             <div class="address">
-                                <i class="icofont-google-map"></i>
+                                <i class="fas fa-map-marker-alt"></i>
                                 <h4>{{__('msg.location')}}:</h4>
                                 <p>House: 1150, Road: 9/A, Avenue:11, Mirpur DOHS, Dhaka-1216</p>
                             </div>
 
                             <div class="email">
-                                <i class="icofont-envelope"></i>
+                                <i class="fas fa-envelope"></i>
                                 <h4>{{__('msg.email')}}:</h4>
                                 <p>info@maharah.online</p>
                             </div>
 
                             <div class="phone">
-                                <i class="icofont-phone"></i>
+                                <i class="fas fa-phone"></i>
                                 <h4>{{__('msg.call')}}:</h4>
                                 <p>+880 9617171125</p>
                             </div>
@@ -1006,18 +1014,18 @@
                             <h3>Darco Technologies Limited</h3>
                             <!-- <p class="pb-3"><em>Qui repudiandae et eum dolores alias sed ea. Qui suscipit veniam excepturi quod.</em></p> -->
                             <p>
-                                House: 1150, Road: 9/A, Avenue:11 <br>
-                                Mirpur DOHS,Dhaka-1216<br><br>
+                                House: 1150, Road: 9/A, Avenue: 11 <br>
+                                Mirpur DOHS, Dhaka-1216<br><br>
                                 <strong>Phone:</strong> +880 9617171125<br>
                                 <strong>Email:</strong> info@maharah.online<br>
                             </p>
-                            <div class="social-links mt-3">
+                            <!-- <div class="social-links mt-3">
                                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                                 <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
                                 <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
                                 <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
                                 <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-lg-1 col-md-6 footer-links">
@@ -1026,11 +1034,12 @@
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Links</h4>
                         <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#about">Quiz</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#features">Features</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#topics">Topics</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#faq">FAQ</a></li>
+                            <li><i class="fas fa-home pr-1"></i><a href="#">Home</a></li>
+                            <li><i class="fas fa-brain pr-1"></i><a href="#about">Quiz</a></li>
+                            <li><i class="fas fa-list-ul pr-1"></i><a href="#features">Features</a></li>
+                            <li><i class="fas fa-book-reader pr-1"></i><a href="#topics">Topics</a></li>
+                            <li><i class="fas fa-address-book pr-1"></i><a href="#contact">Contact</a></li>
+                            <!-- <li><i class="fas fa-question pr-1"></i> <a href="#faq">FAQ</a></li> -->
                         </ul>
                     </div>
 
@@ -1046,7 +1055,9 @@
                     </div> -->
 
                     <div class="col-lg-4 col-md-6">
-                        <img src="{{asset('images/logo3.png')}}" class="img-fluid animated" alt="">
+                        <div class="footer-info">
+                            <img src="{{asset('images/logo3.png')}}" width="170px" class="img-fluid animated" alt="">
+                        </div>
                         <!-- <h4>Our Newsletter</h4>
                         <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
                         <form action="" method="post">
@@ -1072,12 +1083,22 @@
             </div>
         </div>
     </footer><!-- End Footer -->
+    <div class="modal fade" id="youtubeVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close closebutton" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <!-- <iframe id="ifm" src="https://www.youtube.com/embed/A4jqX3Psbig?autoplay=true" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+    <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
-{{--     <script src="{{asset('Landing/assets/vendor/jquery/jquery.min.js')}}"></script>
+    {{-- <script src="{{asset('Landing/assets/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('Landing/assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('Landing/assets/vendor/jquery.easing/jquery.easing.min.js')}}"></script>
     <script src="{{asset('Landing/assets/vendor/php-email-form/validate.js')}}"></script>
@@ -1095,6 +1116,17 @@
             // $('#reg').click(function(){
             //     window.href = "{{route('register')}}";
             // })
+            $('.yt').on('click', function(event) {
+                event.preventDefault();
+                var idVideo = $(this).data('url');
+                $('#youtubeVideo .modal-body').append('<button type="button" class="close closebutton" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><iframe id="ifm" src="https://www.youtube.com/embed/' + idVideo + '?autoplay=true" frameborder="0" allowfullscreen></iframe>');
+                $('#youtubeVideo').modal('show');
+            })
+            $('#youtubeVideo').on('hidden.bs.modal', function() {
+                $('#youtubeVideo .modal-body').empty();
+            });
+
+
         })
     </script>
 

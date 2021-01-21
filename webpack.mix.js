@@ -27,12 +27,8 @@ mix.js('resources/js/app.js', 'public/js')
 		], 'public/js/theme.js')
 		.styles([
 		    'public/Landing/assets/vendor/bootstrap/css/bootstrap.min.css',
-		    'public/Landing/assets/vendor/icofont/icofont.min.css',
 		    'public/Landing/assets/vendor/boxicons/css/boxicons.min.css',
-		    'public/Landing/assets/vendor/venobox/venobox.css',
-		    'public/Landing/assets/vendor/remixicon/remixicon.css',
 		    'public/Landing/assets/vendor/owl.carousel/assets/owl.carousel.min.css',
-		    'public/Landing/assets/vendor/aos/aos.css',
 		    'public/Landing/assets/css/style.css',
 		    'public/Landing/assets/css/landing.css'
 		], 'public/css/theme.css');
