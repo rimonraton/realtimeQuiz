@@ -221,11 +221,19 @@
                         <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
                             <div class="col-sm-9" id="topic">
-                                <select class="form-control custom-select" name="category" required>
+                                <select class="form-control custom-select" id="getTopic" name="category" required>
                                     <option value="">Select Topic</option>
                                     @foreach($category as $c)
                                     <option value="{{$c->id}}">{{$c->name}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3 subtopicDiv" style="display: none;">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
+                            <div class="col-sm-9">
+                                <select class="form-control custom-select" name="subtopic" id="showsubtopic">
+                                    <option value="">Select Sub Topic</option>
                                 </select>
                             </div>
                         </div>
@@ -443,6 +451,24 @@
                 // alert('Unchecked');
             }
         });
+
+        $('#getTopic').on('change', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "{{url('question/subtopic')}}/" + id,
+                type: "GET",
+                success: function(data) {
+                    if (data != '') {
+                        $('.subtopicDiv').show();
+                        $("#showsubtopic").append(data);
+                    }
+                    else{
+                        $('.subtopicDiv').hide();
+                    }
+                }
+            })
+
+        })
     })
 </script>
 @endsection

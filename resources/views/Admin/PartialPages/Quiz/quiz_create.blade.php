@@ -65,6 +65,14 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row subtopicDiv" style="display: none;">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
+                            <div class="col-sm-9">
+                                <select class="form-control custom-select" name="subtopic" id="showsubtopic">
+                                    <option value="">Select Sub Topic</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type</label>
                             <div class="col-sm-9" id="options">
@@ -212,6 +220,22 @@
         });
 
         $(document).on('change', '#topic', function() {
+            // alert('world');
+            var id = $(this).val();
+            var cid = $('#category').val();
+            if (id == 0) {
+                console.log('Nothing Topic')
+            } else {
+                if (cid == 0) {
+                    questions(id, '');
+                } else {
+                    questions(id, cid)
+                }
+            }
+
+
+        })
+        $(document).on('change', '#showsubtopic', function() {
             // alert('world');
             var id = $(this).val();
             var cid = $('#category').val();
@@ -384,6 +408,24 @@
             </div>`;
             $('#newQ').append(data);
             $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+
+        })
+
+        $('.artopic').on('change', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "{{url('question/subtopic')}}/" + id,
+                type: "GET",
+                success: function(data) {
+                    if (data != '') {
+                        $('.subtopicDiv').show();
+                        $("#showsubtopic").append(data);
+                    }
+                    else{
+                        $('.subtopicDiv').hide();
+                    }
+                }
+            })
 
         })
     })

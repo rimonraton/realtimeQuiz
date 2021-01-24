@@ -18,17 +18,6 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    {{-- <link href="{{asset('Landing/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/icofont/icofont.min.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/venobox/venobox.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/owl.carousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/vendor/aos/aos.css')}}" rel="stylesheet"> --}}
-
-    <!-- Template Main CSS File -->
-    {{-- <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
-    <link href="{{asset('Landing/assets/css/landing.css')}}" rel="stylesheet"> --}}
     <link href="{{asset('css/theme.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- =======================================================
@@ -136,7 +125,7 @@
                 </div>
                 <div id="logoimg" class="col-lg-5 order-1 order-lg-2 hero-img text-md-right" data-aos="zoom-out" data-aos-delay="300">
                     <!-- <img src="{{asset('Landing/assets/img/hero-img.png')}}" class="img-fluid animated" alt=""> -->
-                    <img src="{{asset('images/logo3.png')}}" class="img-fluid animated " alt="" width="115px">
+                    <img src="{{asset('images/logobe.png')}}" class="img-fluid animated " alt="" width="115px">
                     <!-- <img src="{{asset('Landing/hero/7.gif')}}" class="img-fluid animated" alt=""> -->
                     <!-- <img src="{{asset('Landing/hero/6.gif')}}" class="img-fluid animated" alt=""> -->
                 </div>
@@ -342,6 +331,12 @@
                         </div>
                     </div>
                     @endforeach
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <img src="{{asset('Landing/assets/img/topics/math.png')}}" alt="">
+                            <h3><a href="">{{$c->name}}</a></h3>
+                        </div>
+                    </div>
                     <!-- <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                             <i class="ri-bar-chart-box-line" style="color: #5578ff;"></i>
@@ -967,7 +962,8 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                        <form action="{{url('contact')}}" method="post" role="form" class="php-email-form">
+                            @csrf
                             <div class="form-row">
                                 <div class="col-md-6 form-group">
                                     <input type="text" name="name" class="form-control" id="name" placeholder="{{__('msg.contactName')}}" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
@@ -1056,7 +1052,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <img src="{{asset('images/logo3.png')}}" width="170px" class="img-fluid animated" alt="">
+                            <img src="{{asset('images/logobe.png')}}" width="170px" class="img-fluid animated" alt="">
                         </div>
                         <!-- <h4>Our Newsletter</h4>
                         <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
@@ -1096,20 +1092,6 @@
 
     <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
-
-    <!-- Vendor JS Files -->
-    {{-- <script src="{{asset('Landing/assets/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/jquery.easing/jquery.easing.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/php-email-form/validate.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/venobox/venobox.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/waypoints/jquery.waypoints.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/counterup/counterup.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/owl.carousel/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('Landing/assets/vendor/aos/aos.js')}}"></script> --}}
-
-    <!-- Template Main JS File -->
-    {{-- <script src="{{asset('Landing/assets/js/main.js')}}"></script> --}}
     <script src="{{asset('js/theme.js')}}"></script>
     <script>
         $(function() {
@@ -1127,7 +1109,8 @@
             });
 
 
-        })
+        });
+        
     </script>
 
 </body>

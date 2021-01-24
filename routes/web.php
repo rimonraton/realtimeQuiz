@@ -32,6 +32,7 @@ Route::get('question/category', 'QuestionController@index');
 Route::post('question/savecategory', 'QuestionController@store');
 Route::post('question/updatecategory', 'QuestionController@update');
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
+
 // Questions
 Route::get('question/list', 'QuestionController@list');
 Route::get('question/create', 'QuestionController@create');
@@ -41,6 +42,8 @@ Route::get('question/edit/{id}', 'QuestionController@editQuestion');
 Route::post('question/update', 'QuestionController@updateQuestion');
 Route::get('question/delete/{id}', 'QuestionController@deleteQuestion');
 Route::get('question/list/view/{cid}', 'QuestionController@getQuestiontoday');
+// Question subtopic
+Route::get('question/subtopic/{id}','SubTopicController@index');
 
 // Quiz Category
 Route::get('quiz/categorylist', 'QuizController@categorylist');
@@ -107,3 +110,5 @@ Route::get('setLanguage/{locale}', function ($locale) {
 	session(['locale' => $locale]);
 	return redirect()->back();
 });
+
+Route::post('contact','ContractController@sendMessage');
