@@ -409,6 +409,7 @@
   <script src="{{asset('Admin/assets/libs/bootstrap-switch/dist/js/bootstrap-switch.min.js')}}"></script>
   <script src="{{asset('Admin/assets/extra-libs/toastr/dist/build/toastr.min.js')}}"></script>
   <script src="{{asset('Admin/assets/extra-libs/toastr/toastr-init.js')}}"></script>
+  <script src="{{asset('Admin/assets/libs/nestable/jquery.nestable.js')}}"></script>
 
   <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script> -->
   @yield('js')

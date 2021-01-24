@@ -206,12 +206,16 @@
             // alert('Hello');
             var cid = $(this).val();
             var id = $('#topic').val();
+            var tid = $('#showsubtopic').val();
+            alert(cid + id);
             if ($(this).val() == 0) {
                 questions(id, '');
                 console.log('Nothing..');
 
             } else {
-                if (id != 0) {
+                if (id != 0 && tid != "") {
+                    questions(tid, cid);
+                } else if (id != 0 && tid == "") {
                     questions(id, cid);
                 } else {
                     console.log('Select Topic')
@@ -419,10 +423,10 @@
                 success: function(data) {
                     if (data != '') {
                         $('.subtopicDiv').show();
-                        $("#showsubtopic").append(data);
-                    }
-                    else{
+                        $("#showsubtopic").empty().append(data);
+                    } else {
                         $('.subtopicDiv').hide();
+                        $("#showsubtopic").html(`<option value="">Select Sub Topic</option>`);
                     }
                 }
             })

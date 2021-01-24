@@ -331,12 +331,12 @@
                         </div>
                     </div>
                     @endforeach
-                    <div class="col-lg-3 col-md-4 mt-4">
+                    <!-- <div class="col-lg-3 col-md-4 mt-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
                             <img src="{{asset('Landing/assets/img/topics/math.png')}}" alt="">
                             <h3><a href="">{{$c->name}}</a></h3>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                             <i class="ri-bar-chart-box-line" style="color: #5578ff;"></i>
