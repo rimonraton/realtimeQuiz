@@ -28,15 +28,26 @@ class QuestionController extends Controller
 
         //    return Question::whereIn('id', $values)->get();
         // dd($values);
-        $category = Category::all();
+        $category = Category::orderBy('id', 'desc')->get();
         return view('Admin.PartialPages.Questions.category', compact('category'));
     }
     public function store(Request $request)
     {
+        // return $request->all();
         $request->validate([
             'name' => 'required',
         ]);
-        Category::create(['name' => $request->name]);
+        $parentId = '';
+        if ($request->topic == '') {
+            $parentId = 0;
+        } else {
+            $parentId = $request->topic;
+        }
+        // return $parentId;
+        Category::create([
+            'name' => $request->name,
+            'sub_topic_id' => $parentId
+        ]);
         return redirect('question/category');
     }
     public function update(Request $request)
@@ -60,21 +71,33 @@ class QuestionController extends Controller
     }
     public function create()
     {
-        $category = Category::all();
+        $category = Category::where('sub_topic_id', 0)->get();
         $quizCategory = QuizCategory::all();
         return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory']));
     }
     public function storeQuestion(Request $request)
     {
         // return $request->all();
+        // $request->validate([
+        //     'category_id' => 'required',
+        //     'question_text' => 'required',
+        //     'option' => 'required',
+        //     'correct' => 'required',
+        // ]);
+        $categoryid = $request->cid;
         $location = '';
+        $imgPath = '';
         if ($request->customRadio == 'image') {
             $location = 'images/question_images/';
         } else {
             $location = 'videos/question_videos/';
         }
-        // return $location;
-        $imgPath = '';
+        // if ($request->subtopic == '') {
+        //     $categoryid = $request->category;
+        // } else {
+        //     $categoryid = $request->subtopic;
+        // }
+        // return $categoryid;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $original_name = $file->getClientOriginalName();
@@ -90,7 +113,7 @@ class QuestionController extends Controller
         }
         // return $imgPath;
         $question = Question::create([
-            'category_id' => $request->category,
+            'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,
             'question_text' => $request->question,
             'question_file_link' => $imgPath,
@@ -106,7 +129,7 @@ class QuestionController extends Controller
             $data[$k]['correct'] = $a;
         }
         QuestionsOption::insert($data);
-        return redirect('question/list/view' . '/' . $request->category);
+        return redirect('question/list/view' . '/' . $categoryid);
     }
     public function getlist($id)
     {

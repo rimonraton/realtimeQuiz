@@ -4,51 +4,39 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions Catagories</h4>
+                <h4 class="card-title text-center">Questions Topics</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Category</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Add New Topic</button>
                 <!-- Add Contact Popup Model -->
-                <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Category</h4>
+                                <h4 class="modal-title" id="myModalLabel">Add New Topics</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
                                 <form class="form-horizontal form-material" method="POST" action="{{url('question/savecategory')}}" autocomplete="off">
                                     @csrf
                                     <div class="form-group">
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type category" require>
-                                        </div>
-                                        <!-- <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Email">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Phone">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Designation"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Age">
-                                        </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Date of joining"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" placeholder="Salary"> </div>
-                                        <div class="col-md-12 m-b-20">
-                                            <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light btn-sm">
-                                                <span><i class="ion-upload m-r-5"></i>Upload Contact
-                                                    Image</span>
-                                                <input type="file" class="upload"> </div>
-                                        </div> -->
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        <div class="col-12 m-b-20">
+                                            <select class="form-control custom-select" name="topic">
+                                                <option value="">Select Topic</option>
+                                                @foreach($category as $c)
+                                                <option value="{{$c->id}}">{{$c->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <div class="col-12 m-b-20">
+                                            <input type="text" class="form-control" name="name" placeholder="Type Topic/Sub-Topic" require>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
                                 </form>
                             </div>
 
@@ -112,11 +100,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Category</h4>
+                <h4 class="modal-title" id="myModalLabel">Update Topic</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}">
+                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
@@ -142,14 +130,14 @@
 @section('js')
 <script>
     $(function() {
-        $('.edit').on('click', function(e) {
+        $(document).on('click','.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
             $('#edit-category').modal('show');
         })
 
-        $(".delete").click(function() {
+        $(document).on('click',".delete",function() {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

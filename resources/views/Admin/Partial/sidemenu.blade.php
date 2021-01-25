@@ -17,6 +17,7 @@
                     <li class="sidebar-item"><a href="{{url('question/list')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu"> List Of Questions </span></a></li>
                     <li class="sidebar-item"><a href="{{url('question/create')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu"> Create Questions </span></a></li>
                     <li class="sidebar-item"><a href="{{url('question/category')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu">Questions Topics</span></a></li>
+                    <!-- <li class="sidebar-item"><a href="{{url('question/subtopic')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu">Sub Topics</span></a></li> -->
                 </ul>
             </li>
             <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-library"></i><span class="hide-menu">Quiz</span></a>
