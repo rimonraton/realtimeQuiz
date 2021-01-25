@@ -23,8 +23,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <!-- <button type="submit" class="btn btn-info waves-effect">Update</button> -->
+                        <!-- <a type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</a> -->
                     </div>
                 </form>
             </div>

@@ -85,13 +85,13 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
-                            <div class="col-sm-7">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                            <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
-                                        <li class="dd-item">
+                                        <li class="dd-item" id="parentdd">
                                             <div class="dd-handle-new">
-                                                Select Topic
+                                                <strong class="selectedTopic">Select Topic</strong>
                                             </div>
                                             <ol class="dd-list">
                                                 @foreach($question_topic as $c)
@@ -107,7 +107,7 @@
                                     </ol>
                                 </div>
                             </div>
-                            <p class="col-sm-2" id="selectedTopic"></p>
+                            <!-- <p class="col-sm-2 selectedTopic"></p> -->
                         </div>
                         <!-- <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Topic</label>
@@ -128,7 +128,7 @@
                                 </select>
                             </div>
                         </div> -->
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type</label>
                             <div class="col-sm-9" id="options">
                                 <select class="form-control custom-select arcategory" name="category" id="category">
@@ -138,7 +138,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div id="FromQB" class="d-flex justify-content-center"> -->
 
                         <div id="viewData" class="justify-content-center" style="display: none">
@@ -257,90 +257,40 @@
 <script>
     $(function() {
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-        $(document).on('change', '#category', function() {
-            // alert('Hello');
-            var cid = $(this).val();
-            // var id = $('#topic').val();
-            // var tid = $('#showsubtopic').val();
-            var tid = $("#selectedCid").val();
-            // alert(cid + tid);
-            if (tid != 0) {
-                questions(tid, cid);
-            }
-            else{
-                // questions(tid,'');
-            }
-            // if ($(this).val() == 0) {
-            //     questions(id, '');
-            //     console.log('Nothing..');
-
-            // } else {
-            //     if (id != 0 && tid != "") {
-            //         questions(tid, cid);
-            //     } else if (id != 0 && tid == "") {
-            //         questions(id, cid);
-            //     } else {
-            //         console.log('Select Topic')
-            //     }
-            // }
-        });
-
-        $(document).on('change', '#topic', function() {
-            // alert('world');
-            var id = $(this).val();
-            var cid = $('#category').val();
-            if (id == 0) {
-                console.log('Nothing Topic')
-            } else {
-                if (cid == 0) {
-                    questions(id, '');
-                } else {
-                    questions(id, cid)
-                }
-            }
+        // $(document).on('change', '#topic', function() {
+        //     // alert('world');
+        //     var id = $(this).val();
+        //     var cid = $('#category').val();
+        //     if (id == 0) {
+        //         console.log('Nothing Topic')
+        //     } else {
+        //         if (cid == 0) {
+        //             questions(id, '');
+        //         } else {
+        //             questions(id, cid)
+        //         }
+        //     }
 
 
-        })
-        $(document).on('change', '#showsubtopic', function() {
-            // alert('world');
-            var id = $(this).val();
-            var cid = $('#category').val();
-            if (id == 0) {
-                console.log('Nothing Topic')
-            } else {
-                if (cid == 0) {
-                    questions(id, '');
-                } else {
-                    questions(id, cid)
-                }
-            }
+        // })
+        // $(document).on('change', '#showsubtopic', function() {
+        //     // alert('world');
+        //     var id = $(this).val();
+        //     var cid = $('#category').val();
+        //     if (id == 0) {
+        //         console.log('Nothing Topic')
+        //     } else {
+        //         if (cid == 0) {
+        //             questions(id, '');
+        //         } else {
+        //             questions(id, cid)
+        //         }
+        //     }
 
 
-        })
+        // })
 
-        function questions(id, cid) {
-            var url = '';
-            if (cid == '') {
-                url = "{{url('quiz/list')}}/" + id;
-            } else {
-                url = "{{url('quiz/list')}}/" + id + '/' + cid;
-            }
-            $.ajax({
-                url: url,
-                type: "GET",
-                beforeSend: function() {
-                    console.log('Before Send');
-                },
-                success: function(data) {
-                    $('#viewData').addClass('d-flex');
-                    $('#viewData').html(data);
-                    console.log(data);
-                },
-                complete: function() {
-                    console.log('Completed');
-                }
-            })
-        }
+
 
         $('#qb').on('change', function() {
             $('#FromQB').show();
@@ -501,26 +451,37 @@
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
                 $('#selectedCid').val('');
-                $('#selectedTopic').html('');
+                $('.selectedTopic').html('Select Topic');
             } else {
-                // $('.topicls').removeClass('activeli');
-                // $(this).addClass('activeli');
-                // alert($(this).attr('data-cid'));
-
+                $('#parentdd').addClass('dd-collapsed').children('[data-action="collapse"]').hide();
+                $('#parentdd').children('[data-action="expand"]').show();
                 $('.topicls').removeClass('activeli');
                 $(this).addClass('activeli');
                 $('#selectedCid').val($(this).attr('data-cid'));
-                $('#selectedTopic').html($(this).text());
-                var cid = $('#category').val();
+                $('.selectedTopic').html($(this).text());
                 var tid = $(this).attr('data-cid');
-                if (cid == "") {
-                    questions(tid, '');
-                } else {
-                    questions(tid, cid)
-                }
+                questions(tid);
             }
 
         })
+
+        function questions(id) {
+            $.ajax({
+                url: "{{url('quiz/list')}}/" + id,
+                type: "GET",
+                beforeSend: function() {
+                    console.log('Before Send');
+                },
+                success: function(data) {
+                    $('#viewData').addClass('d-flex');
+                    $('#viewData').html(data);
+                    console.log(data);
+                },
+                complete: function() {
+                    console.log('Completed');
+                }
+            })
+        }
         var updateOutput = function(e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
