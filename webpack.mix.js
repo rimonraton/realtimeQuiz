@@ -51,7 +51,8 @@ mix.js('resources/js/app.js', 'public/js/quizapp.js')
 		    'public/Admin/assets/extra-libs/sweetalert2/sweet-alert.init.js',
 		    'public/Admin/assets/libs/bootstrap-switch/dist/js/bootstrap-switch.min.js',
 		    'public/Admin/assets/extra-libs/toastr/dist/build/toastr.min.js',
-		    'public/Admin/assets/extra-libs/toastr/toastr-init.js'
+		    'public/Admin/assets/extra-libs/toastr/toastr-init.js',
+		    'public/Admin/assets/libs/nestable/jquery.nestable.js'
 		], 'public/js/theme-admin.js')
 		.styles([
 		    'public/Admin/assets/libs/chartist/dist/chartist.min.css',
