@@ -1,6 +1,8 @@
 {
-    "/js/app.js": "/js/app.js",
+    "/js/quizapp.js": "/js/quizapp.js",
     "/css/app.css": "/css/app.css",
-    "/js/theme.js": "/js/theme.js",
-    "/css/theme.css": "/css/theme.css"
+    "/js/theme-site.js": "/js/theme-site.js",
+    "/css/theme-site.css": "/css/theme-site.css",
+    "/js/theme-admin.js": "/js/theme-admin.js",
+    "/css/theme-admin.css": "/css/theme-admin.css"
 }

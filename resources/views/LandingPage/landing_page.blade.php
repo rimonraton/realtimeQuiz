@@ -29,7 +29,7 @@
     <!-- Template Main CSS File -->
     {{-- <link href="{{asset('Landing/assets/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('Landing/assets/css/landing.css')}}" rel="stylesheet"> --}}
-    <link href="{{asset('css/theme.css')}}" rel="stylesheet">
+    <link href="{{asset('css/theme-site.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- =======================================================
   * Template Name: Bootslander - v2.3.0
@@ -1110,7 +1110,7 @@
 
     <!-- Template Main JS File -->
     {{-- <script src="{{asset('Landing/assets/js/main.js')}}"></script> --}}
-    <script src="{{asset('js/theme.js')}}"></script>
+    <script src="{{asset('js/theme-site.js')}}"></script>
     <script>
         $(function() {
             // $('#reg').click(function(){

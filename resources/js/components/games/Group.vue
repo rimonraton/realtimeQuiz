@@ -397,11 +397,6 @@
                 let confetti = document.createElement('script')
                 confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
                 document.head.appendChild(confetti)
-
-                let share = document.createElement('script')
-                share.async = true
-                share.setAttribute('src', 'https://platform-api.sharethis.com/js/sharethis.js#property=5e896e693790270019b8aac5&product=inline-share-buttons')
-                document.head.appendChild(share)
             },
 
             kickUser(id){

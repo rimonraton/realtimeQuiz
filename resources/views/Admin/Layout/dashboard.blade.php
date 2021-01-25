@@ -11,21 +11,8 @@
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
   <title>{{ config('app.name', 'Gyankosh') }}</title>
-  <link rel="canonical" href="https://www.wrappixel.com/templates/xtremeadmin/" />
-  <link href="{{asset('Admin/assets/libs/chartist/dist/chartist.min.css')}}" rel="stylesheet">
-  <link href="{{asset('Admin/dist/js/pages/chartist/chartist-init.css')}}" rel="stylesheet">
-  <link href="{{asset('Admin/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css')}}" rel="stylesheet">
-  <link href="{{asset('Admin/assets/libs/c3/c3.min.css')}}" rel="stylesheet">
-  <!-- Vector CSS -->
-  <link href="{{asset('Admin/assets/libs/jvectormap/jquery-jvectormap.css')}}" rel="stylesheet" />
-  <link href="{{asset('Admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css')}}" rel="stylesheet">
-  <!-- Custom CSS -->
-  <link href="{{asset('Admin/dist/css/style.min.css')}}" rel="stylesheet">
-  <link href="{{asset('Admin/assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
-  <link href="{{asset('Admin/assets/libs/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
-  <link rel="stylesheet" href="{{asset('Admin/assets/extra-libs/taskboard/css/lobilist.css')}}">
-  <link href="{{asset('Admin/assets/extra-libs/toastr/dist/build/toastr.min.css')}}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{{asset('Admin/assets/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')}}">
+  <link href="{{asset('css/theme-admin.css')}}" rel="stylesheet">
+  
   <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css"> -->
   @yield('css')
 
@@ -366,50 +353,7 @@
   <!-- ============================================================== -->
   <!-- All Jquery -->
   <!-- ============================================================== -->
-  <script src="{{asset('Admin/assets/libs/jquery/dist/jquery.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/taskboard/js/jquery-ui.min.js')}}"></script>
-
-  <!-- Bootstrap tether Core JavaScript -->
-  <script src="{{asset('Admin/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-  <!-- apps -->
-  <script src="{{asset('Admin/dist/js/app.min.js')}}"></script>
-  <script src="{{asset('Admin/dist/js/app.init.js')}}"></script>
-  <script src="{{asset('Admin/dist/js/app-style-switcher.js')}}"></script>
-  <!-- slimscrollbar scrollbar JavaScript -->
-  <script src="{{asset('Admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/sparkline/sparkline.js')}}"></script>
-  <!--Wave Effects -->
-  <script src="{{asset('Admin/dist/js/waves.js')}}"></script>
-  <!--Menu sidebar -->
-  <script src="{{asset('Admin/dist/js/sidebarmenu.js')}}"></script>
-  <!--Custom JavaScript -->
-  <script src="{{asset('Admin/dist/js/custom.min.js')}}"></script>
-  <!--This page JavaScript -->
-  <!-- chartist chart -->
-  <script src="{{asset('Admin/assets/libs/chartist/dist/chartist.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js')}}"></script>
-  <!--c3 JavaScript -->
-  <script src="{{asset('Admin/assets/libs/d3/dist/d3.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/c3/c3.min.js')}}"></script>
-  <!-- Vector map JavaScript -->
-  <script src="{{asset('Admin/assets/libs/jvectormap/jquery-jvectormap.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/jvector/jquery-jvectormap-us-aea-en.js')}}"></script>
-  <!-- Chart JS -->
-  <script src="{{asset('Admin/dist/js/pages/dashboards/dashboard2.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/datatables/media/js/jquery.dataTables.min.js')}}"></script>
-  <script src="{{asset('Admin/dist/js/pages/datatable/custom-datatable.js')}}"></script>
-  <script src="{{asset('Admin/dist/js/pages/datatable/datatable-basic.init.js')}}"></script>
-  <!--This page JavaScript -->
-  <script src="{{asset('Admin/assets/libs/moment/min/moment.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
-  <script src="{{asset('Admin/dist/js/pages/calendar/cal-init.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/sweetalert2/sweet-alert.init.js')}}"></script>
-  <script src="{{asset('Admin/assets/libs/bootstrap-switch/dist/js/bootstrap-switch.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/toastr/dist/build/toastr.min.js')}}"></script>
-  <script src="{{asset('Admin/assets/extra-libs/toastr/toastr-init.js')}}"></script>
-
+  <script src="{{ asset('js/theme-admin.js') }}" type="text/javascript"></script>
   <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script> -->
   @yield('js')
 </body>

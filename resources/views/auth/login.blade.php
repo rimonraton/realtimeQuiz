@@ -58,7 +58,7 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                <a href="{{ url('login/google') }}" class="btn btn-primary btn-lg fa fa-google" style="padding: 10px;" >
+                                <a href="{{ url('login/google') }}" class="btn btn-primary btn-lg fab fa-google" style="padding: 8.5px;" >
                                     Google
                                 </a>
 

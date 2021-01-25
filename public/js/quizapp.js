@@ -2064,30 +2064,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -84699,14 +84675,21 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _vm.screen.result
-        ? _c("result", {
-            attrs: {
-              results: _vm.results,
-              lastQuestion: _vm.qid + 1 == _vm.questions.length
-            }
-          })
-        : _vm._e(),
+      _c(
+        "transition",
+        { attrs: { name: "fade" } },
+        [
+          _vm.screen.result
+            ? _c("result", {
+                attrs: {
+                  results: _vm.results,
+                  lastQuestion: _vm.qid + 1 == _vm.questions.length
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm.screen.winner
         ? _c("div", { staticClass: "winner" }, [
