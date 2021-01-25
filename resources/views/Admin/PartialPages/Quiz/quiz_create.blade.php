@@ -37,7 +37,7 @@
         margin: 5px 0;
         padding: 5px 10px;
         cursor: pointer;
-        color: #979898;
+        color: #000;
         text-decoration: none;
         font-weight: 700;
         border: 1px solid #e5e5e5;
@@ -47,7 +47,7 @@
     }
 
     .activeli {
-        background-color: red !important;
+        background-color: #e9ecef !important;
     }
 </style>
 @endsection
@@ -81,7 +81,7 @@
                         <div class="form-group row">
                             <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name :</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="quizName" placeholder="Type Quiz name here." name="quizName">
+                                <input type="text" class="form-control" id="quizName" placeholder="Type Quiz name here." name="quizName" required>
                             </div>
                         </div>
                         <div class="form-group row pb-3">

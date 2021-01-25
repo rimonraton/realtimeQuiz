@@ -29,7 +29,7 @@
                                         <thead>
                                             <tr role="row">
                                                 <th style="width: 10%;">SL</th>
-                                                <th style="width: 80%;">Question</th>
+                                                <th style="width: 80%;">Quiz Name</th>
                                                 <th style="width: 10%;" class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -51,7 +51,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>SL</th>
-                                                <th>Question</th>
+                                                <th>Quiz Name</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
