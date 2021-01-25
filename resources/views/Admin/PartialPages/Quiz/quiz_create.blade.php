@@ -20,6 +20,35 @@
     .custom-control {
         padding-left: 0 !important;
     }
+
+    .myadmin-dd .dd-list .dd-item .dd-handle-new {
+        background: #fff;
+        border: 1px solid rgba(120, 130, 140, .13);
+        padding: 8px 16px;
+        height: auto;
+        font-family: Montserrat, sans-serif;
+        font-weight: 400;
+        border-radius: 0;
+    }
+
+    .dd-handle-new {
+        display: block;
+        height: 30px;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        color: #979898;
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #e5e5e5;
+        background: #fafafa;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    .activeli {
+        background-color: red !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -31,6 +60,7 @@
                 <hr>
                 <form class="form-horizontal r-separator" action="{{url('quiz/save')}}" method="POST" autocomplete="off">
                     @csrf
+                    <input type="hidden" name="cid" id="selectedCid">
                     <div class="form-group row justify-content-center">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-primary active">
@@ -54,7 +84,32 @@
                                 <input type="text" class="form-control" id="quizName" placeholder="Type Quiz name here." name="quizName">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row pb-3">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
+                            <div class="col-sm-7">
+                                <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
+                                    <ol class="dd-list">
+                                        <li class="dd-item">
+                                            <div class="dd-handle-new">
+                                                Select Topic
+                                            </div>
+                                            <ol class="dd-list">
+                                                @foreach($question_topic as $c)
+                                                <li class="dd-item">
+                                                    <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                                    @if(count($c->childs))
+                                                    @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
+                                                    @endif
+                                                </li>
+                                                @endforeach
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <p class="col-sm-2" id="selectedTopic"></p>
+                        </div>
+                        <!-- <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Topic</label>
                             <div class="col-sm-9" id="options">
                                 <select class="form-control custom-select artopic" name="topic" id="topic">
@@ -72,12 +127,12 @@
                                     <option value="">Select Sub Topic</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type</label>
                             <div class="col-sm-9" id="options">
                                 <select class="form-control custom-select arcategory" name="category" id="category">
-                                    <option value="0">All Type</option>
+                                    <option value="">All Type</option>
                                     @foreach($question_category as $qc)
                                     <option value="{{$qc->id}}">{{$qc->name}}</option>
                                     @endforeach
@@ -205,22 +260,29 @@
         $(document).on('change', '#category', function() {
             // alert('Hello');
             var cid = $(this).val();
-            var id = $('#topic').val();
-            var tid = $('#showsubtopic').val();
-            alert(cid + id);
-            if ($(this).val() == 0) {
-                questions(id, '');
-                console.log('Nothing..');
-
-            } else {
-                if (id != 0 && tid != "") {
-                    questions(tid, cid);
-                } else if (id != 0 && tid == "") {
-                    questions(id, cid);
-                } else {
-                    console.log('Select Topic')
-                }
+            // var id = $('#topic').val();
+            // var tid = $('#showsubtopic').val();
+            var tid = $("#selectedCid").val();
+            // alert(cid + tid);
+            if (tid != 0) {
+                questions(tid, cid);
             }
+            else{
+                // questions(tid,'');
+            }
+            // if ($(this).val() == 0) {
+            //     questions(id, '');
+            //     console.log('Nothing..');
+
+            // } else {
+            //     if (id != 0 && tid != "") {
+            //         questions(tid, cid);
+            //     } else if (id != 0 && tid == "") {
+            //         questions(id, cid);
+            //     } else {
+            //         console.log('Select Topic')
+            //     }
+            // }
         });
 
         $(document).on('change', '#topic', function() {
@@ -432,6 +494,55 @@
             })
 
         })
+        $(document).on('click', '.topicls', function() {
+
+            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
+
+            if ($(this).hasClass('activeli')) {
+                $(this).removeClass('activeli');
+                $('#selectedCid').val('');
+                $('#selectedTopic').html('');
+            } else {
+                // $('.topicls').removeClass('activeli');
+                // $(this).addClass('activeli');
+                // alert($(this).attr('data-cid'));
+
+                $('.topicls').removeClass('activeli');
+                $(this).addClass('activeli');
+                $('#selectedCid').val($(this).attr('data-cid'));
+                $('#selectedTopic').html($(this).text());
+                var cid = $('#category').val();
+                var tid = $(this).attr('data-cid');
+                if (cid == "") {
+                    questions(tid, '');
+                } else {
+                    questions(tid, cid)
+                }
+            }
+
+        })
+        var updateOutput = function(e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+        $('#nestable-menu').on('click', function(e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+
+        $('#nestable-menu').nestable();
     })
 </script>
 @endsection

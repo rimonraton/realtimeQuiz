@@ -91,13 +91,13 @@ class QuizController extends Controller
 
     public function storeFromQB($request)
     {
-        $cid ='';
-        if($request->subtopic){
-            $cid =$request->subtopic;
-        }
-        else{
-            $cid = $request->topic;
-        }
+        // $cid ='';
+        // if($request->subtopic){
+        //     $cid =$request->subtopic;
+        // }
+        // else{
+        //     $cid = $request->topic;
+        // }
         $questions = array();
         foreach ($request->questions as $q) {
             $questions[] = $q;
@@ -106,19 +106,19 @@ class QuizController extends Controller
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'questions'         => $questionsid,
-            'category_id'       => $cid,
+            'category_id'       => $request->cid,
             'quiz_category_id'  => $request->category,
         ]);
     }
     public function storeFromCustom($request)
     {
-        $cid ='';
-        if($request->subtopic){
-            $cid =$request->subtopic;
-        }
-        else{
-            $cid = $request->topic;
-        }
+        // $cid ='';
+        // if($request->subtopic){
+        //     $cid =$request->subtopic;
+        // }
+        // else{
+        //     $cid = $request->topic;
+        // }
         $questionId = array();
         foreach ($request->question as  $k => $qq) {
             $options = 'option' . $k;
@@ -126,8 +126,8 @@ class QuizController extends Controller
             $qid = Question::create([
                 'question_text'         => $qq,
                 'answer_explanation'    => $request->explenation[$k],
-                'category_id'           =>  $cid[$k],
-                'quizcategory_id'       =>  $request->category[$k],
+                'category_id'           =>  $request->cid,
+                'quizcategory_id'       =>  $request->category,
             ])->id;
             $questionId[] = $qid;
             foreach ($request->$options as  $i => $o) {
@@ -142,7 +142,7 @@ class QuizController extends Controller
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'questions'         => $questions,
-            'category_id'       => $cid,
+            'category_id'       => $request->cid,
             'quiz_category_id'  => $request->category,
             'custom_create'     => 1,
         ]);

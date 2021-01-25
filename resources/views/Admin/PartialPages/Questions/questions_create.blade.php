@@ -238,10 +238,10 @@
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Category :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type :</label>
                             <div class="col-sm-9">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
-                                    <option value="">Select Category</option>
+                                    <option value="">Select QUestion Type</option>
                                     @foreach($quizCategory as $qc)
                                     <option value="{{$qc->id}}" id="cat_{{$qc->id}}">{{$qc->name}}</option>
                                     @endforeach
@@ -273,7 +273,7 @@
                             </div>
                             <p class="col-sm-2" id="selectedTopic"></p>
                         </div>
-                        <div class="form-group row pb-3">
+                        <!-- <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
                             <div class="col-sm-9" id="topic">
                                 <select class="form-control custom-select" id="getTopic" name="category" required>
@@ -291,7 +291,7 @@
                                     <option value="">Select Sub Topic</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row pb-3">
                             <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
                             <div class="col-sm-9">
@@ -527,15 +527,22 @@
         })
         $(document).on('click', '.topicls', function() {
 
-            $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'),$('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
+            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
 
-            // if ($(this).hasClass('activeli')) {
-            //     $(this).removeClass('activeli');
-            // } else {
-            //     $('.topicls').removeClass('activeli');
-            //     $(this).addClass('activeli');
-            //     alert($(this).attr('data-cid'));
-            // }
+            if ($(this).hasClass('activeli')) {
+                $(this).removeClass('activeli');
+                $('#selectedCid').val('');
+                $('#selectedTopic').html('');
+            } else {
+                // $('.topicls').removeClass('activeli');
+                // $(this).addClass('activeli');
+                // alert($(this).attr('data-cid'));
+
+                $('.topicls').removeClass('activeli');
+                $(this).addClass('activeli');
+                $('#selectedCid').val($(this).attr('data-cid'));
+                $('#selectedTopic').html($(this).text());
+            }
 
         })
         var updateOutput = function(e) {

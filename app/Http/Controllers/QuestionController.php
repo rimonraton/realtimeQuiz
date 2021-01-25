@@ -84,7 +84,7 @@ class QuestionController extends Controller
         //     'option' => 'required',
         //     'correct' => 'required',
         // ]);
-        $categoryid = '';
+        $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
         if ($request->customRadio == 'image') {
@@ -92,11 +92,12 @@ class QuestionController extends Controller
         } else {
             $location = 'videos/question_videos/';
         }
-        if ($request->subtopic == '') {
-            $categoryid = $request->category;
-        } else {
-            $categoryid = $request->subtopic;
-        }
+        // if ($request->subtopic == '') {
+        //     $categoryid = $request->category;
+        // } else {
+        //     $categoryid = $request->subtopic;
+        // }
+        // return $categoryid;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $original_name = $file->getClientOriginalName();
