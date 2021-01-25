@@ -17,8 +17,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="{{asset('css/theme.css')}}" rel="stylesheet">
+    
+    <link href="{{asset('css/theme-site.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- =======================================================
   * Template Name: Bootslander - v2.3.0
@@ -1092,7 +1092,8 @@
 
     <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
-    <script src="{{asset('js/theme.js')}}"></script>
+
+    <script src="{{asset('js/theme-site.js')}}"></script>
     <script>
         $(function() {
             // $('#reg').click(function(){

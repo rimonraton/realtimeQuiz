@@ -128,13 +128,14 @@
                        class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
                     
                     @if($type != 'Practice')
-                      <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">{{ __('msg.share') }}</a>
-                      <div id="shareBtn{{ $exam->id }}" class="hide_share shareBtnDiv">
-                        <iframe src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" class="iframe-size"></iframe>
+                      <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">
+                        {{ __('msg.share') }} 
+                        <div class="loading{{ $exam->id }}"></div>
+                      </a>
+                      <div id="shareBtn{{ $exam->id }}" class="show_share shareBtnDiv">
+                        
                       </div>
                     @endif
-
-                    {{-- <iframe id="shareBtn{{ $exam->id }}" class="hide" src="{{ url('Mode/' .$type. '/' .$exam->id . '/' . Auth::id() . '/share') }}" frameborder="0" style="position: absolute; top: 25%; left: 2%; width: 96%; background: transparent;"></iframe> --}}
                   </div>
                 </div>
             </div>
@@ -152,11 +153,19 @@
   document.addEventListener('DOMContentLoaded', function () {
       $('.shareBtn').on('click', function(){
         let id = $(this).attr('data-id');
-        let hasShow = $('#shareBtn'+id).hasClass('show_share');
+        $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
-        $('.shareBtnDiv').removeClass('show_share').addClass('hide_share');
-        if(hasShow){ return; }
-        $('#shareBtn'+id).removeClass('hide_share').addClass('show_share');
+        let hasShow = $('#shareBtn'+id).hasClass('show_share');
+        let url = '{{ url('/Mode/' .$type) }}/' + id + '/{{ Auth::id() }}' + '/share';
+        let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+
+        $('.show_share').empty();
+        $('#shareBtn'+id).append(iframe);
+
+        $('#shareFrame'+id).on('load', function(){
+          $('.loading'+id).removeClass('spinner-grow spinner-grow-sm');
+        });
+
       });
   });
 

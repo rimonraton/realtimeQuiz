@@ -24,35 +24,11 @@
                 </div>
             </div>
         </div>
-        <!-- <transition name="fade"> -->
+        <transition name="fade">
             <result :results='results' :lastQuestion='(qid + 1) == questions.length'
                     v-if="screen.result">                       
             </result>
-        <!-- <div class="result" v-if="screen.result">
-            <div class="card bg-dark text-white">
-              <img class="card-img" :src="addImage()">
-            </div>
-            <div class="card" style="width: 24rem;">
-                <div class="card-header">Results</div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item" v-for="(v, i) in results" :key="i">
-                            {{ v.name + ' : ' + v.score }}
-                        </li>
-                    </ul>
-                    <div id="counter" class="mt-5" v-if="counter">
-                        <h1 class="text-center" style="color:#1BAA8F; height: 4rem;">
-                            {{ counter }}
-                        </h1>
-                    </div>
-                    <h1></h1>
-                </div>
-                <div class="card-footer" v-if="(qid + 1) == questions.length ">
-                    <a href="http://quiz.erendevu.net/" class="btn btn-sm btn-secondary text-center">Game List</a>
-                </div>
-            </div>
-        </div> -->
-        <!-- </transition> -->
+        </transition>
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
                 <h1 class="text-center">Congratulation ! </h1>
@@ -405,11 +381,6 @@
                 let confetti = document.createElement('script')
                 confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
                 document.head.appendChild(confetti)
-
-                // let share = document.createElement('script')
-                // share.async = true
-                // share.setAttribute('src', 'https://platform-api.sharethis.com/js/sharethis.js#property=5e896e693790270019b8aac5&product=inline-share-buttons')
-                // document.head.appendChild(share)
             },
 
             kickUser(id){
