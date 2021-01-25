@@ -171,7 +171,7 @@
         margin: 5px 0;
         padding: 5px 10px;
         cursor: pointer;
-        color: #979898;
+        color: #000;
         text-decoration: none;
         font-weight: 700;
         border: 1px solid #e5e5e5;
@@ -181,7 +181,7 @@
     }
 
     .activeli {
-        background-color: red !important;
+        background-color: #e9ecef !important;
     }
 </style>
 @endsection
