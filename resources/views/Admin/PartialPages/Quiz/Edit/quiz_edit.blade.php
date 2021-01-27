@@ -7,7 +7,14 @@
                 <form method="POST" action="{{url('quiz/update')}}">
                     @csrf
                     <input type="hidden" value="{{$quiz->id}}" name="quiz_id" id="">
-                    <h4 class="card-title text-center">Quiz Name : {{$quiz->quiz_name}}</h4>
+                    <input type="hidden" value="{{$quiz->category_id}}" name="category_id" id="">
+                    <!-- <h4 class="card-title text-center">Quiz Name : <input class="form-control" type="text" value="{{$quiz->quiz_name}}" name="quiz_name" id=""></h4> -->
+                    <div class="form-group row">
+                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name :</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="{{$quiz->quiz_name}}" id="quizName" placeholder="Type Quiz name here." name="quizName" required>
+                        </div>
+                    </div>
                     <hr>
                     <div class="row d-flex justify-content-center">
                         @foreach($Questions as $q)
@@ -20,10 +27,17 @@
                             </div>
                         </div>
                         @endforeach
-
+                    </div>
+                    <div id="newQuestion">
+                        
+                    </div>
+                    <div class="form-group text-center">
+                    <a class="addNew" style="color: #009efb;cursor:pointer;">New Question</a>
                     </div>
                     <div class="modal-footer">
-                        <!-- <button type="submit" class="btn btn-info waves-effect">Update</button> -->
+                        <!-- <button type="button" class="btn btn-info addNew">New Question</button> -->
+                        <button type="submit" class="btn btn-info waves-effect">Update</button>
+                        <a href="{{ URL::previous() }}">Go Back</a>
                         <!-- <a type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</a> -->
                     </div>
                 </form>
@@ -55,6 +69,7 @@
 @section('js')
 <script>
     $(function() {
+        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $('#topic').on('change', function() {
             var id = $(this).val();
             $.ajax({
@@ -122,6 +137,112 @@
             // $(this).remove();
             $(this).closest("div.row").find("#q_" + id).remove();
         })
+
+        $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+            if (state == true) {
+                $(this).closest("div.bt-switch").find(".hi").val('1');
+            } else {
+                $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
+            }
+        });
+        $(document).on('click', '.createNew', function(e) {
+            e.preventDefault();
+            var option = $(this).attr('data-option');
+            var answer = $(this).attr('data-answer');
+            var id = $(this).attr('id');
+            var data = '';
+            data += `<div class="form-group row">
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="Enter Option" required>
+                            </div>
+                            <div class="col-sm-1 bt-switch">
+                                <input type="hidden" name="${answer}" class="hi" value="0">
+                                <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                            </div>
+                        </div>`;
+
+            $('#' + id + '-show').append(data);
+            $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+        });
+
+        $(document).on('click', '.remove', function() {
+            $(this).closest('.row').remove();
+        });
+        $(document).on('click', ".explenation", function() {
+            var id = $(this).attr('id');
+            if (this.checked) {
+                $('#' + id + '-show').show();
+            } else {
+                $('#' + id + '-show').hide();
+            }
+        });
+        var eid = -1;
+        $('.addNew').on('click', function(e) {
+            // e.preventDefault();
+            eid++;
+            var data = '';
+            data += `<div class="NQ">
+                <hr>
+                <h3 class="text-center pb-2">New Question <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
+                <div class="form-group row">
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" id="question" placeholder="Type Question here." name="question[]" required></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option" required>
+                    </div>
+                    <div class="col-sm-1 bt-switch">
+                        <input type="hidden" name="answer${eid}[]" class="hi" value="0">
+                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option" required>
+                    </div>
+                    <div class="col-sm-1 bt-switch">
+                        <input type="hidden" name="answer${eid}[]" class="hi" value="0">
+                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                    </div>
+                </div>
+                <div id="createNew${eid}-show">
+
+                </div>
+
+                <div class="d-flex justify-content-center form-group">
+                    <div class="pr-3">
+                        <label for="option1" class="text-right control-label col-form-label">
+                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="option1" class="text-right control-label col-form-label">
+                            <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation${eid}">
+                            <label style="font-size: .9rem;" for="explenation${eid}">Answer Explenation</label>
+                        </label>
+                        
+                    </div>
+                </div>
+                <div class="form-group row" style="display: none;" id="explenation${eid}-show">
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation[]"></textarea>
+                    </div>
+                </div>
+            </div>`;
+            $('#newQuestion').append(data);
+            $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+        });
+
+        $(document).on('click', '.removeQ', function() {
+            $(this).closest('.NQ').remove();
+        });
     })
 </script>
 @endsection

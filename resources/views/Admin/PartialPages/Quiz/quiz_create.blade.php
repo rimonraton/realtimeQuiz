@@ -37,7 +37,7 @@
         margin: 5px 0;
         padding: 5px 10px;
         cursor: pointer;
-        color: #000;
+        /* color: #000; */
         text-decoration: none;
         font-weight: 700;
         border: 1px solid #e5e5e5;
@@ -176,15 +176,14 @@
                             </div>
 
                             <div class="d-flex justify-content-center form-group">
-                                <div class="pr-3">
+                                <!-- <div class="pr-3">
                                     <select class="form-control custom-select" id="NoOP-show">
                                         <option value="1">Select No. of Options Added</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
                                     </select>
-                                    <!-- <input type="number" id="NoOP" class="form-control Opcreate" min="1" placeholder="No. of Options Added"> -->
-                                </div>
+                                </div> -->
                                 <div class="pr-3">
                                     <label for="option1" class="control-label col-form-label">
                                         <a class="waves-effect waves-light createNew" data-option="option0[]" data-answer="answer0[]" id="createNew" data-id="NoOP" href="">Add New Option</a>
@@ -215,7 +214,7 @@
 
                     <div class="form-group mb-0 text-right">
                         <button type="submit" class="btn btn-info waves-effect waves-light">Create Quiz</button>
-                        <a class="btn btn-success waves-effect waves-light text-white" href="{{url('quiz/list')}}">Go to Quiz List</a>
+                        <a class="btn btn-success waves-effect waves-light text-white" href="{{url('quiz/view/list')}}">Go to Quiz List</a>
                     </div>
                 </form>
             </div>
@@ -299,6 +298,8 @@
             $('.arcategory').attr('id', 'category');
         })
         $('#cq').on('change', function() {
+
+
             $('#FromQB').hide();
             $('#viewData').removeClass('d-flex');
             // $('#viewData').hide();
@@ -308,15 +309,15 @@
         })
         $(document).on('click', '.createNew', function(e) {
             e.preventDefault();
-            var mid = $(this).attr('data-id');
-            var NOP = $('#' + mid + '-show').val();
+            // var mid = $(this).attr('data-id');
+            // var NOP = $('#' + mid + '-show').val();
             var option = $(this).attr('data-option');
             var answer = $(this).attr('data-answer');
             // alert(name);
             var id = $(this).attr('id');
             var data = '';
-            for (i = 0; i < NOP; i++) {
-                data += `<div class="form-group row">
+            // for (i = 0; i < NOP; i++) {
+            data += `<div class="form-group row">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="Enter Option" required>
@@ -326,7 +327,7 @@
                                 <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
                             </div>
                         </div>`;
-            }
+            // }
 
             $('#' + id + '-show').append(data);
             $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
@@ -394,14 +395,6 @@
                 </div>
 
                 <div class="d-flex justify-content-center form-group">
-                    <div class="pr-3">
-                        <select class="form-control custom-select" id="NoOP${eid}-show">
-                            <option value="1">Select No. of Options Added</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </div>
                     <div class="pr-3">
                         <label for="option1" class="text-right control-label col-form-label">
                             <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
@@ -473,9 +466,15 @@
                     console.log('Before Send');
                 },
                 success: function(data) {
-                    $('#viewData').addClass('d-flex');
-                    $('#viewData').html(data);
-                    console.log(data);
+                    if ($("#cq").is(":checked")) {
+                        $('#FromQB').hide();
+                        $('#viewData').removeClass('d-flex');
+                    } else {
+                        $('#viewData').addClass('d-flex');
+                        $('#viewData').html(data);
+                    }
+
+                    // console.log(data);
                 },
                 complete: function() {
                     console.log('Completed');

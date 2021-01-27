@@ -22,7 +22,7 @@
             </li>
             <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-library"></i><span class="hide-menu">Quiz</span></a>
                 <ul aria-expanded="false" class="collapse  first-level">
-                    <li class="sidebar-item"><a href="{{url('quiz/list')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> List Of Quiz </span></a></li>
+                    <li class="sidebar-item"><a href="{{url('quiz/view/list')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> List Of Quiz </span></a></li>
                     <li class="sidebar-item"><a href="{{url('quiz/create')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Create Quiz </span></a></li>
                     <li class="sidebar-item"><a href="{{url('quiz/categorylist')}}" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu">Quiz Type</span></a></li>
                 </ul>

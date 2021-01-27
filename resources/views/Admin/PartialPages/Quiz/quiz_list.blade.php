@@ -23,7 +23,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Quiz List</h4>
+                <h4 class="card-title text-center">Quiz List <a class="btn btn-success float-right" href="{{url('quiz/create')}}">Create Quiz</a></h4>
                 <hr>
                 <div class="d-flex flex-row bd-highlight mb-3 justify-content-center">
                     <div class=" bd-highlight pt-3">Topic :</div>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div id="viewData"></div>
-                
+
             </div>
         </div>
     </div>
@@ -66,17 +66,28 @@
 @section('js')
 <script>
     $(function() {
+        var getId = "{{$tid}}"
+        if (getId != "") {
+            $('#topic').val(getId);
+            quizList(getId);
+        }
         $('#topic').on('change', function() {
             var id = $(this).val();
-            $.ajax({
-                url: "{{url('quiz/quiz/list')}}/" + id,
-                type: "GET",
-                success: function(data) {
-                    $('#viewData').html(data);
-                    console.log(data);
-                }
-            })
+            quizList(id);
         })
+
+        function quizList(id) {
+            if (id != '') {
+                $.ajax({
+                    url: "{{url('quiz/quiz/list')}}/" + id,
+                    type: "GET",
+                    success: function(data) {
+                        $('#viewData').html(data);
+                        console.log(data);
+                    }
+                })
+            }
+        }
 
         $(document).on('click', '.view', function() {
             var Question = $(this).attr('data-question');

@@ -56,10 +56,10 @@ class QuizController extends Controller
         return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'question_category']));
     }
 
-    public function list()
+    public function list($tid = '')
     {
         $category = Category::all();
-        return view('Admin.PartialPages.Quiz.quiz_list', compact('category'));
+        return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid'));
     }
 
     public function getQuestionsByTopic($id)
@@ -73,14 +73,14 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
-        // return $request->all();
+        //  return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
-            return redirect('quiz/create');
+            return redirect('quiz/view/list/' . $request->cid);
         }
         $this->storeFromCustom($request);
 
-        return redirect('quiz/create');
+        return redirect('quiz/view/list/' . $request->cid);
     }
 
     public function storeFromQB($request)
@@ -121,7 +121,7 @@ class QuizController extends Controller
                 'question_text'         => $qq,
                 'answer_explanation'    => $request->explenation[$k],
                 'category_id'           =>  $request->cid,
-                'quizcategory_id'       =>  $request->category,
+                'quizcategory_id'       =>  1,
             ])->id;
             $questionId[] = $qid;
             foreach ($request->$options as  $i => $o) {
@@ -176,9 +176,35 @@ class QuizController extends Controller
     }
     public function quizUpdate(Request $request)
     {
-        $questions = implode(',', $request->questions);
+        // return $request->all();
+        $qa = $request->questions;
+        $questionId = array();
+        if ($request->question) {
+            foreach ($request->question as  $k => $qq) {
+                $options = 'option' . $k;
+                $answers = 'answer' . $k;
+                $qid = Question::create([
+                    'question_text'         => $qq,
+                    'answer_explanation'    => $request->explenation[$k],
+                    'category_id'           =>  $request->category_id,
+                    'quizcategory_id'       =>  1,
+                ])->id;
+                $questionId[] = $qid;
+                array_push($qa, $qid);
+                foreach ($request->$options as  $i => $o) {
+                    $data[$i]['question_id'] = $qid;
+                    $data[$i]['option'] = $o;
+                    $data[$i]['correct'] = $request->$answers[$i];
+                }
+                QuestionsOption::insert($data);
+            }
+        }
+        // return $qa;
+        $questions = implode(',', $qa);
+        // return $questions;
         Quiz::where('id', $request->quiz_id)->update([
-            "questions" => $questions
+            "questions" => $questions,
+            "quiz_name" => $request->quizName,
         ]);
         return redirect('quiz/' . $request->quiz_id . '/edit');
     }

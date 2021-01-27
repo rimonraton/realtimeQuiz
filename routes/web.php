@@ -52,7 +52,7 @@ Route::post('quiz/updatecategory', 'QuizController@updateCategory');
 Route::get('quiz/deletecategory/{id}', 'QuizController@deleteCategory');
 
 // Quiz
-Route::get('quiz/list', 'QuizController@list');
+Route::get('quiz/view/list/{tid?}', 'QuizController@list');
 Route::get('quiz/create', 'QuizController@create');
 Route::get('quiz/list/{topic}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
