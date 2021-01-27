@@ -1,3 +1,4 @@
+<input type="hidden" value="{{$QwithO->category_id}}" name="cat_id">
 <div class="form-group row">
     <div class="col-md-2">
         <label class="pull-right">Question :</label>
@@ -25,7 +26,14 @@
 @endforeach
 
 <script>
-$(function(){
-    $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-})
+    $(function() {
+        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+        $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+            if (state == true) {
+                $(this).closest("div.bt-switch").find(".hi").val('1');
+            } else {
+                $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
+            }
+        });
+    })
 </script>

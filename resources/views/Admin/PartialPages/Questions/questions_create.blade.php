@@ -249,13 +249,13 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
-                            <div class="col-sm-7">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                            <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
                                         <li class="dd-item">
                                             <div class="dd-handle-new">
-                                                Select Topic
+                                                <strong class="selectedTopic">Select Topic</strong>
                                             </div>
                                             <ol class="dd-list">
                                                 @foreach($category as $c)
@@ -271,7 +271,7 @@
                                     </ol>
                                 </div>
                             </div>
-                            <p class="col-sm-2" id="selectedTopic"></p>
+                            <!-- <p class="col-sm-2 selectedTopic"></p> -->
                         </div>
                         <!-- <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
@@ -532,7 +532,7 @@
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
                 $('#selectedCid').val('');
-                $('#selectedTopic').html('');
+                $('.selectedTopic').html('Select Topic');
             } else {
                 // $('.topicls').removeClass('activeli');
                 // $(this).addClass('activeli');
@@ -541,7 +541,7 @@
                 $('.topicls').removeClass('activeli');
                 $(this).addClass('activeli');
                 $('#selectedCid').val($(this).attr('data-cid'));
-                $('#selectedTopic').html($(this).text());
+                $('.selectedTopic').html($(this).text());
             }
 
         })

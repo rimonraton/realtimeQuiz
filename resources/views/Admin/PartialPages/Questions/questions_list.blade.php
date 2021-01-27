@@ -101,7 +101,11 @@
 <script>
     $(function() {
         // toastr.success('I do not think that word means what you think it means.', 'Slide Down / Slide Up!', { "showMethod": "fadeIn", "hideMethod": "fadeOut", timeOut: 2000 });
-
+        var getId = "{{$id}}"
+        if(getId!=""){
+            $('.topic').val(getId);
+            topicwithcategory(getId);
+        }
         $('.topic').on('change', function() {
             var id = $(this).val();
             // var cid = $(".Qcategory option:selected").val();
@@ -214,6 +218,7 @@
 
             }
         })
+
     });
 </script>
 @endsection

@@ -34,7 +34,7 @@ Route::post('question/updatecategory', 'QuestionController@update');
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 
 // Questions
-Route::get('question/list', 'QuestionController@list');
+Route::get('question/list/{id?}', 'QuestionController@list');
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
 Route::get('question/getlist/{id}', 'QuestionController@getlist');
@@ -54,7 +54,7 @@ Route::get('quiz/deletecategory/{id}', 'QuizController@deleteCategory');
 // Quiz
 Route::get('quiz/list', 'QuizController@list');
 Route::get('quiz/create', 'QuizController@create');
-Route::get('quiz/list/{topic}/{category?}', 'QuizController@getQuestionsByTopic');
+Route::get('quiz/list/{topic}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
 Route::get('quiz/getlist/{topic}', 'QuizController@getlistbytopic');
 Route::get('quiz/delete/{id}', 'QuizController@deleteQuiz');
