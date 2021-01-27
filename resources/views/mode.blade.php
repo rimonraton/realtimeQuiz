@@ -120,10 +120,14 @@
         @foreach($exams as $exam)
             <div class="col-md-4 col-sm-12 text-center">
                 <div class="card my-3">
+                <span class="text-muted text-right pr-2 position-absolute w-100">
+                  {{ count(explode(',', $exam->questions)) . ' questions. ' }}
+                </span>
                   <div class="card-body text-secondary">
                     <h5 class="card-title">{{ __('msg.quiz') }}</h5>
                     <h5 class="card-title">{{ $exam->quizCategory->name }}</h5>
                     <p class="card-text">{{ $exam->quiz_name }}</p>
+                    
                     <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
                        class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
                     
