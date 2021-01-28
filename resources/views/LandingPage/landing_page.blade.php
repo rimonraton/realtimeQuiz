@@ -17,7 +17,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-    
+
     <link href="{{asset('css/theme-site.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- =======================================================
@@ -331,12 +331,38 @@
                         </div>
                     </div>
                     @endforeach
-                    <!-- <div class="col-lg-3 col-md-4 mt-4">
+                    <div class="col-lg-3 col-md-4 mt-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
-                            <img src="{{asset('Landing/assets/img/topics/math.png')}}" alt="">
+                            <img src="{{asset('img/icons/GK1.png')}}" style="width: 36px;" alt="">
+                            <h3><a href="">General Knowledge</a></h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <img src="{{asset('img/icons/Science.png')}}" style="width: 36px;" alt="">
+                            <h3 class="pl-2"><a href="">Science</a></h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <img src="{{asset('img/icons/mixed1.png')}}" style="width: 36px;" alt="">
+                            <h3 class="pl-2"><a href="">Mixed</a></h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <img src="{{asset('img/icons/GK.png')}}" style="width: 36px;" alt="">
                             <h3><a href="">{{$c->name}}</a></h3>
                         </div>
-                    </div> -->
+                    </div>
+                    <!-- @foreach($category as $c)
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <img src="{{asset('img/icons/GK.png')}}" style="width: 36px;" alt="">
+                            <h3><a href="">{{$c->name}}</a></h3>
+                        </div>
+                    </div>
+                    @endforeach -->
                     <!-- <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
                             <i class="ri-bar-chart-box-line" style="color: #5578ff;"></i>
@@ -1111,7 +1137,6 @@
 
 
         });
-        
     </script>
 
 </body>

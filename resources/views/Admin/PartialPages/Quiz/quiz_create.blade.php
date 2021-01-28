@@ -503,6 +503,15 @@
         });
 
         $('#nestable-menu').nestable();
+
+        // $(document).on('click', ".checkAll", function() {
+        //     alert('Hello');
+        //     $(this).closest('div.lobilists').find("input[type=checkbox]").prop("checked", true);
+        //     // $('input:checkbox').not(this).prop('checked', this.checked);
+        //     // $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+        // });
+
+        
     })
 </script>
 @endsection
