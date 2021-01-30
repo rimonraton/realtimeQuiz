@@ -64,9 +64,9 @@ class QuizController extends Controller
 
     public function getQuestionsByTopic($id)
     {
-        $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
+       $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
             $q->where('category_id', $id);
-        }])->get();
+        }])->paginate(5);
 
         return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions'));
     }

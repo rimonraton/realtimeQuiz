@@ -21,7 +21,7 @@
                     <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
                     <label for="child{{$q->id}}">Check All</label>
                 </div>
-                <div class="lobilists">
+                <!-- <div class="lobilists">
                     <div class="lobilist lobilist-primary ps-container ps-theme-default">
                         <div class="lobilist-body">
                             <ul class="lobilist-items ui-sortable">
@@ -37,14 +37,63 @@
                         </div>
                     </div>
 
+                </div> -->
+                <div class="table-responsive" style="overflow-x: hidden">
+
+                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12 pt-3">
+                                <div class="table-responsive">
+                                    <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                        <thead>
+                                    <tr role="row">
+                                        <th style="width: 10%;">SL</th>
+                                        <th style="width: 10%;">Action</th>
+                                        <th style="width: 80%;">Questions</th>
+                                    </tr>
+                                </thead>
+                                        <tbody>
+                                            @foreach($q->questions as $qq)
+                                            <tr role="row" class="odd">
+                                                <td>{{$loop->iteration}}</td>
+                                                <td class="text-center">
+                                                    <!-- <div class="col-md-12"> -->
+                                                    <input type="checkbox" name="questions[]" value="{{$qq->id}}" id="chc{{$qq->id}}" class="material-inputs child{{$q->id}}">
+                                                    <label for="chc{{$qq->id}}"></label>
+                                                    <!-- </div> -->
+                                                </td>
+                                                <td>
+                                                    {{$qq->question_text}}
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <!-- <tfoot>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Question</th>
+                                        <th>Options</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot> -->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             @endif
             @endforeach
+            {{$questions->links()}}
         </div>
     </div> <!-- end card-body-->
 </div>
 <script>
+    $('.dataTable').DataTable({
+        responsive: true,
+        "ordering": false
+    });
     $(document).on('click', ".checkAll", function() {
         var child = $(this).attr('id');
         $("." + child).not(this).prop('checked', this.checked);

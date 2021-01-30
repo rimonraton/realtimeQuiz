@@ -81,6 +81,16 @@
             </div>
             @endif
             @endforeach
+
         </div>
     </div> <!-- end card-body-->
 </div> <!-- end card-->
+<script>
+    var table;
+    $('.dataTable').DataTable({
+        responsive: true,
+        "ordering": false
+    });
+    // table = $('.dataTable')
+    //     .on('draw.dt', function() {}).DataTable();
+</script>

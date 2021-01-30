@@ -47,3 +47,9 @@
     </div>
 </div> <!-- end card-body-->
 </div> <!-- end card-->
+<script>
+    $('.dataTable').DataTable({
+        responsive: true,
+        "ordering": false
+    });
+</script>

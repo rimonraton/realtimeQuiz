@@ -36,7 +36,27 @@
                         </select>
                     </div>
                 </div>
-                <div id="viewData"></div>
+                <div class="row">
+                    <div class="col-sm-12" id="loading" style="display: none;">
+                        <div class="text-center">
+                            <button class="btn btn-primary" type="button" disabled="">
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 pt-3" id="viewData">
+                        <div class="container">
+                            <div class="row justify-content-md-center">
+                                <div class="alert alert-success text-center" role="alert" id="msg">
+                                    <p class="pt-3">Please select from the topic above and see the quizzes according to the topic.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- <div id="viewData"></div> -->
 
             </div>
         </div>
@@ -81,9 +101,15 @@
                 $.ajax({
                     url: "{{url('quiz/quiz/list')}}/" + id,
                     type: "GET",
+                    beforeSend: function() {
+                        $('#loading').show();
+                    },
                     success: function(data) {
                         $('#viewData').html(data);
                         console.log(data);
+                    },
+                    complete: function() {
+                        $('#loading').hide();
                     }
                 })
             }

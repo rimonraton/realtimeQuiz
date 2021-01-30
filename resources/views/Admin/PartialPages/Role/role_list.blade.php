@@ -4,33 +4,24 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions Topics</h4>
+                <h4 class="card-title text-center">Role List</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Add New Topic</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Add New Role</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Topics</h4>
+                                <h4 class="modal-title" id="myModalLabel">Add Role</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
-                                <form class="form-horizontal form-material" method="POST" action="{{url('question/savecategory')}}" autocomplete="off">
+                                <form class="form-horizontal form-material" method="POST" action="{{url('createRole')}}" autocomplete="off">
                                     @csrf
+
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
-                                            <select class="form-control custom-select" name="topic">
-                                                <option value="">Select Topic</option>
-                                                @foreach($category as $c)
-                                                <option value="{{$c->id}}">{{$c->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type Topic/Sub-Topic" require>
+                                            <input type="text" class="form-control" name="role_name" placeholder="Type Role Name" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -50,32 +41,32 @@
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                @if($category->count() > 0)
+                                @if($roles->count() > 0)
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">SL</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 0px;">Action</th>
+                                            <th style="width: 10%;">SL</th>
+                                            <th style="width: 70%;">Role Name</th>
+                                            <th style="width: 20%;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($category as $c)
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$c->name}}</td>
+                                        @foreach($roles as $role)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$role->role_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                <a class="edit" href="" data-id="{{$role->id}}" data-name="{{$role->role_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$role->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th>SL</th>
+                                            <th>Role Name</th>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -104,12 +95,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}" autocomplete="off">
+                <form class="form-horizontal form-material" method="POST" action="{{url('roleUpdate')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="name" placeholder="Type category">
+                            <input type="text" class="form-control" id="editName" name="role_name" placeholder="Type category">
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-info waves-effect">Update</button>
@@ -130,14 +121,14 @@
 @section('js')
 <script>
     $(function() {
-        $(document).on('click','.edit', function(e) {
+        $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
             $('#edit-category').modal('show');
         })
 
-        $(document).on('click',".delete",function() {
+        $(document).on('click', ".delete", function() {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -151,7 +142,7 @@
                     var $this = $(this);
                     var id = $this.attr('data-id');
                     $.ajax({
-                        url: "{{url('question/deletecategory')}}/" + id,
+                        url: "{{url('roleDelete')}}/" + id,
                         type: "GET",
                         success: function(data) {
                             // $(this).parent().parent().remove();

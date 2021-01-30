@@ -63,11 +63,11 @@ class QuestionController extends Controller
     // End category
 
     // Questions
-    public function list($id ='')
+    public function list($id = '')
     {
         $topic = Category::all();
         // $Qcategory = QuizCategory::all();
-        return view('Admin.PartialPages.Questions.questions_list', compact('topic','id'));
+        return view('Admin.PartialPages.Questions.questions_list', compact('topic', 'id'));
     }
     public function create()
     {
@@ -160,7 +160,7 @@ class QuestionController extends Controller
         if ($request->cid) {
             return redirect('question/list/view/' . $request->cid);
         } else {
-            return redirect('question/list/'.$request->cat_id);
+            return redirect('question/list/' . $request->cat_id);
         }
     }
 

@@ -37,7 +37,7 @@
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-info addNew">New Question</button> -->
                         <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <a href="{{ URL::previous() }}">Go Back</a>
+                        <a href="{{url('quiz/view/list').'/'.$quiz->category_id}}">Go Back</a>
                         <!-- <a type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</a> -->
                     </div>
                 </form>
