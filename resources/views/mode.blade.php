@@ -174,7 +174,7 @@
       </a>
     </div>
   </div>
-  <div class="row justify-content-center ml-0 mb-5">
+  {{-- <div class="row justify-content-center ml-0 mb-5">
     @foreach($categories as $cat)
     <div class="col-md-4 col-sm-12 text-center">
       <div class="wrap my-3">
@@ -192,19 +192,11 @@
         </div>
       </div>
 
-     {{--  <div class="dropdowns">
-        @if($cat->childs)
-        @foreach($cat->childs as $cc)
-        <div class="item collapses">{{ $cc->name }}</div>
-        @endforeach
-        @endif
-        <div class="item collapses">{{ $cat->name }}</div>
-      </div> --}}
     </div>
     @endforeach
-  </div>
+  </div> --}}
 
- {{--  <div class="row justify-content-center ml-0 mt-5">
+  <div class="row justify-content-center ml-0 mt-5">
       @foreach($quiz as $qz)
           <div class="col-md-4 col-sm-12 text-center">
               <div class="card my-3">
@@ -236,7 +228,7 @@
               {{ $quiz->links() }}
       </div>
   
-  </div>     --}}
+  </div>    
 
 </div>
 @endsection
