@@ -52,7 +52,7 @@ class RoleController extends Controller
     {
     //    return Auth()->user()->roleuser->role->role_name;
         $user_role = User::with('roleuser.role')->get();
-        $roles = Role::all();
+        $roles = Role::all()->except(5);
         $users = User::all();
         return view('Admin.PartialPages.Role.role_user', compact(['roles', 'users', 'user_role']));
     }
@@ -72,9 +72,10 @@ class RoleController extends Controller
 
     public function roleuserUpdate(Request $request)
     {
+        // return $request->all();
         $request->validate([
-            'role_id' => 'required',
-            'user_id' => 'required',
+            'uprole_id' => 'required',
+            'upuser_id' => 'required',
         ]);
         RoleUser::where('id', $request->id)->update([
             'role_id' => $request->uprole_id,

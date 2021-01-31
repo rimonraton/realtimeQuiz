@@ -72,7 +72,7 @@
         <div class="card">
             <div class="card-body">
                 <center class="mt-4">
-                    <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.jpg')}}" class="rounded-circle" width="150" />
+                    <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.png')}}" class="rounded-circle" width="150" />
                     <h4 class="card-title mt-2">{{$userInfo->name}}</h4>
                     <h6 class="card-subtitle">{{$userInfo->info?$userInfo->info->slogan:''}}</h6>
                 </center>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <hr>
-                        <p class="mt-4">{{$userInfo->info->about}}</p>
+                        <p class="mt-4">@if($userInfo->info){{$userInfo->info->about}}@endif</p>
                         <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries </p>
                         <p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> -->
                         <!-- <h4 class="font-medium mt-4">Skill Set</h4>
@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <div class="picture-container">
                                     <div class="picture">
-                                        <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.jpg')}}" class="picture-src rounded-circle" id="wizardPicturePreview" title="">
+                                        <img src="{{asset($userInfo->avatar?$userInfo->avatar:'Admin/assets/images/users/1.png')}}" class="picture-src rounded-circle" id="wizardPicturePreview" title="">
                                         <input type="file" id="wizard-picture" name="file" class="" accept="image/*">
                                     </div>
                                 </div>
@@ -191,19 +191,19 @@
                             <div class="form-group">
                                 <label class="col-md-12">Phone No</label>
                                 <div class="col-md-12">
-                                    <input type="text" value="{{$userInfo->info->mobile}}" name="mobile" class="form-control form-control-line">
+                                    <input type="text" value="{{$userInfo->info?$userInfo->info->mobile:''}}" name="mobile" class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Slogan</label>
                                 <div class="col-md-12">
-                                    <textarea rows="5" name="slogan" class="form-control form-control-line">{{$userInfo->info->slogan}}</textarea>
+                                    <textarea rows="5" name="slogan" class="form-control form-control-line">{{$userInfo->info?$userInfo->info->slogan:''}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">About</label>
                                 <div class="col-md-12">
-                                    <textarea rows="5" name="about" class="form-control form-control-line">{{$userInfo->info->about}}</textarea>
+                                    <textarea rows="5" name="about" class="form-control form-control-line">{{$userInfo->info?$userInfo->info->about:''}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">

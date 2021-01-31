@@ -61,6 +61,7 @@ Route::get('quiz/delete/{id}', 'QuizController@deleteQuiz');
 Route::get('quiz/{id}/edit', 'QuizController@quizEdit');
 Route::post('quiz/update', 'QuizController@quizUpdate');
 Route::get('quiz/{quiz_id}/{question_id}/delete', 'QuizController@quizdelete');
+Route::post('quizPublished', 'QuizController@quizPublished');
 
 // Quiz with Option by id
 Route::get('quiz/quiz/{id}', 'QuizController@quiz');
@@ -81,15 +82,21 @@ Route::post('game/perform-message/save', 'PerformController@performmessagesstore
 Route::post('game/perform-message/edit', 'PerformController@performmessagesupdate');
 Route::get('game/perform-message/delete/{id}', 'PerformController@performmessagesdelete');
 
+// Team
+Route::get('teamlist', 'TeamController@index');
+Route::post('createTeam', 'TeamController@createTeam');
+Route::post('updateTeam', 'TeamController@updateTeam');
+Route::get('deleteTeam/{id}', 'TeamController@deleteTeam');
+
 // Role
 Route::get('rolelist', 'RoleController@index');
-Route::post('createRole','RoleController@createRole');
-Route::post('roleUpdate','RoleController@roleUpdate');
-Route::get('roleDelete/{id}','RoleController@roleDelete');
-Route::get('assignRoleList','RoleController@assignRoleList');
-Route::post('createRoleUser','RoleController@createRoleUser');
-Route::post('roleuserUpdate','RoleController@roleuserUpdate');
-Route::get('deleteroleUser/{id}','RoleController@deleteroleUser');
+Route::post('createRole', 'RoleController@createRole');
+Route::post('roleUpdate', 'RoleController@roleUpdate');
+Route::get('roleDelete/{id}', 'RoleController@roleDelete');
+Route::get('assignRoleList', 'RoleController@assignRoleList');
+Route::post('createRoleUser', 'RoleController@createRoleUser');
+Route::post('roleuserUpdate', 'RoleController@roleuserUpdate');
+Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');
 
 Auth::routes();
 

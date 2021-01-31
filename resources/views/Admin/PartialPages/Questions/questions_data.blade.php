@@ -7,7 +7,6 @@
 @endsection
 <div class="card">
     <div class="card-body">
-        <!-- <h4 class="card-title mb-3">Default Tabs</h4> -->
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
             @if($q->questions->count() > 0)
@@ -31,19 +30,19 @@
                         <div class="row">
                             <div class="col-sm-12 pt-3">
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                    <table class="table table-striped table-bordered dataTable">
                                         <thead>
-                                            <tr role="row">
+                                            <tr>
                                                 <th style="width: 10%;">SL</th>
-                                                <th style="width: 30%;">Question</th>
-                                                <th style="width: 50%;">Options</th>
+                                                <th style="width: 40%;">Question</th>
+                                                <th style="width: 40%;">Options</th>
                                                 <th style="width: 10%;" class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($q->questions as $qs)
-                                            <tr role="row" class="odd">
-                                                <td class="sorting_1">{{$loop->iteration}}</td>
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
                                                 <td>{{$qs->question_text}}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
@@ -53,9 +52,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <!-- <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->question_text}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a> -->
                                                     <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
-                                                    <!-- <a class="edit" href="" title="Edit"><i class="fas fa-pencil-alt"></i></a> -->
                                                     <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
 
                                                 </td>
