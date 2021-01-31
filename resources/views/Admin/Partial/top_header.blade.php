@@ -110,7 +110,7 @@
                         <ul class="dropdown-user list-style-none">
                             <li>
                                 <div class="dw-user-box p-3 d-flex">
-                                    <div class="u-img"><img src="{{asset('Admin/assets/images/users/1.jpg')}}" alt="user" class="rounded" width="80"></div>
+                                    <div class="u-img"><img src="{{asset(auth()->user()->avatar?auth()->user()->avatar:'Admin/assets/images/users/1.png')}}" alt="user" class="rounded" width="80"></div>
                                     <div class="u-text ml-2">
                                         <h4 class="mb-0">{{auth()->user()->name}}</h4>
                                         <p class="text-muted mb-1 font-14">{{auth()->user()->email}}</p>
