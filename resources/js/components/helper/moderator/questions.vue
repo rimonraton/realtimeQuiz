@@ -10,7 +10,7 @@
 		            aria-expanded="true" 
 		            :aria-controls="'collapse'+ index">
 		            <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ index + 1 }}</span>
-		              {{ ToText(question.question_text) }}
+		              {{ question.question_text }}
 		        </div>
 
 		        <div :id="'collapse'+ index" class="collapse" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
@@ -22,9 +22,9 @@
 		            <ul class="list-group text-dark">
 		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
 		                    <small>
-		                        {{ ToText(option.option) }}
+		                        {{ option.option }}
 		                    </small>
-		                    <span v-if="option.correct">
+		                    <span v-if="option.correct ==1">
 		                        <i class="fa fa-check text-success" aria-hidden="true"></i>
 		                    </span>
 		                </li>

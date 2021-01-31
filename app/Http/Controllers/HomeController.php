@@ -25,10 +25,10 @@ class HomeController extends Controller
 
     public function Mode($type)
     {
-        $exams =  Quiz::with('quizCategory')->paginate(9);
+        $quiz =  Quiz::with('quizCategory')->paginate(9);
         $user = Auth::user();
-        $ce = Category::with('exams')->get();
-        return view('mode', compact('exams', 'user', 'ce', 'type'));
+        $categories = Category::where('sub_topic_id', 0)->get();
+        return view('mode', compact('quiz', 'user', 'categories', 'type'));
     }
 
     public function Game($type, Quiz $quiz, $uid)

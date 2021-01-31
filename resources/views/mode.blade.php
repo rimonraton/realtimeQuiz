@@ -7,8 +7,6 @@
     .row{
         width: 100%;
     }
-
-
     .folder-wrap{
       display: flex;
       flex-wrap:wrap;
@@ -93,6 +91,66 @@
       opacity: 1;
 
     }
+
+.task {
+  box-shadow: 0 0 2px #007bff;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  /*perspective: 800px;*/
+  transform-style: preserve-3d;
+}
+
+.abstract,
+.details {
+  width: 100%;
+  padding: 15px 30px;
+  position: relative;
+}
+.task:hover .abstract,
+.task:hover .details {
+  /*background: #fafafa;*/
+}
+
+.abstract {
+  transition: 0.3s ease all;
+}
+
+.details {
+  background: linear-gradient(to left, #FF512F, #DD2476);
+  color:white;
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+  visibility: visible;
+  transform: rotateX(-180deg);
+  transform-origin: top center;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transition: 0.3s transform ease;
+}
+.details:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: grey;
+}
+.task:hover .details {
+  max-height: none;
+  overflow: visible;
+  visibility: visible;
+  transform: rotateX(0deg);
+}
+
+.details__inner {
+  padding: 15px 30px;
+}
+
+
 </style>
 @section('content')
 <div class="container">
@@ -116,39 +174,69 @@
       </a>
     </div>
   </div>
-    <div class="row justify-content-center ml-0">
-        @foreach($exams as $exam)
-            <div class="col-md-4 col-sm-12 text-center">
-                <div class="card my-3">
-                <span class="text-muted text-right pr-2 position-absolute w-100">
-                  {{ count(explode(',', $exam->questions)) . ' questions. ' }}
-                </span>
-                  <div class="card-body text-secondary">
-                    <h5 class="card-title">{{ __('msg.quiz') }}</h5>
-                    <h5 class="card-title">{{ $exam->quizCategory->name }}</h5>
-                    <p class="card-text">{{ $exam->quiz_name }}</p>
-                    
-                    <a href="{{ url('Mode/' . $type . '/'. $exam->id . '/' . Auth::id()) }}"
-                       class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
-                    
-                    @if($type != 'Practice')
-                      <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $exam->id }}">
-                        {{ __('msg.share') }} 
-                        <div class="loading{{ $exam->id }}"></div>
-                      </a>
-                      <div id="shareBtn{{ $exam->id }}" class="show_share shareBtnDiv">
-                        
-                      </div>
-                    @endif
-                  </div>
-                </div>
+  <div class="row justify-content-center ml-0 mb-5">
+    @foreach($categories as $cat)
+    <div class="col-md-4 col-sm-12 text-center">
+      <div class="wrap my-3">
+        <div class="task">
+          <div class="abstract">
+            <h3>Abstract</h3>
+            <p>This is what you see by default.</p>
+          </div>
+          <div class="details">
+            <div class="details__inner">
+              <h3>Details</h3>
+              <p>This additional content gets revealed on hover.</p>
             </div>
-        @endforeach
-        <div class="row justify-content-center">
-                {{ $exams->links() }}
+          </div>
         </div>
-    
-    </div>    
+      </div>
+
+     {{--  <div class="dropdowns">
+        @if($cat->childs)
+        @foreach($cat->childs as $cc)
+        <div class="item collapses">{{ $cc->name }}</div>
+        @endforeach
+        @endif
+        <div class="item collapses">{{ $cat->name }}</div>
+      </div> --}}
+    </div>
+    @endforeach
+  </div>
+
+ {{--  <div class="row justify-content-center ml-0 mt-5">
+      @foreach($quiz as $qz)
+          <div class="col-md-4 col-sm-12 text-center">
+              <div class="card my-3">
+              <span class="text-muted text-right pr-2 position-absolute w-100">
+                {{ count(explode(',', $qz->questions)) . ' questions. ' }}
+              </span>
+                <div class="card-body text-secondary">
+                  <h5 class="card-title">{{ __('msg.quiz') }}</h5>
+                  <h5 class="card-title">{{ $qz->quizCategory->name }}</h5>
+                  <p class="card-text">{{ $qz->quiz_name }}</p>
+                  
+                  <a href="{{ url('Mode/' . $type . '/'. $qz->id . '/' . Auth::id()) }}"
+                     class="btn btn-sm btn-outline-success">{{ __('msg.start') }}</a>
+                  
+                  @if($type != 'Practice')
+                    <a class="btn btn-sm btn-outline-info shareBtn" data-id="{{ $qz->id }}">
+                      {{ __('msg.share') }} 
+                      <div class="loading{{ $qz->id }}"></div>
+                    </a>
+                    <div id="shareBtn{{ $qz->id }}" class="show_share shareBtnDiv">
+                      
+                    </div>
+                  @endif
+                </div>
+              </div>
+          </div>
+      @endforeach
+      <div class="row justify-content-center">
+              {{ $quiz->links() }}
+      </div>
+  
+  </div>     --}}
 
 </div>
 @endsection
@@ -171,6 +259,20 @@
         });
 
       });
+
+    var dropdown = $('.dropdowns');
+    $('.item').on('click', function() {
+      $(this).toggleClass('collapses');
+
+      if ($(this).parents().hasClass('dropped')) {
+        $(this).parents().toggleClass('dropped');
+      } else {
+        setTimeout(()=> {
+          $(this).parents().toggleClass('dropped');
+        }, 150);
+      }
+    })
+
   });
 
 </script>

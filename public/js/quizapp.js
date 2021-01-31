@@ -3097,10 +3097,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -86347,7 +86343,7 @@ var render = function() {
                   ),
                   _vm._v(
                     "\n\t              " +
-                      _vm._s(_vm.ToText(question.question_text)) +
+                      _vm._s(question.question_text) +
                       "\n\t        "
                   )
                 ]
@@ -86391,12 +86387,12 @@ var render = function() {
                             _c("small", [
                               _vm._v(
                                 "\n\t                        " +
-                                  _vm._s(_vm.ToText(option.option)) +
+                                  _vm._s(option.option) +
                                   "\n\t                    "
                               )
                             ]),
                             _vm._v(" "),
-                            option.correct
+                            option.correct == 1
                               ? _c("span", [
                                   _c("i", {
                                     staticClass: "fa fa-check text-success",

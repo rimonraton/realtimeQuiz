@@ -33,7 +33,6 @@
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
-
                 <questions :questions="questions" :qid="qid" ></questions>
             </div>
 
@@ -134,9 +133,6 @@
                         </li>
                     </ul>
                 </div>
-
-                
-                
             </div>
         </div>
         <div class="row justify-content-center" v-if="user.id != uid">

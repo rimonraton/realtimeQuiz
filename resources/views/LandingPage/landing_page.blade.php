@@ -190,7 +190,7 @@
                                         <i class="fas fa-user text-white"></i>
                                     </a>
 
-                                    <a href="{{url('Mode/Group')}}" class="menu-item menu-purple left-cercle">
+                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
 
