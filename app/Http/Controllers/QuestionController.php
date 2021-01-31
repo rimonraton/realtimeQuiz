@@ -63,11 +63,11 @@ class QuestionController extends Controller
     // End category
 
     // Questions
-    public function list($id ='')
+    public function list($id = '')
     {
         $topic = Category::all();
         // $Qcategory = QuizCategory::all();
-        return view('Admin.PartialPages.Questions.questions_list', compact('topic','id'));
+        return view('Admin.PartialPages.Questions.questions_list', compact('topic', 'id'));
     }
     public function create()
     {
@@ -133,10 +133,15 @@ class QuestionController extends Controller
     }
     public function getlist($id)
     {
-        $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
-            $q->where('category_id', $id);
-        }, 'questions.options'])->get();
-        return view('Admin.PartialPages.Questions.questions_data', compact('questions'));
+        $qus = Question::where('category_id', $id)->count();
+        if ($qus) {
+            $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
+                $q->where('category_id', $id);
+            }, 'questions.options'])->get();
+
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions'));
+        }
+        return '';
     }
 
     public function editQuestion($id)
@@ -160,7 +165,7 @@ class QuestionController extends Controller
         if ($request->cid) {
             return redirect('question/list/view/' . $request->cid);
         } else {
-            return redirect('question/list/'.$request->cat_id);
+            return redirect('question/list/' . $request->cat_id);
         }
     }
 

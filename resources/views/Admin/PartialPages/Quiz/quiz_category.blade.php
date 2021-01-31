@@ -56,7 +56,7 @@
                                             <td>{{$qc->name}}</td>
                                             <td style="text-align: center; ">
                                                 <a class="edit" href="" data-id="{{$qc->id}}" data-name="{{$qc->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete" style="cursor: pointer;" data-id="{{$qc->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$qc->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         @endforeach

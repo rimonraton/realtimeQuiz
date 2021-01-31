@@ -150,8 +150,14 @@
                 console.log('BEFORE');
             },
             success: function(data) {
+                console.log(data);
                 if (data != '') {
                     $('#viewData').html(data);
+                    toastr.success('Successfully Loaded', {
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    timeOut: 1000
+                });
                 } else {
 
                     $('#viewData').html(
@@ -166,11 +172,6 @@
             complete: function() {
                 $('#loading').hide();
                 $('#viewData').show();
-                toastr.success('Successfully Loaded', {
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut",
-                    timeOut: 1000
-                });
                 console.log('COMPLETE');
 
             }

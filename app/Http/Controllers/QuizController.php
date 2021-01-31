@@ -66,7 +66,7 @@ class QuizController extends Controller
     {
         $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
             $q->where('category_id', $id);
-        }])->get();
+        }])->paginate(5);
 
         return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions'));
     }
@@ -218,5 +218,18 @@ class QuizController extends Controller
             "questions" => $q
         ]);
         return redirect()->back();
+    }
+
+    public function quizPublished(Request $request)
+    {
+    //    return $request->all();
+        Quiz::where('id', $request->id)->update([
+            'status' => $request->value
+        ]);
+        if ($request->value) {
+            return "Quiz Published";
+        } else {
+            return "Quiz Unpublished";
+        }
     }
 }

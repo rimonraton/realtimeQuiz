@@ -19,7 +19,7 @@
     <div class="col-md-2">
         <div class="bt-switch">
             <input type="hidden" name="ans[]" class="hi" value="{{$QO->correct}}">
-            <input type="checkbox" class="chk" name="answer[]" data-on-text="Yes" data-off-text="No" {{$QO->correct == 1?"checked":""}} data-size="normal" />
+            <input type="checkbox" class="chk" name="answer[]" data-on-text="Yes" data-off-text="No" data-size="normal" {{$QO->correct == 1?"checked":""}} />
         </div>
     </div>
 </div>

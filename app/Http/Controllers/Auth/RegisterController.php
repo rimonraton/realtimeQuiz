@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\RoleUser;
 use App\User;
 use App\UserInfo;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -73,6 +74,10 @@ class RegisterController extends Controller
         $ui = new UserInfo();
         $ui->user_id = $user->id;
         $ui->save();
+        $ru = new RoleUser();
+        $ru->user_id = $user->id;
+        $ru->role_id = 6;
+        $ru->save();
         return $user;
     }
 }

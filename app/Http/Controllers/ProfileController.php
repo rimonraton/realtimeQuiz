@@ -26,7 +26,7 @@ class ProfileController extends Controller
         // dd($geoip);
 
         // $country = strtolower($geoip->getCountryCode());
-
+        // return Auth()->user()->id;
         $userInfo = User::with('info')->where('id', Auth::user()->id)->first();
         return view('Admin.PartialPages.Profile.profile', compact(['userInfo', 'geoip']));
     }

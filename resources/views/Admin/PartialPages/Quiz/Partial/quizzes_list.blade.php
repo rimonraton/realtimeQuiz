@@ -10,7 +10,8 @@
                                 <thead>
                                     <tr role="row">
                                         <th style="width: 10%;">SL</th>
-                                        <th style="width: 80%;">Quiz Name</th>
+                                        <th style="width: 70%;">Quiz Name</th>
+                                        <th style="width: 10%;">Publish</th>
                                         <th style="width: 10%;" class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -19,10 +20,15 @@
                                     <tr role="row" class="odd">
                                         <td class="sorting_1">{{$loop->iteration}}</td>
                                         <td>{{$qs->quiz_name}}</td>
+                                        <td>
+                                            <div class="bt-switch">
+                                                <!-- <input type="hidden" name="status" class="hi" value="0"> -->
+                                                <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="Yes" data-off-text="No" data-size="normal" {{$qs->status ==1?"checked":""}} />
+                                            </div>
+                                        </td>
                                         <td class="text-center">
                                             <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->quiz_name}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a>
                                             <a class="edit" href="{{url('quiz/'.$qs->id.'/edit')}}" style="cursor: pointer; color:black;" title="edit"><i class="fas fa-pencil-alt"></i></a>
-                                            <!-- <a class="edit" href="" title="Edit"><i class="fas fa-pencil-alt"></i></a> -->
                                             <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
 
                                         </td>
@@ -47,3 +53,41 @@
     </div>
 </div> <!-- end card-body-->
 </div> <!-- end card-->
+<script>
+    $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+    $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+        var id = $(this).attr('data-id');
+        if (state == true) {
+            publishedOrNot(id, 1);
+            // $(this).prop('checked', true);
+        } else {
+            publishedOrNot(id, 0);
+            // $(this).removeProp('checked');
+
+        }
+    });
+
+    function publishedOrNot(id, value) {
+        $.ajax({
+            url: "{{url('quizPublished')}}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'id': id,
+                'value': value
+            },
+            success: function(data) {
+                Swal.fire({
+                    text: data,
+                    type: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                })
+            }
+        })
+    }
+    $('.dataTable').DataTable({
+        responsive: true,
+        "ordering": false
+    });
+</script>
