@@ -33,7 +33,7 @@ class HomeController extends Controller
 
     public function Game($type, Quiz $quiz, $uid)
     {
-        $game = \DB::table('games')->where('game_name', $type)->first();
+        $game = \DB::table('games')->where('gb_game_name', $type)->first();
         $gmsg = \DB::table('perform_messages')->where('game_id', $game->id)->get();
         $id = $quiz->id;
         $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
