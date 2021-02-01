@@ -15,12 +15,12 @@
                                 <i class="{{$pm->icon}}"></i>
                             </div>
                             <div class="p-2 align-self-center">
-                                <h4 class="mb-0 text-white">{{$pm->game_name}}</h4>
+                                <h4 class="mb-0 text-white">{{$pm->gb_game_name}}</h4>
                                 <!-- <span>Income</span> -->
                             </div>
                             <div class="ml-auto align-self-center">
                                 <!-- <h2 class="font-weight-medium mb-0 text-white">$2900</h2> -->
-                                <a data-id="{{$pm->id}}" data-name="{{$pm->game_name}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> Add New</a>
+                                <a data-id="{{$pm->id}}" data-name="{{$pm->gb_game_name}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> Add New</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                                             <td>{{$ppm->perform_status.'%'}}</td>
                                             <td>{{$ppm->perform_message}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$ppm->id}}" data-game="{{$pm->game_name}}" data-status="{{$ppm->perform_status}}" data-msg="{{$ppm->perform_message}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$ppm->id}}" data-game="{{$pm->gb_game_name}}" data-status="{{$ppm->perform_status}}" data-msg="{{$ppm->perform_message}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete" style="cursor: pointer;" data-id="{{$ppm->id}}" title="Remove"><i class="fas fa-trash text-danger"></i></a>
                                             </td>
                                         </tr>

@@ -39,6 +39,9 @@
                     <!-- <li class="sidebar-item"><a href="{{url('')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Perform Message Setup</span></a></li> -->
                 </ul>
             </li>
+            @if(Auth()->user()->roleuser->role->id == 5)
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('features')}}" aria-expanded="false"><i class="mdi mdi-apps"></i><span class="hide-menu">Features</span></a></li>
+            @endif
             <!-- <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Participants</span></a></li> -->
 
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('profile')}}" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">Profile</span></a></li>

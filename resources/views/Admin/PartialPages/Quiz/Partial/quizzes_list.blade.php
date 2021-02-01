@@ -8,25 +8,25 @@
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                 <thead>
-                                    <tr role="row">
+                                    <tr role="row" class="text-center">
                                         <th style="width: 10%;">SL</th>
-                                        <th style="width: 70%;">Quiz Name</th>
-                                        <th style="width: 10%;">Publish</th>
-                                        <th style="width: 10%;" class="text-center">Action</th>
+                                        <th style="width: 40%;">Quiz Name</th>
+                                        <th style="width: 20%;">Publish</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($quiz as $qs)
-                                    <tr role="row" class="odd">
+                                    <tr class="text-center">
                                         <td class="sorting_1">{{$loop->iteration}}</td>
-                                        <td>{{$qs->quiz_name}}</td>
+                                        <td>{{$qs->quiz_name}} <span class="badge badge-info">{{count(explode(",", $qs->questions))}} questions</span></td>
                                         <td>
                                             <div class="bt-switch">
                                                 <!-- <input type="hidden" name="status" class="hi" value="0"> -->
                                                 <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="Yes" data-off-text="No" data-size="normal" {{$qs->status ==1?"checked":""}} />
                                             </div>
                                         </td>
-                                        <td class="text-center">
+                                        <td>
                                             <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->quiz_name}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a>
                                             <a class="edit" href="{{url('quiz/'.$qs->id.'/edit')}}" style="cursor: pointer; color:black;" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                             <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
@@ -39,6 +39,7 @@
                                     <tr>
                                         <th>SL</th>
                                         <th>Quiz Name</th>
+                                        <th>Publish</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>

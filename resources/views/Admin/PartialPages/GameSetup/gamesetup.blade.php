@@ -20,12 +20,17 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type Game Mode" require>
+                                            <input type="text" class="form-control" name="gb_game_name" placeholder="Type Game Mode in English" require>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12 m-b-20">
+                                            <input type="text" class="form-control" name="bd_game_name" placeholder="Type Game Mode in Bangla" require>
                                         </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                                     </div>
 
                                 </form>
@@ -44,18 +49,20 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">SL</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">SL</th>
+                                            <th style="width: 0px;">English Name</th>
+                                            <th style="width: 0px;">Bangla Name</th>
+                                            <th style="width: 0px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($game as $g)
                                         <tr>
                                             <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$g->game_name}}</td>
+                                            <td>{{$g->gb_game_name}}</td>
+                                            <td>{{$g->bd_game_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$g->id}}" data-name="{{$g->game_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$g->id}}" data-gb="{{$g->gb_game_name}}" data-bd="{{$g->bd_game_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete" style="cursor: pointer;" data-id="{{$g->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -64,7 +71,8 @@
                                     <tfoot>
                                         <tr>
                                             <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">Name</th>
+                                            <th rowspan="1" colspan="1">English Name</th>
+                                            <th rowspan="1" colspan="1">Bangla Name</th>
                                             <th rowspan="1" colspan="1">Action</th>
                                         </tr>
                                     </tfoot>
@@ -97,12 +105,17 @@
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="name" placeholder="Type category">
+                            <input type="text" class="form-control" id="editgb" name="gb_game_name" placeholder="Type Game Mode in English">
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 m-b-20">
+                            <input type="text" class="form-control" id="editbd" name="bd_game_name" placeholder="Type Game Mode in Bangla">
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info waves-effect">Update</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                     </div>
 
                 </form>
@@ -121,7 +134,8 @@
         $('.edit').on('click', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
-            $('#editName').val($(this).attr('data-name'));
+            $('#editgb').val($(this).attr('data-gb'));
+            $('#editbd').val($(this).attr('data-bd'));
             $('#edit-gamemode').modal('show');
         })
 

@@ -33,9 +33,10 @@ class QuestionController extends Controller
     }
     public function store(Request $request)
     {
-        // return $request->all();
+        //  return $request->all();
         $request->validate([
             'name' => 'required',
+            // 'bn_name' => 'required',
         ]);
         $parentId = '';
         if ($request->topic == '') {
@@ -46,13 +47,18 @@ class QuestionController extends Controller
         // return $parentId;
         Category::create([
             'name' => $request->name,
+            'bn_name' => $request->bn_name,
             'sub_topic_id' => $parentId
         ]);
         return redirect('question/category');
     }
     public function update(Request $request)
     {
-        Category::where('id', $request->id)->update(['name' => $request->name]);
+        $request->validate([
+            'name' => 'required',
+            // 'bn_name' => 'required',
+        ]);
+        Category::where('id', $request->id)->update(['name' => $request->name,'bn_name' => $request->bn_name]);
         return redirect('question/category');
     }
     public function delete($id)

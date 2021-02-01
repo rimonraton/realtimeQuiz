@@ -19,15 +19,20 @@ class PerformController extends Controller
     }
     public function gamemodestore(Request $request)
     {
+        $request->validate([
+            'gb_game_name' => 'required',
+        ]);
         Game::create([
-            'game_name' => $request->name
+            'gb_game_name' => $request->gb_game_name,
+            'bd_game_name' => $request->bd_game_name,
         ]);
         return redirect('game/setup');
     }
     public function gamemodeupdate(Request $request)
     {
         Game::where('id', $request->id)->update([
-            'game_name' => $request->name
+            'gb_game_name' => $request->gb_game_name,
+            'bd_game_name' => $request->bd_game_name,
         ]);
         return redirect('game/setup');
     }
