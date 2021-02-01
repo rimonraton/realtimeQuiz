@@ -156,6 +156,7 @@ class QuizController extends Controller
         // }])->get();
         //    return Category::with('exams')->get();
         $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
+        // return $quiz->questions;
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
     public function deleteQuiz($id)
@@ -222,7 +223,7 @@ class QuizController extends Controller
 
     public function quizPublished(Request $request)
     {
-    //    return $request->all();
+        //    return $request->all();
         Quiz::where('id', $request->id)->update([
             'status' => $request->value
         ]);

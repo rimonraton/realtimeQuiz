@@ -12,4 +12,9 @@ class Game extends Model
     {
         return $this->hasMany(PerformMessage::class);
     }
+
+    public function features()
+    {
+        return $this->hasMany(Feature::class);
+    }
 }

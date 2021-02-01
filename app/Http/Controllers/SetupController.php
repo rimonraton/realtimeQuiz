@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\FAQ;
 use App\Feature;
+use App\Game;
 use Illuminate\Http\Request;
 
 class SetupController extends Controller
@@ -14,20 +15,35 @@ class SetupController extends Controller
     }
     public function features()
     {
-        $features = Feature::all();
-        return view('Admin.PartialPages.Feature.features', compact('features'));
+        // $features = Feature::all();
+        $perfom_message = Game::with('features')->get();
+        return view('Admin.PartialPages.Feature.features', compact('perfom_message'));
     }
     public function featureStore(Request $request)
     {
+        // return $request->all();
+        $request->validate([
+            'game_id' => 'required',
+            'gb_feature_name' => 'required',
+            // 'bn_name' => 'required',
+        ]);
         Feature::create([
-            "feature_name" => $request->name
+            "game_id" => $request->game_id,
+            "gb_feature_name" => $request->gb_feature_name,
+            "bd_feature_name" => $request->bd_feature_name,
         ]);
         return redirect('features');
     }
     public function featureUpdate(Request $request)
     {
+        $request->validate([
+            'id' => 'required',
+            'gb_feature_name' => 'required',
+            // 'bn_name' => 'required',
+        ]);
         Feature::where('id', $request->id)->update([
-            "feature_name" => $request->name
+            "gb_feature_name" => $request->gb_feature_name,
+            "bd_feature_name" => $request->bd_feature_name,
         ]);
         return redirect('features');
     }
@@ -39,6 +55,6 @@ class SetupController extends Controller
     public function faq()
     {
         $faq = FAQ::all();
-       return view('Admin.PartialPages.FAQ.faq', compact('faq'));
+        return view('Admin.PartialPages.FAQ.faq', compact('faq'));
     }
 }

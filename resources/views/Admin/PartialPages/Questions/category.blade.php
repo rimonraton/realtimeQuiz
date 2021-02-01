@@ -30,7 +30,12 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type Topic/Sub-Topic" require>
+                                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="Type Topic/Sub-Topic in English" require>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-12 m-b-20">
+                                            <input type="text" class="form-control" name="bn_name" placeholder="Type Topic/Sub-Topic in Bangla" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -54,9 +59,10 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">SL</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">SL</th>
+                                            <th style="width: 0px;">English Name</th>
+                                            <th style="width: 0px;">Bangla Name</th>
+                                            <th style="width: 0px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,8 +70,9 @@
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$loop->iteration}}</td>
                                             <td>{{$c->name}}</td>
+                                            <td>{{$c->bn_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" data-bangla="{{$c->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -74,7 +81,8 @@
                                     <tfoot>
                                         <tr>
                                             <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">Name</th>
+                                            <th rowspan="1" colspan="1">English Name</th>
+                                            <th rowspan="1" colspan="1">Bangla Name</th>
                                             <th rowspan="1" colspan="1">Action</th>
                                         </tr>
                                     </tfoot>
@@ -109,12 +117,17 @@
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="name" placeholder="Type category">
+                            <input type="text" class="form-control" id="editName" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="Type Topic/Sub-Topic in English">
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 m-b-20">
+                            <input type="text" class="form-control" id="editbanglaName" name="bn_name" placeholder="Type Topic/Sub-Topic in Bangla">
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info waves-effect">Update</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
                     </div>
 
                 </form>
@@ -130,14 +143,15 @@
 @section('js')
 <script>
     $(function() {
-        $(document).on('click','.edit', function(e) {
+        $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
+            $('#editbanglaName').val($(this).attr('data-bangla'));
             $('#edit-category').modal('show');
         })
 
-        $(document).on('click',".delete",function() {
+        $(document).on('click', ".delete", function() {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
