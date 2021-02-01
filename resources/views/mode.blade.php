@@ -1,6 +1,5 @@
 @extends('layouts.app')
 <style type="text/css">
-  
     .card:hover{
        box-shadow: 0 0 3px #007bff;
     }
@@ -92,64 +91,77 @@
 
     }
 
-.task {
-  box-shadow: 0 0 2px #007bff;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  /*perspective: 800px;*/
-  transform-style: preserve-3d;
-}
+    .task {
+      /*box-shadow: 0 0 2px #007bff;*/
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      /*perspective: 800px;*/
+      transform-style: preserve-3d;
+    }
 
-.abstract,
-.details {
-  width: 100%;
-  padding: 15px 30px;
-  position: relative;
-}
-.task:hover .abstract,
-.task:hover .details {
-  /*background: #fafafa;*/
-}
+    .abstract,
+    .details {
+      width: 100%;
+      padding: 15px 30px;
+      position: relative;
+    }
+    .task:hover .abstract,
+    .task:hover .details {
+      /*background: #fafafa;*/
+    }
 
-.abstract {
-  transition: 0.3s ease all;
-}
+    .abstract {
+      transition: 0.3s ease all;
+    }
 
-.details {
-  background: linear-gradient(to left, #FF512F, #DD2476);
-  color:white;
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
-  visibility: visible;
-  transform: rotateX(-180deg);
-  transform-origin: top center;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
-  transition: 0.3s transform ease;
-}
-.details:before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: grey;
-}
-.task:hover .details {
-  max-height: none;
-  overflow: visible;
-  visibility: visible;
-  transform: rotateX(0deg);
-}
+    .details {
+      /*background: linear-gradient(to left, #FF512F, #DD2476);*/
+      color:white;
+      max-height: 0;
+      padding: 0;
+      overflow: hidden;
+      visibility: visible;
+      transform: rotateX(-180deg);
+      transform-origin: top center;
+      -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
+      transition: 0.3s transform ease;
+    }
+    .details:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: grey;
+    }
+    .task:hover .details {
+      max-height: none;
+      overflow: visible;
+      visibility: visible;
+      transform: rotateX(0deg);
+    }
 
-.details__inner {
-  padding: 15px 30px;
-}
+    .details__inner {
+      /*padding: 15px 30px;*/
+    }
+    h3 a {
+      color:darkgray;
+    }
+    a:hover{
+      text-decoration: none !important;
+    }
+    .mixer{
+      color: #7b4397;  /* fallback for old browsers */
+      color: -webkit-linear-gradient(to right, #dc2430, #7b4397);  /* Chrome 10-25, Safari 5.1-6 */
+      color: linear-gradient(to right, #dc2430, #7b4397); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+    }
 
 </style>
 @section('content')
@@ -180,18 +192,24 @@
       <div class="wrap my-3">
         <div class="task">
           <div class="abstract">
-            <h3>Abstract</h3>
-            <p>This is what you see by default.</p>
+            <h3 class="d-flex">
+              <span>{!! $cat->icon !!}</span>
+              <a class="ml-2" href="#list-item-1">{{ $cat->name }}</a>
+            </h3>
           </div>
+          @if(count($cat->childs))
           <div class="details">
             <div class="details__inner">
-              <h3>Details</h3>
-              <p>This additional content gets revealed on hover.</p>
+              <div id="list-example" class="list-group">
+                @foreach($cat->childs as $cc)
+                <a class="list-group-item list-group-item-action gb" href="#list-item-1">{{ $cc->name }}</a>
+                @endforeach
+              </div>
             </div>
           </div>
+          @endif
         </div>
       </div>
-
     </div>
     @endforeach
   </div> --}}
