@@ -241,9 +241,9 @@
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type :</label>
                             <div class="col-sm-9">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
-                                    <option value="">Select QUestion Type</option>
+                                    <option value="">Select Question Type</option>
                                     @foreach($quizCategory as $qc)
-                                    <option value="{{$qc->id}}" id="cat_{{$qc->id}}">{{$qc->name}}</option>
+                                    <option value="{{$qc->id}}" id="cat_{{$qc->id}}" {{$loop->first?'selected':''}}>{{$qc->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -253,7 +253,7 @@
                             <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
-                                        <li class="dd-item">
+                                        <li class="dd-item" id="parentdd">
                                             <div class="dd-handle-new">
                                                 <strong class="selectedTopic">Select Topic</strong>
                                             </div>
@@ -271,37 +271,27 @@
                                     </ol>
                                 </div>
                             </div>
-                            <!-- <p class="col-sm-2 selectedTopic"></p> -->
                         </div>
-                        <!-- <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
-                            <div class="col-sm-9" id="topic">
-                                <select class="form-control custom-select" id="getTopic" name="category" required>
-                                    <option value="">Select Topic</option>
-                                    @foreach($category as $c)
-                                    <option value="{{$c->id}}">{{$c->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3 subtopicDiv" style="display: none;">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Sub Topic :</label>
-                            <div class="col-sm-9">
-                                <select class="form-control custom-select" name="subtopic" id="showsubtopic">
-                                    <option value="">Select Sub Topic</option>
-                                </select>
-                            </div>
-                        </div> -->
                         <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="question" placeholder="Type Question here." name="question" required></textarea>
+                                <textarea class="form-control txtareaValidation" id="question" placeholder="Type Question here." name="question" required></textarea>
                             </div>
                         </div>
+                        <div class="form-group row pb-3">
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in Bangla :</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" placeholder="Type Question here." name="questionbd"></textarea>
+                            </div>
+                        </div>
+
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control inpoption" id="option" name="option[]" placeholder="Enter Option" required>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -310,8 +300,11 @@
                         </div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control inpoption" id="option" name="option[]" placeholder="Enter Option" required>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -333,9 +326,12 @@
                             </label>
                         </div>
                         <div class="form-group row pb-3 exl" style="display: none;">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation"></textarea>
+                            <label for="question" class="col-sm-2 text-right control-label col-form-label">Explenation :</label>
+                            <div class="col-sm-5">
+                                <textarea class="form-control txtareaValidation" placeholder="Type Answer Explenation here in English." name="explenation"></textarea>
+                            </div>
+                            <div class="col-sm-5">
+                                <textarea class="form-control" placeholder="Type Answer Explenation here in Bangla." name="bdexplenation"></textarea>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -359,8 +355,32 @@
 <script>
     $.noConflict();
     $(function() {
+        var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
+        $('.txtareaValidation').keyup(function() {
+            if (regx.test(this.value)) {
+                console.log('correct');
+            } else {
+                if (this.value == '') {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'This is Required Field.',
+                    })
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please Type in English.',
+                    })
+                }
+
+            }
+        });
+
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+
         $('.smt').on('click', function(e) {
+            var cid = $('#selectedCid').val();
             var paise = 0;
             $('input[name="ans[]"]').each(function() {
                 console.log($(this).val());
@@ -369,7 +389,16 @@
                 }
             });
             if (paise == 1) {
-                $('#smtform').submit();
+                if (cid != '') {
+                    $('#smtform').submit();
+                } else {
+                    e.preventDefault();
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please select the Topic.',
+                    })
+                }
             } else {
                 e.preventDefault();
                 Swal.fire({
@@ -379,24 +408,17 @@
                 })
             }
         })
-        // $('#category').on('change', function() {
-        //     if ($(this).val() == '3') {
-        //         $('.opt3').hide();
-        //         $('.optiontf').removeAttr('required');
 
-        //     } else {
-        //         $('.opt3').show();
-        //         $('.optiontf').attr('required', 'required');
-
-        //     }
-        // });
         $('#createNew').on('click', function(e) {
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control inpoption" id="option" name="option[]" placeholder="Enter Option" required>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -538,6 +560,8 @@
                 // $(this).addClass('activeli');
                 // alert($(this).attr('data-cid'));
 
+                $('#parentdd').addClass('dd-collapsed').children('[data-action="collapse"]').hide();
+                $('#parentdd').children('[data-action="expand"]').show();
                 $('.topicls').removeClass('activeli');
                 $(this).addClass('activeli');
                 $('#selectedCid').val($(this).attr('data-cid'));

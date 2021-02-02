@@ -26,17 +26,17 @@
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                 <div class="table-responsive" style="overflow-x: hidden">
 
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                    <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12 pt-3">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable">
+                                    <table id="zero_config" class="table table-striped table-bordered dataTable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 10%;">SL</th>
-                                                <th style="width: 40%;">Question</th>
-                                                <th style="width: 40%;">Options</th>
-                                                <th style="width: 10%;" class="text-center">Action</th>
+                                                <th style="width: 5%;">SL</th>
+                                                <th style="width: 60%;">Question</th>
+                                                <th style="width: 30%;">Options</th>
+                                                <th style="width: 5%;" class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -44,12 +44,10 @@
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$qs->question_text}}</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center">
-                                                        @foreach($qs->options as $qo)
-                                                        <button class="btn mr-1" style="border: #5378e8 1px solid;"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
-                                                        @endforeach
-                                                    </div>
+                                                <td class="text-center">
+                                                    @foreach($qs->options as $qo)
+                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
+                                                    @endforeach
                                                 </td>
                                                 <td class="text-center">
                                                     <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
@@ -86,7 +84,25 @@
     var table;
     $('.dataTable').DataTable({
         responsive: true,
-        "ordering": false
+        "ordering": false,
+        // columnDefs: [{
+        //         width: 20,
+        //         targets: 0
+        //     },
+        //     {
+        //         width: 40,
+        //         targets: 1
+        //     },
+        //     {
+        //         width: 40,
+        //         targets: 2
+        //     },
+        //     {
+        //         width: 20,
+        //         targets: 3
+        //     },
+        // ],
+        // fixedColumns: true
     });
     // table = $('.dataTable')
     //     .on('draw.dt', function() {}).DataTable();

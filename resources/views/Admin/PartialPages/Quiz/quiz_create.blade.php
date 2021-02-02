@@ -79,9 +79,15 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name :</label>
+                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English :</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="quizName" placeholder="Type Quiz name here." name="quizName" required>
+                                <input type="text" class="form-control" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" id="quizName" placeholder="Type Quiz name here in English." name="quizName" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in Bangla :</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Type Quiz name here in Bangla." name="bdquizName" required>
                             </div>
                         </div>
                         <div class="form-group row pb-3">

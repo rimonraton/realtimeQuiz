@@ -58,8 +58,12 @@ class QuizController extends Controller
 
     public function list($tid = '')
     {
-        $category = Category::all();
-        return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid'));
+        $catName = '';
+        if ($tid) {
+            $catName = Category::find($tid)->name;
+        }
+        $category = Category::where('sub_topic_id', 0)->get();
+        return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid','catName'));
     }
 
     public function getQuestionsByTopic($id)
@@ -85,13 +89,6 @@ class QuizController extends Controller
 
     public function storeFromQB($request)
     {
-        // $cid ='';
-        // if($request->subtopic){
-        //     $cid =$request->subtopic;
-        // }
-        // else{
-        //     $cid = $request->topic;
-        // }
         $questions = array();
         foreach ($request->questions as $q) {
             $questions[] = $q;
@@ -99,20 +96,13 @@ class QuizController extends Controller
         $questionsid = implode(',', $questions);
         Quiz::create([
             'quiz_name'         => $request->quizName,
+            'bd_quiz_name'         => $request->bdquizName,
             'questions'         => $questionsid,
             'category_id'       => $request->cid,
-            // 'quiz_category_id'  => $request->category,
         ]);
     }
     public function storeFromCustom($request)
     {
-        // $cid ='';
-        // if($request->subtopic){
-        //     $cid =$request->subtopic;
-        // }
-        // else{
-        //     $cid = $request->topic;
-        // }
         $questionId = array();
         foreach ($request->question as  $k => $qq) {
             $options = 'option' . $k;
@@ -135,9 +125,9 @@ class QuizController extends Controller
         $questions = implode(',', $questionId);
         Quiz::create([
             'quiz_name'         => $request->quizName,
+            'bd_quiz_name'         => $request->bdquizName,
             'questions'         => $questions,
             'category_id'       => $request->cid,
-            // 'quiz_category_id'  => $request->category,
             'custom_create'     => 1,
         ]);
     }
@@ -150,11 +140,7 @@ class QuizController extends Controller
 
     public function quizList($id)
     {
-        // return Quiz::with('quizCategory')->where('category_id', $id)->get();
-        // $quiz = QuizCategory::with(['quizzes' => function ($q) use ($id) {
-        //     $q->where('category_id', $id);
-        // }])->get();
-        //    return Category::with('exams')->get();
+        
         $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
         // return $quiz->questions;
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));

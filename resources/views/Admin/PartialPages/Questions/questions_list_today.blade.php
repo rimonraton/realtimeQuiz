@@ -65,8 +65,10 @@
                                                                             <thead>
                                                                                 <tr role="row">
                                                                                     <th style="width: 10%;">SL</th>
-                                                                                    <th style="width: 30%;">Question</th>
-                                                                                    <th style="width: 50%;">Options</th>
+                                                                                    <th style="width: 30%;">Question in English</th>
+                                                                                    <th style="width: 30%;">Question in Bangla</th>
+                                                                                    <th style="width: 50%;">Options in English</th>
+                                                                                    <th style="width: 50%;">Options in Bangla</th>
                                                                                     <th style="width: 10%;" class="text-center">Action</th>
                                                                                 </tr>
                                                                             </thead>
@@ -75,12 +77,18 @@
                                                                                 <tr>
                                                                                     <td class="sorting_1">{{$loop->iteration}}</td>
                                                                                     <td>{{$qs->question_text}}</td>
-                                                                                    <td>
-                                                                                        <div class="d-flex justify-content-center">
-                                                                                            @foreach($qs->options as $qo)
-                                                                                            <button class="btn custom-border mr-1"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
-                                                                                            @endforeach
-                                                                                        </div>
+                                                                                    <td>{{$qs->bd_question_text}}</td>
+                                                                                    <td class="text-center">
+                                                                                        @foreach($qs->options as $qo)
+                                                                                        <button class="btn btn-sm custom-border m-1"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
+                                                                                        @endforeach
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @foreach($qs->options as $qo)
+                                                                                        @if($qo->bd_option)
+                                                                                        <button class="btn btn-sm custom-border m-1"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->bd_option}}</button>
+                                                                                        @endif
+                                                                                        @endforeach
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         <!-- <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->question_text}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a> -->
@@ -96,6 +104,8 @@
                                                                                 <tr>
                                                                                     <th>SL</th>
                                                                                     <th>Question</th>
+                                                                                    <th>Question</th>
+                                                                                    <th>Options</th>
                                                                                     <th>Options</th>
                                                                                     <th>Action</th>
                                                                                 </tr>

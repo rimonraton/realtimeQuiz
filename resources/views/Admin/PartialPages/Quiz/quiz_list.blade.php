@@ -16,6 +16,35 @@
         border-radius: 4px;
         appearance: none;
     }
+
+    .myadmin-dd .dd-list .dd-item .dd-handle-new {
+        background: #fff;
+        border: 1px solid rgba(120, 130, 140, .13);
+        padding: 8px 16px;
+        height: auto;
+        font-family: Montserrat, sans-serif;
+        font-weight: 400;
+        border-radius: 0;
+    }
+
+    .dd-handle-new {
+        display: block;
+        height: 30px;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        /* color: #000; */
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #e5e5e5;
+        background: #fafafa;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    .activeli {
+        background-color: #e9ecef !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -25,7 +54,7 @@
             <div class="card-body">
                 <h4 class="card-title text-center">Quiz List <a class="btn btn-success float-right" href="{{url('quiz/create')}}">Create Quiz</a></h4>
                 <hr>
-                <div class="d-flex flex-row bd-highlight mb-3 justify-content-center">
+                <!-- <div class="d-flex flex-row bd-highlight mb-3 justify-content-center">
                     <div class=" bd-highlight pt-3">Topic :</div>
                     <div class="p-2 bd-highlight w-50">
                         <select class="form-control custom-select category" id="topic">
@@ -34,6 +63,30 @@
                             <option value="{{$c->id}}">{{$c->name}}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div> -->
+                <div class="form-group row pb-3">
+                    <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                    <div class="col-sm-9">
+                        <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
+                            <ol class="dd-list">
+                                <li class="dd-item" id="parentdd">
+                                    <div class="dd-handle-new">
+                                        <strong class="selectedTopic">{{ $tid ? $catName : 'Select Topic' }}</strong>
+                                    </div>
+                                    <ol class="dd-list">
+                                        @foreach($category as $c)
+                                        <li class="dd-item">
+                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                            @if(count($c->childs))
+                                            @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
+                                            @endif
+                                        </li>
+                                        @endforeach
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -88,7 +141,6 @@
     $(function() {
         var getId = "{{$tid}}"
         if (getId != "") {
-            $('#topic').val(getId);
             quizList(getId);
         }
         $('#topic').on('change', function() {
@@ -163,6 +215,52 @@
                 }
             })
         })
+
+        $(document).on('click', '.topicls', function() {
+
+            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
+
+            if ($(this).hasClass('activeli')) {
+                $(this).removeClass('activeli');
+                $('#selectedCid').val('');
+                $('.selectedTopic').html('Select Topic');
+            } else {
+                // $('.topicls').removeClass('activeli');
+                // $(this).addClass('activeli');
+                // alert($(this).attr('data-cid'));
+
+                $('#parentdd').addClass('dd-collapsed').children('[data-action="collapse"]').hide();
+                $('#parentdd').children('[data-action="expand"]').show();
+                $('.topicls').removeClass('activeli');
+                $(this).addClass('activeli');
+                $('#selectedCid').val($(this).attr('data-cid'));
+                $('.selectedTopic').html($(this).text());
+                quizList($(this).attr('data-cid'));
+            }
+
+        })
+        var updateOutput = function(e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+        $('#nestable-menu').on('click', function(e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+
+        $('#nestable-menu').nestable();
     })
 </script>
 @endsection

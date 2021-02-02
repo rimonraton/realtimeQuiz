@@ -46,12 +46,12 @@
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                         <thead>
-                                    <tr role="row">
-                                        <th style="width: 10%;">SL</th>
-                                        <th style="width: 10%;">Action</th>
-                                        <th style="width: 80%;">Questions</th>
-                                    </tr>
-                                </thead>
+                                            <tr role="row">
+                                                <th style="width: 10%;">SL</th>
+                                                <th style="width: 10%;">Action</th>
+                                                <th style="width: 80%;">Questions</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             @foreach($q->questions as $qq)
                                             <tr role="row" class="odd">
@@ -94,7 +94,7 @@
         responsive: true,
         "ordering": false
     });
-    $(document).on('click', ".checkAll", function() {
+    $(".checkAll").on('click', function() {
         var child = $(this).attr('id');
         $("." + child).not(this).prop('checked', this.checked);
     });

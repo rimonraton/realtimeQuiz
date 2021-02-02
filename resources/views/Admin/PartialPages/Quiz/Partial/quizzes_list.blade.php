@@ -10,8 +10,10 @@
                                 <thead>
                                     <tr role="row" class="text-center">
                                         <th style="width: 10%;">SL</th>
-                                        <th style="width: 40%;">Quiz Name</th>
-                                        <th style="width: 20%;">Publish</th>
+                                        <th style="width: 25%;">Quiz Name in English</th>
+                                        <th style="width: 25%;">Quiz Name in Bangla</th>
+                                        <th style="width: 15%;">Number Of Questions</th>
+                                        <th style="width: 15%;">Publish</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
@@ -19,7 +21,11 @@
                                     @foreach($quiz as $qs)
                                     <tr class="text-center">
                                         <td class="sorting_1">{{$loop->iteration}}</td>
-                                        <td>{{$qs->quiz_name}} <span class="badge badge-info">{{count(explode(",", $qs->questions))}} questions</span></td>
+                                        <td>{{$qs->quiz_name}} </td>
+                                        
+                                        <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
+                                        <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} questions</span></td>
+                                        
                                         <td>
                                             <div class="bt-switch">
                                                 <!-- <input type="hidden" name="status" class="hi" value="0"> -->
@@ -38,7 +44,9 @@
                                 <tfoot>
                                     <tr>
                                         <th>SL</th>
-                                        <th>Quiz Name</th>
+                                        <th>Quiz Name in English</th>
+                                        <th>Quiz Name in Bangla</th>
+                                        <th>Number Of Questions</th>
                                         <th>Publish</th>
                                         <th>Action</th>
                                     </tr>
@@ -89,6 +97,6 @@
     }
     $('.dataTable').DataTable({
         responsive: true,
-        "ordering": false
+        "ordering": false,
     });
 </script>

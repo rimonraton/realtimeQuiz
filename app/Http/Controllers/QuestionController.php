@@ -58,7 +58,7 @@ class QuestionController extends Controller
             'name' => 'required',
             // 'bn_name' => 'required',
         ]);
-        Category::where('id', $request->id)->update(['name' => $request->name,'bn_name' => $request->bn_name]);
+        Category::where('id', $request->id)->update(['name' => $request->name, 'bn_name' => $request->bn_name]);
         return redirect('question/category');
     }
     public function delete($id)
@@ -71,9 +71,12 @@ class QuestionController extends Controller
     // Questions
     public function list($id = '')
     {
-        $topic = Category::all();
-        // $Qcategory = QuizCategory::all();
-        return view('Admin.PartialPages.Questions.questions_list', compact('topic', 'id'));
+        $catName = '';
+        if ($id) {
+            $catName = Category::find($id)->name;
+        }
+        $topic = Category::where('sub_topic_id', 0)->get();
+        return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName']));
     }
     public function create()
     {
@@ -122,14 +125,19 @@ class QuestionController extends Controller
             'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,
             'question_text' => $request->question,
+            'bd_question_text' => $request->questionbd,
             'question_file_link' => $imgPath,
             'answer_explanation' => $request->explenation,
+            'bd_answer_explanation' => $request->bdexplenation,
             'user_id' => Auth::user()->id,
             // 'created_at' => Carbon::,
         ]);
         foreach ($request->option as  $k => $o) {
             $data[$k]['question_id'] = $question->id;
             $data[$k]['option'] = $o;
+        }
+        foreach ($request->optionbd as  $k => $o) {
+            $data[$k]['bd_option'] = $o;
         }
         foreach ($request->ans as  $k => $a) {
             $data[$k]['correct'] = $a;
@@ -145,6 +153,7 @@ class QuestionController extends Controller
                 $q->where('category_id', $id);
             }, 'questions.options'])->get();
 
+
             return view('Admin.PartialPages.Questions.questions_data', compact('questions'));
         }
         return '';
@@ -157,14 +166,16 @@ class QuestionController extends Controller
     }
     public function updateQuestion(Request $request)
     {
-        //  return $request->all();
+        // return $request->all();
         // return $request->cid;
         Question::where('id', $request->qid)->update([
-            'question_text' => $request->question
+            'question_text' => $request->question,
+            'bd_question_text' => $request->bdquestion,
         ]);
         foreach ($request->option as  $k => $o) {
             QuestionsOption::where('id', $request->oid[$k])->update([
                 'option' => $o,
+                'bd_option' => $request->bdoption[$k],
                 'correct' => $request->ans[$k]
             ]);
         }
@@ -185,7 +196,6 @@ class QuestionController extends Controller
     public function getQuestiontoday($id)
     {
         $today = Carbon::parse(Carbon::now())->format('Y-m-d');
-        // return $question = Question::where('created_at', '>', $today)->get();
         $questions =  QuizCategory::with(['questions' => function ($q) use ($today, $id) {
             $q->where('created_at', '>', $today);
             $q->where('category_id', $id);

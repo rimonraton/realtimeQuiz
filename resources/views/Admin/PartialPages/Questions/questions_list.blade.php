@@ -1,7 +1,7 @@
 @extends('Admin.Layout.dashboard')
 @section('css')
 <style>
-    .custom-select {
+    /* .custom-select {
         display: inline-block;
         width: 100%;
         height: calc(1.5em + .75rem + 2px);
@@ -15,6 +15,34 @@
         border: 1px solid #e9ecef;
         border-radius: 4px;
         appearance: none;
+    } */
+    .myadmin-dd .dd-list .dd-item .dd-handle-new {
+        background: #fff;
+        border: 1px solid rgba(120, 130, 140, .13);
+        padding: 8px 16px;
+        height: auto;
+        font-family: Montserrat, sans-serif;
+        font-weight: 400;
+        border-radius: 0;
+    }
+
+    .dd-handle-new {
+        display: block;
+        height: 30px;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        /* color: #000; */
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #e5e5e5;
+        background: #fafafa;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    .activeli {
+        background-color: #e9ecef !important;
     }
 </style>
 @endsection
@@ -25,16 +53,27 @@
             <div class="card-body">
                 <h4 class="card-title text-center">Questions List <a class="btn btn-success float-right" href="{{url('question/create')}}">Create Questions</a></h4>
                 <hr>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 row justify-content-center">
-                        <div class="bd-highlight pt-3 col-md-2 col-xs-4 text-right">Topic :</div>
-                        <div class="p-2 bd-highlight col-md-4 col-xs-8">
-                            <select class="form-control custom-select topic">
-                                <option value="0">Select Topic</option>
-                                @foreach($topic as $t)
-                                <option value="{{$t->id}}">{{$t->name}}</option>
-                                @endforeach
-                            </select>
+                <div class="form-group row pb-3">
+                    <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                    <div class="col-sm-9">
+                        <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
+                            <ol class="dd-list">
+                                <li class="dd-item" id="parentdd">
+                                    <div class="dd-handle-new">
+                                        <strong class="selectedTopic">{{ $id ? $catName : 'Select Topic' }}</strong>
+                                    </div>
+                                    <ol class="dd-list">
+                                        @foreach($topic as $c)
+                                        <li class="dd-item">
+                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                            @if(count($c->childs))
+                                            @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
+                                            @endif
+                                        </li>
+                                        @endforeach
+                                    </ol>
+                                </li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -102,8 +141,7 @@
     $(function() {
         // toastr.success('I do not think that word means what you think it means.', 'Slide Down / Slide Up!', { "showMethod": "fadeIn", "hideMethod": "fadeOut", timeOut: 2000 });
         var getId = "{{$id}}"
-        if(getId!=""){
-            $('.topic').val(getId);
+        if (getId != "") {
             topicwithcategory(getId);
         }
         $('.topic').on('change', function() {
@@ -136,6 +174,51 @@
         //     console.log('toast');
         //     toastr.success('Have fun storming the castle!', 'Miracle Max Says');
         // })
+        $(document).on('click', '.topicls', function() {
+
+            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
+
+            if ($(this).hasClass('activeli')) {
+                $(this).removeClass('activeli');
+                $('#selectedCid').val('');
+                $('.selectedTopic').html('Select Topic');
+            } else {
+                // $('.topicls').removeClass('activeli');
+                // $(this).addClass('activeli');
+                // alert($(this).attr('data-cid'));
+
+                $('#parentdd').addClass('dd-collapsed').children('[data-action="collapse"]').hide();
+                $('#parentdd').children('[data-action="expand"]').show();
+                $('.topicls').removeClass('activeli');
+                $(this).addClass('activeli');
+                $('#selectedCid').val($(this).attr('data-cid'));
+                $('.selectedTopic').html($(this).text());
+                topicwithcategory($(this).attr('data-cid'));
+            }
+
+        })
+        var updateOutput = function(e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+        $('#nestable-menu').on('click', function(e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+
+        $('#nestable-menu').nestable();
     })
 
     function topicwithcategory(id) {
@@ -154,10 +237,10 @@
                 if (data != '') {
                     $('#viewData').html(data);
                     toastr.success('Successfully Loaded', {
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut",
-                    timeOut: 1000
-                });
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        timeOut: 1000
+                    });
                 } else {
 
                     $('#viewData').html(
