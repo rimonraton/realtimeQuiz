@@ -54,17 +54,6 @@
             <div class="card-body">
                 <h4 class="card-title text-center">Quiz List <a class="btn btn-success float-right" href="{{url('quiz/create')}}">Create Quiz</a></h4>
                 <hr>
-                <!-- <div class="d-flex flex-row bd-highlight mb-3 justify-content-center">
-                    <div class=" bd-highlight pt-3">Topic :</div>
-                    <div class="p-2 bd-highlight w-50">
-                        <select class="form-control custom-select category" id="topic">
-                            <option value="0">Select Topic</option>
-                            @foreach($category as $c)
-                            <option value="{{$c->id}}">{{$c->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> -->
                 <div class="form-group row pb-3">
                     <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
                     <div class="col-sm-9">

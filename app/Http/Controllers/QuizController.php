@@ -63,14 +63,14 @@ class QuizController extends Controller
             $catName = Category::find($tid)->name;
         }
         $category = Category::where('sub_topic_id', 0)->get();
-        return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid','catName'));
+        return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid', 'catName'));
     }
 
     public function getQuestionsByTopic($id)
     {
         $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
             $q->where('category_id', $id);
-        }])->paginate(5);
+        }])->get();
 
         return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions'));
     }
@@ -105,10 +105,12 @@ class QuizController extends Controller
     {
         $questionId = array();
         foreach ($request->question as  $k => $qq) {
+            $bdoptions = 'bdoption' . $k;
             $options = 'option' . $k;
             $answers = 'answer' . $k;
             $qid = Question::create([
                 'question_text'         => $qq,
+                'bd_question_text'      => $request->bdquestion[$k],
                 'answer_explanation'    => $request->explenation[$k],
                 'category_id'           =>  $request->cid,
                 'quizcategory_id'       =>  1,
@@ -117,15 +119,17 @@ class QuizController extends Controller
             foreach ($request->$options as  $i => $o) {
                 $data[$i]['question_id'] = $qid;
                 $data[$i]['option'] = $o;
+                $data[$i]['bd_option'] = $request->$bdoptions[$i];
                 $data[$i]['correct'] = $request->$answers[$i];
             }
             QuestionsOption::insert($data);
+            $data = null;
         }
 
         $questions = implode(',', $questionId);
         Quiz::create([
             'quiz_name'         => $request->quizName,
-            'bd_quiz_name'         => $request->bdquizName,
+            'bd_quiz_name'      => $request->bdquizName,
             'questions'         => $questions,
             'category_id'       => $request->cid,
             'custom_create'     => 1,
@@ -140,7 +144,7 @@ class QuizController extends Controller
 
     public function quizList($id)
     {
-        
+
         $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
         // return $quiz->questions;
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
@@ -192,6 +196,7 @@ class QuizController extends Controller
         Quiz::where('id', $request->quiz_id)->update([
             "questions" => $questions,
             "quiz_name" => $request->quizName,
+            "bd_quiz_name" => $request->bdquizName,
         ]);
         return redirect('quiz/' . $request->quiz_id . '/edit');
     }

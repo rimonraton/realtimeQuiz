@@ -238,7 +238,7 @@
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
                                     <option value="">Select Question Type</option>
@@ -249,7 +249,7 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
@@ -273,7 +273,7 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English:</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control txtareaValidation" id="question" placeholder="Type Question here." name="question" required></textarea>
                             </div>
@@ -286,7 +286,7 @@
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
                             </div>
@@ -299,7 +299,7 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
                             </div>
@@ -413,7 +413,7 @@
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
                             </div>

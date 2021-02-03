@@ -21,25 +21,7 @@
                     <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
                     <label for="child{{$q->id}}">Check All</label>
                 </div>
-                <!-- <div class="lobilists">
-                    <div class="lobilist lobilist-primary ps-container ps-theme-default">
-                        <div class="lobilist-body">
-                            <ul class="lobilist-items ui-sortable">
-                                @foreach($q->questions as $qq)
-                                <li data-id="6" class="lobilist-item">
-                                    <div class="col-md-12">
-                                        <input type="checkbox" name="questions[]" value="{{$qq->id}}" id="chc{{$qq->id}}" class="material-inputs child{{$q->id}}">
-                                        <label for="chc{{$qq->id}}">{{$qq->question_text}}</label>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-
-                </div> -->
                 <div class="table-responsive" style="overflow-x: hidden">
-
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12 pt-3">
@@ -49,12 +31,13 @@
                                             <tr role="row">
                                                 <th style="width: 10%;">SL</th>
                                                 <th style="width: 10%;">Action</th>
-                                                <th style="width: 80%;">Questions</th>
+                                                <th style="width: 40%;">Questions in English</th>
+                                                <th style="width: 40%;">Questions in Bangla</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($q->questions as $qq)
-                                            <tr role="row" class="odd">
+                                            <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td class="text-center">
                                                     <!-- <div class="col-md-12"> -->
@@ -65,17 +48,20 @@
                                                 <td>
                                                     {{$qq->question_text}}
                                                 </td>
+                                                <td>
+                                                    {{$qq->bd_question_text}}
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
-                                        <!-- <tfoot>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Question</th>
-                                        <th>Options</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot> -->
+                                        <tfoot>
+                                            <tr>
+                                                <th>SL</th>
+                                                <th>Action</th>
+                                                <th>Questions in English</th>
+                                                <th>Questions in Bangla</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -85,7 +71,6 @@
             </div>
             @endif
             @endforeach
-            {{$questions->links()}}
         </div>
     </div> <!-- end card-body-->
 </div>

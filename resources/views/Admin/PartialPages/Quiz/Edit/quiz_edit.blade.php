@@ -4,15 +4,20 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{url('quiz/update')}}">
+                <form method="POST" action="{{url('quiz/update')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" value="{{$quiz->id}}" name="quiz_id" id="">
                     <input type="hidden" value="{{$quiz->category_id}}" name="category_id" id="">
-                    <!-- <h4 class="card-title text-center">Quiz Name : <input class="form-control" type="text" value="{{$quiz->quiz_name}}" name="quiz_name" id=""></h4> -->
                     <div class="form-group row">
-                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name :</label>
+                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English:</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" value="{{$quiz->quiz_name}}" id="quizName" placeholder="Type Quiz name here." name="quizName" required>
+                            <input type="text" class="form-control" value="{{$quiz->quiz_name}}" id="quizName" placeholder="Type Quiz name here in English." name="quizName" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in Bangla:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="{{$quiz->bd_quiz_name}}" id="bdquizName" placeholder="Type Quiz name here in Bangla." name="bdquizName" required>
                         </div>
                     </div>
                     <hr>
