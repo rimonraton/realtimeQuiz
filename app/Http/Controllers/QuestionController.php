@@ -202,5 +202,5 @@ class QuestionController extends Controller
         }, 'questions.options'])->get();
         return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id'));
     }
-    // End Questins
+    // End Questions
 }

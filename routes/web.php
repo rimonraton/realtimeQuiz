@@ -45,11 +45,11 @@ Route::get('question/list/view/{cid}', 'QuestionController@getQuestiontoday');
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
-// Quiz Category
-Route::get('quiz/categorylist', 'QuizController@categorylist');
-Route::post('quiz/savecategory', 'QuizController@storeCategory');
-Route::post('quiz/updatecategory', 'QuizController@updateCategory');
-Route::get('quiz/deletecategory/{id}', 'QuizController@deleteCategory');
+// Questions Type
+Route::get('questionTypelist', 'QuestionTypeController@index');
+Route::post('questionTypesave', 'QuestionTypeController@store');
+Route::post('questionTypeupdate', 'QuestionTypeController@update');
+Route::get('questionTypedelete/{id}', 'QuestionTypeController@delete');
 
 // Quiz
 Route::get('quiz/view/list/{tid?}', 'QuizController@list');

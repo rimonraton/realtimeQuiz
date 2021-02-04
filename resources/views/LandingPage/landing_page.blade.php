@@ -19,6 +19,88 @@
 
     <link href="{{asset('css/theme-site.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <style>
+        .task {
+            /* box-shadow: 0 0 2px #007bff;  */
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            /* perspective: 800px; */
+            transform-style: preserve-3d;
+        }
+
+        .abstract,
+        .details {
+            width: 100%;
+            padding: 15px 30px;
+            position: relative;
+        }
+
+        .task:hover .abstract,
+        .task:hover .details {
+            /* background: #fafafa; */
+        }
+
+        .abstract {
+            transition: 0.3s ease all;
+        }
+
+        .details {
+            /* background: linear-gradient(to left, #FF512F, #DD2476);  */
+            color: white;
+            max-height: 0;
+            padding: 0;
+            overflow: hidden;
+            visibility: visible;
+            transform: rotateX(-180deg);
+            transform-origin: top center;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transition: 0.3s transform ease;
+        }
+
+        .details:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: grey;
+        }
+
+        .task:hover .details {
+            max-height: none;
+            overflow: visible;
+            visibility: visible;
+            transform: rotateX(0deg);
+        }
+
+        .details__inner {
+            /* padding: 15px 30px; */
+        }
+
+        h5 a {
+            color: #3d3b3b;
+        }
+
+        a:hover {
+            text-decoration: none !important;
+        }
+
+        .mixer {
+            color: #7b4397;
+            /* fallback for old browsers */
+            color: -webkit-linear-gradient(to right, #dc2430, #7b4397);
+            /* Chrome 10-25, Safari 5.1-6 */
+            color: linear-gradient(to right, #dc2430, #7b4397);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+    </style>
 </head>
 
 <body>
@@ -198,7 +280,7 @@
                 </div>
 
                 <div class="row justify-content-center" data-aos="fade-left">
-                    @foreach($category as $c)
+                    <!-- @foreach($category as $c)
                     <div class="col-lg-3 col-md-4 mt-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
                             <i class="fas fa-book"></i>
@@ -209,8 +291,45 @@
                             </h3>
                         </div>
                     </div>
-                    @endforeach
+                    @endforeach -->
+
+                    <div class="row justify-content-center ml-0 mb-5">
+                        @foreach($category as $cat)
+                        <div class="col-md-4 col-sm-12 text-center">
+                            <div class="wrap my-3">
+                                <div class="task">
+                                    <div class="abstract">
+                                        <h5 class="d-flex">
+                                            <span>{!! $cat->icon !!}</span>
+                                            <a class="ml-2">{{ $lang=='gb'?$cat->name:$cat->bn_name }}</a>
+                                            @if(count($cat->childs))
+                                            <i class="fas fa-sort-down ml-auto"></i>
+                                            @endif
+                                        </h5>
+                                    </div>
+                                    @if(count($cat->childs))
+                                    <div class="details">
+                                        <div class="details__inner">
+                                            <div id="list-example" class="list-group">
+                                                @foreach($cat->childs as $cc)
+                                                <!-- <i class="fas fa-angle-right"></i> -->
+                                                <a class="list-group-item list-group-item-action gb">
+                                                <i class="fas fa-check text-success"></i>
+                                                    {{ $lang=='gb'?$cc->name:$cc->bn_name }}
+                                                </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        
+                    </div>
                 </div>
+
 
             </div>
         </section><!-- End Topics Section -->
@@ -370,13 +489,13 @@
 
                     </div>
                     <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Links</h4>
+                        <h4>{{__('msg.links')}}</h4>
                         <ul>
-                            <li><i class="fas fa-home pr-1"></i><a href="#">Home</a></li>
-                            <li><i class="fas fa-brain pr-1"></i><a href="#about">Quiz</a></li>
-                            <li><i class="fas fa-list-ul pr-1"></i><a href="#features">Features</a></li>
-                            <li><i class="fas fa-book-reader pr-1"></i><a href="#topics">Topics</a></li>
-                            <li><i class="fas fa-address-book pr-1"></i><a href="#contact">Contact</a></li>
+                            <li><i class="fas fa-home pr-1"></i><a href="#">{{__('msg.home')}}</a></li>
+                            <li><i class="fas fa-brain pr-1"></i><a href="#about">{{__('msg.about')}}</a></li>
+                            <li><i class="fas fa-list-ul pr-1"></i><a href="#features">{{__('msg.features')}}</a></li>
+                            <li><i class="fas fa-book-reader pr-1"></i><a href="#topics">{{__('msg.topics')}}</a></li>
+                            <li><i class="fas fa-address-book pr-1"></i><a href="#contact">{{__('msg.contact')}}</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -391,7 +510,7 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Darco Technologies Limited</span></strong>. All Rights Reserved
+                &copy; {{__('msg.copyright')}} <strong><span>{{__('msg.companyName')}}</span></strong>. {{__('msg.rights')}}.
             </div>
             <div class="credits">
             </div>

@@ -79,9 +79,9 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English <span class="text-danger" style="font-size: 1.5rem;">*</span> : </label>
+                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English : </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" id="quizName" placeholder="Type Quiz name here in English." name="quizName" required>
+                                <input type="text" class="form-control" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" id="quizName" placeholder="Type Quiz name here in English." name="quizName">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -90,7 +90,18 @@
                                 <input type="text" class="form-control" placeholder="Type Quiz name here in Bangla." name="bdquizName">
                             </div>
                         </div>
-                        <div class="form-group row pb-3">
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-9">
+                                <select class="form-control custom-select" name="game_type" required>
+                                    <option>Select Game Type</option>
+                                    @foreach($gameType as $game)
+                                    <option value="{{$game->id}}">{{$game->gb_game_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
@@ -115,13 +126,14 @@
                             </div>
                         </div>
 
+
                         <div id="viewData" class="justify-content-center" style="display: none">
                         </div>
                         <div id="CustomQ" style="display: none;">
                             <div class="form-group row">
-                                <label for="question" class="col-sm-3 text-right control-label col-form-label">Question<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]" required></textarea>
+                                    <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -131,12 +143,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option0[]" placeholder="Enter Option in English">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla">
                                 </div>
                                 <div class="col-sm-1 bt-switch">
                                     <input type="hidden" name="answer0[]" class="hi" value="0">
@@ -144,12 +156,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option0[]" placeholder="Enter Option in English ">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla">
                                 </div>
                                 <div class="col-sm-1 bt-switch">
                                     <input type="hidden" name="answer0[]" class="hi" value="0">
@@ -272,15 +284,15 @@
             //     }
             // });
             if (cid != '') {
-                    $('#smtform').submit();
-                } else {
-                    e.preventDefault();
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Please select the Topic.',
-                    })
-                }
+                $('#smtform').submit();
+            } else {
+                e.preventDefault();
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Please select the Topic.',
+                })
+            }
             // if (paise == 1) {
             //     if (cid != '') {
             //         $('#smtform').submit();
@@ -329,12 +341,12 @@
             var data = '';
             // for (i = 0; i < NOP; i++) {
             data += `<div class="form-group row">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="${option}" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="${option}" placeholder="Enter Option in English">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" id="option" name="${bdoption}" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                <input type="text" class="form-control inpoption" id="option" name="${bdoption}" placeholder="Enter Option in Bangla">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="${answer}" class="hi" value="0">
@@ -379,9 +391,9 @@
                 <hr>
                 <h3 class="text-center pb-2">New Question <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
                 <div class="form-group row">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]" required></textarea>
+                        <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -391,12 +403,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" required>
+                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" >
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption"  name="bdoption${eid}[]" placeholder="Enter Option in Bangla (Not Mendetory)" >
+                        <input type="text" class="form-control inpoption"  name="bdoption${eid}[]" placeholder="Enter Option in Bangla" >
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
@@ -404,12 +416,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" required>
+                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" >
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" name="bdoption${eid}[]" placeholder="Enter Option in Bangla (Not Mendetory)" >
+                        <input type="text" class="form-control inpoption" id="option" name="bdoption${eid}[]" placeholder="Enter Option in Bangla" >
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">

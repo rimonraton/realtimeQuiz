@@ -51,5 +51,9 @@ return [
     'contactSubject' => 'Subject',
     'contactMessage' => 'Message',
     'logout' => 'Log Out',
+    'links' => 'Links',
+    'copyright' => 'Copyright',
+    'companyName' => 'Darco Technologies Limited',
+    'rights' => 'All Rights Reserved'
 
 ];

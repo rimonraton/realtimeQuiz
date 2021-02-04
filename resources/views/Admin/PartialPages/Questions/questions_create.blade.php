@@ -273,22 +273,22 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English :</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control txtareaValidation" id="question" placeholder="Type Question here." name="question" required></textarea>
+                                <textarea class="form-control txtareaValidation" id="question" placeholder="Type Question here." name="question"></textarea>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
                             <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in Bangla :</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" placeholder="Type Question here." name="questionbd"></textarea>
+                                <textarea class="form-control" id="bdquestion" placeholder="Type Question here." name="questionbd"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" >
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
@@ -299,9 +299,9 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English">
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
@@ -355,27 +355,27 @@
 <script>
     $.noConflict();
     $(function() {
-        var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
-        $('.txtareaValidation').keyup(function() {
-            if (regx.test(this.value)) {
-                console.log('correct');
-            } else {
-                if (this.value == '') {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'This is Required Field.',
-                    })
-                } else {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Please Type in English.',
-                    })
-                }
+        // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
+        // $('.txtareaValidation').keyup(function() {
+        //     if (regx.test(this.value)) {
+        //         console.log('correct');
+        //     } else {
+        //         if (this.value == '') {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'This is Required Field.',
+        //             })
+        //         } else {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'Please Type in English.',
+        //             })
+        //         }
 
-            }
-        });
+        //     }
+        // });
 
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
 
@@ -413,9 +413,9 @@
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English">
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">

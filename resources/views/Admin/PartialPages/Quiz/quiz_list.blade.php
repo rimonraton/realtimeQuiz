@@ -111,12 +111,13 @@
                 <h4 class="modal-title" id="myModalLabel">Quiz Info</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
-                <h4 class="card-title text-center" id="quesHeader"></h4>
-                <hr>
-                <div class="row d-flex justify-content-center" id="QuestionLoad">
+            <div class="modal-body" id="QuestionLoad">
+                <!-- <h4 class="card-title text-center" id="quesHeader"></h4>
+                <hr> -->
+                <!-- <div class="row d-flex justify-content-center" id="QuestionLoad"> -->
+                <!-- <div class="row d-flex justify-content-center">
 
-                </div>
+                </div> -->
             </div>
 
         </div>
