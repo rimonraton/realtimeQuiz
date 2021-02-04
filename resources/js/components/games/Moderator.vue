@@ -517,8 +517,3 @@
     };
 
 </script>
-
-
-<style type="text/css" scoped="">
-    @import '/css/moderator.css';
-</style>

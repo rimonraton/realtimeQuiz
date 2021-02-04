@@ -21,7 +21,7 @@ window.Vue = require('vue');
 import Practice from './components/games/Practice'
 import Challenge from './components/games/Challenge'
 import Moderator from './components/games/Moderator'
-import Group from './components/games/Group'
+import Team from './components/games/Team'
 // import router from './router/Router.js';
 
 /**
@@ -36,7 +36,7 @@ const app = new Vue({
 	    'Practice': Practice,
 	    'Challenge': Challenge,
 	    'Moderator': Moderator,
-	    'Group': Group,
+	    'Team': Team,
 	}
     // router
 });

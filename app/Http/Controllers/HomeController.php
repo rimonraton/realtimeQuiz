@@ -23,7 +23,20 @@ class HomeController extends Controller
         return $r->all();
     }
 
-    public function Mode($type)
+    public function Mode($type, $category = null)
+    {
+        $quiz =  Quiz::with('quizCategory');
+        $quiz->when($category, function($q) use($category){
+          return $q->where('category_id', $category);
+        });
+      $quiz = $quiz->paginate(9);
+
+        $user = Auth::user();
+        $categories = Category::where('sub_topic_id', 0)->get();
+        return view('mode', compact('quiz', 'user', 'categories', 'type'));
+    }
+
+    public function ModeWithCategory($type, $category)
     {
         $quiz =  Quiz::with('quizCategory')->paginate(9);
         $user = Auth::user();
@@ -76,4 +89,11 @@ class HomeController extends Controller
         }
         return view('share_btn_link', compact('type', 'id', 'uid'));
     }
+
+    public function progress()
+    {
+        return Auth::user()->progress;
+    }
+
+
 }

@@ -194,7 +194,7 @@
           <div class="abstract">
             <h3 class="d-flex">
               <span>{!! $cat->icon !!}</span>
-              <a class="ml-2" href="#list-item-1">{{ $cat->name }}</a>
+              <a class="ml-2" href="{{ url('Mode/' . $type . '/'. $cat->id) }}">{{ $cat->name }}</a>
             </h3>
           </div>
           @if(count($cat->childs))
@@ -202,7 +202,10 @@
             <div class="details__inner">
               <div id="list-example" class="list-group">
                 @foreach($cat->childs as $cc)
-                <a class="list-group-item list-group-item-action gb" href="#list-item-1">{{ $cc->name }}</a>
+                <a class="list-group-item list-group-item-action gb" 
+                  href="{{ url('Mode/' . $type . '/'. $cc->id) }}">
+                  {{ $cc->name }}
+                </a>
                 @endforeach
               </div>
             </div>

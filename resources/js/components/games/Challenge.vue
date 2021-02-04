@@ -1,18 +1,9 @@
 <template>
     <div class="container">
-        <waiting :uid='uid' :users='users' :user='user' 
-                @kickingUser="kickUser($event)"
-                @gameStart="gameStart"
-                @gameReset="gameReset"
-                v-if="screen.waiting">                       
-        </waiting>
-
         <div class="loading" v-if="screen.loading">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-
                     <h2 class="text-center">Waiting for other user response.</h2>
-
                     <div class="progress m-2">
                         <div class="progress-bar progress-bar-striped" 
                             :style="progressWidth"
@@ -24,11 +15,13 @@
                 </div>
             </div>
         </div>
+        
         <transition name="fade">
             <result :results='results' :lastQuestion='(qid + 1) == questions.length'
                     v-if="screen.result">                       
             </result>
         </transition>
+
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
                 <h1 class="text-center">Congratulation ! </h1>
@@ -42,11 +35,16 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            
         </div>
 
+        <waiting :uid='uid' :users='users' :user='user' 
+                @kickingUser="kickUser($event)"
+                @gameStart="gameStart"
+                @gameReset="gameReset"
+                v-if="screen.waiting">                       
+        </waiting>
+
         <div class="row justify-content-center">
-            
             <div class="col-md-8">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" 
@@ -88,13 +86,7 @@
                         </ul>
                     </div>
                 </div>
-
-                
-
-                
-            
             </div>
-
         </div>
     </div>
 </template>
@@ -433,47 +425,3 @@
 
     };
 </script>
-
-
-<style type="text/css" scoped="">
-    
-    .waiting, .loading, .result, .winner {
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        background: white;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /*background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);*/
-    }
-    .waiting{
-        background: #00B4DB;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-    }
-    .list-group-item.user-list{
-        padding: 0 10px !important;
-    }
-    
-    .q_num {
-        position: absolute;
-        right: 5px;
-        width: 100%;
-        top: 0px;
-    }
-
-
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity .3s;
-    }
-    .fade-enter, .fade-leave-to {
-      opacity: 0;
-    }
-</style>
-    

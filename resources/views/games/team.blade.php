@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <group :id="{{ $id }}" :uid="{{ $uid }}" :questions="{{ $questions }}" :user="{{ $user }}" ></group>
+                    <Team :id="{{ $id }}" :uid="{{ $uid }}" :questions="{{ $questions }}" :user="{{ $user }}" ></Team>
                 </div>
             </div>
         </div>
