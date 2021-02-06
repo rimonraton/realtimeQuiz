@@ -1,4 +1,3 @@
-
 @if($questions->count() > 0)
 <h4 class="text-center">MCQ</h4>
 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
