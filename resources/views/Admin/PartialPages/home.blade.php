@@ -10,7 +10,7 @@
                         <i class="fas fa-address-card"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Practice')}}">Practice</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Practice')}}">{{__('msg.practice')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Total Quizzes</h5> -->
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         <i class="fas fa-arrows-alt-h"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Challenge')}}">Challenge</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Challenge')}}">{{__('msg.challenge')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Publish Quizzes</h5> -->
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Group')}}">Team</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Group')}}">{{__('msg.team')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Participants</h5> -->
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Moderator')}}">Moderator</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Moderator')}}">{{__('msg.quizmaster')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Active Participants</h5> -->
                     </div>
                 </div>
@@ -72,16 +72,16 @@
 </div>
 <div class="row">
     <!-- Column -->
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-4 col-md-6">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row justify-content-center">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
-                        <i class="ti-wallet"></i>
+                        <i class="mdi mdi-library"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">123</h3>
-                        <h5 class="text-muted mb-0">Total Quizzes</h5>
+                        <h3 class="mb-0 font-weight-light">{{$quiz_counts}}</h3>
+                        <h5 class="text-muted mb-0">{{__('msg.totalQuiz')}}</h5>
                     </div>
                 </div>
             </div>
@@ -89,16 +89,16 @@
     </div>
     <!-- Column -->
     <!-- Column -->
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-4 col-md-6">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row justify-content-center">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-warning">
-                        <i class="mdi mdi-cellphone-link"></i>
+                        <i class="mdi mdi-library"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">2376</h3>
-                        <h5 class="text-muted mb-0">Publish Quizzes</h5>
+                        <h3 class="mb-0 font-weight-light">{{$quiz_publish}}</h3>
+                        <h5 class="text-muted mb-0">{{__('msg.publishQuiz')}}</h5>
                     </div>
                 </div>
             </div>
@@ -106,16 +106,16 @@
     </div>
     <!-- Column -->
     <!-- Column -->
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-4 col-md-6">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row justify-content-center">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
-                        <i class="mdi mdi-cart-outline"></i>
+                        <i class="mdi mdi-library-books"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">1795</h3>
-                        <h5 class="text-muted mb-0">Participants</h5>
+                        <h3 class="mb-0 font-weight-light">{{$totalQuestions}}</h3>
+                        <h5 class="text-muted mb-0"> {{__('msg.totalQuestions')}}</h5>
                     </div>
                 </div>
             </div>
@@ -123,21 +123,21 @@
     </div>
     <!-- Column -->
     <!-- Column -->
-    <div class="col-lg-3 col-md-6">
+    <!-- <div class="col-lg-3 col-md-6">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
-                        <i class="mdi mdi-bullseye"></i>
+                        <i class="fas fa-users"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">687</h3>
-                        <h5 class="text-muted mb-0">Active Participants</h5>
+                        <h3 class="mb-0 font-weight-light">0</h3>
+                        <h5 class="text-muted mb-0">{{__('msg.participants')}}</h5>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Column -->
 </div>
 <!-- Row -->

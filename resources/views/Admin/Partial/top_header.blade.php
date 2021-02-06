@@ -94,10 +94,10 @@
                         <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
                         <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right mailbox scale-up">
+                    <div class="dropdown-menu dropdown-menu-right mailbox scale-up" style="width: 200px;">
                         <ul class="list-style-none">
                             <li>
-                                <div class="message-center notifications position-relative" style="height:80px;">
+                                <div class="message-center notifications position-relative" style="height:82px;">
                                     <!-- <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-danger rounded-circle btn-circle"><i class="fa fa-link"></i></span>
                                         <div class="w-75 d-inline-block v-middle pl-2">
@@ -154,14 +154,15 @@
                                     <div class="u-text ml-2">
                                         <h4 class="mb-0">{{auth()->user()->name}}</h4>
                                         <p class="text-muted mb-1 font-14">{{auth()->user()->email}}</p>
-                                        <a href="{{url('profile')}}" class="btn btn-rounded btn-danger btn-sm text-white d-inline-block">View
-                                            Profile</a>
+                                        <a href="{{url('profile')}}" class="btn btn-rounded btn-danger btn-sm text-white d-inline-block">
+                                            {{__('msg.showProfile')}}
+                                        </a>
                                     </div>
                                 </div>
                             </li>
                             <li role="separator" class="dropdown-divider"></li>
-                            <li class="user-list"><a class="px-3 py-2" href="{{url('profile')}}"><i class="ti-user"></i> My Profile</a></li>
-                            <li class="user-list"><a class="px-3 py-2" href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Logout</a></li>
+                            <li class="user-list"><a class="px-3 py-2" href="{{url('profile')}}"><i class="ti-user"></i> {{__('msg.profile')}}</a></li>
+                            <li class="user-list"><a class="px-3 py-2" href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> {{__('msg.logout')}}</a></li>
                         </ul>
                     </div>
                 </li>

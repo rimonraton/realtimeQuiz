@@ -73,8 +73,8 @@
         }
 
         .task:hover .details {
-            max-height: none;
-            overflow: visible;
+            max-height: 200px;
+            overflow: auto;
             visibility: visible;
             transform: rotateX(0deg);
         }
@@ -298,23 +298,23 @@
                         <div class="col-md-4 col-sm-12 text-center">
                             <div class="wrap my-3">
                                 <div class="task">
-                                    <div class="abstract">
+                                    <div class="abstract tops" data-id="sub__{{$cat->id}}">
                                         <h5 class="d-flex">
                                             <span>{!! $cat->icon !!}</span>
                                             <a class="ml-2">{{ $lang=='gb'?$cat->name:$cat->bn_name }}</a>
                                             @if(count($cat->childs))
-                                            <i class="fas fa-sort-down ml-auto"></i>
+                                            <i class="fas fa-sort-down ml-auto closepanel" style="z-index: 100000;" data-rid="sub__{{$cat->id}}"></i>
                                             @endif
                                         </h5>
                                     </div>
                                     @if(count($cat->childs))
-                                    <div class="details">
+                                    <div class="details" id="sub__{{$cat->id}}">
                                         <div class="details__inner">
                                             <div id="list-example" class="list-group">
                                                 @foreach($cat->childs as $cc)
                                                 <!-- <i class="fas fa-angle-right"></i> -->
                                                 <a class="list-group-item list-group-item-action gb">
-                                                <i class="fas fa-check text-success"></i>
+                                                    <i class="fas fa-check text-success"></i>
                                                     {{ $lang=='gb'?$cc->name:$cc->bn_name }}
                                                 </a>
                                                 @endforeach
@@ -326,7 +326,7 @@
                             </div>
                         </div>
                         @endforeach
-                        
+
                     </div>
                 </div>
 
@@ -532,6 +532,40 @@
     <script src="{{asset('js/theme-site.js')}}"></script>
     <script>
         $(function() {
+            // $('.tops').on('click', function() {
+            //     var did = $(this).data('id');
+            //     $(this).children().children('i').removeClass('fa-sort-down').addClass('fa-times');
+            //     $('#' + did).css({
+            //         'color': 'white',
+            //         'max-height': '200px',
+            //         'padding': '10px',
+            //         'overflow': 'auto',
+            //         'visibility': 'visible',
+            //         'transform': 'rotateX(0deg)',
+            //         'transform-origin': 'top center',
+            //         'webkit-backface-visibility': 'hidden',
+            //         'backface-visibility': 'hidden',
+            //         'transition': '0.3s transform ease',
+            //     })
+            // })
+            // $('.closepanel').on('click',function(){
+            //     var did = $(this).data('rid');
+            //     $(this).removeClass('fa-times').addClass('fa-sort-down');
+            //     if($(this).hasClass('fa-times')){
+            //         $('#' + did).css({
+            //         'color': 'white',
+            //         'max-height': '0px',
+            //         'padding': '0px',
+            //         'overflow': 'hidden',
+            //         'visibility': 'visible',
+            //         'transform': 'rotateX(-180deg)',
+            //         'transform-origin': 'top center',
+            //         'webkit-backface-visibility': 'hidden',
+            //         'backface-visibility': 'hidden',
+            //         'transition': '0.3s transform ease',
+            //     })
+            //     }
+            // })
             $('.yt').on('click', function(event) {
                 event.preventDefault();
                 var idVideo = $(this).data('url');

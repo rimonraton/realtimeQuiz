@@ -81,7 +81,7 @@
                         <div class="form-group row">
                             <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English : </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" id="quizName" placeholder="Type Quiz name here in English." name="quizName">
+                                <input type="text" class="form-control" id="quizName" placeholder="Type Quiz name here in English." name="quizName">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -405,7 +405,7 @@
                 <div class="form-group row">
                     <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" >
+                        <input type="text" class="form-control inpoption" id="option" name="option${eid}[]" placeholder="Enter Option in English" >
                     </div>
                     <div class="col-sm-4">
                         <input type="text" class="form-control inpoption"  name="bdoption${eid}[]" placeholder="Enter Option in Bangla" >

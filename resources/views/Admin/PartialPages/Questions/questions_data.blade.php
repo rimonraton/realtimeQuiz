@@ -58,13 +58,15 @@
                                                         <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                         {{$qo->option}}
                                                     </button>
-                                                    @if($qo->bd_option)
-                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                        {{$qo->bd_option}}
-                                                    </button>
+                                                    @if($loop->last)
+                                                    <hr>
                                                     @endif
-                                                    @else
+                                                    @endif
+                                                    
+                                                    @endforeach
+
+                                                    @foreach($qs->options as $qo)
+                                                    @if($qo->bd_option)
                                                     <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                         <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                         {{$qo->bd_option}}
