@@ -54,6 +54,7 @@ return [
     'links' => 'Links',
     'copyright' => 'Copyright',
     'companyName' => 'Darco Technologies Limited',
-    'rights' => 'All Rights Reserved'
+    'rights' => 'All Rights Reserved',
+    
 
 ];
