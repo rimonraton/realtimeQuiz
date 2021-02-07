@@ -329,8 +329,6 @@
             $('.arcategory').attr('id', 'category');
         })
         $('#cq').on('change', function() {
-
-
             $('#FromQB').hide();
             $('#viewData').removeClass('d-flex');
             // $('#viewData').hide();
