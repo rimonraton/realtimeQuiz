@@ -91,13 +91,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-9">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Game<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-5">
                                 <select class="form-control custom-select" name="game_type" required>
-                                    <option>Select Game Type</option>
+                                    <option>Select Game Mode</option>
                                     @foreach($gameType as $game)
                                     <option value="{{$game->id}}">{{$game->gb_game_name}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                            <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
+                            <div class="col-sm-4">
+                                <select class="form-control custom-select" name="difficulty" required>
+                                    <option>Select Game Type</option>
+                                    <option value="1">Easy</option>
+                                    <option value="2">Intermediate</option>
+                                    <option value="3">Difficult</option>
                                 </select>
                             </div>
                         </div>
@@ -418,7 +427,7 @@
                 <div class="form-group row">
                     <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" >
+                        <input type="text" class="form-control inpoption" id="option" name="option${eid}[]" placeholder="Enter Option in English" >
                     </div>
                     <div class="col-sm-4">
                         <input type="text" class="form-control inpoption" id="option" name="bdoption${eid}[]" placeholder="Enter Option in Bangla" >

@@ -71,6 +71,7 @@ class QuizController extends Controller
             'game_id'           => $request->game_type,
             'questions'         => $questionsid,
             'category_id'       => $request->cid,
+            'difficulty'       => $request->difficulty,
         ]);
     }
     public function storeFromCustom($request)
@@ -106,6 +107,7 @@ class QuizController extends Controller
             'questions'         => $questions,
             'category_id'       => $request->cid,
             'custom_create'     => 1,
+            'difficulty'       => $request->difficulty,
         ]);
     }
     public function quiz($id)
