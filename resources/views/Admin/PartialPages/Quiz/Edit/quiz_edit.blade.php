@@ -25,9 +25,9 @@
                         @foreach($Questions as $q)
                         <div class="col-md-4 col-sm-4 p-3" id="q_{{$q->id}}">
                             <div class="list-group">
-                                <p class="list-group-item active text-white">{{$q->question_text}} <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
+                                <p class="list-group-item active text-white">{{$q->question_text?$q->question_text:$q->bd_question_text}} <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
                                 @foreach($q->options as $qo)
-                                <a class="list-group-item">{{$qo->option!=''?$qo->option:$qo->bd_option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
+                                <a class="list-group-item">{{$qo->option?$qo->option:$qo->bd_option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
                                 @endforeach
                             </div>
                         </div>
