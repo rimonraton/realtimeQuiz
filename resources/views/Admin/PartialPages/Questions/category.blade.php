@@ -1,18 +1,19 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions Topics</h4>
+                <h4 class="card-title text-center">{{__('msg.questionsTopics')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Add New Topic</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Topics</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{$lang=='gb'?'New Topics':'নতুন বিষয়'}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">

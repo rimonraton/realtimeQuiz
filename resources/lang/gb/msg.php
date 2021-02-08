@@ -78,4 +78,5 @@ return [
     'publishQuiz' => 'Published Quizzes',
     'totalQuestions' => 'Total Questions',
     'participants' => 'Participants',
+    'add' => 'Add',
 ];

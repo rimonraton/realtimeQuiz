@@ -98,17 +98,12 @@ class QuestionController extends Controller
         $imgPath = '';
         if ($request->customRadio == 'image') {
             $location = 'images/question_images/';
+            $file = $request->file('file');
         } else {
             $location = 'videos/question_videos/';
+            $file = $request->file('video');
         }
-        // if ($request->subtopic == '') {
-        //     $categoryid = $request->category;
-        // } else {
-        //     $categoryid = $request->subtopic;
-        // }
-        // return $categoryid;
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+        if ($request->hasFile('file') || $request->hasFile('video')) {
             $original_name = $file->getClientOriginalName();
             $ext = strtolower(\File::extension($original_name));
             $created_at = Carbon::now('Asia/Dhaka');
@@ -120,7 +115,6 @@ class QuestionController extends Controller
             $file->move($path, $filename);
             $imgPath = $filename;
         }
-        // return $imgPath;
         $question = Question::create([
             'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,

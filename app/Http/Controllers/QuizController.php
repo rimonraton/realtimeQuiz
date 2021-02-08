@@ -18,7 +18,7 @@ class QuizController extends Controller
         $this->middleware('auth');
     }
 
-    
+
     public function create()
     {
         $question_topic = Category::where('sub_topic_id', 0)->get();
@@ -147,21 +147,25 @@ class QuizController extends Controller
         if ($request->question) {
             foreach ($request->question as  $k => $qq) {
                 $options = 'option' . $k;
+                $bdoptions = 'bdoption' . $k;
                 $answers = 'answer' . $k;
                 $qid = Question::create([
                     'question_text'         => $qq,
+                    'bd_question_text'      => $request->bdquestion[$k],
                     'answer_explanation'    => $request->explenation[$k],
                     'category_id'           =>  $request->category_id,
-                    'quizcategory_id'       =>  1,
+                    // 'quizcategory_id'       =>  1,
                 ])->id;
                 $questionId[] = $qid;
                 array_push($qa, $qid);
                 foreach ($request->$options as  $i => $o) {
                     $data[$i]['question_id'] = $qid;
                     $data[$i]['option'] = $o;
+                    $data[$i]['bd_option'] = $request->$bdoptions[$i];
                     $data[$i]['correct'] = $request->$answers[$i];
                 }
                 QuestionsOption::insert($data);
+                $data = null;
             }
         }
         // return $qa;
