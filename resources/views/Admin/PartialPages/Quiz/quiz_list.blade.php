@@ -47,26 +47,27 @@
     }
 </style>
 @endsection
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Quiz List <a class="btn btn-success float-right" href="{{url('quiz/create')}}">Create Quiz</a></h4>
+                <h4 class="card-title text-center">{{__('msg.quizList')}}<a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a></h4>
                 <hr>
                 <div class="form-group row pb-3">
-                    <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic :</label>
+                    <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                     <div class="col-sm-9">
                         <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
                                     <div class="dd-handle-new">
-                                        <strong class="selectedTopic">{{ $tid ? $catName : 'Select Topic' }}</strong>
+                                        <strong class="selectedTopic">{{ $tid ? $catName : __('form.select_topic') }}</strong>
                                     </div>
                                     <ol class="dd-list">
                                         @foreach($category as $c)
                                         <li class="dd-item">
-                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$lang=='gb'?$c->name:$c->bn_name}} </div>
                                             @if(count($c->childs))
                                             @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
                                             @endif
@@ -91,7 +92,7 @@
                         <div class="container">
                             <div class="row justify-content-md-center">
                                 <div class="alert alert-success text-center" role="alert" id="msg">
-                                    <p class="pt-3">Please select from the topic above and see the quizzes according to the topic.</p>
+                                    <p class="pt-3">{{$lang=='gb'?'Please select from the topic above and see the quizzes according to the topic':'উপরের বিষয়টি থেকে নির্বাচন করুন এবং বিষয় অনুসারে কুইজ দেখুন'}}</p>
                                 </div>
                             </div>
                         </div>
@@ -111,12 +112,13 @@
                 <h4 class="modal-title" id="myModalLabel">Quiz Info</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
-                <h4 class="card-title text-center" id="quesHeader"></h4>
-                <hr>
-                <div class="row d-flex justify-content-center" id="QuestionLoad">
+            <div class="modal-body" id="QuestionLoad">
+                <!-- <h4 class="card-title text-center" id="quesHeader"></h4>
+                <hr> -->
+                <!-- <div class="row d-flex justify-content-center" id="QuestionLoad"> -->
+                <!-- <div class="row d-flex justify-content-center">
 
-                </div>
+                </div> -->
             </div>
 
         </div>

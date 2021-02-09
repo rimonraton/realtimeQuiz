@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Game;
 use App\Question;
 use App\QuestionsOption;
 use App\Quiz;
@@ -16,44 +17,14 @@ class QuizController extends Controller
     {
         $this->middleware('auth');
     }
-    public function categorylist()
-    {
-        $quizcategory = QuizCategory::all();
-        return view('Admin.PartialPages.Quiz.quiz_category', compact('quizcategory'));
-    }
 
-    public function storeCategory(Request $request)
-    {
-        //    return $request->all();
-        $request->validate([
-            'name' => 'required',
-        ]);
-        QuizCategory::create([
-            'name' => $request->name
-        ]);
-
-        return redirect('quiz/categorylist');
-    }
-
-    public function updateCategory(Request $request)
-    {
-        QuizCategory::where('id', $request->id)->update([
-            'name' => $request->name
-        ]);
-        return redirect('quiz/categorylist');
-    }
-
-    public function deleteCategory($id)
-    {
-        QuizCategory::where('id', $id)->delete();
-        return 'Delete Successfully.';
-    }
 
     public function create()
     {
         $question_topic = Category::where('sub_topic_id', 0)->get();
-        $question_category = QuizCategory::all();
-        return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'question_category']));
+        // $question_category = QuizCategory::all();
+        $gameType = Game::all();
+        return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType']));
     }
 
     public function list($tid = '')
@@ -96,9 +67,11 @@ class QuizController extends Controller
         $questionsid = implode(',', $questions);
         Quiz::create([
             'quiz_name'         => $request->quizName,
-            'bd_quiz_name'         => $request->bdquizName,
+            'bd_quiz_name'      => $request->bdquizName,
+            'game_id'           => $request->game_type,
             'questions'         => $questionsid,
             'category_id'       => $request->cid,
+            'difficulty'       => $request->difficulty,
         ]);
     }
     public function storeFromCustom($request)
@@ -130,21 +103,22 @@ class QuizController extends Controller
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,
+            'game_id'           => $request->game_type,
             'questions'         => $questions,
             'category_id'       => $request->cid,
             'custom_create'     => 1,
+            'difficulty'       => $request->difficulty,
         ]);
     }
     public function quiz($id)
     {
         $q = Quiz::find($id);
         $Questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
-        return view('Admin.PartialPages.Quiz.Partial.questionwithOption', compact('Questions'));
+        return view('Admin.PartialPages.Quiz.Partial.questionwithOption', compact('Questions', 'q'));
     }
 
     public function quizList($id)
     {
-
         $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
         // return $quiz->questions;
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
@@ -173,21 +147,25 @@ class QuizController extends Controller
         if ($request->question) {
             foreach ($request->question as  $k => $qq) {
                 $options = 'option' . $k;
+                $bdoptions = 'bdoption' . $k;
                 $answers = 'answer' . $k;
                 $qid = Question::create([
                     'question_text'         => $qq,
+                    'bd_question_text'      => $request->bdquestion[$k],
                     'answer_explanation'    => $request->explenation[$k],
                     'category_id'           =>  $request->category_id,
-                    'quizcategory_id'       =>  1,
+                    // 'quizcategory_id'       =>  1,
                 ])->id;
                 $questionId[] = $qid;
                 array_push($qa, $qid);
                 foreach ($request->$options as  $i => $o) {
                     $data[$i]['question_id'] = $qid;
                     $data[$i]['option'] = $o;
+                    $data[$i]['bd_option'] = $request->$bdoptions[$i];
                     $data[$i]['correct'] = $request->$answers[$i];
                 }
                 QuestionsOption::insert($data);
+                $data = null;
             }
         }
         // return $qa;

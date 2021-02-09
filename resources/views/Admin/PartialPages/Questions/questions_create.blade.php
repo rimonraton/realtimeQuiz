@@ -185,12 +185,13 @@
     }
 </style>
 @endsection
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Create Question</h4>
+                <h4 class="card-title text-center">{{__('msg.createQuestion')}}</h4>
                 <hr>
                 <form class="form-horizontal r-separator" id="smtform" action="{{url('question/save')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                     @csrf
@@ -201,29 +202,39 @@
                                 <label class="btn btn-primary">
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="image" value="image" name="customRadio" class="custom-control-input" checked="">
-                                        <label class="custom-control-label" for="customRadio4">Image</label>
+                                        <label class="custom-control-label" for="customRadio4">{{__('form.image')}}</label>
                                     </div>
                                 </label>
                                 <label class="btn btn-primary">
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="video" value="video" name="customRadio" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio5">Video</label>
+                                        <input type="radio" id="video" value="video" name="customRadio" class="custom-control-input" >
+                                        <label class="custom-control-label" for="customRadio5">{{__('form.video')}}</label>
                                     </div>
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group row pb-3">
+                        <div class="form-group row pb-3" id="divImage">
                             <div class="file-upload">
                                 <div class="image-upload-wrap">
                                     <input class="file-upload-input ipf" name="file" type='file' accept="image/*" />
                                     <div class="drag-text">
-                                        <h3 id="txt">Drag and drop a Image file or select add Image</h3>
+                                        <h3 id="txt">{{__('form.image_title')}}</h3>
                                     </div>
                                 </div>
                                 <div class="file-upload-content">
                                     <img class="file-upload-image" src="#" alt="your image" />
                                     <div class="image-title-wrap">
-                                        <button type="button" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                                        <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_image')}}</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3 d-none" id="divVideo">
+                            <div class="file-upload">
+                                <div class="image-upload-wrap">
+                                    <input class="file-upload-input ipf" name="video" type='file' accept="video/*" />
+                                    <div class="drag-text">
+                                        <h3 id="txt">{{__('form.video_title')}}</h3>
                                     </div>
                                 </div>
                                 <div class="file-upload-content1">
@@ -231,36 +242,36 @@
                                         <source src="" type="video/*">
                                     </video>
                                     <div class="image-title-wrap">
-                                        <button type="button" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                                        <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_video')}}</span></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Question Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.questions_type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
-                                    <option value="">Select Question Type</option>
+                                    <option value="">{{__('form.question_type')}}</option>
                                     @foreach($quizCategory as $qc)
-                                    <option value="{{$qc->id}}" id="cat_{{$qc->id}}" {{$loop->first?'selected':''}}>{{$qc->name}}</option>
+                                    <option value="{{$qc->id}}" id="cat_{{$qc->id}}" {{$loop->first?'selected':''}}>{{$lang=='gb'?$qc->name:$qc->bn_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
                                         <li class="dd-item" id="parentdd">
                                             <div class="dd-handle-new">
-                                                <strong class="selectedTopic">Select Topic</strong>
+                                                <strong class="selectedTopic">{{__('form.select_topic')}}</strong>
                                             </div>
                                             <ol class="dd-list">
                                                 @foreach($category as $c)
                                                 <li class="dd-item">
-                                                    <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                                    <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$lang=='gb'?$c->name:$c->bn_name}} </div>
                                                     @if(count($c->childs))
                                                     @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
                                                     @endif
@@ -273,42 +284,42 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in English<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control txtareaValidation" id="question" placeholder="Type Question here." name="question" required></textarea>
+                                <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">Question in Bangla :</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" placeholder="Type Question here." name="questionbd"></textarea>
+                                <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
-                                <input type="checkbox" class="chk" name="answer[]" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                <input type="checkbox" class="chk" name="answer[]" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
-                                <input type="checkbox" class="chk" name="answer[]" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                <input type="checkbox" class="chk" name="answer[]" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>
                         <div id="newOne">
@@ -316,27 +327,27 @@
                         </div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-4 text-right control-label col-form-label">
-                                <a class="waves-effect waves-light" id="createNew" href="">Add New Option</a>
+                                <a class="waves-effect waves-light" id="createNew" href="">{{__('form.new_option')}}</a>
                             </label>
                         </div>
                         <div class="form-group row  pb-3 pl-5">
                             <label for="option1" class="col-sm-4 text-right control-label col-form-label">
                                 <input type="checkbox" class="filled-in chk-col-indigo material-inputs" id="explenation">
-                                <label style="font-size: .9rem;" for="explenation">Answer Explenation</label>
+                                <label style="font-size: .9rem;" for="explenation">{{__('form.ans_explenation')}}</label>
                             </label>
                         </div>
                         <div class="form-group row pb-3 exl" style="display: none;">
-                            <label for="question" class="col-sm-2 text-right control-label col-form-label">Explenation :</label>
+                            <label for="question" class="col-sm-2 text-right control-label col-form-label">{{__('form.explenation')}} :</label>
                             <div class="col-sm-5">
-                                <textarea class="form-control txtareaValidation" placeholder="Type Answer Explenation here in English." name="explenation"></textarea>
+                                <textarea class="form-control txtareaValidation" placeholder="{{__('form.explenaton_en_placeholder')}}" name="explenation"></textarea>
                             </div>
                             <div class="col-sm-5">
-                                <textarea class="form-control" placeholder="Type Answer Explenation here in Bangla." name="bdexplenation"></textarea>
+                                <textarea class="form-control" placeholder="{{__('form.explenaton_bn_placeholder')}}" name="bdexplenation"></textarea>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light smt">Create Question</button>
-                            <a class="btn btn-success waves-effect waves-light text-white" href="{{url('question/list')}}">Go to List</a>
+                            <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('msg.createQuestion')}}</button>
+                            <a class="btn btn-success waves-effect waves-light text-white" href="{{url('question/list')}}">{{__('form.goto_list')}}</a>
                         </div>
                     </div>
 
@@ -355,27 +366,27 @@
 <script>
     $.noConflict();
     $(function() {
-        var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
-        $('.txtareaValidation').keyup(function() {
-            if (regx.test(this.value)) {
-                console.log('correct');
-            } else {
-                if (this.value == '') {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'This is Required Field.',
-                    })
-                } else {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Please Type in English.',
-                    })
-                }
+        // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
+        // $('.txtareaValidation').keyup(function() {
+        //     if (regx.test(this.value)) {
+        //         console.log('correct');
+        //     } else {
+        //         if (this.value == '') {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'This is Required Field.',
+        //             })
+        //         } else {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'Please Type in English.',
+        //             })
+        //         }
 
-            }
-        });
+        //     }
+        // });
 
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
 
@@ -413,9 +424,9 @@
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English">
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
@@ -509,10 +520,14 @@
 
 
         $('#video').on('change', function() {
-            changeVI('Drag and drop a Video file or select add Video', 'video/*');
+            $('#divImage').addClass('d-none');
+            $('#divVideo').removeClass('d-none');
+            // changeVI('Drag and drop a Video file or select add Video', 'video/*');
         })
         $('#image').on('change', function() {
-            changeVI('Drag and drop a Image file or select add Image', 'image/*');
+            $('#divImage').removeClass('d-none');
+            $('#divVideo').addClass('d-none');
+            // changeVI('Drag and drop a Image file or select add Image', 'image/*');
         })
 
         function changeVI(msg, type) {

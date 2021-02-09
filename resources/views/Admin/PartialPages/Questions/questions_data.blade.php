@@ -43,10 +43,35 @@
                                             @foreach($q->questions as $qs)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td>{{$qs->question_text}}</td>
+                                                <td>
+                                                    @if($qs->question_text)
+                                                    {{$qs->question_text}}@if($qs->bd_question_text)
+                                                    <hr>{{$qs->bd_question_text}}@endif
+                                                    @else
+                                                    {{$qs->bd_question_text}}
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">
                                                     @foreach($qs->options as $qo)
-                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
+                                                    @if($qo->option)
+                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                        {{$qo->option}}
+                                                    </button>
+                                                    @if($loop->last)
+                                                    <hr>
+                                                    @endif
+                                                    @endif
+                                                    
+                                                    @endforeach
+
+                                                    @foreach($qs->options as $qo)
+                                                    @if($qo->bd_option)
+                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                        {{$qo->bd_option}}
+                                                    </button>
+                                                    @endif
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">

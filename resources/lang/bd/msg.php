@@ -1,22 +1,11 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
     'SGM' => 'খেলার ধরন নির্বাচন করুন',
     'practice' => 'অনুশীলন',
     'challenge' => 'প্রতিযোগিতা',
     'moderator' => 'নিয়ন্ত্রক',
+    'quizmaster' => 'কুইজ মাস্টার',
     'team' => 'দল',
     'start' => 'শুরু করুন',
     'share' => 'শেয়ার করুন',
@@ -55,7 +44,31 @@ return [
     'intermediate' => 'কঠিন',
     'hard' => 'জটিল',
     'history' => 'ইতিহাস',
-
-
-
+    'links' => 'লিঙ্কগুলি',
+    'copyright' => 'কপিরাইট',
+    'companyName' => 'ডারকো টেকনোলজিস লিমিটেড',
+    'rights' => 'সমস্ত অধিকার সংরক্ষিত ',
+    'adminDashboard' => 'অ্যাডমিন ড্যাশবোর্ড',
+    'dashboard' => 'ড্যাশবোর্ড',
+    'questions' => 'প্রশ্ন',
+    'questionsList' => 'প্রশ্নের তালিকা',
+    'createQuestion' => 'প্রশ্ন তৈরি করুন',
+    'questionsTopics' => 'প্রশ্নের বিষয়গুলি',
+    'questionsType' => 'প্রশ্ন টাইপ',
+    'quizList' => 'কুইজের তালিকা',
+    'createquiz' => 'কুইজ তৈরি করুন',
+    'game' => 'গেম',
+    'gameSetup' => 'খেলা সেটআপ',
+    'performMsg' => 'সম্পাদনা বার্তা',
+    'teamSetup' => 'দল সেটআপ',
+    'profile' => 'প্রোফাইল',
+    'security' => 'সুরক্ষা',
+    'roles' => 'রোল',
+    'assignRoll' => 'রোল এসাইন করুন',
+    'showProfile' => 'প্রোফাইল দেখুন',
+    'totalQuiz' => 'মোট কুইজ',
+    'publishQuiz' => 'প্রকাশিত কুইজ',
+    'totalQuestions' => 'মোট প্রশ্ন',
+    'participants' => 'অংশগ্রহণকারীরা',
+    'add' => 'যুক্ত করুন'
 ];

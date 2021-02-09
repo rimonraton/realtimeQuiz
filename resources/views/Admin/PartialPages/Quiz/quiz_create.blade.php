@@ -51,12 +51,13 @@
     }
 </style>
 @endsection
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Create Quiz</h4>
+                <h4 class="card-title text-center">{{__('msg.createquiz')}}</h4>
                 <hr>
                 <form class="form-horizontal r-separator" action="{{url('quiz/save')}}" method="POST" autocomplete="off">
                     @csrf
@@ -66,43 +67,63 @@
                             <label class="btn btn-primary active">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                    <label class="custom-control-label" for="qb">From Question Bank</label>
+                                    <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
                                 </div>
                             </label>
                             <label class="btn btn-primary">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                    <label class="custom-control-label" for="cq">Custom Questions</label>
+                                    <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
                                 </div>
                             </label>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English <span class="text-danger" style="font-size: 1.5rem;">*</span> : </label>
+                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_en')}} : </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" id="quizName" placeholder="Type Quiz name here in English." name="quizName" required>
+                                <input type="text" class="form-control" id="quizName" placeholder="{{__('form.quiz_placholder')}}" name="quizName">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in Bangla :</label>
+                            <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_bn')}} :</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Type Quiz name here in Bangla." name="bdquizName">
+                                <input type="text" class="form-control" placeholder="{{__('form.quiz_placholder')}}" name="bdquizName">
                             </div>
                         </div>
-                        <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">Topic<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-5">
+                                <select class="form-control custom-select" name="game_type" required>
+                                    <option>{{__('form.game_mode_select')}}</option>
+                                    @foreach($gameType as $game)
+                                    <option value="{{$game->id}}">{{$game->gb_game_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
+                            <div class="col-sm-4">
+                                <select class="form-control custom-select" name="difficulty" required>
+                                    <option>{{__('form.game_type')}}</option>
+                                    <option value="1">Easy</option>
+                                    <option value="2">Intermediate</option>
+                                    <option value="3">Difficult</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-9">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
                                         <li class="dd-item" id="parentdd">
                                             <div class="dd-handle-new">
-                                                <strong class="selectedTopic">Select Topic</strong>
+                                                <strong class="selectedTopic">{{__('form.select_topic')}}</strong>
                                             </div>
                                             <ol class="dd-list">
                                                 @foreach($question_topic as $c)
                                                 <li class="dd-item">
-                                                    <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$c->name}} </div>
+                                                    <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$lang=='gb'?$c->name:$c->bn_name}} </div>
                                                     @if(count($c->childs))
                                                     @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
                                                     @endif
@@ -115,45 +136,46 @@
                             </div>
                         </div>
 
+
                         <div id="viewData" class="justify-content-center" style="display: none">
                         </div>
                         <div id="CustomQ" style="display: none;">
                             <div class="form-group row">
-                                <label for="question" class="col-sm-3 text-right control-label col-form-label">Question<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]" required></textarea>
+                                    <textarea class="form-control questiontxt" id="question" placeholder="{{__('form.question_placeholder')}}" name="question[]"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                                <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" placeholder="Type Question here in Bangla." name="bdquestion[]"></textarea>
+                                    <textarea class="form-control" placeholder="{{__('form.question_placeholder')}}" name="bdquestion[]"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option0[]" placeholder="Enter Option in English">
+                                    <input type="text" class="form-control inpoption" id="option" name="option0[]" placeholder="{{__('form.option_en_placholder')}}">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="{{__('form.option_bn_placholder')}}">
                                 </div>
                                 <div class="col-sm-1 bt-switch">
                                     <input type="hidden" name="answer0[]" class="hi" value="0">
-                                    <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                    <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option0[]" placeholder="Enter Option in English ">
+                                    <input type="text" class="form-control inpoption" id="option" name="option0[]" placeholder="{{__('form.option_en_placholder')}}">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                    <input type="text" class="form-control inpoption" name="bdoption0[]" placeholder="{{__('form.option_bn_placholder')}}">
                                 </div>
                                 <div class="col-sm-1 bt-switch">
                                     <input type="hidden" name="answer0[]" class="hi" value="0">
-                                    <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                    <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                                 </div>
                             </div>
                             <div id="createNew-show">
@@ -171,35 +193,35 @@
                                 </div> -->
                                 <div class="pr-3">
                                     <label for="option1" class="control-label col-form-label">
-                                        <a class="waves-effect waves-light createNew" data-option="option0[]" data-bdoption="bdoption0[]" data-answer="answer0[]" id="createNew" data-id="NoOP" href="">Add New Option</a>
+                                        <a class="waves-effect waves-light createNew" data-option="option0[]" data-bdoption="bdoption0[]" data-answer="answer0[]" id="createNew" data-id="NoOP" href="">{{__('form.new_option')}}</a>
                                     </label>
                                 </div>
                                 <div>
                                     <label for="option1" class=" text-right control-label col-form-label">
                                         <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation">
-                                        <label style="font-size: .9rem;" for="explenation">Answer Explenation</label>
+                                        <label style="font-size: .9rem;" for="explenation">{{__('form.ans_explenation')}}</label>
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group row exl" style="display: none;" id="explenation-show">
-                                <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
+                                <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.explenation')}} :</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation[]"></textarea>
+                                    <textarea class="form-control" placeholder="{{__('form.explenaton_placeholder')}}" name="explenation[]"></textarea>
                                 </div>
                             </div>
                             <div id="newQ">
                             </div>
                             <div class="form-group pt-4">
                                 <label for="option1" class="col-sm-12 text-center control-label col-form-label">
-                                    <a class="waves-effect waves-light" id="createNewQ" href="">Add another Question</a>
+                                    <a class="waves-effect waves-light" id="createNewQ" href="">{{__('form.add_new_question')}}</a>
                                 </label>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-info waves-effect waves-light smt">Create Quiz</button>
-                        <a class="btn btn-success waves-effect waves-light text-white" href="{{url('quiz/view/list')}}">Go to Quiz List</a>
+                        <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('msg.createquiz')}}</button>
+                        <a class="btn btn-success waves-effect waves-light text-white" href="{{url('quiz/view/list')}}">{{__('form.goto_quiz_list')}}</a>
                     </div>
                 </form>
             </div>
@@ -241,27 +263,27 @@
 <script>
     $(function() {
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-        var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
-        $('.questiontxt').keyup(function() {
-            if (regx.test(this.value)) {
-                console.log('correct');
-            } else {
-                if (this.value == '') {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'This is Required Field.',
-                    })
-                } else {
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Please Type in English.',
-                    })
-                }
+        // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
+        // $('.questiontxt').keyup(function() {
+        //     if (regx.test(this.value)) {
+        //         console.log('correct');
+        //     } else {
+        //         if (this.value == '') {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'This is Required Field.',
+        //             })
+        //         } else {
+        //             Swal.fire({
+        //                 type: 'error',
+        //                 title: 'Oops...',
+        //                 text: 'Please Type in English.',
+        //             })
+        //         }
 
-            }
-        });
+        //     }
+        // });
         $('.smt').on('click', function(e) {
             var cid = $('#selectedCid').val();
             // var paise = 0;
@@ -272,15 +294,15 @@
             //     }
             // });
             if (cid != '') {
-                    $('#smtform').submit();
-                } else {
-                    e.preventDefault();
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Please select the Topic.',
-                    })
-                }
+                $('#smtform').submit();
+            } else {
+                e.preventDefault();
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Please select the Topic.',
+                })
+            }
             // if (paise == 1) {
             //     if (cid != '') {
             //         $('#smtform').submit();
@@ -308,8 +330,6 @@
             $('.arcategory').attr('id', 'category');
         })
         $('#cq').on('change', function() {
-
-
             $('#FromQB').hide();
             $('#viewData').removeClass('d-flex');
             // $('#viewData').hide();
@@ -329,16 +349,16 @@
             var data = '';
             // for (i = 0; i < NOP; i++) {
             data += `<div class="form-group row">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="${option}" placeholder="Enter Option in English" required>
+                                <input type="text" class="form-control inpoption" name="${option}" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" id="option" name="${bdoption}" placeholder="Enter Option in Bangla (Not Mendetory)">
+                                <input type="text" class="form-control inpoption" name="${bdoption}" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="${answer}" class="hi" value="0">
-                                <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>`;
             // }
@@ -377,43 +397,43 @@
             var data = '';
             data += `<div class="NQ">
                 <hr>
-                <h3 class="text-center pb-2">New Question <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
+                <h3 class="text-center pb-2">{{__('form.new_ques')}} <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
                 <div class="form-group row">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control questiontxt" id="question" placeholder="Type Question here in English." name="question[]" required></textarea>
+                        <textarea class="form-control questiontxt" id="question" placeholder="{{__('form.question_placeholder')}}" name="question[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control"  placeholder="Type Question here in Bangla." name="bdquestion[]"></textarea>
+                        <textarea class="form-control"  placeholder="{{__('form.question_placeholder')}}" name="bdquestion[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" required>
+                        <input type="text" class="form-control inpoption" id="option" name="option${eid}[]" placeholder="{{__('form.option_en_placholder')}}" >
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption"  name="bdoption${eid}[]" placeholder="Enter Option in Bangla (Not Mendetory)" >
+                        <input type="text" class="form-control inpoption"  name="bdoption${eid}[]" placeholder="{{__('form.option_bn_placholder')}}" >
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
-                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                        <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" pattern="^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$" name="option${eid}[]" placeholder="Enter Option in English" required>
+                        <input type="text" class="form-control inpoption" id="option" name="option${eid}[]" placeholder="{{__('form.option_en_placholder')}}" >
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" id="option" name="bdoption${eid}[]" placeholder="Enter Option in Bangla (Not Mendetory)" >
+                        <input type="text" class="form-control inpoption" id="option" name="bdoption${eid}[]" placeholder="{{__('form.option_bn_placholder')}}" >
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
-                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                        <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                     </div>
                 </div>
                 <div id="createNew${eid}-show">
@@ -423,21 +443,21 @@
                 <div class="d-flex justify-content-center form-group">
                     <div class="pr-3">
                         <label for="option1" class="text-right control-label col-form-label">
-                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-bdoption="bdoption${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
+                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-bdoption="bdoption${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">{{__('form.new_option')}}</a>
                         </label>
                     </div>
                     <div>
                         <label for="option1" class="text-right control-label col-form-label">
                             <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation${eid}">
-                            <label style="font-size: .9rem;" for="explenation${eid}">Answer Explenation</label>
+                            <label style="font-size: .9rem;" for="explenation${eid}">{{__('form.ans_explenation')}}</label>
                         </label>
                         
                     </div>
                 </div>
                 <div class="form-group row" style="display: none;" id="explenation${eid}-show">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.explenation')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation[]"></textarea>
+                        <textarea class="form-control" placeholder="{{__('form.explenaton_placeholder')}}" name="explenation[]"></textarea>
                     </div>
                 </div>
             </div>`;

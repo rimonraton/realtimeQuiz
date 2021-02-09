@@ -25,9 +25,9 @@
                         @foreach($Questions as $q)
                         <div class="col-md-4 col-sm-4 p-3" id="q_{{$q->id}}">
                             <div class="list-group">
-                                <p class="list-group-item active text-white">{{$q->question_text}} <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
+                                <p class="list-group-item active text-white">{{$q->question_text?$q->question_text:$q->bd_question_text}} <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
                                 @foreach($q->options as $qo)
-                                <a class="list-group-item">{{$qo->option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
+                                <a class="list-group-item">{{$qo->option?$qo->option:$qo->bd_option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
                                 @endforeach
                             </div>
                         </div>
@@ -147,19 +147,23 @@
             if (state == true) {
                 $(this).closest("div.bt-switch").find(".hi").val('1');
             } else {
-                $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
+                $(this).closest("div.bt-switch").find(".hi").val('0');
             }
         });
         $(document).on('click', '.createNew', function(e) {
             e.preventDefault();
             var option = $(this).attr('data-option');
+            var bdoption = $(this).attr('data-bdoption');
             var answer = $(this).attr('data-answer');
             var id = $(this).attr('id');
             var data = '';
             data += `<div class="form-group row">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="Enter Option" required>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="Enter Option in English">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" name="${bdoption}" placeholder="Enter Option in Bangla">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="${answer}" class="hi" value="0">
@@ -193,13 +197,22 @@
                 <div class="form-group row">
                     <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" id="question" placeholder="Type Question here." name="question[]" required></textarea>
+                        <textarea class="form-control" id="question" placeholder="Type Question in English" name="question[]"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" placeholder="Type Question in Bangla" name="bdquestion[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option" required>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option in English">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="Enter Option in Bangla">
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
@@ -208,8 +221,11 @@
                 </div>
                 <div class="form-group row">
                     <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option" required>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option in English">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="Enter Option in Bangla">
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
@@ -223,7 +239,7 @@
                 <div class="d-flex justify-content-center form-group">
                     <div class="pr-3">
                         <label for="option1" class="text-right control-label col-form-label">
-                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
+                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-bdoption="bdoption${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
                         </label>
                     </div>
                     <div>

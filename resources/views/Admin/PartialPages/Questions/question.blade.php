@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-4">
         <input type="hidden" name="oid[]" value="{{$QO->id}}">
-        <input type="text" value="{{$QO->option}}" class="form-control" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Option in English">
+        <input type="text" value="{{$QO->option}}" class="form-control" name="option[]" placeholder="Option in English">
     </div>
     <div class="col-md-4">
         <input type="text" value="{{$QO->bd_option}}" class="form-control" name="bdoption[]" placeholder="Option in Bangla">
