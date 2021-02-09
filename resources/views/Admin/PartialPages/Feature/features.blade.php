@@ -1,4 +1,5 @@
 @extends('Admin.Layout.dashboard')
+@php $lang=App::getLocale(); @endphp
 @section('content')
 
 <!-- start -->
@@ -15,12 +16,12 @@
                                 <i class="{{$pm->icon}}"></i>
                             </div>
                             <div class="p-2 align-self-center">
-                                <h4 class="mb-0 text-white">{{$pm->gb_game_name}}</h4>
+                                <h4 class="mb-0 text-white">{{$lang=='gb'?$pm->gb_game_name:$pm->bd_game_name}}</h4>
                                 <!-- <span>Income</span> -->
                             </div>
                             <div class="ml-auto align-self-center">
                                 <!-- <h2 class="font-weight-medium mb-0 text-white">$2900</h2> -->
-                                <a data-id="{{$pm->id}}" data-name="{{$pm->gb_game_name}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> Add New</a>
+                                <a data-id="{{$pm->id}}" data-name="{{$lang=='gb'?$pm->gb_game_name:$pm->bd_game_name}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> {{__('form.add_new')}}</a>
                             </div>
                         </div>
                     </div>
@@ -33,10 +34,10 @@
                                 <table class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 10%;">SL</th>
-                                            <th style="width: 40%;">English Name</th>
-                                            <th style="width: 40%;">Bangla Name</th>
-                                            <th style="width: 10%;">Action</th>
+                                            <th style="width: 10%;">{{__('form.sl')}}</th>
+                                            <th style="width: 40%;">{{__('form.features_en')}}</th>
+                                            <th style="width: 40%;">{{__('form.features_bn')}}</th>
+                                            <th style="width: 10%;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,7 +47,7 @@
                                             <td>{{$f->gb_feature_name}}</td>
                                             <td>{{$f->bd_feature_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$f->id}}" data-game="{{$pm->gb_game_name}}" data-gb="{{$f->gb_feature_name}}" data-bd="{{$f->bd_feature_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$f->id}}" data-game="{{$lang=='gb'?$pm->gb_game_name:$pm->bd_game_name}}" data-gb="{{$f->gb_feature_name}}" data-bd="{{$f->bd_feature_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete" style="cursor: pointer;" data-id="{{$f->id}}" title="Remove"><i class="fas fa-trash text-danger"></i></a>
                                             </td>
                                         </tr>
@@ -54,10 +55,10 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">English Name</th>
-                                            <th rowspan="1" colspan="1">Bangla Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.features_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.features_bn')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -83,7 +84,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add New Perform Message (<span id="gametype"></span>)</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.add_feature_header')}} (<span id="gametype"></span>)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -92,17 +93,17 @@
                     <input type="hidden" name="game_id" id="game_id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" pattern="^[a-zA-Z0-9 ]+$" name="gb_feature_name" placeholder="Type feature in English" require>
+                            <input type="text" class="form-control" pattern="^[a-zA-Z0-9 ]+$" name="gb_feature_name" placeholder="{{__('form.add_feature_en_placeholder')}}" require>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" name="bd_feature_name" placeholder="Type feature in Bangla" require>
+                            <input type="text" class="form-control" name="bd_feature_name" placeholder="{{__('form.add_feature_bn_placeholder')}}" require>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Save</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
                 </form>
             </div>
@@ -116,7 +117,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Perform Message ( <span id="gt"></span> )</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.update_features_header')}} ( <span id="gt"></span> )</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -125,17 +126,17 @@
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editgb" pattern="^[a-zA-Z0-9 ]+$" name="gb_feature_name" placeholder="Type Feature in English">
+                            <input type="text" class="form-control" id="editgb" pattern="^[a-zA-Z0-9 ]+$" name="gb_feature_name" placeholder="{{__('form.add_feature_en_placeholder')}}">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editbd" name="bd_feature_name" placeholder="Type Feature in Bangla">
+                            <input type="text" class="form-control" id="editbd" name="bd_feature_name" placeholder="{{__('form.add_feature_bn_placeholder')}}">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
                 </form>
             </div>
@@ -155,7 +156,7 @@
             $('#uid').val($(this).attr('data-id'));
             $('#editgb').val($(this).attr('data-gb'));
             $('#editbd').val($(this).attr('data-bd'));
-            $('#gt').html($(this).attr('data-game') + " " + "Mode");
+            $('#gt').html($(this).attr('data-game'));
             $('#edit-feature').modal('show');
         })
 
@@ -193,7 +194,7 @@
         $(".add").on('click', function() {
             var game_id = $(this).attr('data-id');
             $('#game_id').val(game_id);
-            $('#gametype').html($(this).attr('data-name') + " " + "Mode");
+            $('#gametype').html($(this).attr('data-name'));
             $('#add-feacher').modal('show');
         })
     })

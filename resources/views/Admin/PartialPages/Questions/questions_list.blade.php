@@ -1,21 +1,6 @@
 @extends('Admin.Layout.dashboard')
 @section('css')
 <style>
-    /* .custom-select {
-        display: inline-block;
-        width: 100%;
-        height: calc(1.5em + .75rem + 2px);
-        padding: .375rem 1.75rem .375rem .75rem;
-        font-size: .875rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #54667a;
-        vertical-align: middle;
-        background: #fff url("{{asset('images/custom-select.png')}}") no-repeat right .75rem center/8px 5px;
-        border: 1px solid #e9ecef;
-        border-radius: 4px;
-        appearance: none;
-    } */
     .myadmin-dd .dd-list .dd-item .dd-handle-new {
         background: #fff;
         border: 1px solid rgba(120, 130, 140, .13);
@@ -140,17 +125,13 @@
 @section('js')
 <script>
     $(function() {
-        // toastr.success('I do not think that word means what you think it means.', 'Slide Down / Slide Up!', { "showMethod": "fadeIn", "hideMethod": "fadeOut", timeOut: 2000 });
         var getId = "{{$id}}"
         if (getId != "") {
             topicwithcategory(getId);
         }
         $('.topic').on('change', function() {
             var id = $(this).val();
-            // var cid = $(".Qcategory option:selected").val();
-            // cid == 0 ? cid = '' : cid = cid;
             if (id == 0) {
-                // $(".Qcategory").attr('disabled', 'disabled')
                 $('#viewData').html(`<div class="container">
                                     <div class="row justify-content-md-center">
                                         <div class="alert alert-success text-center" role="alert" id="msg">
@@ -159,7 +140,6 @@
                                     </div>
                                 </div>`);
             } else {
-                // $(".Qcategory").removeAttr('disabled')
                 topicwithcategory(id);
 
             }
@@ -171,10 +151,6 @@
             topicwithcategory(id, cid);
 
         })
-        // $('#tst').click(function() {
-        //     console.log('toast');
-        //     toastr.success('Have fun storming the castle!', 'Miracle Max Says');
-        // })
         $(document).on('click', '.topicls', function() {
 
             // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
@@ -184,10 +160,6 @@
                 $('#selectedCid').val('');
                 $('.selectedTopic').html('Select Topic');
             } else {
-                // $('.topicls').removeClass('activeli');
-                // $(this).addClass('activeli');
-                // alert($(this).attr('data-cid'));
-
                 $('#parentdd').addClass('dd-collapsed').children('[data-action="collapse"]').hide();
                 $('#parentdd').children('[data-action="expand"]').show();
                 $('.topicls').removeClass('activeli');

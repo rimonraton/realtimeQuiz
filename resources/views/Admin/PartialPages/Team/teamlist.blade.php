@@ -4,15 +4,15 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions Catagories</h4>
+                <h4 class="card-title text-center">{{__('form.team_list')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Team</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_team')}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Team</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.add_team_header')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
@@ -20,11 +20,11 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type Team Name" require>
+                                            <input type="text" class="form-control" name="name" placeholder="{{__('form.add_team_placholder')}}" require>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                         </div>
                                     </div>
 
@@ -89,7 +89,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Category</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.team_update')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -101,8 +101,8 @@
                             <input type="text" class="form-control" id="editName" name="name" placeholder="Type category">
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                         </div>
                     </div>
 

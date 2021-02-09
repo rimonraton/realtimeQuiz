@@ -81,11 +81,11 @@
                 <hr>
             </div>
             <div class="card-body">
-                <small class="text-muted">Email address </small>
+                <small class="text-muted">{{__('form.email')}} </small>
                 <h6>{{$userInfo->email}}</h6>
-                <small class="text-muted pt-4 db">Phone</small>
+                <small class="text-muted pt-4 db">{{__('form.phone')}}</small>
                 <h6>01737538343</h6>
-                <small class="text-muted pt-4 db">Address</small>
+                <small class="text-muted pt-4 db">{{__('form.address')}}</small>
                 <h6>Dhaka, Mirpur DOHS</h6>
                 <!-- <small class="text-muted pt-4 db">Social Profile</small>
                 <br />
@@ -102,10 +102,10 @@
             <!-- Tabs -->
             <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
+                    <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">{{__('form.profile')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Setting</a>
+                    <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">{{__('form.setting')}}</a>
                 </li>
             </ul>
             <!-- Tabs -->
@@ -114,19 +114,19 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- <div class="col-md-3 col-xs-6 b-r"> </div> -->
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Full Name</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>{{__('form.full_name')}}</strong>
                                 <br>
                                 <p class="text-muted">{{$userInfo->name}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Mobile</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>{{__('form.mobile')}}</strong>
                                 <br>
                                 <p class="text-muted">01737538343</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Email</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>{{__('form.email')}}</strong>
                                 <br>
                                 <p class="text-muted">{{$userInfo->email}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6"> <strong>Location</strong>
+                            <div class="col-md-3 col-xs-6"> <strong>{{__('form.location')}}</strong>
                                 <br>
                                 <p class="text-muted"><img src="https://www.countryflags.io/{{$geoip->getCountryCode()}}/flat/24.png"> {{$geoip->getCountry()}}</p>
                                 <!-- <img src="https://www.countryflags.io/bd/flat/24.png"> -->
@@ -171,44 +171,44 @@
                             </div>
                             <input type="hidden" value="{{$userInfo->id}}" name="uid">
                             <div class="form-group">
-                                <label class="col-md-12">Full Name</label>
+                                <label class="col-md-12">{{__('form.full_name')}}</label>
                                 <div class="col-md-12">
                                     <input type="text" placeholder="Johnathan Doe" value="{{$userInfo->name}}" name="name" class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="example-email" class="col-md-12">Email</label>
+                                <label for="example-email" class="col-md-12">{{__('form.email')}}</label>
                                 <div class="col-md-12">
                                     <input type="email" value="{{$userInfo->email}}" placeholder="johnathan@admin.com" class="form-control form-control-line" name="email" id="email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">Password</label>
+                                <label class="col-md-12">{{__('form.password')}}</label>
                                 <div class="col-md-12">
                                     <input type="password" name="password" class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">Phone No</label>
+                                <label class="col-md-12">{{__('form.phone')}}</label>
                                 <div class="col-md-12">
                                     <input type="text" value="{{$userInfo->info?$userInfo->info->mobile:''}}" name="mobile" class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">Slogan</label>
+                                <label class="col-md-12">{{__('form.slogan')}}</label>
                                 <div class="col-md-12">
                                     <textarea rows="5" name="slogan" class="form-control form-control-line">{{$userInfo->info?$userInfo->info->slogan:''}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">About</label>
+                                <label class="col-md-12">{{__('form.about')}}</label>
                                 <div class="col-md-12">
                                     <textarea rows="5" name="about" class="form-control form-control-line">{{$userInfo->info?$userInfo->info->about:''}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-success">Update Profile</button>
+                                    <button type="submit" class="btn btn-success">{{__('form.update_profile')}}</button>
                                 </div>
                             </div>
                         </form>

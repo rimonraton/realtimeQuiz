@@ -63,6 +63,7 @@ class PerformController extends Controller
         PerformMessage::where('id',$request->id)->update([
             'perform_status' => $request->perform_status,
             'perform_message' => $request->message,
+            'bd_perform_message' => $request->bn_message,
         ]);
         return redirect('game/perform-message');
     }

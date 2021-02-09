@@ -13,7 +13,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">{{$lang=='gb'?'New Topics':'নতুন বিষয়'}}</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.new_topic')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
@@ -22,26 +22,26 @@
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
                                             <select class="form-control custom-select" name="topic">
-                                                <option value="">Select Topic</option>
+                                                <option value="">{{__('form.select_topic')}}</option>
                                                 @foreach($category as $c)
-                                                <option value="{{$c->id}}">{{$c->name}}</option>
+                                                <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="Type Topic/Sub-Topic in English" require>
+                                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.sub_topic_en')}}" require>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="bn_name" placeholder="Type Topic/Sub-Topic in Bangla" require>
+                                            <input type="text" class="form-control" name="bn_name" placeholder="{{__('form.sub_topic_bn')}}" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                     </div>
                                 </form>
                             </div>

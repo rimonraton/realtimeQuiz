@@ -4,15 +4,15 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Game Mode List</h4>
+                <h4 class="card-title text-center">{{__('form.game_mode_list')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">Add New Game Mode</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_game_mode')}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add New Game Mode</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.new_game_mood')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
@@ -20,17 +20,17 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="gb_game_name" placeholder="Type Game Mode in English" require>
+                                            <input type="text" class="form-control" name="gb_game_name" placeholder="{{__('form.game_mode_en_placeholder')}}" require>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="bd_game_name" placeholder="Type Game Mode in Bangla" require>
+                                            <input type="text" class="form-control" name="bd_game_name" placeholder="{{__('form.game_mode_bn_placeholder')}}" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                     </div>
 
                                 </form>
@@ -49,10 +49,10 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 0px;">SL</th>
-                                            <th style="width: 0px;">English Name</th>
-                                            <th style="width: 0px;">Bangla Name</th>
-                                            <th style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">{{__('form.sl')}}</th>
+                                            <th style="width: 0px;">{{__('form.game_mode_en')}}</th>
+                                            <th style="width: 0px;">{{__('form.game_mode_bn')}}</th>
+                                            <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,10 +70,10 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">English Name</th>
-                                            <th rowspan="1" colspan="1">Bangla Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.game_mode_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.game_mode_bn')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -96,7 +96,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Game Mode</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.update_game_mode')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -114,8 +114,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
                 </form>

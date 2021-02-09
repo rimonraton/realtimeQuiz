@@ -5,27 +5,39 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{$lang=='gb'?'Questions Type':'প্রশ্ন টাইপ'}}</h4>
+                <h4 class="card-title text-center">{{__('form.questions_type')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{$lang=='gb'?'Add New Question Type':'নতুন প্রশ্নের ধরণ যুক্ত করুন'}}</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_new_type')}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">{{$lang=='gb'?'New Question Type':'নতুন প্রশ্নের ধরণ'}}</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.new_ques_type')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
                                 <form class="form-horizontal form-material" method="POST" action="{{url('questionTypesave')}}" autocomplete="off">
                                     @csrf
-                                    <div class="form-group">
-                                        <div class="col-md-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" placeholder="Type category" require></div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{$lang=='gb'?'Cancel':'বাতিল'}}</button>
+                                    <!-- <div class="form-group row">
+                                        <div class="col-6 m-b-20">
+                                            <h5 class="text-center">Bangla</h5>
                                         </div>
+                                        <div class="col-6 m-b-20">
+                                            <h5 class="text-center">Bangla</h5>
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group row">
+                                        <div class="col-6 m-b-20">
+                                            <input type="text" class="form-control" name="name" placeholder="{{__('form.question_type_en_placholder')}}" require>
+                                        </div>
+                                        <div class="col-6 m-b-20">
+                                            <input type="text" class="form-control" name="bn_name" placeholder="{{__('form.question_type_bn_placholder')}}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                     </div>
 
                                 </form>
@@ -45,9 +57,10 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">SL</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 0px;">Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">{{__('form.sl')}}</th>
+                                            <th style="width: 0px;">{{__('form.question_type_en')}}</th>
+                                            <th style="width: 0px;">{{__('form.question_type_bn')}}</th>
+                                            <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,8 +68,9 @@
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{$loop->iteration}}</td>
                                             <td>{{$qc->name}}</td>
+                                            <td>{{$qc->bn_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$qc->id}}" data-name="{{$qc->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$qc->id}}" data-name="{{$qc->name}}" data-bnname="{{$qc->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$qc->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -64,9 +78,10 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.question_type_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.question_type_bn')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -89,21 +104,30 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Category</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.q_type_update_header')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal form-material" method="POST" action="{{url('questionTypeupdate')}}">
                     @csrf
                     <input type="hidden" id="uid" name="id">
-                    <div class="form-group">
-                        <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="name" placeholder="Type category"> </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <div class="d-flex justify-content-around">
+                        <p>{{__('form.question_type_en')}}</p>
+                        <p>{{__('form.question_type_bn')}}</p>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input type="text" class="form-control text-center" id="editName" name="name" placeholder="">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control text-center" id="editbnName" name="bn_name" placeholder="">
                         </div>
                     </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
 
                 </form>
             </div>
@@ -122,6 +146,7 @@
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
+            $('#editbnName').val($(this).attr('data-bnname'));
             $('#edit-category').modal('show');
         })
 

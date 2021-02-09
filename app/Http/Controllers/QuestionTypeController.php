@@ -23,7 +23,8 @@ class QuestionTypeController extends Controller
             'name' => 'required',
         ]);
         QuizCategory::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'bn_name' => $request->bn_name
         ]);
 
         return redirect('questionTypelist');
@@ -31,7 +32,8 @@ class QuestionTypeController extends Controller
     public function update(Request $request)
     {
         QuizCategory::where('id', $request->id)->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'bn_name' => $request->bn_name,
         ]);
         return redirect('questionTypelist');
     }
