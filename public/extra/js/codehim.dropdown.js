@@ -57,7 +57,7 @@
 
 			}
 
-			$(target).addClass(setting.skin).prepend(hamburger);
+			//$(target).addClass(setting.skin).prepend(hamburger);
 
 			$(offCanvas).addClass(setting.skin);
 

@@ -37,7 +37,7 @@
 /* Skins */
 
 .red {
-	background: #e00032;
+	/*background: #e00032;*/
 }
 
 .yellow {
@@ -231,18 +231,18 @@ li.home-link a {
 	}
 	/* The Off Canvas Menu */
 	.dropdown-items {
-		height: 100%;
-		/* for zombies browsers */
-		height: 100vh;
-		display: none;
-		overflow: scroll;
-		box-sizing: border-box;
-		position: fixed;
-		top: 0;
-		z-index: 999;
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0;
 	}
 	.menu-items {
-		background: #fff;
+		background: #3490dc;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		color: white;
 	}
 	.menu-items li a {
 		padding-left: 15px;
@@ -251,6 +251,7 @@ li.home-link a {
 	.dropdown-items li {
 		border-bottom: 1px dotted rgba(255, 255, 255, 0.16);
 		overflow: hidden;
+		margin:5px;
 	}
 	/* hamburger menu icon to reveal off canvas menu on mobile devices */
 	.hamburger {
@@ -289,17 +290,8 @@ li.home-link a {
 	.dropdown-items .parent+ul li a {
 		padding-left: 30px;
 	}
-	.main-links,
-	.dropdown-heading {
-		display: block;
-		padding: 15px;
-		color: rgba(255, 255, 255, 0.8);
-		cursor: pointer;
-	}
-	.main-links:hover,
-	.dropdown-heading:hover {
-		background: rgba(0, 0, 0, 0.15);
-		color: #fff;
+	.menu-items li a {
+		color: white !important;
 	}
 	.dropdown-heading:after {
 		font-family: "Font Awesome 5 Free";
@@ -307,10 +299,11 @@ li.home-link a {
 		display: inline-block;
 		content: "\f107";
 		float: right;
+		margin-left: 50px;
 	}
 	/* Sub Dropdowns heading */
 	.has-child span.parent {
-		padding: 15px;
+		padding: 5px 10px;
 		font-weight: 700;
 		border-bottom: 1px solid #e0e0e0;
 		display: block;
@@ -319,6 +312,10 @@ li.home-link a {
 	.has-child span.parent:after {
 		content: "\f107";
 		margin-right: 15px;
+	}
+	.has-child span.parent+ul,
+	.menu-items {
+		background: #3490dc;
 	}
 }
 

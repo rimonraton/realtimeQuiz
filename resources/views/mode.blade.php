@@ -142,8 +142,8 @@
 @stop
 
 @section('content')
-<div class="container glass animate__animated animate__backInRight animate__faster">
-  <div class="row justify-content-center">
+<div class="container glass animate__animated animate__backInRight animate__fast">
+  <div class="row justify-content-center ">
     {{-- <div class="btn-group" role="group" aria-label="Game Mode">
       <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
         <i class="fas fa-address-card "></i>
@@ -179,43 +179,43 @@
       <div class="codehim-dropdown">
          <ul class="dropdown-items">
           <li>
-            <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
+            <a href="{{ url('Mode/Practice') }}" class="btn btn-sm btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
               <i class="fas fa-address-card "></i>
               {{ __('msg.practice') }}
             </a>
           </li>
           <li>
-            <a href="{{ url('Mode/Challenge') }}" class="btn btn-{{ $type =='Challenge' ? 'outline-success':'outline-primary' }}">
+            <a href="{{ url('Mode/Challenge') }}" class="btn btn-sm btn-{{ $type =='Challenge' ? 'outline-success':'outline-primary' }}">
               <i class="fas fa-people-arrows "></i>
               {{ __('msg.challenge') }}
             </a>
           </li>
           <li>
-            <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }}">
+            <a href="{{ url('Mode/Moderator') }}" class="btn btn-sm btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }}">
               <i class="fas fa-user "></i>
               {{ __('msg.moderator') }}
             </a>
           </li>
           <li>
-            <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }}">
+            <a href="{{ url('Mode/Team') }}" class="btn btn-sm btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }}">
               <i class="fas fa-users "></i>
               {{ __('msg.team') }}
             </a>
           </li>
           <li>
-            <span class="dropdown-heading btn btn-outline-primary">
+            <span class="dropdown-heading btn btn-sm btn-outline-primary">
               Select Game Category
             </span>
              <ul class="menu-items" >
                 @foreach($categories as $cat)
                   @if(count($cat->childs))
                     <li class="has-child">
-                       <span class="parent">{{ $cat->bn_name }}</span>
-                       <ul>
-                        @foreach($cat->childs as $cc)
-                          <li> <a href="{{ url('Mode/'.$type.'/'.$cc->id) }}"> {{ $cc->bn_name }}</a></li>
+                      <span class="parent">{{ $cat->bn_name }}</span>
+                      <ul>
+                      @foreach($cat->childs as $cc)
+                        <li> <a href="{{ url('Mode/'.$type.'/'.$cc->id) }}"> {{ $cc->bn_name }} </a></li>
                       @endforeach
-                       </ul>
+                      </ul>
                     </li>
                   @else 
                   <li> <a href="{{ url('Mode/'.$type.'/'.$cat->id) }}"> {{ $cat->bn_name }}</a></li>
@@ -279,7 +279,7 @@
       </nav> --}}
   </div>
 
-  <div class="row justify-content-center mt-4 ">
+  <div class="row justify-content-center mt-md-4 ">
       @foreach($quiz as $qz)
         <div class="col-md-4 col-sm-12 text-center mb-4 ">
             <div class="card shadow h-100 small">
