@@ -51,5 +51,9 @@ return [
     'contactSubject' => 'Subject',
     'contactMessage' => 'Message',
     'logout' => 'Log Out',
+    'easy' => 'Easy',
+    'intermediate' => 'Intermediate',
+    'hard' => 'Hard',
+    'history' => 'History',
 
 ];

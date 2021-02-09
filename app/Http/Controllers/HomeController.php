@@ -25,7 +25,7 @@ class HomeController extends Controller
 
     public function Mode($type, $category = null)
     {
-        $quiz =  Quiz::with('quizCategory');
+        $quiz =  Quiz::with('quizCategory', 'progress');
         $quiz->when($category, function($q) use($category){
           return $q->where('category_id', $category);
         });
@@ -90,9 +90,10 @@ class HomeController extends Controller
         return view('share_btn_link', compact('type', 'id', 'uid'));
     }
 
-    public function progress()
+    public function getProgress($id)
     {
-        return Auth::user()->progress;
+        $progress = Auth::user()->progress->where('quiz_id', $id);
+        return view('quiz_progress', compact('progress'));
     }
 
 

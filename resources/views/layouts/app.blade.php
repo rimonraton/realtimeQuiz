@@ -9,21 +9,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Gyankosh') }}</title>
 
-    <!-- Scripts -->
     <script src="{{ asset('js/quizapp.js') }}" defer></script>
-
-
-    <!-- Fonts -->
-   {{--  <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
-
-
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 
     <style type="text/css">
@@ -41,7 +33,9 @@
         .brand-text {
             color: #00A988;
         }
+
     </style>
+    @yield('css')
 </head>
 
 <body>
@@ -110,7 +104,7 @@
                         </li>
                         <li class="nav-item">
                             @if(Auth::user()->avatar)
-                            <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="avatar">
+                            <img src="{{ asset(Auth::user()->avatar) }}" alt="Avatar" class="avatar">
                             @endif
                         </li>
                         @endguest
@@ -119,10 +113,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 main">
             @yield('content')
         </main>
     </div>
+    @yield('js')
 </body>
 
 </html>

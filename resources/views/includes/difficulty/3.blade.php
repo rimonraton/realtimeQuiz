@@ -1,0 +1,1 @@
+<span class="hard"></span><span class="hard"></span><span class="hard"></span>

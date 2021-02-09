@@ -51,6 +51,10 @@ return [
     'contactSubject' => 'যোগাযোগের বিষয়টি টাইপ করুন',
     'contactMessage' => 'যোগাযোগের বার্তা টাইপ করুন',
     'logout' => 'প্রস্থান',
+    'easy' => 'সহজ',
+    'intermediate' => 'কঠিন',
+    'hard' => 'জটিল',
+    'history' => 'ইতিহাস',
 
 
 

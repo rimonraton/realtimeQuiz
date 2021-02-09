@@ -130,4 +130,4 @@ Route::get('setLanguage/{locale}', function ($locale) {
 
 Route::post('contact', 'ContractController@sendMessage');
 
-Route::get('progress', 'HomeController@progress');
+Route::get('getProgress/{id}', 'HomeController@getProgress');

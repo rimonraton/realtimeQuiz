@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Quiz extends Model
 {
@@ -16,4 +17,16 @@ class Quiz extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function progress()
+    {
+    	return $this->hasMany(Progress::class);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 1);
+    }
+
+
 }
