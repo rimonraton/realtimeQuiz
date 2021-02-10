@@ -12,7 +12,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
   <title>{{ config('app.name', 'Gyankosh') }}</title>
   <link href="{{asset('css/theme-admin.css')}}" rel="stylesheet">
-  
+
   <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css"> -->
   @yield('css')
 
@@ -356,6 +356,20 @@
   <!-- ============================================================== -->
   <script src="{{ asset('js/theme-admin.js') }}" type="text/javascript"></script>
   <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script> -->
+  <script>
+    $(function() {
+      $('.lang').on('click', function() {
+        if ($(this).attr('aria-expanded') == 'false') {
+          $(this).children('i').removeClass('fa-angle-down');
+          $(this).children('i').addClass('fa-angle-up');
+        } else {
+          $(this).children('i').removeClass('fa-angle-up');
+          $(this).children('i').addClass('fa-angle-down');
+
+        }
+      })
+    })
+  </script>
   @yield('js')
 </body>
 

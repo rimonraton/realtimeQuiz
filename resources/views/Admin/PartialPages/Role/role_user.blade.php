@@ -4,25 +4,25 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Role User</h4>
+                <h4 class="card-title text-center">{{__('form.role_user')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Assign Role</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.assign_role')}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Assign Role</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.assign_role')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
                                 <form class="form-horizontal form-material" method="POST" action="{{url('createRoleUser')}}" autocomplete="off">
                                     @csrf
                                     <div class="form-group row">
-                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">Role</label>
+                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.role')}}</label>
                                         <div class="col-sm-9" id="options">
-                                            <select class="form-control custom-select arcategory" name="role_id" id="">
-                                                <option value="">Select Role</option>
+                                            <select class="form-control  arcategory" name="role_id" id="">
+                                                <option value="">{{__('form.select_role')}}</option>
                                                 @foreach($roles as $role)
                                                 <option value="{{$role->id}}">{{$role->role_name}}</option>
                                                 @endforeach
@@ -30,10 +30,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">User</label>
+                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.user')}}</label>
                                         <div class="col-sm-9" id="options">
-                                            <select class="form-control custom-select arcategory" name="user_id" id="">
-                                                <option value="">Select User</option>
+                                            <select class="form-control  arcategory" name="user_id" id="">
+                                                <option value="">{{__('form.select_user')}}</option>
                                                 @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                                 @endforeach
@@ -41,8 +41,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                     </div>
                                 </form>
                             </div>
@@ -61,11 +61,11 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 10%;">SL</th>
-                                            <th style="width: 20%;">User Name</th>
-                                            <th style="width: 30%;">User Email</th>
-                                            <th style="width: 20%;">Role Name</th>
-                                            <th style="width: 20%;">Action</th>
+                                            <th style="width: 10%;">{{__('form.sl')}}</th>
+                                            <th style="width: 20%;">{{__('form.user_name')}}</th>
+                                            <th style="width: 30%;">{{__('form.email')}}</th>
+                                            <th style="width: 20%;">{{__('form.role')}}</th>
+                                            <th style="width: 20%;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -86,11 +86,11 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>SL</th>
-                                            <th>User Name</th>
-                                            <th>User Email</th>
-                                            <th>Role Name</th>
-                                            <th>Action</th>
+                                            <th>{{__('form.sl')}}</th>
+                                            <th>{{__('form.user_name')}}</th>
+                                            <th>{{__('form.email')}}</th>
+                                            <th>{{__('form.role')}}</th>
+                                            <th>{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -115,7 +115,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.update_user_role')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -123,10 +123,10 @@
                     @csrf
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group row">
-                        <label for="category" class="col-sm-3 text-right control-label col-form-label">Role</label>
+                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.role')}}</label>
                         <div class="col-sm-9" id="options">
-                            <select class="form-control custom-select arcategory" name="uprole_id" id="uprole">
-                                <option value="">Select Role</option>
+                            <select class="form-control  arcategory" name="uprole_id" id="uprole">
+                                <option value="">{{__('form.role_select')}}</option>
                                 @foreach($roles as $role)
                                 <option value="{{$role->id}}">{{$role->role_name}}</option>
                                 @endforeach
@@ -134,10 +134,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="category" class="col-sm-3 text-right control-label col-form-label">User</label>
+                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.user')}}</label>
                         <div class="col-sm-9" id="options">
-                            <select class="form-control custom-select arcategory" name="upuser_id" id="upuser">
-                                <option value="">Select User</option>
+                            <select class="form-control  arcategory" name="upuser_id" id="upuser">
+                                <option value="">{{__('form.user_select')}}</option>
                                 @foreach($users as $user)
                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
@@ -145,8 +145,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
                 </form>

@@ -14,10 +14,10 @@
             </li>
             <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-library-books"></i><span class="hide-menu">{{__('msg.questions')}}</span></a>
                 <ul aria-expanded="false" class="collapse  first-level">
-                    <li class="sidebar-item"><a href="{{url('question/list')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu"> {{__('msg.questionsList')}} </span></a></li>
-                    <li class="sidebar-item"><a href="{{url('question/create')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu"> {{__('msg.createQuestion')}} </span></a></li>
-                    <li class="sidebar-item"><a href="{{url('question/category')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu">{{__('msg.questionsTopics')}}</span></a></li>
-                    <li class="sidebar-item"><a href="{{url('questionTypelist')}}" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu">{{__('msg.questionsType')}}</span></a></li>
+                    <li class="sidebar-item"><a href="{{url('question/list')}}" class="sidebar-link"><i class="mdi mdi-library-books"></i><span class="hide-menu"> {{__('msg.questionsList')}} </span></a></li>
+                    <li class="sidebar-item"><a href="{{url('question/create')}}" class="sidebar-link"><i class="mdi mdi-library-books"></i><span class="hide-menu"> {{__('msg.createQuestion')}} </span></a></li>
+                    <li class="sidebar-item"><a href="{{url('question/category')}}" class="sidebar-link"><i class="mdi mdi-library-books"></i><span class="hide-menu">{{__('msg.questionsTopics')}}</span></a></li>
+                    <li class="sidebar-item"><a href="{{url('questionTypelist')}}" class="sidebar-link"><i class="mdi mdi-library-books"></i><span class="hide-menu">{{__('msg.questionsType')}}</span></a></li>
 
                     <!-- <li class="sidebar-item"><a href="{{url('question/subtopic')}}" class="sidebar-link"><i class="mdi-library-books"></i><span class="hide-menu">Sub Topics</span></a></li> -->
                 </ul>

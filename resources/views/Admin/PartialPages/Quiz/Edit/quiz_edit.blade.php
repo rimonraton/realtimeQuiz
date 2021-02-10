@@ -9,13 +9,13 @@
                     <input type="hidden" value="{{$quiz->id}}" name="quiz_id" id="">
                     <input type="hidden" value="{{$quiz->category_id}}" name="category_id" id="">
                     <div class="form-group row">
-                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in English:</label>
+                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_en')}}:</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" value="{{$quiz->quiz_name}}" id="quizName" placeholder="Type Quiz name here in English." name="quizName" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">Quiz Name in Bangla:</label>
+                        <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_bn')}}:</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" value="{{$quiz->bd_quiz_name}}" id="bdquizName" placeholder="Type Quiz name here in Bangla." name="bdquizName" required>
                         </div>
@@ -37,12 +37,12 @@
                         
                     </div>
                     <div class="form-group text-center">
-                    <a class="addNew" style="color: #009efb;cursor:pointer;">New Question</a>
+                    <a class="addNew" style="color: #009efb;cursor:pointer;">{{__('form.new_ques')}}</a>
                     </div>
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-info addNew">New Question</button> -->
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <a href="{{url('quiz/view/list').'/'.$quiz->category_id}}">Go Back</a>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <a href="{{url('quiz/view/list').'/'.$quiz->category_id}}">{{__('form.back')}}</a>
                         <!-- <a type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</a> -->
                     </div>
                 </form>
@@ -158,16 +158,16 @@
             var id = $(this).attr('id');
             var data = '';
             data += `<div class="form-group row">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="Enter Option in English">
+                                <input type="text" class="form-control inpoption" id="option" name="${option}" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" name="${bdoption}" placeholder="Enter Option in Bangla">
+                                <input type="text" class="form-control inpoption" name="${bdoption}" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="${answer}" class="hi" value="0">
-                                <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>`;
 
@@ -193,43 +193,43 @@
             var data = '';
             data += `<div class="NQ">
                 <hr>
-                <h3 class="text-center pb-2">New Question <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
+                <h3 class="text-center pb-2">{{__('form.new_ques')}} <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
                 <div class="form-group row">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" id="question" placeholder="Type Question in English" name="question[]"></textarea>
+                        <textarea class="form-control" id="question" placeholder="{{__('form.question_placeholder')}}" name="question[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Question :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="Type Question in Bangla" name="bdquestion[]"></textarea>
+                        <textarea class="form-control" placeholder="{{__('form.question_placeholder')}}" name="bdquestion[]"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">Option :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option in English">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="{{__('form.option_en_placholder')}}">
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="Enter Option in Bangla">
+                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="{{__('form.option_bn_placholder')}}">
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
-                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                        <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> Option :</label>
+                    <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="Enter Option in English">
+                        <input type="text" class="form-control inpoption" name="option${eid}[]" placeholder="{{__('form.option_en_placholder')}}">
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="Enter Option in Bangla">
+                        <input type="text" class="form-control inpoption" name="bdoption${eid}[]" placeholder="{{__('form.option_bn_placholder')}}">
                     </div>
                     <div class="col-sm-1 bt-switch">
                         <input type="hidden" name="answer${eid}[]" class="hi" value="0">
-                        <input type="checkbox" class="chk" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                        <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                     </div>
                 </div>
                 <div id="createNew${eid}-show">
@@ -239,21 +239,21 @@
                 <div class="d-flex justify-content-center form-group">
                     <div class="pr-3">
                         <label for="option1" class="text-right control-label col-form-label">
-                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-bdoption="bdoption${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">Add New Option</a>
+                            <a class="waves-effect waves-light createNew" data-option="option${eid}[]" data-bdoption="bdoption${eid}[]" data-answer="answer${eid}[]" id="createNew${eid}" data-id="NoOP${eid}" href="">{{__('form.new_option')}}</a>
                         </label>
                     </div>
                     <div>
                         <label for="option1" class="text-right control-label col-form-label">
                             <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation${eid}">
-                            <label style="font-size: .9rem;" for="explenation${eid}">Answer Explenation</label>
+                            <label style="font-size: .9rem;" for="explenation${eid}">{{__('form.ans_explenation')}}</label>
                         </label>
                         
                     </div>
                 </div>
                 <div class="form-group row" style="display: none;" id="explenation${eid}-show">
-                    <label for="question" class="col-sm-3 text-right control-label col-form-label">Explenation :</label>
+                    <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.explenation')}} :</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="Type Answer Explenation here." name="explenation[]"></textarea>
+                        <textarea class="form-control" placeholder="{{__('form.explenaton_en_placeholder')}}" name="explenation[]"></textarea>
                     </div>
                 </div>
             </div>`;

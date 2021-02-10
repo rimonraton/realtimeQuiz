@@ -424,16 +424,16 @@
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> Option :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="Enter Option in English">
+                                <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="Enter Option in Bangla">
+                                <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
-                                <input type="checkbox" class="chk" name="answer[]" data-on-text="Yes" data-off-text="No" data-size="normal" />
+                                <input type="checkbox" class="chk" name="answer[]" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>`;
             $('#newOne').append(data);

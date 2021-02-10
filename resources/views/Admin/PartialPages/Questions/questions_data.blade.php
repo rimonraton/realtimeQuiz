@@ -5,6 +5,7 @@
     }
 </style>
 @endsection
+@php $lang = App::getLocale(); @endphp
 <div class="card">
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
@@ -13,7 +14,7 @@
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                    <span class="d-none d-lg-block">{{$q->name}}</span>
+                    <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>
                 </a>
             </li>
             @endif
@@ -33,44 +34,45 @@
                                     <table id="zero_config" class="table table-striped table-bordered dataTable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 5%;">SL</th>
-                                                <th style="width: 60%;">Question</th>
-                                                <th style="width: 30%;">Options</th>
-                                                <th style="width: 5%;" class="text-center">Action</th>
+                                                <th style="width: 3%;">{{__('form.sl')}}</th>
+                                                <th style="width: 4%;">{{__('form.file')}}</th>
+                                                <th style="width: 30%;">{{__('form.question_en')}}</th>
+                                                <th style="width: 30%;">{{__('form.question_bn')}}</th>
+                                                <th style="width: 15%;">{{__('form.en_options')}}</th>
+                                                <th style="width: 15%;">{{__('form.bn_options')}}</th>
+                                                <th style="width: 3%;" class="text-center">{{__('form.action')}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($q->questions as $qs)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td>
-                                                    @if($qs->question_text)
-                                                    {{$qs->question_text}}@if($qs->bd_question_text)
-                                                    <hr>{{$qs->bd_question_text}}@endif
+                                                <td class="text-center">
+                                                    @if($qs->question_file_link)
+                                                    <img src="{{asset($qs->question_file_link)}}" alt="" width="30px" height="30px">
                                                     @else
-                                                    {{$qs->bd_question_text}}
+                                                    <span>__</span>
                                                     @endif
                                                 </td>
+                                                <td>
+                                                    {{$qs->question_text}}
+                                                </td>
+                                                <td>{{$qs->bd_question_text}}</td>
                                                 <td class="text-center">
                                                     @foreach($qs->options as $qo)
-                                                    @if($qo->option)
-                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                    <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                         <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                         {{$qo->option}}
-                                                    </button>
-                                                    @if($loop->last)
-                                                    <hr>
-                                                    @endif
-                                                    @endif
-                                                    
+                                                    </span>
                                                     @endforeach
-
+                                                </td>
+                                                <td>
                                                     @foreach($qs->options as $qo)
                                                     @if($qo->bd_option)
-                                                    <button class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                    <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                         <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                         {{$qo->bd_option}}
-                                                    </button>
+                                                    </span>
                                                     @endif
                                                     @endforeach
                                                 </td>
@@ -84,10 +86,13 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>SL</th>
-                                                <th>Question</th>
-                                                <th>Options</th>
-                                                <th>Action</th>
+                                                <th>{{__('form.sl')}}</th>
+                                                <th>{{__('form.file')}}</th>
+                                                <th>{{__('form.question_en')}}</th>
+                                                <th>{{__('form.question_bn')}}</th>
+                                                <th>{{__('form.en_options')}}</th>
+                                                <th>{{__('form.bn_options')}}</th>
+                                                <th>{{__('form.action')}}</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -110,25 +115,5 @@
     $('.dataTable').DataTable({
         responsive: true,
         "ordering": false,
-        // columnDefs: [{
-        //         width: 20,
-        //         targets: 0
-        //     },
-        //     {
-        //         width: 40,
-        //         targets: 1
-        //     },
-        //     {
-        //         width: 40,
-        //         targets: 2
-        //     },
-        //     {
-        //         width: 20,
-        //         targets: 3
-        //     },
-        // ],
-        // fixedColumns: true
     });
-    // table = $('.dataTable')
-    //     .on('draw.dt', function() {}).DataTable();
 </script>

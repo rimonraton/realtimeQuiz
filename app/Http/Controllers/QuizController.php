@@ -8,6 +8,7 @@ use App\Question;
 use App\QuestionsOption;
 use App\Quiz;
 use App\QuizCategory;
+use BeyondCode\LaravelWebSockets\Apps\App;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 
@@ -31,7 +32,11 @@ class QuizController extends Controller
     {
         $catName = '';
         if ($tid) {
-            $catName = Category::find($tid)->name;
+            if (app()->getLocale() == 'gb') {
+                $catName = Category::find($tid)->name;
+            } else {
+                $catName = Category::find($tid)->bn_name;
+            }
         }
         $category = Category::where('sub_topic_id', 0)->get();
         return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid', 'catName'));

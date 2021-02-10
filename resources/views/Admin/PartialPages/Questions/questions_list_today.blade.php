@@ -22,12 +22,13 @@
     }
 </style>
 @endsection
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Questions List <a class="btn btn-success float-right" href="{{url('question/create')}}">Create Questions</a></h4>
+                <h4 class="card-title text-center">{{__('msg.questionsList')}}<a class="btn btn-success float-right" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
                 <hr>
                 <div class="table-responsive" style="overflow-x: hidden">
 
@@ -44,7 +45,7 @@
                                                 <li class="nav-item">
                                                     <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                                                         <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                                        <span class="d-none d-lg-block">{{$q->name}}</span>
+                                                        <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>
                                                     </a>
                                                 </li>
                                                 @endif
@@ -64,12 +65,12 @@
                                                                         <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                                                             <thead>
                                                                                 <tr role="row">
-                                                                                    <th style="width: 10%;">SL</th>
-                                                                                    <th style="width: 30%;">Question in English</th>
-                                                                                    <th style="width: 30%;">Question in Bangla</th>
-                                                                                    <th style="width: 50%;">Options in English</th>
-                                                                                    <th style="width: 50%;">Options in Bangla</th>
-                                                                                    <th style="width: 10%;" class="text-center">Action</th>
+                                                                                    <th style="width: 10%;">{{__('form.sl')}}</th>
+                                                                                    <th style="width: 30%;">{{__('form.question_en')}}</th>
+                                                                                    <th style="width: 30%;">{{__('form.question_bn')}}</th>
+                                                                                    <th style="width: 50%;">{{__('form.en_options')}}</th>
+                                                                                    <th style="width: 50%;">{{__('form.bn_options')}}</th>
+                                                                                    <th style="width: 10%;" class="text-center">{{__('form.action')}}</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -102,12 +103,12 @@
                                                                             </tbody>
                                                                             <tfoot>
                                                                                 <tr>
-                                                                                    <th>SL</th>
-                                                                                    <th>Question</th>
-                                                                                    <th>Question</th>
-                                                                                    <th>Options</th>
-                                                                                    <th>Options</th>
-                                                                                    <th>Action</th>
+                                                                                    <th>{{__('form.sl')}}</th>
+                                                                                    <th>{{__('form.question_en')}}</th>
+                                                                                    <th>{{__('form.question_bn')}}</th>
+                                                                                    <th>{{__('form.en_options')}}</th>
+                                                                                    <th>{{__('form.bn_options')}}</th>
+                                                                                    <th>{{__('form.action')}}</th>
                                                                                 </tr>
                                                                             </tfoot>
                                                                         </table>
@@ -139,7 +140,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Update Question</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('form.update_question')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
@@ -150,8 +151,8 @@
                         <div id="quistion_view">
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                         </div>
 
                     </form>

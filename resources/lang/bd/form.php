@@ -25,12 +25,13 @@ return [
     'explenation' => 'ব্যাখ্যা',
     'explenaton_en_placeholder' => 'ইংরেজিতে এখানে উত্তর ব্যাখ্যা টাইপ করুন',
     'explenaton_bn_placeholder' => 'বাংলায় এখানে উত্তর ব্যাখ্যা টাইপ করুন',
-    'explenaton_placeholder' => 'এখানে উত্তর ব্যাখ্যা টাইপ করুন',
+    // 'explenaton_placeholder' => 'এখানে উত্তর ব্যাখ্যা টাইপ করুন',
     'explenaton_placeholder' => 'এখানে উত্তরের ব্যাখ্যা টাইপ করুন',
     'add_new_question' => 'অন্য প্রশ্ন যুক্ত করুন',
     'goto_list' => 'তালিকায় যান',
     'goto_quiz_list' => 'কুইজ তালিকায় যান',
     'question_notify' => 'উপরের বিষয় থেকে নির্বাচন করুন এবং বিষয় অনুযায়ী প্রশ্নগুলি দেখুন',
+    'quiz_notify' => 'উপরের বিষয় থেকে নির্বাচন করুন এবং বিষয় অনুযায়ী কুইজগুলি দেখুন',
     'from_qb' => 'প্রশ্ন ব্যাংক',
     'custom_q' => 'কাস্টম প্রশ্ন',
     'quiz_name_en' => 'কুইজ নাম( ইংরেজি )',
@@ -95,12 +96,29 @@ return [
     'mobile' => 'মোবাইল',
     'profile' => 'প্রোফাইল',
     'update_profile' => 'প্রোফাইল আপডেট করুন',
-
-
-
-
-
-
-
+    'role_list' => 'রোলের তালিকা',
+    'add_role' => 'নতুন রোল যুক্ত করুন',
+    'add_role_header' => 'নতুন রোল',
+    'add_role_placeholder' => 'রোলের নাম টাইপ করুন',
+    'update_header' => 'রোল আপডেট',
+    'role_name' => 'রোলের নাম',
+    'role_user' => 'রোল ইউজার',
+    'assign_role' => 'রোল বরাদ্দ করুন',
+    'role' => 'রোল',
+    'user' => 'ইউজার',
+    'select_role' => 'রোল নির্বাচন করুন',
+    'select_user' => 'ইউজার নির্বাচন করুন',
+    'update_user_role' => 'রোল-ইউজার আপডেট',
+    'user_name' => 'ইউজার নাম',
+    'back' => 'ফিরে যান',
+    'publish' => 'প্রকাশিত',
+    'noq'=>'প্রশ্নের সংখ্যা',
+    'qus'=>'টি প্রশ্ন',
+    'quiz_info' => 'কুইজ তথ্য',
+    'quiz_name_label' => 'কুইজের নাম',
+    'en_options' => 'অপশন( ইংলিশ )',
+    'bn_options' => 'অপশন( বাংলা )',
+    'update_question' => 'প্রশ্ন আপডেট',
+    'file' => 'ফাইল',
 
 ];

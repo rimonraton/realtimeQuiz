@@ -9,12 +9,12 @@
                             <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                 <thead>
                                     <tr role="row" class="text-center">
-                                        <th style="width: 10%;">SL</th>
-                                        <th style="width: 25%;">Quiz Name in English</th>
-                                        <th style="width: 25%;">Quiz Name in Bangla</th>
-                                        <th style="width: 15%;">Number Of Questions</th>
-                                        <th style="width: 15%;">Publish</th>
-                                        <th style="width: 10%;">Action</th>
+                                        <th style="width: 10%;">{{__('form.sl')}}</th>
+                                        <th style="width: 25%;">{{__('form.quiz_name_en')}}</th>
+                                        <th style="width: 25%;">{{__('form.quiz_name_bn')}}</th>
+                                        <th style="width: 15%;">{{__('form.noq')}}</th>
+                                        <th style="width: 15%;">{{__('form.publish')}}</th>
+                                        <th style="width: 10%;">{{__('form.action')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -24,12 +24,12 @@
                                         <td>{{$qs->quiz_name}} </td>
                                         
                                         <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
-                                        <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} questions</span></td>
+                                        <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
                                         
                                         <td>
                                             <div class="bt-switch">
                                                 <!-- <input type="hidden" name="status" class="hi" value="0"> -->
-                                                <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="Yes" data-off-text="No" data-size="normal" {{$qs->status ==1?"checked":""}} />
+                                                <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$qs->status ==1?"checked":""}} />
                                             </div>
                                         </td>
                                         <td>
@@ -43,12 +43,12 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>SL</th>
-                                        <th>Quiz Name in English</th>
-                                        <th>Quiz Name in Bangla</th>
-                                        <th>Number Of Questions</th>
-                                        <th>Publish</th>
-                                        <th>Action</th>
+                                        <th>{{__('form.sl')}}</th>
+                                        <th>{{__('form.quiz_name_en')}}</th>
+                                        <th>{{__('form.quiz_name_bn')}}</th>
+                                        <th>{{__('form.noq')}}</th>
+                                        <th>{{__('form.publish')}}</th>
+                                        <th>{{__('form.action')}}</th>
                                     </tr>
                                 </tfoot>
                             </table>

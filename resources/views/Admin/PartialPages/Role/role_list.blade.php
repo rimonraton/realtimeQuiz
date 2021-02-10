@@ -4,15 +4,15 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">Role List</h4>
+                <h4 class="card-title text-center">{{__('form.role_list')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">Add New Role</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.add_role')}}</button>
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Add Role</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{__('form.add_role_header')}}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
@@ -21,12 +21,12 @@
 
                                     <div class="form-group">
                                         <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="role_name" placeholder="Type Role Name" require>
+                                            <input type="text" class="form-control" name="role_name" placeholder="{{__('form.add_role_placeholder')}}" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">Save</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                                     </div>
                                 </form>
                             </div>
@@ -45,9 +45,9 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 10%;">SL</th>
-                                            <th style="width: 70%;">Role Name</th>
-                                            <th style="width: 20%;">Action</th>
+                                            <th style="width: 10%;">{{__('form.sl')}}</th>
+                                            <th style="width: 70%;">{{__('form.role_name')}}</th>
+                                            <th style="width: 20%;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,9 +64,9 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>SL</th>
-                                            <th>Role Name</th>
-                                            <th>Action</th>
+                                            <th>{{__('form.sl')}}</th>
+                                            <th>{{__('form.role_name')}}</th>
+                                            <th>{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -91,7 +91,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.update_header')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -100,11 +100,11 @@
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="role_name" placeholder="Type category">
+                            <input type="text" class="form-control" id="editName" name="role_name">
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">Update</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                         </div>
                     </div>
 

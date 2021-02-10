@@ -1,4 +1,4 @@
-<h4 class="card-title text-center">Quiz Name : {{$q->quiz_name?$q->quiz_name:$q->bd_quiz_name}}</h4>
+<h4 class="card-title text-center">{{__('form.quiz_name_label')}} : {{$q->quiz_name?$q->quiz_name:$q->bd_quiz_name}}</h4>
 <hr>
 <!-- <div class="row d-flex justify-content-center" id="QuestionLoad"> -->
 <div class="row d-flex justify-content-center">

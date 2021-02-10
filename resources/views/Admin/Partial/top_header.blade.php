@@ -90,9 +90,10 @@
                     </div>
                 </li> -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Choose Language">
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark lang" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Choose Language">
                         <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
-                        <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
+                        <i class="fas fa-angle-down" style="color: black;"></i>
+                            <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mailbox scale-up" style="width: 200px;">
                         <ul class="list-style-none">
@@ -111,12 +112,6 @@
                                         </div>
 
                                     </a>
-                                    <!-- <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
-                                        <span class="btn btn-success rounded-circle btn-circle"><i class="ti-calendar"></i></span>
-                                        <div class="w-75 d-inline-block v-middle pl-2">
-                                            <h5 class="message-title mb-0 mt-1">Notifications 2</h5> <span class="font-12 text-nowrap d-block text-muted text-truncate">Just a reminder that you have event</span> <span class="font-12 text-nowrap d-block text-muted">9:10 AM</span>
-                                        </div>
-                                    </a> -->
                                     <a href="{{ url('setLanguage/bd') }}" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <img src="https://www.countryflags.io/bd/flat/24.png">
 

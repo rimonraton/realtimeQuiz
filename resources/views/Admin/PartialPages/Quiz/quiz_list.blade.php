@@ -92,7 +92,7 @@
                         <div class="container">
                             <div class="row justify-content-md-center">
                                 <div class="alert alert-success text-center" role="alert" id="msg">
-                                    <p class="pt-3">{{$lang=='gb'?'Please select from the topic above and see the quizzes according to the topic':'উপরের বিষয়টি থেকে নির্বাচন করুন এবং বিষয় অনুসারে কুইজ দেখুন'}}</p>
+                                    <p class="pt-3">{{__('form.quiz_notify')}}</p>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Quiz Info</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.quiz_info')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" id="QuestionLoad">
