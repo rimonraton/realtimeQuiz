@@ -125,7 +125,6 @@ class QuizController extends Controller
     public function quizList($id)
     {
         $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
-        // return $quiz->questions;
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
     public function deleteQuiz($id)

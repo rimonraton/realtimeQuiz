@@ -70,5 +70,7 @@ return [
     'publishQuiz' => 'প্রকাশিত কুইজ',
     'totalQuestions' => 'মোট প্রশ্ন',
     'participants' => 'অংশগ্রহণকারীরা',
-    'add' => 'যুক্ত করুন'
+    'add' => 'যুক্ত করুন',
+    'payment' => 'পেমেন্ট',
+    'menu_setup' => 'মেনু সেটআপ',
 ];

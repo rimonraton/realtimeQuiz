@@ -40,20 +40,17 @@
                     <!-- <li class="sidebar-item"><a href="{{url('')}}" class="sidebar-link"><i class="mdi mdi-email"></i><span class="hide-menu"> Perform Message Setup</span></a></li> -->
                 </ul>
             </li>
-            @if(Auth()->user()->roleuser->role->id == 5)
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('features')}}" aria-expanded="false"><i class="mdi mdi-apps"></i><span class="hide-menu">{{__('msg.features')}}</span></a></li>
-            @endif
             <!-- <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Participants</span></a></li> -->
-
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('profile')}}" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">{{__('msg.profile')}}</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-lock"></i><span class="hide-menu">{{__('msg.security')}}</span></a>
                 <ul aria-expanded="false" class="collapse  first-level">
-                    @if(Auth()->user()->roleuser->role->id == 5)
                     <li class="sidebar-item"><a href="{{url('rolelist')}}" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu">{{__('msg.roles')}}</span></a></li>
-                    @endif
                     <li class="sidebar-item"><a href="{{url('assignRoleList')}}" class="sidebar-link"><i class="mdi mdi-email-alert"></i><span class="hide-menu">{{__('msg.assignRoll')}}</span></a></li>
                 </ul>
             </li>
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('payment')}}" aria-expanded="false"><i class="mdi mdi-cash-multiple"></i><span class="hide-menu">{{__('msg.payment')}}</span></a></li>
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('menu')}}" aria-expanded="false"><i class="mdi mdi-menu"></i><span class="hide-menu">{{__('msg.menu_setup')}}</span></a></li>
             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" aria-expanded="false"><i class="mdi mdi-directions"></i><span class="hide-menu">{{__('msg.logout')}}</span></a></li>
         </ul>
     </nav>

@@ -31,6 +31,7 @@ return [
     'goto_list' => 'Go to List',
     'goto_quiz_list' => 'Go to Quiz List',
     'question_notify' => 'Please select from the topic above and see the questions according to the topic',
+    'quiz_notify' => 'Please select from the topic above and see the quizzes according to the topic',
     'from_qb' => 'From Question Bank',
     'custom_q' => 'Custom Questions',
     'quiz_name_en' => 'Quiz Name( English )',
@@ -119,4 +120,17 @@ return [
     'bn_options' => 'Options( Bangla )',
     'update_question' => 'Update Question',
     'file' => 'file',
+    'logo' => "Logo",
+    'menu_setup'=>'Menu Setup',
+    'menu_list' => 'Menu List',
+    'add_menu' => 'Add New Menu',
+    'add_menu_header' => 'New Menu',
+    'menu_placholder_en' => 'Type Menu here( English )',
+    'menu_placholder_bn' => 'Type Menu here( Bangla )',
+    'route_name' => 'Type route name( English )',
+    'menu' => 'Menu',
+    'select_menu' => 'Select Menu',
+    'menu_update' => 'Menu Update',
+
+
 ];

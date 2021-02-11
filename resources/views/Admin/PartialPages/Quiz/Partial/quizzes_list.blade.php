@@ -13,8 +13,10 @@
                                         <th style="width: 25%;">{{__('form.quiz_name_en')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_bn')}}</th>
                                         <th style="width: 15%;">{{__('form.noq')}}</th>
+                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <th style="width: 15%;">{{__('form.publish')}}</th>
                                         <th style="width: 10%;">{{__('form.action')}}</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -22,10 +24,10 @@
                                     <tr class="text-center">
                                         <td class="sorting_1">{{$loop->iteration}}</td>
                                         <td>{{$qs->quiz_name}} </td>
-                                        
+
                                         <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
                                         <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
-                                        
+                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <td>
                                             <div class="bt-switch">
                                                 <!-- <input type="hidden" name="status" class="hi" value="0"> -->
@@ -38,6 +40,7 @@
                                             <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
 
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -47,8 +50,10 @@
                                         <th>{{__('form.quiz_name_en')}}</th>
                                         <th>{{__('form.quiz_name_bn')}}</th>
                                         <th>{{__('form.noq')}}</th>
+                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <th>{{__('form.publish')}}</th>
                                         <th>{{__('form.action')}}</th>
+                                        @endif
                                     </tr>
                                 </tfoot>
                             </table>

@@ -71,4 +71,6 @@ return [
     'totalQuestions' => 'Total Questions',
     'participants' => 'Participants',
     'add' => 'Add',
+    'payment' => 'Payment',
+    'menu_setup' => 'Menu Setup',
 ];

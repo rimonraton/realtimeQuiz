@@ -98,6 +98,15 @@ Route::post('createRoleUser', 'RoleController@createRoleUser');
 Route::post('roleuserUpdate', 'RoleController@roleuserUpdate');
 Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');
 
+// Payment
+Route::get('payment', 'PaymentController@index');
+
+//Menu Setup
+Route::get('menu','MenuController@index');
+Route::post('saveMenu','MenuController@store');
+Route::post('menuUpdate','MenuController@updateMenu');
+Route::get('deleteMenu/{id}','MenuController@delete');
+
 Auth::routes();
 
 Route::get('/home', function () {
