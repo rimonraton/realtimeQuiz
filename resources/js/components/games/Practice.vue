@@ -4,30 +4,31 @@
             <h2 class="text-center">Quiz Game Over</h2>
             <h3><b>{{ pm.perform_message }} </b></h3>
             <resultdetails :results='results' :ws="winner_screen" />
-
         </div>
 
         <div class="row justify-content-center">
             <div class="col-md-7" >
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current" >
-                <transition name="fade" mode="out-in">
-                    <div class="card-body" :key="qid">
-                        <span class="q_num text-right text-muted">Question {{ qid + 1 }} of {{ questions.length }}</span>
+                <!-- <transition name="fade" mode="out-in"> -->
+                    <div class="card-body animate__animated animate__backInRight animate__faster" :key="qid" >
+                        <span class="q_num text-right text-muted">
+                            {{ qne2b(qid, questions.length, user.lang) }}
+                        </span>
 
                         <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
 
-                        <p class="my-1 font-bold" v-html="question.question_text"></p> 
-                        <!-- <p class="my-1 font-bold">{{ ToText(question.question_text) }} </p>  -->
+                        <p class="my-1 font-bold" v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></p> 
 
                         <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, option.option, option.correct)" 
-                                class="list-group-item list-group-item-action cursor my-1" v-html="option.option">
+                            <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)" 
+                                class="list-group-item list-group-item-action cursor my-1" v-html="tbe(option.bd_option, option.option, user.lang)">
+
                             </li>
                         </ul> 
 
                     </div>
 
-                </transition>                 
+                <!-- </transition>                  -->
                 </div>
             </div>
             <div class="col-md-5">
@@ -58,14 +59,9 @@
                         <resultdetails :results='results' :ws="winner_screen" />
                       </li>
                     </ul>
-
-                    
                   </div>
                 </div>
-
             </div>
-           
-
         </div>
     </div>
 </template>
@@ -100,7 +96,6 @@
 
         mounted() {
             console.log('timer start')
-
             this.current = this.questions[this.qid].id
 
             let confetti = document.createElement('script')
@@ -112,10 +107,7 @@
         },
 
         methods: {
-            ToText(HTML){
-              var input = HTML;
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&lsquo;/g,'').replace(/&rsquo;/g,'');  
-            },
+            
             startTimer(){
                 console.log('timer start')
                 this.timer = setInterval(() => {
@@ -159,7 +151,8 @@
             },
 
             getCorrectAnswertext(){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
+                var qco = this.questions[this.qid].options.find(o => o.correct == 1)
+                return this.tbe(qco.bd_option, qco.option, this.user.lang)
             },
 
             winner(){
@@ -189,6 +182,24 @@
             reloadPage(){
                 window.location.reload()
             },
+            tbe(b, e, l){
+                if(l == 'bd' && b !== null)
+                    return b;
+                return e;
+            },
+            q2bNumber(numb){
+                var numb = numb.toString();
+                var bn =''
+                var eb = {0:'০', 1:'১', 2:'২', 3:'৩', 4:'৪', 5:'৫', 6:'৬', 7:'৭', 8:'৮', 9:'৯'};
+                [...numb].forEach(n => bn+=eb[n])
+                return bn
+            },
+            qne2b(q, qn, l){
+
+                if(l == 'gb')
+                    return  `Question ${q + 1} of ${qn} `;
+                return  `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q+1)} `;
+            }
         }
         
 

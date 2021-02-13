@@ -2942,16 +2942,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/practice/resultdetails */ "./resources/js/components/helper/practice/resultdetails.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -3053,10 +3061,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.startTimer();
   },
   methods: {
-    ToText: function ToText(HTML) {
-      var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
-    },
     startTimer: function startTimer() {
       var _this = this;
 
@@ -3103,9 +3107,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.current = this.questions[this.qid].id;
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
-      return this.questions[this.qid].options.find(function (o) {
+      var qco = this.questions[this.qid].options.find(function (o) {
         return o.correct == 1;
-      }).option;
+      });
+      return this.tbe(qco.bd_option, qco.option, this.user.lang);
     },
     winner: function winner() {
       var perform = this.correct / this.questions.length * 100;
@@ -3153,6 +3158,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     reloadPage: function reloadPage() {
       window.location.reload();
+    },
+    tbe: function tbe(b, e, l) {
+      if (l == 'bd' && b !== null) return b;
+      return e;
+    },
+    q2bNumber: function q2bNumber(numb) {
+      var numb = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+
+      _toConsumableArray(numb).forEach(function (n) {
+        return bn += eb[n];
+      });
+
+      return bn;
+    },
+    qne2b: function qne2b(q, qn, l) {
+      if (l == 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
+      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     }
   }
 });
@@ -3848,17 +3883,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'ws'],
   methods: {
-    ToText: function ToText(HTML) {
-      var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
-    },
     reloadPage: function reloadPage() {
       window.location.reload();
     },
@@ -85322,72 +85349,84 @@ var render = function() {
         { staticClass: "col-md-7" },
         _vm._l(_vm.questions, function(question) {
           return question.id == _vm.current
-            ? _c(
-                "div",
-                { staticClass: "card my-4" },
-                [
-                  _c(
-                    "transition",
-                    { attrs: { name: "fade", mode: "out-in" } },
-                    [
-                      _c(
-                        "div",
-                        { key: _vm.qid, staticClass: "card-body" },
-                        [
-                          _c(
-                            "span",
-                            { staticClass: "q_num text-right text-muted" },
-                            [
-                              _vm._v(
-                                "Question " +
-                                  _vm._s(_vm.qid + 1) +
-                                  " of " +
-                                  _vm._s(_vm.questions.length)
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          question.more_info_link
-                            ? _c("img", {
-                                staticClass: "image w-100 mt-1 rounded",
-                                staticStyle: { "max-height": "70vh" },
-                                attrs: { src: question.more_info_link }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("p", {
-                            staticClass: "my-1 font-bold",
-                            domProps: {
-                              innerHTML: _vm._s(question.question_text)
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(question.options, function(option) {
-                            return _c("ul", { staticClass: "list-group" }, [
-                              _c("li", {
-                                staticClass:
-                                  "list-group-item list-group-item-action cursor my-1",
-                                domProps: { innerHTML: _vm._s(option.option) },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.checkAnswer(
-                                      question.id,
-                                      option.option,
-                                      option.correct
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          })
-                        ],
-                        2
+            ? _c("div", { staticClass: "card my-4" }, [
+                _c(
+                  "div",
+                  {
+                    key: _vm.qid,
+                    staticClass:
+                      "card-body animate__animated animate__backInRight animate__faster"
+                  },
+                  [
+                    _c("span", { staticClass: "q_num text-right text-muted" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm.qne2b(
+                              _vm.qid,
+                              _vm.questions.length,
+                              _vm.user.lang
+                            )
+                          ) +
+                          "\n                    "
                       )
-                    ]
-                  )
-                ],
-                1
-              )
+                    ]),
+                    _vm._v(" "),
+                    question.more_info_link
+                      ? _c("img", {
+                          staticClass: "image w-100 mt-1 rounded",
+                          staticStyle: { "max-height": "70vh" },
+                          attrs: { src: question.more_info_link }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("p", {
+                      staticClass: "my-1 font-bold",
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.tbe(
+                            question.bd_question_text,
+                            question.question_text,
+                            _vm.user.lang
+                          )
+                        )
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._l(question.options, function(option) {
+                      return _c("ul", { staticClass: "list-group" }, [
+                        _c("li", {
+                          staticClass:
+                            "list-group-item list-group-item-action cursor my-1",
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.tbe(
+                                option.bd_option,
+                                option.option,
+                                _vm.user.lang
+                              )
+                            )
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.checkAnswer(
+                                question.id,
+                                _vm.tbe(
+                                  option.bd_option,
+                                  option.option,
+                                  _vm.user.lang
+                                ),
+                                option.correct
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
             : _vm._e()
         }),
         0
@@ -86266,25 +86305,17 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "font-weight-light f-13" }, [
-                      _c("span", { staticClass: "font-weight-bold" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.ToText(result.question)) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("span", {
+                        staticClass: "font-weight-bold",
+                        domProps: { innerHTML: _vm._s(result.question) }
+                      }),
                       _vm._v(" "),
                       result.isCorrect != 0
                         ? _c("p", [
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [
-                                _vm._v(
-                                  " " + _vm._s(_vm.ToText(result.selected))
-                                )
-                              ]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.selected) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-check text-success",
@@ -86292,17 +86323,10 @@ var render = function() {
                             })
                           ])
                         : _c("p", [
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.ToText(result.selected)) +
-                                    "\n                            "
-                                )
-                              ]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.selected) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-times text-danger",
@@ -86311,11 +86335,10 @@ var render = function() {
                             _vm._v(" "),
                             _c("br"),
                             _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [_vm._v(" " + _vm._s(_vm.ToText(result.answer)))]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.answer) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-check text-success",

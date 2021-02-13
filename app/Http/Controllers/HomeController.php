@@ -35,6 +35,16 @@ class HomeController extends Controller
         $categories = Category::where('sub_topic_id', 0)->get();
         return view('mode', compact('quiz', 'user', 'categories', 'type'));
     }
+    public function getCategory($type, $category)
+    {
+        if($category == 'Select Quiz Category'){
+            $quiz = Quiz::with('quizCategory', 'progress')->paginate(9);
+            return view('categorized', compact('quiz', 'type'));
+        }
+        $cat_id = Category::where('bn_name', $category)->orWhere('name', $category)->first()->id;
+        $quiz = Quiz::with('quizCategory', 'progress')->where('category_id', $cat_id)->paginate(9);
+        return view('categorized', compact('quiz', 'type'));
+    }
 
     public function ModeWithCategory($type, $category)
     {
@@ -52,7 +62,8 @@ class HomeController extends Controller
         $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
         //  $questions = $exam->questions()->with('options')->get();
         $user = Auth::user();
-        return view('games.' . strtolower($type), compact('id', 'user', 'questions', 'uid', 'gmsg'));
+        $user['lang'] = app()->getLocale();
+        return view('games.' . strtolower($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
     }
 
 
