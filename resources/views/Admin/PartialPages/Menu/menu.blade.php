@@ -65,16 +65,16 @@
                                 <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 0px;">SL</th>
-                                            <th style="width: 0px;">English Name</th>
-                                            <th style="width: 0px;">Bangla Name</th>
-                                            <th style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">{{__('form.sl')}}</th>
+                                            <th style="width: 0px;">{{__('form.menu_en')}}</th>
+                                            <th style="width: 0px;">{{__('form.menu_bn')}}</th>
+                                            <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($menus as $menu)
                                         <tr>
-                                            <td>SL</td>
+                                            <td>{{$loop->iteration}}</td>
                                             <th>{{$menu->name}}</th>
                                             <th>{{$menu->bn_name}}</th>
                                             <th><a class="edit" href="" data-id="{{$menu->id}}" data-name="{{$menu->name}}" data-bnname="{{$menu->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
@@ -85,10 +85,10 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">English Name</th>
-                                            <th rowspan="1" colspan="1">Bangla Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.menu_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.menu_bn')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>

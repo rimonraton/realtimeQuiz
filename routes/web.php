@@ -107,6 +107,10 @@ Route::post('saveMenu','MenuController@store');
 Route::post('menuUpdate','MenuController@updateMenu');
 Route::get('deleteMenu/{id}','MenuController@delete');
 
+// Menu Permession
+Route::get('menuPermission','MenuPermissionController@index');
+Route::post('savemenuPermission','MenuPermissionController@store');
+
 Auth::routes();
 
 Route::get('/home', function () {

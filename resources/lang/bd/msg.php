@@ -58,7 +58,7 @@ return [
     'quizList' => 'কুইজের তালিকা',
     'createquiz' => 'কুইজ তৈরি করুন',
     'game' => 'গেম',
-    'gameSetup' => 'খেলা সেটআপ',
+    'gameSetup' => 'গেম সেটআপ',
     'performMsg' => 'সম্পাদনা বার্তা',
     'teamSetup' => 'দল সেটআপ',
     'profile' => 'প্রোফাইল',

@@ -16,4 +16,8 @@ class RoleUser extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function rolemenu()
+    {
+        return $this->hasOne(MenuRole::class,'role_id','role_id');
+    }
 }

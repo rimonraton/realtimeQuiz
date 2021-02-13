@@ -131,6 +131,9 @@ return [
     'menu' => 'Menu',
     'select_menu' => 'Select Menu',
     'menu_update' => 'Menu Update',
+    'menu_en' => 'Menu Name( English )',
+    'menu_bn' => 'Menu Name( Bangla )',
+    'check_all' => 'Check All',
 
 
 ];

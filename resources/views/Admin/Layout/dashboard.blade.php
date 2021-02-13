@@ -12,6 +12,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
   <title>{{ config('app.name', 'Gyankosh') }}</title>
   <link href="{{asset('css/theme-admin.css')}}" rel="stylesheet">
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
 
   <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css"> -->
   @yield('css')
