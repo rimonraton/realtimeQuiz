@@ -53,10 +53,14 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                @if(Auth()->user()->roleuser->role->id != 3)
-                <h4 class="card-title text-center">{{__('msg.quizList')}}<a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a></h4>
+                <h4 class="card-title text-center">{{__('msg.quizList')}}
+                    @can('create',App\Quiz::class)
+                    <a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a>
+                    @else
+                    <a class="btn btn-secondary float-right disabled" href="" >{{__('msg.createquiz')}}</a>
+                    @endcan
+                </h4>
                 <hr>
-                @endif
                 <div class="form-group row pb-3">
                     <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                     <div class="col-sm-9">

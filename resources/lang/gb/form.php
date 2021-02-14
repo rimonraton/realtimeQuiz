@@ -134,6 +134,6 @@ return [
     'menu_en' => 'Menu Name( English )',
     'menu_bn' => 'Menu Name( Bangla )',
     'check_all' => 'Check All',
-
+    'submit' => 'Submit',
 
 ];

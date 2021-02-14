@@ -220,8 +220,13 @@
                     </div>
 
                     <div class="form-group mb-0 text-right">
+                        @can('create',App\Quiz::class)
                         <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('msg.createquiz')}}</button>
                         <a class="btn btn-success waves-effect waves-light text-white" href="{{url('quiz/view/list')}}">{{__('form.goto_quiz_list')}}</a>
+                        @else
+                        <a class="btn btn-secondary waves-effect waves-light disabled">{{__('msg.createquiz')}}</a>
+                        <a class="btn btn-secondary waves-effect waves-light text-white disabled">{{__('form.goto_quiz_list')}}</a>
+                        @endcan
                     </div>
                 </form>
             </div>

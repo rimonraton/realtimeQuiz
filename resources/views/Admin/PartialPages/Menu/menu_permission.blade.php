@@ -7,7 +7,6 @@
         overflow: auto;
     }
 
-
     a:hover,
     a:focus {
         text-decoration: none;
@@ -109,7 +108,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-2">
-                            <button class="btn btn-success" type="submit">Submit</button>
+                            <button class="btn btn-success" type="submit">{{__('form.submit')}}</button>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center">

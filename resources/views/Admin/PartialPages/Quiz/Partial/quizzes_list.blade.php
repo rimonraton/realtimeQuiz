@@ -4,7 +4,7 @@
 
             <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                 <div class="row">
-                    <div class="col-sm-12 pt-3">
+                    <div class="col-sm-12">
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                 <thead>
@@ -13,10 +13,8 @@
                                         <th style="width: 25%;">{{__('form.quiz_name_en')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_bn')}}</th>
                                         <th style="width: 15%;">{{__('form.noq')}}</th>
-                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <th style="width: 15%;">{{__('form.publish')}}</th>
                                         <th style="width: 10%;">{{__('form.action')}}</th>
-                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -27,20 +25,27 @@
 
                                         <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
                                         <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
-                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <td>
+                                            @can('publish',$qs)
                                             <div class="bt-switch">
-                                                <!-- <input type="hidden" name="status" class="hi" value="0"> -->
                                                 <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$qs->status ==1?"checked":""}} />
                                             </div>
+                                            @else
+                                            <div class="bt-switch">
+                                                <input type="checkbox" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" disabled />
+                                            </div>
+                                            @endcan
                                         </td>
                                         <td>
                                             <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->quiz_name}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a>
+                                            @can('readOrwrite',$qs)
                                             <a class="edit" href="{{url('quiz/'.$qs->id.'/edit')}}" style="cursor: pointer; color:black;" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                             <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-
+                                            @else
+                                            <a class="disabled"><i class="fas fa-pencil-alt"></i></a>
+                                            <a class="disabled"><i class="fas fa-trash"></i></a>
+                                            @endcan
                                         </td>
-                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -50,10 +55,8 @@
                                         <th>{{__('form.quiz_name_en')}}</th>
                                         <th>{{__('form.quiz_name_bn')}}</th>
                                         <th>{{__('form.noq')}}</th>
-                                        @if(Auth()->user()->roleuser->role->id != 3)
                                         <th>{{__('form.publish')}}</th>
                                         <th>{{__('form.action')}}</th>
-                                        @endif
                                     </tr>
                                 </tfoot>
                             </table>
