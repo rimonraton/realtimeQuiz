@@ -12,31 +12,27 @@
                 <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
                     <li v-for="result in results" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
                         <div class="font-weight-light f-13">
-                            <span class="font-weight-bold">
-                                {{ ToText(result.question) }}
-                            </span>
+                            <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
-                             <span class="font-weight-light font-italic"> {{ ToText(result.selected) }}</span>
+                             <span class="font-weight-light font-italic" v-html="result.selected"></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
                             </p>
                             <p v-else>
-                                <span class="font-weight-light font-italic">
-                                    {{ ToText(result.selected) }}
-                                </span>
+                                <span class="font-weight-light font-italic" v-html="result.selected"></span>
                                 <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                 <br>
 
-                                <span class="font-weight-light font-italic"> {{ ToText(result.answer) }}</span>
+                                <span class="font-weight-light font-italic" v-html="result.answer"></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
 
                             </p>
 
                         </div>
                          <span class="badge badge-light badge-pill">
-                            {{ result.time  }} 
+                            {{ result.time  }}
                         </span>
                     </li>
-                  
+
                 </ul>
               </div>
             </div>
@@ -53,15 +49,12 @@
         props: ['results', 'ws'],
 
         methods: {
-            ToText(HTML){
-              var input = HTML;
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&lsquo;/g,'').replace(/&rsquo;/g,'');  
-            },
             reloadPage(){
                 window.location.reload()
             },
             back(){
                 window.history.back()
+                // window.history.back()
             },
         }
 
@@ -72,5 +65,5 @@
 #accordion{
     max-width: 500px !important;
 }
-    
+
 </style>

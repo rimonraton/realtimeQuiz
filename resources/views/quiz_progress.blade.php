@@ -2,11 +2,10 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>test</th>
-			<th>test</th>
-			<th>test</th>
-			<th>test</th>
-			<th>test</th>
+			<th>Time</th>
+			<th>Started At</th>
+			<th>End At</th>
+			<th>Star</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,14 +16,13 @@
 			@endphp
 
 			<tr>
-				<td>{{ date('M-d-Y H:i:s', strtotime($p->start_at))  }}</td>
-				<td>{{ $since_start->i . ' : ' . $since_start->s }}</td>
-				<td>{{ $p->created_at->diffForHumans() }}</td>
-				<td>{{ $p->results }}</td>
-				<td>@include('includes.stars.'.$progress->count())</td>
+				<td>{{ $p->created_at->diffForHumans()   }}</td>
+				<td>{{ $p->start_at }}</td>
+				<td>{{ $p->created_at }}</td>
+				<td>@include('includes.stars.1')</td>
 			</tr>
 		@endforeach
-		
+
 	</tbody>
 </table>
 

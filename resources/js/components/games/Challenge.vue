@@ -5,7 +5,7 @@
                 <div class="col-md-8">
                     <h2 class="text-center">Waiting for other user response.</h2>
                     <div class="progress m-2">
-                        <div class="progress-bar progress-bar-striped" 
+                        <div class="progress-bar progress-bar-striped"
                             :style="progressWidth"
                             :class="progressClass"
                             > {{ Math.floor(progress) }}
@@ -15,10 +15,10 @@
                 </div>
             </div>
         </div>
-        
+
         <transition name="fade">
             <result :results='results' :lastQuestion='(qid + 1) == questions.length'
-                    v-if="screen.result">                       
+                    v-if="screen.result">
             </result>
         </transition>
 
@@ -37,17 +37,17 @@
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
         </div>
 
-        <waiting :uid='uid' :users='users' :user='user' 
+        <waiting :uid='uid' :users='users' :user='user'
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
                 @gameReset="gameReset"
-                v-if="screen.waiting">                       
+                v-if="screen.waiting">
         </waiting>
 
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped" 
+                    <div class="progress-bar progress-bar-striped"
                         :style="progressWidth"
                         :class="progressClass"
                         > {{ Math.floor(progress) }}
@@ -61,7 +61,7 @@
 
                         <p v-html="question.question_text" class="my-2 font-bold"></p>
                         <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, option.option, option.correct)" 
+                            <li @click="checkAnswer(question.id, option.option, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1">
                                 <span v-html="option.option"></span>
                             </li>
@@ -92,13 +92,13 @@
 </template>
 
 <script>
-    
+
     import waiting from '../helper/waiting'
     import result from '../helper/result'
 
     export default {
 
-        props : ['id', 'uid', 'user', 'questions'],
+        props : ['id', 'uid', 'user', 'questions', 'gmsg'],
 
         components: { waiting, result },
 
@@ -129,7 +129,7 @@
                 user_ranking: null,
                 game_start:0,
                 progress: 100,
-            
+
             };
         },
 
@@ -155,11 +155,11 @@
                     if(this.user.id == data.uid){
                         window.location.href = "http://quiz.erendevu.net"
                     }
-                    
+
                 });
 
         },
-       
+
         mounted() {
             Echo.join(`challenge.${this.id}.${this.uid}`)
                 .here((users) => {
@@ -234,13 +234,13 @@
             QuestionTimer(){
                 let pdec = 100 / (10 * this.qt.time);
                 console.log('QuestionTimer started')
-                this.qt.timer = 
+                this.qt.timer =
                     setInterval(() => {
                         if(this.qt.time == 0){
                             if(!this.answered){
                                 this.checkAnswer(this.qid, 'Not Answered', 0);
                             }
-                            this.questionInit(); 
+                            this.questionInit();
                             this.resultScreen();
                         }
                         else{
@@ -253,7 +253,7 @@
                             }
 
                         }
-                        
+
                     }, 100);
             },
 
@@ -273,7 +273,7 @@
                 this.screen.loading = true
                 this.answered_user ++
                 this.loadingScreen()
-                
+
             },
 
             getCorrectAnswertext(){
@@ -282,7 +282,7 @@
 
             loadingScreen(){
                 if(this.users.length == this.answered_user){
-                    this.screen.loading = false; 
+                    this.screen.loading = false;
                     this.resultScreen();
                 }
             },
@@ -368,7 +368,7 @@
 
                 }
             },
-            
+
             externalJS(){
                 let confetti = document.createElement('script')
                 confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
@@ -385,7 +385,7 @@
                     axios.post(`/api/kickUser`, channelUser)
 
                 }
-                
+
             },
             questionInit(){
                 clearInterval(this.timer)
@@ -421,7 +421,7 @@
 
 
 
-        
+
 
     };
 </script>

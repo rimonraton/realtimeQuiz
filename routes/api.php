@@ -22,11 +22,14 @@ Route::post('questionClick', 'GameController@questionClick');
 Route::post('gameStart', 'GameController@gameStart');
 Route::post('kickUser', 'GameController@kickUser');
 
-//Moderator 
+//Moderator
 Route::post('nextQuestion', 'GameController@nextQuestion');
 Route::post('answerPredict', 'GameController@answerPredict');
 Route::post('pageReload', 'GameController@pageReload');
 Route::post('submitAnswerGroup', 'GameController@submitAnswerGroup');
+
+//Practice
+Route::post('savePractice', 'GameController@savePractice');
 
 
 

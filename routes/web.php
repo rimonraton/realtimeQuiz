@@ -122,6 +122,7 @@ Route::get('/home', function () {
 // Route::get('/home', 'HomeController@home')->name('home');
 
 Route::get('Mode/{type}/{category?}', 'HomeController@Mode');
+Route::get('getCategory/{type}/{category}', 'HomeController@getCategory');
 
 Route::get('Mode/{type}/{quiz}/{user}', 'HomeController@Game');
 
@@ -144,3 +145,4 @@ Route::get('setLanguage/{locale}', function ($locale) {
 Route::post('contact', 'ContractController@sendMessage');
 
 Route::get('getProgress/{id}', 'HomeController@getProgress');
+Route::get('/lang-{lang}.js', 'LanguageController@show');

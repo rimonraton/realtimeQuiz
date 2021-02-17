@@ -2059,7 +2059,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['id', 'uid', 'user', 'questions'],
+  props: ['id', 'uid', 'user', 'questions', 'gmsg'],
   components: {
     waiting: _helper_waiting__WEBPACK_IMPORTED_MODULE_0__["default"],
     result: _helper_result__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -2942,12 +2942,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/practice/resultdetails */ "./resources/js/components/helper/practice/resultdetails.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -3053,10 +3066,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.startTimer();
   },
   methods: {
-    ToText: function ToText(HTML) {
-      var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
-    },
     startTimer: function startTimer() {
       var _this = this;
 
@@ -3085,7 +3094,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw;
       this.gamedata['time'] = this.answer_minutes + ':' + this.answer_seconds;
-      rw == 1 ? this.correct++ : this.wrong++;
+      rw === 1 ? this.correct++ : this.wrong++;
 
       var clone = _objectSpread({}, this.gamedata);
 
@@ -3093,7 +3102,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.answer_minutes = 0;
       this.answer_seconds = 0;
 
-      if (this.qid + 1 == this.questions.length) {
+      if (this.qid + 1 === this.questions.length) {
         clearInterval(this.timer);
         this.winner();
         return;
@@ -3103,9 +3112,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.current = this.questions[this.qid].id;
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
-      return this.questions[this.qid].options.find(function (o) {
-        return o.correct == 1;
-      }).option;
+      var qco = this.questions[this.qid].options.find(function (o) {
+        return o.correct === 1;
+      });
+      return this.tbe(qco.bd_option, qco.option, this.user.lang);
     },
     winner: function winner() {
       var perform = this.correct / this.questions.length * 100;
@@ -3116,7 +3126,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.winner_screen = 1;
 
-      if (perform == 100) {
+      if (perform === 100) {
         confetti({
           zIndex: 999999,
           particleCount: 200,
@@ -3150,9 +3160,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           colors: colors
         });
       }
+
+      this.saveQuiz();
+    },
+    saveQuiz: function saveQuiz() {
+      var gd = {
+        user_id: this.user.id,
+        game_id: this.gmsg[0].game_id,
+        quiz_id: this.id,
+        answers: JSON.stringify(this.results),
+        start_at: this.user.start_at,
+        pm_id: this.pm.id
+      };
+      axios.post("/api/savePractice", gd).then(function (response) {
+        return console.log(response.data);
+      });
     },
     reloadPage: function reloadPage() {
       window.location.reload();
+    },
+    tbe: function tbe(b, e, l) {
+      if (l === 'bd' && b !== null) return b;
+      return e;
+    },
+    q2bNumber: function q2bNumber(numb) {
+      var numbString = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+
+      _toConsumableArray(numbString).forEach(function (n) {
+        return bn += eb[n];
+      });
+
+      return bn;
+    },
+    qne2b: function qne2b(q, qn, l) {
+      if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
+      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     }
   }
 });
@@ -3848,22 +3903,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'ws'],
   methods: {
-    ToText: function ToText(HTML) {
-      var input = HTML;
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&lsquo;/g, '').replace(/&rsquo;/g, '');
-    },
     reloadPage: function reloadPage() {
       window.location.reload();
     },
     back: function back() {
-      window.history.back();
+      window.history.back(); // window.history.back()
     }
   }
 });
@@ -24598,7 +24645,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n#accordion{\r\n    max-width: 500px !important;\n}\r\n    \r\n", ""]);
+exports.push([module.i, "\n#accordion{\n    max-width: 500px !important;\n}\n\n", ""]);
 
 // exports
 
@@ -85306,7 +85353,7 @@ var render = function() {
               _vm._v("Quiz Game Over")
             ]),
             _vm._v(" "),
-            _c("h3", [_c("b", [_vm._v(_vm._s(_vm.pm.perform_message) + " ")])]),
+            _c("h3", [_vm._v(_vm._s(_vm.pm.perform_message) + " ")]),
             _vm._v(" "),
             _c("resultdetails", {
               attrs: { results: _vm.results, ws: _vm.winner_screen }
@@ -85321,73 +85368,85 @@ var render = function() {
         "div",
         { staticClass: "col-md-7" },
         _vm._l(_vm.questions, function(question) {
-          return question.id == _vm.current
-            ? _c(
-                "div",
-                { staticClass: "card my-4" },
-                [
-                  _c(
-                    "transition",
-                    { attrs: { name: "fade", mode: "out-in" } },
-                    [
-                      _c(
-                        "div",
-                        { key: _vm.qid, staticClass: "card-body" },
-                        [
-                          _c(
-                            "span",
-                            { staticClass: "q_num text-right text-muted" },
-                            [
-                              _vm._v(
-                                "Question " +
-                                  _vm._s(_vm.qid + 1) +
-                                  " of " +
-                                  _vm._s(_vm.questions.length)
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          question.more_info_link
-                            ? _c("img", {
-                                staticClass: "image w-100 mt-1 rounded",
-                                staticStyle: { "max-height": "70vh" },
-                                attrs: { src: question.more_info_link }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("p", {
-                            staticClass: "my-1 font-bold",
-                            domProps: {
-                              innerHTML: _vm._s(question.question_text)
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(question.options, function(option) {
-                            return _c("ul", { staticClass: "list-group" }, [
-                              _c("li", {
-                                staticClass:
-                                  "list-group-item list-group-item-action cursor my-1",
-                                domProps: { innerHTML: _vm._s(option.option) },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.checkAnswer(
-                                      question.id,
-                                      option.option,
-                                      option.correct
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          })
-                        ],
-                        2
+          return question.id === _vm.current
+            ? _c("div", { staticClass: "card my-4" }, [
+                _c(
+                  "div",
+                  {
+                    key: _vm.qid,
+                    staticClass:
+                      "card-body animate__animated animate__backInRight animate__faster"
+                  },
+                  [
+                    _c("span", { staticClass: "q_num text-right text-muted" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(
+                            _vm.qne2b(
+                              _vm.qid,
+                              _vm.questions.length,
+                              _vm.user.lang
+                            )
+                          ) +
+                          "\n                    "
                       )
-                    ]
-                  )
-                ],
-                1
-              )
+                    ]),
+                    _vm._v(" "),
+                    question.more_info_link
+                      ? _c("img", {
+                          staticClass: "image w-100 mt-1 rounded",
+                          staticStyle: { "max-height": "70vh" },
+                          attrs: { src: question.more_info_link, alt: "" }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("p", {
+                      staticClass: "my-1 font-bold",
+                      domProps: {
+                        innerHTML: _vm._s(
+                          _vm.tbe(
+                            question.bd_question_text,
+                            question.question_text,
+                            _vm.user.lang
+                          )
+                        )
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._l(question.options, function(option) {
+                      return _c("ul", { staticClass: "list-group" }, [
+                        _c("li", {
+                          staticClass:
+                            "list-group-item list-group-item-action cursor my-1",
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.tbe(
+                                option.bd_option,
+                                option.option,
+                                _vm.user.lang
+                              )
+                            )
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.checkAnswer(
+                                question.id,
+                                _vm.tbe(
+                                  option.bd_option,
+                                  option.option,
+                                  _vm.user.lang
+                                ),
+                                option.correct
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
             : _vm._e()
         }),
         0
@@ -85399,7 +85458,7 @@ var render = function() {
             "div",
             { staticClass: "card-header text-center card-title py-1" },
             [
-              _c("strong", [_vm._v("Information")]),
+              _c("strong", [_vm._v(_vm._s(_vm.__("games.information")))]),
               _vm._v(" "),
               _vm.qid > 0
                 ? _c(
@@ -85408,7 +85467,7 @@ var render = function() {
                       staticClass: "btn btn-sm btn-warning float-right",
                       on: { click: _vm.reloadPage }
                     },
-                    [_vm._v("Reset")]
+                    [_vm._v("Reset\n                    ")]
                   )
                 : _vm._e()
             ]
@@ -85424,7 +85483,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n                    Time Taken \n                    "
+                    "\n                            " +
+                      _vm._s(_vm.__("games.time_taken")) +
+                      "\n                            "
                   ),
                   _c("span", { staticClass: "badge badge-light badge-pill" }, [
                     _vm._v(
@@ -85434,7 +85495,7 @@ var render = function() {
                         _vm._s(
                           _vm.seconds > 9 ? _vm.seconds : "0" + _vm.seconds
                         ) +
-                        " \n                    "
+                        "\n                    "
                     )
                   ])
                 ]
@@ -85447,7 +85508,11 @@ var render = function() {
                     "list-group-item d-flex justify-content-between align-items-center"
                 },
                 [
-                  _vm._v("\n                    Correct\n                    "),
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.__("games.correct")) +
+                      "\n                            "
+                  ),
                   _c(
                     "span",
                     { staticClass: "badge badge-success badge-pill" },
@@ -85463,7 +85528,11 @@ var render = function() {
                     "list-group-item d-flex justify-content-between align-items-center"
                 },
                 [
-                  _vm._v("\n                    Wrong\n                    "),
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.__("games.wrong")) +
+                      "\n                            "
+                  ),
                   _c("span", { staticClass: "badge badge-danger badge-pill" }, [
                     _vm._v(_vm._s(_vm.wrong))
                   ])
@@ -86266,25 +86335,17 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "font-weight-light f-13" }, [
-                      _c("span", { staticClass: "font-weight-bold" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.ToText(result.question)) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("span", {
+                        staticClass: "font-weight-bold",
+                        domProps: { innerHTML: _vm._s(result.question) }
+                      }),
                       _vm._v(" "),
                       result.isCorrect != 0
                         ? _c("p", [
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [
-                                _vm._v(
-                                  " " + _vm._s(_vm.ToText(result.selected))
-                                )
-                              ]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.selected) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-check text-success",
@@ -86292,17 +86353,10 @@ var render = function() {
                             })
                           ])
                         : _c("p", [
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(_vm.ToText(result.selected)) +
-                                    "\n                            "
-                                )
-                              ]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.selected) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-times text-danger",
@@ -86311,11 +86365,10 @@ var render = function() {
                             _vm._v(" "),
                             _c("br"),
                             _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "font-weight-light font-italic" },
-                              [_vm._v(" " + _vm._s(_vm.ToText(result.answer)))]
-                            ),
+                            _c("span", {
+                              staticClass: "font-weight-light font-italic",
+                              domProps: { innerHTML: _vm._s(result.answer) }
+                            }),
                             _vm._v(" "),
                             _c("i", {
                               staticClass: "fa fa-check text-success",
@@ -86331,7 +86384,7 @@ var render = function() {
                         _vm._v(
                           "\n                        " +
                             _vm._s(result.time) +
-                            " \n                    "
+                            "\n                    "
                         )
                       ]
                     )
@@ -98745,6 +98798,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+Vue.prototype.__ = function (str) {
+  return _.get(window.i18n, str);
+};
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -98757,6 +98814,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('game', require('./components/Game.vue').default);
 // Vue.component('single-game', require('./components/SingleGame.vue'));
+
 
 
 

@@ -9,6 +9,8 @@ use App\Exam;
 use App\Question;
 use App\Quiz;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
+use App\Lang\Bengali;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -25,15 +27,27 @@ class HomeController extends Controller
 
     public function Mode($type, $category = null)
     {
+        $ban = new Bengali();
+
         $quiz =  Quiz::with('quizCategory', 'progress');
         $quiz->when($category, function($q) use($category){
           return $q->where('category_id', $category);
         });
-      $quiz = $quiz->paginate(9);
+        $quiz = $quiz->paginate(9);
 
         $user = Auth::user();
         $categories = Category::where('sub_topic_id', 0)->get();
-        return view('mode', compact('quiz', 'user', 'categories', 'type'));
+        return view('mode', compact('quiz', 'user', 'categories', 'type', 'ban'));
+    }
+    public function getCategory($type, $category)
+    {
+        if($category == 'Select Quiz Category'){
+            $quiz = Quiz::with('quizCategory', 'progress')->paginate(9);
+            return view('categorized', compact('quiz', 'type'));
+        }
+        $cat_id = Category::where('bn_name', $category)->orWhere('name', $category)->first()->id;
+        $quiz = Quiz::with('quizCategory', 'progress')->where('category_id', $cat_id)->paginate(9);
+        return view('categorized', compact('quiz', 'type'));
     }
 
     public function ModeWithCategory($type, $category)
@@ -50,9 +64,12 @@ class HomeController extends Controller
         $gmsg = \DB::table('perform_messages')->where('game_id', $game->id)->get();
         $id = $quiz->id;
         $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
+        // return json_encode($questions, JSON_UNESCAPED_UNICODE);
         //  $questions = $exam->questions()->with('options')->get();
         $user = Auth::user();
-        return view('games.' . strtolower($type), compact('id', 'user', 'questions', 'uid', 'gmsg'));
+        $user['lang'] = app()->getLocale();
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('games.' . strtolower($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
     }
 
 

@@ -14,7 +14,11 @@
                         </div>
                     @endif
 
-                    <challenge :id="{{ $id }}" :uid="{{ $uid }}" :questions="{{ $questions }}" :user="{{ $user }}" ></challenge>
+                    <challenge :id="{{ $id }}"
+                    :uid="{{ $uid }}"
+                    :questions="{{ $questions }}"
+                    :user="{{ $user }}"
+                    :gmsg="{{ $gmsg }}" ></challenge>
                 </div>
             </div>
         </div>
