@@ -1,4 +1,7 @@
 @extends('Admin.Layout.dashboard')
+@php
+    $lang = App::getLocale();
+@endphp
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -24,7 +27,7 @@
                                             <select class="form-control  arcategory" name="role_id" id="">
                                                 <option value="">{{__('form.select_role')}}</option>
                                                 @foreach($roles as $role)
-                                                <option value="{{$role->id}}">{{$role->role_name}}</option>
+                                                <option value="{{$role->id}}">{{$lang=='gb'?$role->role_name:$role->bn_role_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -35,7 +38,7 @@
                                             <select class="form-control  arcategory" name="user_id" id="">
                                                 <option value="">{{__('form.select_user')}}</option>
                                                 @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                                <option value="{{$user->id}}">{{$user->name.' ( '.$user->email.' )'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

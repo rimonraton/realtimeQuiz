@@ -1,3 +1,4 @@
+@php $lang = App::getLocale(); @endphp
 <div class="card w-100">
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
@@ -6,7 +7,7 @@
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                    <span class="d-none d-lg-block">{{$q->name}}</span>
+                    <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>
                 </a>
             </li>
             @endif
@@ -19,7 +20,7 @@
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                 <div class="col-md-12 pb-2">
                     <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
-                    <label for="child{{$q->id}}">Check All</label>
+                    <label for="child{{$q->id}}">{{__('form.check_all')}}</label>
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -29,10 +30,10 @@
                                     <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
                                         <thead>
                                             <tr role="row">
-                                                <th style="width: 10%;">SL</th>
-                                                <th style="width: 10%;">Action</th>
-                                                <th style="width: 40%;">Questions in English</th>
-                                                <th style="width: 40%;">Questions in Bangla</th>
+                                                <th style="width: 10%;">{{__('form.sl')}}</th>
+                                                <th style="width: 10%;">{{__('form.action')}}</th>
+                                                <th style="width: 40%;">{{__('form.question_en')}}</th>
+                                                <th style="width: 40%;">{{__('form.question_bn')}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,10 +57,10 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>SL</th>
-                                                <th>Action</th>
-                                                <th>Questions in English</th>
-                                                <th>Questions in Bangla</th>
+                                                <th>{{__('form.sl')}}</th>
+                                                <th>{{__('form.action')}}</th>
+                                                <th>{{__('form.question_en')}}</th>
+                                                <th>{{__('form.question_bn')}}</th>
                                             </tr>
                                         </tfoot>
                                     </table>

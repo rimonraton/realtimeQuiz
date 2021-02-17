@@ -1,5 +1,6 @@
 @php
 $rm = auth()->user()->roleuser->rolemenu;
+$role =auth()->user()->roleuser->role;
 if($rm)
 {
     $menuIdArray = explode(',', $rm->menu_id);
@@ -17,7 +18,7 @@ $lang = App::getLocale();
         <ul id="sidebarnav">
             <li class="nav-small-cap">
                 <i class="mdi mdi-dots-horizontal"></i>
-                <span class="hide-menu">{{__('msg.adminDashboard')}}</span>
+                <span class="hide-menu">{{$lang=='gb'?$role->role_name:$role->bn_role_name}} {{__('msg.dashboard')}}</span>
             </li>
             @foreach($menu as $m)
             @if(in_array($m->id, $menuIdArray))

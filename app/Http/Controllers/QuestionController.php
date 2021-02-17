@@ -145,7 +145,7 @@ class QuestionController extends Controller
         if ($qus) {
             $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
                 $q->where('category_id', $id);
-            }, 'questions.options'])->get();
+            }, 'questions.options','questions.role.role'])->get();
 
 
             return view('Admin.PartialPages.Questions.questions_data', compact('questions'));

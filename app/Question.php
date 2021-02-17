@@ -8,7 +8,7 @@ class Question extends Model
 
     protected $guarded = [];
     // protected $fillable = ['question_text', 'code_snippet', 'answer_explanation', 'more_info_link', 'topic_id', 'course_id', 'exam_id'];
-    
+
     public function options()
     {
         return $this->hasMany(QuestionsOption::class);
@@ -17,5 +17,8 @@ class Question extends Model
     public function category()
     {
         return $this->belongsTo(QuizCategory::class,'quizcategory_id');
+    }
+    public function role(){
+        return $this->belongsTo(RoleUser::class,'user_id');
     }
 }

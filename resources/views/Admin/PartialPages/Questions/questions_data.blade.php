@@ -1,10 +1,3 @@
-@section('css')
-<style>
-    .custom-border {
-        border: #5378e8 1px solid !important;
-    }
-</style>
-@endsection
 @php $lang = App::getLocale(); @endphp
 <div class="card">
     <div class="card-body">
@@ -34,7 +27,8 @@
                                     <table id="zero_config" class="table table-striped table-bordered dataTable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 3%;">{{__('form.sl')}}</th>
+                                                <th style="width: 1%;">{{__('form.sl')}}</th>
+                                                <th style="width: 2%;">{{__('form.created')}}</th>
                                                 <th style="width: 4%;">{{__('form.file')}}</th>
                                                 <th style="width: 30%;">{{__('form.question_en')}}</th>
                                                 <th style="width: 30%;">{{__('form.question_bn')}}</th>
@@ -47,6 +41,13 @@
                                             @foreach($q->questions as $qs)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
+                                                <td>
+                                                    @if($qs->role)
+                                                        {{$lang=='gb'?$qs->role->role->role_name:$qs->role->role->bn_role_name}}
+                                                    @else
+                                                        <span>__</span>
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">
                                                     @if($qs->question_file_link)
                                                     <img src="{{asset($qs->question_file_link)}}" alt="" width="30px" height="30px">
@@ -87,6 +88,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>{{__('form.sl')}}</th>
+                                                <th>{{__('form.created')}}</th>
                                                 <th>{{__('form.file')}}</th>
                                                 <th>{{__('form.question_en')}}</th>
                                                 <th>{{__('form.question_bn')}}</th>

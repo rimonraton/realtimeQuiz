@@ -135,5 +135,5 @@ return [
     'menu_bn' => 'Menu Name( Bangla )',
     'check_all' => 'Check All',
     'submit' => 'Submit',
-
+    'created' => 'Created by',
 ];
