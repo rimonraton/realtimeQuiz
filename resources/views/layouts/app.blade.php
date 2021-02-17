@@ -73,9 +73,9 @@
                         </li>
                         @endif
                         @else
-                            
+
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" 
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
                             </a>
@@ -120,6 +120,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{url('lang-'. app()->getLocale().'.js')}}"></script>
     @yield('js')
 </body>
 

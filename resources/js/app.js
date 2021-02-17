@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+Vue.prototype.__ = str => _.get(window.i18n, str)
 
 
 /**

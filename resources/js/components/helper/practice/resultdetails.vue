@@ -29,10 +29,10 @@
 
                         </div>
                          <span class="badge badge-light badge-pill">
-                            {{ result.time  }} 
+                            {{ result.time  }}
                         </span>
                     </li>
-                  
+
                 </ul>
               </div>
             </div>
@@ -54,6 +54,7 @@
             },
             back(){
                 window.history.back()
+                // window.history.back()
             },
         }
 
@@ -64,5 +65,5 @@
 #accordion{
     max-width: 500px !important;
 }
-    
+
 </style>

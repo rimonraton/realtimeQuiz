@@ -7,7 +7,7 @@
   a:hover{
     text-decoration: none !important;
   }
-  
+
   .iframe-size{
     width: 90vw;
     height: 90vh;
@@ -49,7 +49,7 @@
   }
 
   .info .pointer {
-    background: linear-gradient(to right, #6c757d, #6c757d); 
+    background: linear-gradient(to right, #6c757d, #6c757d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -116,20 +116,42 @@
     align-items: center;
   }
   .glass{
-    background: white;
-    background: linear-gradient(to right bottom, rgba(255,255,255, 0.7), rgba(255,255,255, 0.3));
+    background: transparent;
+    /*background: linear-gradient(to right bottom, rgba(255,255,255, 0.7), rgba(255,255,255, 0.3));*/
     border-radius: 15px;
   }
-  .circle-left,.circle-right{
-    background: white; 
+  .leftbg, .rightbg {
+    background: white;
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+
+
+  }
+  .leftbg {
     background: linear-gradient(to right bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
-    height: 20rem; 
+    left: 0;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+  .rightbg {
+    background: linear-gradient(to left bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
+    right: 0;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  .circle-left,.circle-right{
+    background: white;
+    background: linear-gradient(to right bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
+    height: 20rem;
     width: 20rem;
     position: absolute;
     border-radius: 50%;
   }
   .circle-center {
-    background: white; 
+    background: white;
     background: linear-gradient(to left bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
     position: absolute;
     height: 89vh;
@@ -165,7 +187,10 @@
 @stop
 
 @section('content')
-<div class="container glass animate__animated animate__backInRight animate__faster">
+<div class="container glass animate__animated animate__backInRight">
+  <div class="leftbg animate__animated animate__slideInLeft animate__fast animate__delay-1s"></div>
+  <div class="rightbg animate__animated animate__slideInRight animate__slow "></div>
+
   <div class="row justify-content-center">
     <div class="btn-group " role="group" aria-label="Game Mode">
       <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
@@ -194,7 +219,7 @@
               <option>{{ $cc->bn_name }}</option>
               @endforeach
             </optgroup>
-          @else 
+          @else
           <option>{{ $category->bn_name }}</option>
           @endif
         @endforeach
@@ -204,7 +229,7 @@
   <div class="row justify-content-center mt-4 " id="quizlist">
     @foreach($quiz as $qz)
       <div class="col-md-4 col-sm-12 text-center mb-4 ">
-          <div class="card shadow h-100 small">
+          <div class="card shadow h-100">
             <div class="d-flex justify-content-between py-1 px-2">
               <div class="text-muted">
                 @if($qz->progress->count())
@@ -213,14 +238,16 @@
                 @include('includes.stars.0')
                 @endif
               </div>
-              <div class="d-flex pointer p-2" 
-                  title="{{ $qz->difficulty == 1? __('msg.easy') : ($qz->difficulty == 2? __('msg.intermediate') : __('msg.hard') ) }}" 
-                  data-placement="top" 
+              <div class="d-flex pointer p-2"
+                  title="{{ $qz->difficulty == 1? __('msg.easy') : ($qz->difficulty == 2? __('msg.intermediate') : __('msg.hard') ) }}"
+                  data-placement="top"
                   data-toggle="tooltip">
                 @include('includes.difficulty.'.$qz->difficulty)
               </div>
               <span class="text-muted">
-                {{ count(explode(',', $qz->questions)) . ' questions. ' }}
+                @php $qc = count(explode(',', $qz->questions)); @endphp
+                {{ app()->getLocale() == 'bd'? $ban->bn_number($qc) . 'টি ' : $qc  }}
+                {{ __('games.questions') }}
               </span>
             </div>
 
@@ -230,11 +257,11 @@
                   <div id="shareBtn{{ $qz->id }}" class="show_share shareBtnDiv"></div>
               </div>
             </a>
-            
+
             <div class="info d-flex justify-content-between py-1 px-2 mt-auto ">
-              <a class="lessonResult pointer " id="{{ $qz->id }}" 
+              <a class="lessonResult pointer " id="{{ $qz->id }}"
                 title="{{ __('msg.history') }}"
-                data-placement="top" 
+                data-placement="top"
                 data-toggle="tooltip">
                 <i class="fas fa-user-clock"></i>
                 {{ $qz->progress->count() }}
@@ -255,13 +282,7 @@
     <div class="d-flex justify-content-center my-3 table-responsive">
           {{ $quiz->links() }}
     </div>
-      
-  
   </div>
-  
-  
-
-   
 
 </div>
 @endsection
@@ -282,10 +303,10 @@
         </div>
       </div>
     </div>
-  </div>   
+  </div>
 <div class="circle-left animate__animated animate__rotateInUpLeft animate__delay-1s"></div>
 <div class="circle-right animate__animated animate__rotateInUpRight animate__delay-1s"></div>
-<div class="circle-center animate__animated animate__rotateIn animate__delay-1s"></div>
+{{-- <div class="circle-center animate__animated animate__rotateIn animate__delay-1s"></div> --}}
 
 @section('js')
 <script src="{{ asset('extra/js/jquery.dropdown.js') }}" defer></script>
@@ -339,7 +360,7 @@
          $('#quizlist').html(data);
         }
       });
-   
+
   });
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -351,4 +372,4 @@
 
 @endsection
 
-  
+
