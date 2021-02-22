@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\QuizCategory;
+use App\QuestionType;
 use Illuminate\Http\Request;
 
 class QuestionTypeController extends Controller
@@ -13,7 +13,7 @@ class QuestionTypeController extends Controller
     }
     public function index()
     {
-        $quizcategory = QuizCategory::all();
+        $quizcategory = QuestionType::all();
         return view('Admin.PartialPages.Questions.partial.quiz_category', compact('quizcategory'));
     }
     public function store(Request $request)
@@ -22,7 +22,7 @@ class QuestionTypeController extends Controller
         $request->validate([
             'name' => 'required',
         ]);
-        QuizCategory::create([
+        QuestionType::create([
             'name' => $request->name,
             'bn_name' => $request->bn_name
         ]);
@@ -31,7 +31,7 @@ class QuestionTypeController extends Controller
     }
     public function update(Request $request)
     {
-        QuizCategory::where('id', $request->id)->update([
+        QuestionType::where('id', $request->id)->update([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
         ]);
@@ -40,7 +40,7 @@ class QuestionTypeController extends Controller
 
     public function delete($id)
     {
-        QuizCategory::where('id', $id)->delete();
+        QuestionType::where('id', $id)->delete();
         return 'Delete Successfully.';
     }
 

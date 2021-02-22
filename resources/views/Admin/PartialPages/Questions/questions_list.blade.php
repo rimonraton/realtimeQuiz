@@ -41,7 +41,7 @@
                 <hr>
                 <div class="form-group row pb-3">
                     <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-6">
                         <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
@@ -51,7 +51,11 @@
                                     <ol class="dd-list">
                                         @foreach($topic as $c)
                                         <li class="dd-item">
-                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}"> {{$lang=='gb'?$c->name:$c->bn_name}} </div>
+                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}">
+                                                @if(count($c->childs) == 0)
+                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">
+                                                @endif
+                                                <span>{{$lang=='gb'?$c->name:$c->bn_name}}</span></div>
                                             @if(count($c->childs))
                                             @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
                                             @endif
@@ -61,6 +65,10 @@
                                 </li>
                             </ol>
                         </div>
+
+                    </div>
+                    <div class="col-sm-2 mt-1">
+                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>
                     </div>
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
@@ -125,6 +133,30 @@
 @section('js')
 <script>
     $(function() {
+        $('.topicls input[name="topic"]').on('click',function (e){
+            e.stopPropagation();
+
+            var topics = $("input[name='topic']:checked").map(function() {
+                return $(this).attr('data-name');
+            }).get().join(', ');
+            var topics_id = $("input[name='topic']:checked").map(function() {
+                return $(this).val();
+            }).get().join(',');
+
+            // alert("My favourite programming languages are: " + programming);
+            console.log(topics_id);
+            $('.selectedTopic').html(topics);
+            $('.smt').attr('data-tid',topics_id);
+        })
+
+        $('.smt').on('click',function (e){
+            e.preventDefault();
+            topicwithcategory($(this).attr('data-tid'));
+        })
+
+
+
+
         var getId = "{{$id}}"
         if (getId != "") {
             topicwithcategory(getId);

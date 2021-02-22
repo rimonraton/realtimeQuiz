@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QuestionType;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Question;
@@ -81,7 +82,7 @@ class QuestionController extends Controller
     public function create()
     {
         $category = Category::where('sub_topic_id', 0)->get();
-        $quizCategory = QuizCategory::all();
+        $quizCategory = QuestionType::all();
         return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory']));
     }
     public function storeQuestion(Request $request)
@@ -141,9 +142,10 @@ class QuestionController extends Controller
     }
     public function getlist($id)
     {
+        $id = explode(',',$id);
         $qus = Question::where('category_id', $id)->count();
         if ($qus) {
-            $questions = QuizCategory::all();
+            $questions = QuestionType::all();
 //            with(['questions' => function ($q) use ($id) {
 //                $q->where('category_id', $id);
 //            }, 'questions.options','questions.role.role'])
@@ -189,7 +191,7 @@ class QuestionController extends Controller
     public function getQuestiontoday($id)
     {
         $today = Carbon::parse(Carbon::now())->format('Y-m-d');
-        $questions =  QuizCategory::with(['questions' => function ($q) use ($today, $id) {
+        $questions =  QuestionType::with(['questions' => function ($q) use ($today, $id) {
             $q->where('created_at', '>', $today);
             $q->where('category_id', $id);
         }, 'questions.options'])->get();
