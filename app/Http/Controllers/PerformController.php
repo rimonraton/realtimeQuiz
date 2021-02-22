@@ -6,7 +6,7 @@ use App\Game;
 use App\PerformMessage;
 use Illuminate\Http\Request;
 
-class PerformController extends Controller
+class  PerformController extends Controller
 {
     public function index()
     {

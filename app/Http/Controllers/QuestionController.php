@@ -143,12 +143,11 @@ class QuestionController extends Controller
     {
         $qus = Question::where('category_id', $id)->count();
         if ($qus) {
-            $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
-                $q->where('category_id', $id);
-            }, 'questions.options','questions.role.role'])->get();
-
-
-            return view('Admin.PartialPages.Questions.questions_data', compact('questions'));
+            $questions = QuizCategory::all();
+//            with(['questions' => function ($q) use ($id) {
+//                $q->where('category_id', $id);
+//            }, 'questions.options','questions.role.role'])
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id'));
         }
         return '';
     }

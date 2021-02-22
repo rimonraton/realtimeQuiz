@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
 
@@ -146,3 +147,5 @@ Route::post('contact', 'ContractController@sendMessage');
 
 Route::get('getProgress/{id}', 'HomeController@getProgress');
 Route::get('/lang-{lang}.js', 'LanguageController@show');
+
+Route::get('game/mode/{type}', [HomeController::class, 'gameInAdmin']);

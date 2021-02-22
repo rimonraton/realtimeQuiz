@@ -3,7 +3,7 @@
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
-            @if($q->questions->where('category_id', $id)->count() > 0)
+            @if($q->questions->count() > 0)
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
@@ -16,7 +16,7 @@
 
         <div class="tab-content">
             @foreach($questions as $q)
-            @if($q->questions->where('category_id', $id)->count() > 0)
+            @if($q->questions->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                 <div class="table-responsive" style="overflow-x: hidden">
 
@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="col-sm-12 pt-3">
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered ">
+                                    <table id="zero_config" class="table table-striped table-bordered dataTable">
                                         <thead>
                                             <tr>
                                                 <th style="width: 1%;">{{__('form.sl')}}</th>
@@ -38,10 +38,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @php
-                                            $questionCat = $q->questions()->where('category_id', $id)->paginate(10);
-                                        @endphp
-                                            @foreach($questionCat as $qs)
+                                            @foreach($q->questions as $qs)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>
@@ -99,10 +96,8 @@
                                                 <th>{{__('form.bn_options')}}</th>
                                                 <th>{{__('form.action')}}</th>
                                             </tr>
-
                                         </tfoot>
                                     </table>
-                                    <div>{{$questionCat->links()}}</div>
                                 </div>
                             </div>
                         </div>
