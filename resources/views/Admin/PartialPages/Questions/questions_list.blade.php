@@ -75,11 +75,11 @@
 
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12" id="loading" style="display: none;">
+                            <div class="col-sm-12 loading" style="display: none;">
                                 <div class="text-center">
                                     <button class="btn btn-primary" type="button" disabled="">
                                         <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                        Loading...
+                                        {{__('form.loading')}}
                                     </button>
                                 </div>
                             </div>
@@ -133,6 +133,45 @@
 @section('js')
 <script>
     $(function() {
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function() {
+                    $('.loading').show();
+                    $('#msg').hide();
+                    // $('#viewData').hide();
+                    console.log('BEFORE');
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data != '') {
+                        $('#viewData').html(data);
+                    } else {
+
+                        $('#viewData').html(
+                            `<div class="text-center">
+                            <p>Questions not available.</p>
+                            </div>`
+                        );
+
+                    }
+                    console.log(data);
+                },
+                complete: function() {
+                    $('.loading').hide();
+                    $('#viewData').show();
+                    console.log('COMPLETE');
+
+                }
+            })
+            // window.history.pushState("", "", url);
+        });
+
+
+
         $('.topicls input[name="topic"]').on('click',function (e){
             e.stopPropagation();
 
@@ -232,7 +271,7 @@
             url: "{{url('question/getlist')}}/" + id,
             type: "GET",
             beforeSend: function() {
-                $('#loading').show();
+                $('.loading').show();
                 $('#msg').hide();
                 $('#viewData').hide();
                 console.log('BEFORE');
@@ -258,7 +297,7 @@
                 console.log(data);
             },
             complete: function() {
-                $('#loading').hide();
+                $('.loading').hide();
                 $('#viewData').show();
                 console.log('COMPLETE');
 

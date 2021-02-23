@@ -1,4 +1,5 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -46,15 +47,17 @@
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 20%">SL</th>
-                                            <th style="width: 60%;">Name</th>
+                                            <th style="width: 30%;">{{__('form.team_en')}}</th>
+                                            <th style="width: 30%;">{{__('form.team_bn')}}</th>
                                             <th style="width: 20%;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($teams as $team)
                                         <tr role="row" class="odd">
-                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$team->name}}</td>
+                                            <td>{{$team->bn_name}}</td>
                                             <td style="text-align: center; ">
                                                 <a class="edit" href="" data-id="{{$team->id}}" data-name="{{$team->name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$team->id}}" title="Remove"><i class="fas fa-trash"></i></a>
@@ -65,11 +68,13 @@
                                     <tfoot>
                                         <tr>
                                             <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">Name</th>
+                                            <th rowspan="1" colspan="1">{{__('form.team_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.team_bn')}}</th>
                                             <th rowspan="1" colspan="1">Action</th>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                    {{$teams->links()}}
                                 @else
                                 <div class="text-center">
                                     <p>No Data Found..</p>

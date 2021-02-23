@@ -6,6 +6,7 @@ use App\Category;
 use App\Game;
 use App\Question;
 use App\QuestionsOption;
+use App\QuestionType;
 use App\Quiz;
 use App\QuizCategory;
 use BeyondCode\LaravelWebSockets\Apps\App;
@@ -44,11 +45,13 @@ class QuizController extends Controller
 
     public function getQuestionsByTopic($id)
     {
-        $questions = QuizCategory::with(['questions' => function ($q) use ($id) {
-            $q->where('category_id', $id);
-        }])->get();
+        $id = explode(',',$id);
+//        $questions = QuestionType::with(['questions' => function ($q) use ($id) {
+//            $q->where('category_id', $id);
+//        }])->get();
+        $questions = QuestionType::all();
 
-        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions'));
+        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions','id'));
     }
 
     public function store(Request $request)
@@ -124,7 +127,7 @@ class QuizController extends Controller
 
     public function quizList($id)
     {
-        $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->get();
+        $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->paginate(10);
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
     public function deleteQuiz($id)

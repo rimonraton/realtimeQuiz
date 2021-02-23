@@ -62,7 +62,7 @@
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 0px;">{{__('form.sl')}}</th>
@@ -74,7 +74,7 @@
                                     <tbody>
                                         @foreach($menus as $menu)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <th>{{$menu->name}}</th>
                                             <th>{{$menu->bn_name}}</th>
                                             <th><a class="edit" href="" data-id="{{$menu->id}}" data-name="{{$menu->name}}" data-bnname="{{$menu->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
@@ -92,6 +92,7 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                {{$menus->links()}}
                                 <!-- <div class="text-center">
                                     <p>
                                         No Data Found..

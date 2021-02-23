@@ -54,7 +54,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 @if($quizcategory->count() > 0)
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered" >
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 0px;">{{__('form.sl')}}</th>
@@ -85,6 +85,7 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                    {{$quizcategory->links()}}
                                 @else
                                 <div class="text-center">
                                     <p>No Data Found..</p>

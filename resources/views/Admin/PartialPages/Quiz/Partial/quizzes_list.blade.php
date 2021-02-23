@@ -1,3 +1,4 @@
+@php $lang = App::getLocale(); @endphp
 <div class="card">
     <div class="card-body">
         <div class="table-responsive" style="overflow-x: hidden">
@@ -6,7 +7,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="table-responsive">
-                            <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                            <table  class="table table-striped table-bordered">
                                 <thead>
                                     <tr role="row" class="text-center">
                                         <th style="width: 10%;">{{__('form.sl')}}</th>
@@ -20,13 +21,13 @@
                                 <tbody>
                                     @foreach($quiz as $qs)
                                     <tr class="text-center">
-                                        <td class="sorting_1">{{$loop->iteration}}</td>
+                                        <td>{{$lang=='bd'?$bang->bn_number($loop->iteration):$loop->iteration}}</td>
                                         <td>{{$qs->quiz_name}} </td>
 
                                         <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
-                                        <td> <span class="badge badge-info">{{count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
+                                        <td> <span class="badge badge-info">{{$lang=='bd'?$bang->bn_number(count(explode(",", $qs->questions))):count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
                                         <td>
-                                            @can('publish',$qs)
+                                            @can('readOrwrite',$qs)
                                             <div class="bt-switch">
                                                 <input type="checkbox" class="chk" data-id="{{$qs->id}}" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$qs->status ==1?"checked":""}} />
                                             </div>
@@ -60,6 +61,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            {{$quiz->links()}}
                         </div>
                     </div>
                 </div>
@@ -69,7 +71,7 @@
 
     </div>
 </div> <!-- end card-body-->
-</div> <!-- end card-->
+{{--</div> <!-- end card-->--}}
 <script>
     $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
     $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {

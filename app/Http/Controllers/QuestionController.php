@@ -29,7 +29,7 @@ class QuestionController extends Controller
 
         //    return Question::whereIn('id', $values)->get();
         // dd($values);
-        $category = Category::orderBy('id', 'desc')->get();
+        $category = Category::orderBy('id', 'desc')->paginate(10);
         return view('Admin.PartialPages.Questions.category', compact('category'));
     }
     public function store(Request $request)

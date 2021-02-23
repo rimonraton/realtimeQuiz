@@ -14,7 +14,7 @@ class  PerformController extends Controller
     }
     public function gamesetup()
     {
-        $game = Game::all();
+         $game = Game::paginate(10);
         return view('Admin.PartialPages.GameSetup.gamesetup', compact('game'));
     }
     public function gamemodestore(Request $request)

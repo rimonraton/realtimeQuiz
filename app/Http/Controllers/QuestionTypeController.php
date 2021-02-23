@@ -13,7 +13,7 @@ class QuestionTypeController extends Controller
     }
     public function index()
     {
-        $quizcategory = QuestionType::all();
+        $quizcategory = QuestionType::paginate(10);
         return view('Admin.PartialPages.Questions.partial.quiz_category', compact('quizcategory'));
     }
     public function store(Request $request)
