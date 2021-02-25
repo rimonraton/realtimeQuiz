@@ -41,7 +41,8 @@
                                             <!-- <h4 class="card-title mb-3">Default Tabs</h4> -->
                                             <ul class="nav nav-tabs mb-3">
                                                 @foreach($questions as $q)
-                                                @if($q->questions->count() > 0)
+{{--                                                @if($q->questions->count() > 0)--}}
+                                                    @if($q->questions->where('category_id', $id)->where('created_at', '>', $today)->count() > 0)
                                                 <li class="nav-item">
                                                     <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                                                         <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
@@ -54,7 +55,8 @@
 
                                             <div class="tab-content">
                                                 @foreach($questions as $q)
-                                                @if($q->questions->count() > 0)
+{{--                                                @if($q->questions->count() > 0)--}}
+                                                    @if($q->questions->where('category_id', $id)->where('created_at', '>', $today)->count() > 0)
                                                 <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                                                     <div class="table-responsive" style="overflow-x: hidden">
 
@@ -62,7 +64,7 @@
                                                             <div class="row">
                                                                 <div class="col-sm-12 pt-3">
                                                                     <div class="table-responsive">
-                                                                        <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                                                        <table class="table table-striped table-bordered">
                                                                             <thead>
                                                                                 <tr role="row">
                                                                                     <th style="width: 10%;">{{__('form.sl')}}</th>
@@ -74,7 +76,10 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                                @foreach($q->questions as $qs)
+                                                                            @php
+                                                                                $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->paginate(10);
+                                                                            @endphp
+                                                                                @foreach($questionCat as $qs)
                                                                                 <tr>
                                                                                     <td class="sorting_1">{{$loop->iteration}}</td>
                                                                                     <td>{{$qs->question_text}}</td>
@@ -112,6 +117,19 @@
                                                                                 </tr>
                                                                             </tfoot>
                                                                         </table>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-8">
+                                                                            {{$questionCat->links()}}
+                                                                        </div>
+                                                                        <div class="col-md-4" >
+                                                                            <div class="text-center loading" style="display: none;">
+                                                                                <button class="btn btn-primary" type="button" disabled="">
+                                                                                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                                                                    {{__('form.loading')}}
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>

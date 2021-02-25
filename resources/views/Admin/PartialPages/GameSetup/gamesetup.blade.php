@@ -1,4 +1,5 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -46,7 +47,7 @@
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 0px;">{{__('form.sl')}}</th>
@@ -58,7 +59,7 @@
                                     <tbody>
                                         @foreach($game as $g)
                                         <tr>
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
+                                            <td class="sorting_1">{{$lang=='bd'?$bang->bn_number($loop->iteration):$loop->iteration}}</td>
                                             <td>{{$g->gb_game_name}}</td>
                                             <td>{{$g->bd_game_name}}</td>
                                             <td style="text-align: center; ">
@@ -77,6 +78,7 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                {{$game->links()}}
                                 <!-- <div class="text-center">
                                     <p>
                                         No Data Found..

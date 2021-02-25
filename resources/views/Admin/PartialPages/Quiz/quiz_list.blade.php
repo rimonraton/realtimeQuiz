@@ -90,7 +90,7 @@
                         <div class="text-center">
                             <button class="btn btn-primary" type="button" disabled="">
                                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Loading...
+                                {{__('form.loading')}}
                             </button>
                         </div>
                     </div>
@@ -136,6 +136,25 @@
 @section('js')
 <script>
     $(function() {
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function() {
+                    $('#loading').show();
+                },
+                success: function(data) {
+                    $('#viewData').html(data);
+                    console.log(data);
+                },
+                complete: function() {
+                    $('#loading').hide();
+                }
+            })
+        });
+
         var getId = "{{$tid}}"
         if (getId != "") {
             quizList(getId);

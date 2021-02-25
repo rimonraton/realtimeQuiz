@@ -44,8 +44,8 @@
                                     <tbody>
                                         @foreach($pm->perform_messages as $ppm)
                                         <tr>
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$ppm->perform_status.'%'}}</td>
+                                            <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                                            <td>{{$lang=='gb'?$ppm->perform_status:$bang->bn_number($ppm->perform_status).'%'}}</td>
                                             <td>{{$ppm->perform_message}}</td>
                                             <td>{{$ppm->bd_perform_message}}</td>
                                             <td style="text-align: center; ">

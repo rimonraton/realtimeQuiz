@@ -80,7 +80,7 @@
                         <i class="mdi mdi-library"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">{{$quiz_counts}}</h3>
+                        <h3 class="mb-0 font-weight-light">{{$bang->bn_number($quiz_counts)}}</h3>
                         <h5 class="text-muted mb-0">{{__('msg.totalQuiz')}}</h5>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                         <i class="mdi mdi-library"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">{{$quiz_publish}}</h3>
+                        <h3 class="mb-0 font-weight-light">{{$bang->bn_number($quiz_publish)}}</h3>
                         <h5 class="text-muted mb-0">{{__('msg.publishQuiz')}}</h5>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         <i class="mdi mdi-library-books"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light">{{$totalQuestions}}</h3>
+                        <h3 class="mb-0 font-weight-light">{{$bang->bn_number($totalQuestions)}}</h3>
                         <h5 class="text-muted mb-0"> {{__('msg.totalQuestions')}}</h5>
                     </div>
                 </div>

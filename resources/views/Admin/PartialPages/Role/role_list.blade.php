@@ -1,4 +1,5 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -42,19 +43,21 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 @if($roles->count() > 0)
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered" >
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 10%;">{{__('form.sl')}}</th>
-                                            <th style="width: 70%;">{{__('form.role_name')}}</th>
+                                            <th style="width: 35%;">{{__('form.role_name')}}</th>
+                                            <th style="width: 35%;">{{__('form.role_name_bn')}}</th>
                                             <th style="width: 20%;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($roles as $role)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$role->role_name}}</td>
+                                            <td>{{$role->bn_role_name}}</td>
                                             <td style="text-align: center; ">
                                                 <a class="edit" href="" data-id="{{$role->id}}" data-name="{{$role->role_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$role->id}}" title="Remove"><i class="fas fa-trash"></i></a>
@@ -66,10 +69,12 @@
                                         <tr>
                                             <th>{{__('form.sl')}}</th>
                                             <th>{{__('form.role_name')}}</th>
+                                            <th>{{__('form.role_name_bn')}}</th>
                                             <th>{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                    {{$roles->links()}}
                                 @else
                                 <div class="text-center">
                                     <p>

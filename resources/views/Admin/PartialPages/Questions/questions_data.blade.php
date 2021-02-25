@@ -13,12 +13,11 @@
             @endif
             @endforeach
         </ul>
-
         <div class="tab-content">
             @foreach($questions as $q)
             @if($q->questions->whereIn('category_id', $id)->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
-                <div class="table-responsive" style="overflow-x: hidden">
+                <div class="" style="overflow-x: hidden">
 
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
@@ -43,7 +42,7 @@
                                         @endphp
                                             @foreach($questionCat as $qs)
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                                 <td>
                                                     @if($qs->role)
                                                         {{$lang=='gb'?$qs->role->role->role_name:$qs->role->role->bn_role_name}}
@@ -64,10 +63,12 @@
                                                 <td>{{$qs->bd_question_text}}</td>
                                                 <td class="text-center">
                                                     @foreach($qs->options as $qo)
+                                                        @if($qo->correct)
                                                     <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                         <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                         {{$qo->option}}
                                                     </span>
+                                                        @endif
                                                     @endforeach
                                                 </td>
                                                 <td>
@@ -81,9 +82,13 @@
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
-                                                    <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-
+                                                    @can('QuestionreadOrwrite',$qs)
+                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                    @else
+                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a class="disabled"><i class="fas fa-trash"></i></a>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -102,7 +107,21 @@
 
                                         </tfoot>
                                     </table>
-                                    <div>{{$questionCat->links()}}</div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        {{$questionCat->links()}}
+                                    </div>
+                                    <div class="col-md-4" >
+                                        <div class="text-center loading" style="display: block;">
+                                            <button class="btn btn-primary" type="button" disabled="">
+                                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                                {{__('form.loading')}}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

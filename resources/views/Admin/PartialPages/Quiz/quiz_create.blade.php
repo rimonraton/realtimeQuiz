@@ -97,7 +97,7 @@
                                 <select class="form-control custom-select" name="game_type" required>
                                     <option>{{__('form.game_mode_select')}}</option>
                                     @foreach($gameType as $game)
-                                    <option value="{{$game->id}}">{{$game->gb_game_name}}</option>
+                                    <option value="{{$game->id}}">{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -105,9 +105,9 @@
                             <div class="col-sm-4">
                                 <select class="form-control custom-select" name="difficulty" required>
                                     <option>{{__('form.game_type')}}</option>
-                                    <option value="1">Easy</option>
-                                    <option value="2">Intermediate</option>
-                                    <option value="3">Difficult</option>
+                                    <option value="1">{{__('form.easy')}}</option>
+                                    <option value="2">{{__('form.intermediate')}}</option>
+                                    <option value="3">{{__('form.difficult')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -267,6 +267,25 @@
 @section('js')
 <script>
     $(function() {
+
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url:url,
+                type: "GET",
+                beforeSend: function() {
+                    console.log('Before Send');
+                },
+                success: function(data) {
+                    $('#viewData').html(data);
+                },
+                complete: function() {
+                    console.log('Completed');
+                }
+            })
+        });
+
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
         // $('.questiontxt').keyup(function() {
@@ -456,7 +475,7 @@
                             <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation${eid}">
                             <label style="font-size: .9rem;" for="explenation${eid}">{{__('form.ans_explenation')}}</label>
                         </label>
-                        
+
                     </div>
                 </div>
                 <div class="form-group row" style="display: none;" id="explenation${eid}-show">

@@ -61,7 +61,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 @if($user_role->count() > 0)
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered" >
                                     <thead>
                                         <tr role="row">
                                             <th style="width: 10%;">{{__('form.sl')}}</th>
@@ -97,6 +97,7 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                    {{$user_role->links()}}
                                 @else
                                 <div class="text-center">
                                     <p>

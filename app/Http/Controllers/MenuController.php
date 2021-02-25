@@ -9,7 +9,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::where('parent_id', 0)->get();
+        $menus = Menu::where('parent_id', 0)->paginate(10);
         return view('Admin.PartialPages.Menu.menu', compact('menus'));
     }
     public function store(Request $request)

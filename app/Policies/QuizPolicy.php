@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Question;
 use App\Quiz;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -57,4 +58,32 @@ class QuizPolicy
             return true;
         }
     }
+
+
+
+    public function readOwrite1(User $user)
+    {
+        dd($user);
+        if ($user->roleuser->role_id === 6) {
+            return false;
+        } elseif ($user->roleuser->role_id === 5) {
+            return true;
+        }
+    }
+
+    public function readOwrite(User $user)
+    {
+//        dd($user->roleuser->role_id);
+        // return true;
+//        return $user->roleuser->role_id < 6;
+        if ($user->roleuser->role_id === 6) {
+            return false;
+        } elseif ($user->roleuser->role_id === 5) {
+            return true;
+        }
+        elseif ($user->roleuser->role_id === 1){
+            return true;
+        }
+    }
+
 }

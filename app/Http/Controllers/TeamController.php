@@ -13,7 +13,7 @@ class TeamController extends Controller
     }
     public function index()
     {
-        $teams = Team::all();
+        $teams = Team::orderBy('id','desc')->paginate(10);
         return view('Admin.PartialPages.Team.teamlist', compact('teams'));
     }
     public function createTeam(Request $request)

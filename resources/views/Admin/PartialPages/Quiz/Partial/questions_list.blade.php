@@ -3,7 +3,8 @@
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
-            @if($q->questions->count() > 0)
+            {{--@if($q->questions->count() > 0)--}}
+                @if($q->questions->whereIn('category_id', $id)->count() > 0)
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
@@ -16,7 +17,8 @@
 
         <div class="tab-content">
             @foreach($questions as $q)
-            @if($q->questions->count() > 0)
+            {{--@if($q->questions->count() > 0)--}}
+                @if($q->questions->whereIn('category_id', $id)->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                 <div class="col-md-12 pb-2">
                     <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
@@ -27,7 +29,7 @@
                         <div class="row">
                             <div class="col-sm-12 pt-3">
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                    <table class="table table-striped table-bordered">
                                         <thead>
                                             <tr role="row">
                                                 <th style="width: 10%;">{{__('form.sl')}}</th>
@@ -37,9 +39,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($q->questions as $qq)
+                                        @php
+                                            $questionCat = $q->questions()->whereIn('category_id', $id)->paginate(10);
+                                        @endphp
+                                            @foreach($questionCat as $qq)
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                                 <td class="text-center">
                                                     <!-- <div class="col-md-12"> -->
                                                     <input type="checkbox" name="questions[]" value="{{$qq->id}}" id="chc{{$qq->id}}" class="material-inputs child{{$q->id}}">
@@ -66,6 +71,19 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        {{$questionCat->links()}}
+                    </div>
+                    <div class="col-md-4" >
+                        <div class="text-center loading" style="display: none;">
+                            <button class="btn btn-primary" type="button" disabled="">
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                {{__('form.loading')}}
+                            </button>
                         </div>
                     </div>
                 </div>

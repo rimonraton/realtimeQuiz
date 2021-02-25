@@ -43,7 +43,7 @@
                                     <tbody>
                                         @foreach($pm->features as $f)
                                         <tr>
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
+                                            <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$f->gb_feature_name}}</td>
                                             <td>{{$f->bd_feature_name}}</td>
                                             <td style="text-align: center; ">

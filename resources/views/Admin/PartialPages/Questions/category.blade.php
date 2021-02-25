@@ -57,13 +57,13 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 @if($category->count() > 0)
-                                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info">
+                                <table class="table table-striped table-bordered" >
                                     <thead>
                                         <tr role="row">
-                                            <th style="width: 0px;">SL</th>
-                                            <th style="width: 0px;">English Name</th>
-                                            <th style="width: 0px;">Bangla Name</th>
-                                            <th style="width: 0px;">Action</th>
+                                            <th style="width: 0px;">{{__('form.sl')}}</th>
+                                            <th style="width: 0px;">{{__('form.topic_en')}}</th>
+                                            <th style="width: 0px;">{{__('form.topic_bn')}}</th>
+                                            <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,13 +81,14 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="1" colspan="1">SL</th>
-                                            <th rowspan="1" colspan="1">English Name</th>
-                                            <th rowspan="1" colspan="1">Bangla Name</th>
-                                            <th rowspan="1" colspan="1">Action</th>
+                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.topic_en')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.topic_bn')}}</th>
+                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                    {{$category->links()}}
                                 @else
                                 <div class="text-center">
                                     <p>
@@ -109,7 +110,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.update_topic')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -127,8 +128,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
                 </form>
