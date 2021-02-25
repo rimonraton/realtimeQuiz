@@ -150,3 +150,4 @@ Route::get('getProgress/{id}', 'HomeController@getProgress');
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
+Route::post('createChallenge', [HomeController::class, 'createChallenge']);
