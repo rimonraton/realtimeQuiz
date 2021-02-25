@@ -191,11 +191,12 @@ class QuestionController extends Controller
     public function getQuestiontoday($id)
     {
         $today = Carbon::parse(Carbon::now())->format('Y-m-d');
-        $questions =  QuestionType::with(['questions' => function ($q) use ($today, $id) {
-            $q->where('created_at', '>', $today);
-            $q->where('category_id', $id);
-        }, 'questions.options'])->get();
-        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id'));
+//        $questions =  QuestionType::with(['questions' => function ($q) use ($today, $id) {
+//            $q->where('created_at', '>', $today);
+//            $q->where('category_id', $id);
+//        }, 'questions.options'])->get();
+        $questions =  QuestionType::all();
+        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today'));
     }
     // End Questions
 }
