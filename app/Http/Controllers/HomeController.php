@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Game;
-use App\QuizCategory;
+use App\QuestionType;
 use Illuminate\Http\Request;
 use Auth;
 use App\Category;
@@ -115,11 +115,14 @@ class HomeController extends Controller
         return view('quiz_progress', compact('progress'));
     }
 
-    public function gameInAdmin()
+    public function gameInAdmin($type,$id = null)
     {
-        $category = Category::where('sub_topic_id', 0)->get();
-        $quizCategory = QuizCategory::all();
-        return view('Admin.Games.challenge', compact(['category', 'quizCategory']));
+        $catName = '';
+        if ($id) {
+            $catName = Category::find($id)->name;
+        }
+        $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
+        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName']));
     }
 
 

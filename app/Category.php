@@ -12,6 +12,11 @@ class Category extends Model
         return $this->hasMany(Exam::class);
     }
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
     public function childs()
     {
         return $this->hasMany(Category::class, "sub_topic_id", "id");

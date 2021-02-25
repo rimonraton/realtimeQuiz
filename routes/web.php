@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
 
@@ -35,7 +36,7 @@ Route::post('question/updatecategory', 'QuestionController@update');
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 
 // Questions
-Route::get('question/list/{id?}', 'QuestionController@list');
+Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
 Route::get('question/getlist/{id}', 'QuestionController@getlist');
@@ -148,4 +149,4 @@ Route::post('contact', 'ContractController@sendMessage');
 Route::get('getProgress/{id}', 'HomeController@getProgress');
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
-Route::get('game/mode/{type}', [HomeController::class, 'gameInAdmin']);
+Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
