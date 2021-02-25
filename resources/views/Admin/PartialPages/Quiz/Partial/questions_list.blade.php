@@ -20,9 +20,14 @@
             {{--@if($q->questions->count() > 0)--}}
                 @if($q->questions->whereIn('category_id', $id)->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
-                <div class="col-md-12 pb-2">
-                    <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
-                    <label for="child{{$q->id}}">{{__('form.check_all')}}</label>
+                <div class="row">
+                    <div class="col-md-6 pb-2">
+                        <input type="checkbox" value="" id="child{{$q->id}}" class="material-inputs checkAll">
+                        <label for="child{{$q->id}}">{{__('form.check_all')}}</label>
+                    </div>
+                    <div class="col-md-6 pb-2">
+{{--                        <p>Number of Questions Selected <span id="count"></span></p>--}}
+                    </div>
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -47,7 +52,7 @@
                                                 <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                                 <td class="text-center">
                                                     <!-- <div class="col-md-12"> -->
-                                                    <input type="checkbox" name="questions[]" value="{{$qq->id}}" id="chc{{$qq->id}}" class="material-inputs child{{$q->id}}">
+                                                    <input type="checkbox" name="questions[]" value="{{$qq->id}}" id="chc{{$qq->id}}" class="material-inputs chk child{{$q->id}}">
                                                     <label for="chc{{$qq->id}}"></label>
                                                     <!-- </div> -->
                                                 </td>
@@ -94,12 +99,6 @@
     </div> <!-- end card-body-->
 </div>
 <script>
-    $('.dataTable').DataTable({
-        responsive: true,
-        "ordering": false
-    });
-    $(".checkAll").on('click', function() {
-        var child = $(this).attr('id');
-        $("." + child).not(this).prop('checked', this.checked);
-    });
+
+
 </script>

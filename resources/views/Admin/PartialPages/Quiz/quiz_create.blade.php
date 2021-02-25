@@ -1,4 +1,5 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('css')
 <style>
     .custom-select {
@@ -49,10 +50,27 @@
     .activeli {
         background-color: #e9ecef !important;
     }
+    .selectedQuestionCount {
+        background: rgba(0,0,0,0.2);
+        position: fixed;
+        width: 280px;
+        height: 32px;
+        bottom: 15px;
+        right: 15px;
+        z-index: 999;
+        border: 1px solid darkgray;
+        border-radius: 15px;
+        padding: 5px 10px;
+        color: black;
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
 @section('content')
+    <div class="selectedQuestionCount text-center">
+        {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
+
+    </div>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -136,7 +154,7 @@
                             </div>
                         </div>
 
-
+                        <input type="hidden" name="selected" id="selectedQ">
                         <div id="viewData" class="justify-content-center" style="display: none">
                         </div>
                         <div id="CustomQ" style="display: none;">
@@ -267,7 +285,42 @@
 @section('js')
 <script>
     $(function() {
+        var lang ='{{$lang}}';
+        var chkquestions = [];
+        var QC;
+        $(document).on('click','.chk',function (){
+            var id = $(this).val();
+            if ($(this).is(':checked')) {
+                chkquestions.push(id);
+            } else {
+                 chkquestions = chkquestions.filter(function(elem){
+                    return elem != id;
+                });
+            }
+            QC=chkquestions.length;
+            if (lang=='bd'){
+                QC = q2bNumber(chkquestions.length)
+            }
+            $('#count').html(QC);
+            $('#selectedQ').val(chkquestions);
+        })
+        $(document).on('click',".checkAll", function() {
+            if ($(this).is(':checked')){
+                $('.chk').each(function(k, v) {
+                    if (v.value != 'on'){
+                        chkquestions.push(v.value);
+                    }
+                });
+            }
+            else{
+                chkquestions = [];
+            }
 
+            $('#count').html(chkquestions.length);
+            $('#selectedQ').val(chkquestions);
+            var child = $(this).attr('id');
+            $("." + child).not(this).prop('checked', this.checked);
+        });
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -282,10 +335,26 @@
                 },
                 complete: function() {
                     console.log('Completed');
+                    $.each(chkquestions,function (key,value){
+                        $('.chk').each(function(k, v) {
+                            if(value == v.value){
+                                $(this).prop('checked', true);
+                            }
+                        });
+                    })
+
+
                 }
             })
         });
 
+       function q2bNumber(numb) {
+            let numbString = numb.toString();
+            let bn = ''
+            let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+            [...numbString].forEach(n => bn += eb[n])
+            return bn
+        }
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
         // $('.questiontxt').keyup(function() {

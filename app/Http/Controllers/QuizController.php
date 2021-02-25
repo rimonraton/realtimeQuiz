@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Game;
+use App\Lang\Bengali;
 use App\Question;
 use App\QuestionsOption;
 use App\QuestionType;
@@ -56,7 +57,7 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
-        //  return $request->all();
+//          return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('quiz/view/list/' . $request->cid);
@@ -68,18 +69,19 @@ class QuizController extends Controller
 
     public function storeFromQB($request)
     {
-        $questions = array();
-        foreach ($request->questions as $q) {
-            $questions[] = $q;
-        }
-        $questionsid = implode(',', $questions);
+//        $questions = array();
+//        foreach ($request->questions as $q) {
+//            $questions[] = $q;
+//        }
+//        $questionsid = implode(',', $questions);
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,
             'game_id'           => $request->game_type,
-            'questions'         => $questionsid,
+            'questions'         => $request->selected,
             'category_id'       => $request->cid,
-            'difficulty'       => $request->difficulty,
+            'difficulty'        => $request->difficulty,
+            'user_id'           => auth()->user()->id,
         ]);
     }
     public function storeFromCustom($request)
@@ -115,7 +117,8 @@ class QuizController extends Controller
             'questions'         => $questions,
             'category_id'       => $request->cid,
             'custom_create'     => 1,
-            'difficulty'       => $request->difficulty,
+            'difficulty'        => $request->difficulty,
+            'user_id'           => auth()->user()->id,
         ]);
     }
     public function quiz($id)

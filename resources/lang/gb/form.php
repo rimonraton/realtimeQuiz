@@ -146,4 +146,5 @@ return [
     'difficult'=>'Difficult',
     'team_en' =>'Team Name( English )',
     'team_bn' =>'Team Name( Bangla )',
+    'selected_question'=>'Number of Questions Selected -',
 ];

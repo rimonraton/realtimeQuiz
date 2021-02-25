@@ -55,7 +55,7 @@
 
                                             <div class="tab-content">
                                                 @foreach($questions as $q)
-{{--                                                @if($q->questions->count() > 0)--}}
+                                                {{--@if($q->questions->count() > 0)--}}
                                                     @if($q->questions->where('category_id', $id)->where('created_at', '>', $today)->count() > 0)
                                                 <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                                                     <div class="table-responsive" style="overflow-x: hidden">
