@@ -64,4 +64,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Progress::class);
     }
+
+    public function admin(){
+        return $this->belongsTo(Admin::class);
+    }
 }

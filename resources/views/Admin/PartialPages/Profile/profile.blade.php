@@ -66,7 +66,7 @@
 </style>
 @endsection
 @section('content')
-<div class="row">
+@endif
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
@@ -223,6 +223,18 @@
 @section('js')
 <script>
     $(document).ready(function() {
+        function passwordCreatedMsg(){
+
+            toastr.success('{{\Session::get('success')}}', {
+                "closeButton": true
+            });
+
+        }
+        @if (\Session::has('success'))
+            passwordCreatedMsg();
+        @endif
+
+
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function() {
             readURL(this);

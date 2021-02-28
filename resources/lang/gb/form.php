@@ -147,4 +147,12 @@ return [
     'team_en' =>'Team Name( English )',
     'team_bn' =>'Team Name( Bangla )',
     'selected_question'=>'Number of Questions Selected -',
+    'user_list'=>'User List',
+    'add_user'=>'Add New User',
+    'new_user'=>'New User',
+    'name' =>'Name',
+    'auto'=>'Generated Password',
+    'custom'=>'Custom Password',
+    'select_role'=>'Select Role',
+    'role_update'=>'User Update',
 ];
