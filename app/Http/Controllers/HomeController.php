@@ -16,10 +16,11 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-
+    protected $lang;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->lang = app()->getLocale();
     }
 
     public function registerFunction1(Request $r)
@@ -121,8 +122,17 @@ class HomeController extends Controller
         if ($id) {
             $catName = Category::find($id)->name;
         }
+        $questionType = QuestionType::all();
         $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
-        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName']));
+        $lang = $this->lang;
+        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang']));
+    }
+
+    public function createChallenge(Request $request)
+    {
+        $cat = explode(',', $request->category);
+        return Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->get();
+        return $request->all();
     }
 
 

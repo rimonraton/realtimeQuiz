@@ -156,7 +156,7 @@ export default {
         },
 
         getCorrectAnswertext() {
-            let qco = this.questions[this.qid].options.find(o => o.correct === 1)
+            let qco = this.questions[this.qid].options.find(o => o.correct == 1)
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 

@@ -17,7 +17,7 @@
         .dd {
             width: 100% !important;
             height: auto;
-            max-height: 70vh;
+            max-height: 50vh;
             overflow: auto;
         }
 
@@ -59,6 +59,10 @@
         .selected{
             background: whitesmoke;
         }
+        .wizard-content .wizard > .actions > ul > li > a:hover {
+            border: 1px solid blue !important;
+            color: blue !important;
+        }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -67,7 +71,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body wizard-content">
-                    <form id="tf" action="{{url('testSubmit')}}" method="get" class="validation-wizard wizard-circle">
+                    <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle">
                         @csrf
                         <!-- Step 1 -->
                         <h6>Select Question Group </h6>
@@ -83,6 +87,7 @@
                                                         <div class="dd-handle-new">
                                                             <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>
                                                         </div>
+                                                        <input type="hidden" name="category" id="categoryId">
                                                         <ol class="dd-list">
                                                             @foreach($topic as $c)
                                                                 <li class="dd-item">
@@ -153,14 +158,13 @@
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h4 class="card-title">Select Question Type (Optional)</h4>
+                                                    @foreach($questionType as $qt)
                                                     <div class="form-check my-2"><br>
-                                                        <input name="question_type[]" class="form-check-input material-inputs" type="checkbox" id="inlineCheckbox1" value="option1">
-                                                        <label class="form-check-label" for="inlineCheckbox1">MCQ</label>
+                                                        <input name="question_type[]" id="checkbox{{$qt->id}}" value="{{$qt->id}}" class="form-check-input material-inputs" type="checkbox" >
+                                                        <label class="form-check-label" for="checkbox{{$qt->id}}">{{ $lang == 'bd' ? $qt->bn_name : $qt->name}}</label>
                                                     </div>
-                                                    <div class="form-check my-2"><br>
-                                                        <input name="question_type[]" class="form-check-input material-inputs" type="checkbox" id="inlineCheckbox2" value="option2">
-                                                        <label class="form-check-label" for="inlineCheckbox2">True/False</label>
-                                                    </div>
+                                                    @endforeach
+
                                                 </div>
                                             </div>
                                         </div>
@@ -306,9 +310,8 @@
                 format: 'DD-MM-YYYY h:mm:ss'
             }
         });
-
-
     </script>
+
     <script>
         $(function() {
             $('input[name="topic"]').on('click',function (e){
@@ -325,9 +328,8 @@
                 }).get().join(', ');
 
                 console.log(qCount);
+                $('#categoryId').val(topics_id.slice(0, -1));
 
-                // alert("My favourite programming languages are: " + programming);
-                console.log(topics_id);
                 $('.selectedTopic').html(topics)
                 $('.selectedTopic').append(`<span class="badge badge-pill badge-danger float-right">${qCount}</span>`);
 
