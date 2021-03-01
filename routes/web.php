@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserCredential;
+use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Route;
+//use Mail;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 /*
@@ -16,9 +20,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-// 	return view('index');
-// });
+ Route::get('testemail', function () {
+    $user = \App\User::find(9);
+     Mail::to($user->email)->send(new WelcomeMail($user));
+     return 'Success';
+ });
 Route::get('/', 'LandingPageController@index');
 // Route::get('landing/page', 'LandingPageController@index');
 // website setup
@@ -102,6 +108,12 @@ Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');
 
 // Payment
 Route::get('payment', 'PaymentController@index');
+//new User create
+Route::get('new-user',[NewUserController::class,'index']);
+Route::post('create-new-user',[NewUserController::class,'create']);
+Route::post('update-new-user',[NewUserController::class,'update']);
+Route::get('send-email/{user}',[NewUserController::class,'sendEmail']);
+Route::get('userCredential/{token}',[UserCredential::class,'userCredential']);
 
 //Menu Setup
 Route::get('menu','MenuController@index');

@@ -52,9 +52,9 @@
                                         @foreach($topic as $c)
                                         <li class="dd-item">
                                             <div class="dd-handle-new topicls" data-cid="{{$c->id}}">
-                                                @if(count($c->childs) == 0)
-                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">
-                                                @endif
+{{--                                                @if(count($c->childs) == 0)--}}
+{{--                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">--}}
+{{--                                                @endif--}}
                                                 <span>{{$lang=='gb'?$c->name:$c->bn_name}}</span></div>
                                             @if(count($c->childs))
                                             @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
@@ -67,9 +67,9 @@
                         </div>
 
                     </div>
-                    <div class="col-sm-2 mt-1">
-                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>
-                    </div>
+{{--                    <div class="col-sm-2 mt-1">--}}
+{{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
+{{--                    </div>--}}
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
 
@@ -280,11 +280,11 @@
                 console.log(data);
                 if (data != '') {
                     $('#viewData').html(data);
-                    toastr.success('Successfully Loaded', {
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut",
-                        timeOut: 1000
-                    });
+                    // toastr.success('Successfully Loaded', {
+                    //     "showMethod": "fadeIn",
+                    //     "hideMethod": "fadeOut",
+                    //     timeOut: 1000
+                    // });
                 } else {
 
                     $('#viewData').html(

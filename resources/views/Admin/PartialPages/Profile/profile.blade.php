@@ -66,7 +66,7 @@
 </style>
 @endsection
 @section('content')
-<div class="row">
+    <div class="row">
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
@@ -87,11 +87,6 @@
                 <h6>01737538343</h6>
                 <small class="text-muted pt-4 db">{{__('form.address')}}</small>
                 <h6>Dhaka, Mirpur DOHS</h6>
-                <!-- <small class="text-muted pt-4 db">Social Profile</small>
-                <br />
-                <button class="btn btn-circle btn-secondary"><i class="fab fa-facebook-f"></i></button>
-                <button class="btn btn-circle btn-secondary"><i class="fab fa-twitter"></i></button>
-                <button class="btn btn-circle btn-secondary"><i class="fab fa-youtube"></i></button> -->
             </div>
         </div>
     </div>
@@ -223,6 +218,18 @@
 @section('js')
 <script>
     $(document).ready(function() {
+        function passwordCreatedMsg(){
+
+            toastr.success('{{\Session::get('success')}}', {
+                "closeButton": true
+            });
+
+        }
+        @if (\Session::has('success'))
+            passwordCreatedMsg();
+        @endif
+
+
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function() {
             readURL(this);
