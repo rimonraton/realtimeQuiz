@@ -25,8 +25,11 @@ class NewUserController extends Controller
         $random= Str::random(2).mt_rand(100000, 999999);
 //        $users =  Admin::with('users.roleuser.role')->where('id',auth()->user()->admin->id)->paginate(10);
 //       return User::with('admin')->get();
-        $admin_id = auth()->user()->admin->id;
-        $users = User::with('roleuser.role')->where('admin_id',$admin_id)->orderBy('id','desc')->paginate(10);
+        $admin_id = auth()->user()->admin_id;
+        $users = User::with('roleuser.role')
+            ->where('admin_id',$admin_id)
+            ->orderBy('id','desc')
+            ->paginate(10);
         $roles = Role::all()->except(5);
         return view('Admin.PartialPages.NewUser.new_user',compact('users','admin_id','roles','random'));
     }
@@ -69,9 +72,9 @@ class NewUserController extends Controller
 
     public function sendEmail(User $user){
         \Mail::to($user->email)->send(new UserCredential($user));
+        return "success";
 //        event(new UserCredentialEvent($user));
 //        return redirect('new-user');
-        return "success";
     }
 
 
