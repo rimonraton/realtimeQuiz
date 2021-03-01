@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Challenge;
 use App\Game;
 use App\QuestionType;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Auth;
 use App\Category;
 use App\Exam;
 use App\Question;
 use App\Quiz;
+use Illuminate\Support\Facades\Http;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Lang\Bengali;
 use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    protected $lang;
+    public $lang;
+
     public function __construct()
     {
         $this->middleware('auth');
         $this->lang = app()->getLocale();
     }
+
 
     public function registerFunction1(Request $r)
     {
@@ -131,9 +136,26 @@ class HomeController extends Controller
     public function createChallenge(Request $request)
     {
         $cat = explode(',', $request->category);
+        $q_ids =Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
+        $name =$request->name;
+        if($name == '' || $name == null){
+            $name = 'Challenge-'. (Challenge::max('id') + 1 );
+        }
+
+        $challenge = new Challenge();
+        $challenge->name = $name;
+        $challenge->user_id = auth()->user()->id;
+        $challenge->quantity = $request->qq;
+        $challenge->question_id = implode(',', $q_ids);
+        $challenge->cat_id = $request->category;
+        $challenge->qt_id = implode(',', $request->question_type);
+        $challenge->schedule = $request->schedule;
+        $challenge->save();
+
+        return $request->all();
+
         return Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->get();
         return $request->all();
     }
-
 
 }

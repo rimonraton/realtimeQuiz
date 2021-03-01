@@ -76,8 +76,8 @@
                         <!-- Step 1 -->
                         <h6>Select Question Group </h6>
                         <section>
-                            <div class="card">
-                                <div class="card-body">
+                            <div class="card my-0">
+                                <div class="card-body my-0">
                                     <div class="form-group row pb-3">
                                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                                         <div class="col-sm-6">
@@ -115,32 +115,6 @@
                                                         </ol>
                                                     </li>
                                                 </ol>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive" style="overflow-x: hidden">
-
-                                        <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                            <div class="row">
-                                                <div class="col-sm-12" id="loading" style="display: none;">
-                                                    <div class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled="">
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            Loading...
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 pt-3" id="viewData">
-                                                    <div class="container">
-                                                        <div class="row justify-content-md-center">
-                                                            <div class="alert alert-success text-center" role="alert" id="msg">
-                                                                <p class="pt-3">{{__('form.question_notify')}}.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
                                             </div>
 
                                         </div>
@@ -307,7 +281,7 @@
             timePicker24Hour: true,
             showDropdowns: true,
             locale: {
-                format: 'DD-MM-YYYY h:mm:ss'
+                format: 'YYYY-MM-DD h:mm:ss'
             }
         });
     </script>
