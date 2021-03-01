@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserCredential;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Route;
 //use Mail;
@@ -112,7 +113,7 @@ Route::get('new-user',[NewUserController::class,'index']);
 Route::post('create-new-user',[NewUserController::class,'create']);
 Route::post('update-new-user',[NewUserController::class,'update']);
 Route::get('send-email/{user}',[NewUserController::class,'sendEmail']);
-Route::get('userCredential/{token}',[\App\Http\Controllers\UserCredential::class,'userCredential']);
+Route::get('userCredential/{token}',[UserCredential::class,'userCredential']);
 
 //Menu Setup
 Route::get('menu','MenuController@index');

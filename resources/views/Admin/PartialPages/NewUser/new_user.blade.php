@@ -126,7 +126,10 @@
                                                 <th>
                                                     <a class="edit" href="" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-role="{{$user->roleuser?$user->roleuser->role->id:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                                    <a class="text-info" style="cursor: pointer;" data-id="{{$user->id}}" href="{{url('send-email/'.$user->id)}}" title="Send Mail"><i class="fas fa-paper-plane"></i></a>
+                                                    <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->id}}" href="" title="Send Mail">
+                                                        <i class="fas fa-paper-plane"></i>
+                                                    </a>
+
 
                                                 </th>
                                             </tr>
@@ -256,6 +259,27 @@
 @section('js')
     <script>
         $(function() {
+
+            $('.send-message').on('click',function (e){
+                e.preventDefault();
+                var $this = $(this);
+                var id = $(this).data('id');
+                $.ajax({
+                    url:"{{url('send-email')}}/"+id,
+                    type:"Get",
+                    beforeSend:function (){
+                        console.log('Before Send');
+                        $this.html('<i class="fas fa-spinner fa-spin"></i>');
+                    },
+                    success:function (data){
+                        console.log(data);
+                    },
+                    complete:function (){
+                        console.log('Completed');
+                        $this.html('<i class="fas fa-paper-plane"></i> <i class="fas fa-check text-success"></i>');
+                    }
+                })
+            })
 
             async function cp(){
                 const text = event.target.dataset.pass

@@ -53,11 +53,9 @@
 </head>
 <body>
 <p>
-{{--    প্রিয় {{$user->name}},--}}
+    প্রিয় {{$user->name}},
     <br>
     জ্ঞানকোষ এ আপনাকে স্বাগতম,
-    <br>
-    আপনার রেজিস্ট্রেশন সম্পন্ন হয়েছে ।
     <br>
     <div>
     <a class="btn btn-success btn-sm" href="{{url('userCredential/'.$user->token)}}"> Go to Profile</a>

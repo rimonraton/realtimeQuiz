@@ -23,7 +23,7 @@ Broadcast::channel('chat', function ($user) {
 });
 
 Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
-	$geoip = new GeoIPLocation(); 
+	$geoip = new GeoIPLocation();
     // $geoip->setIP('37.99.166.48');
     $country = strtolower($geoip->getCountryCode());
     $user['country'] =  $country == null ? 'bd': $country;
@@ -31,7 +31,7 @@ Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
 });
 
 Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
-	$geoip = new GeoIPLocation(); 
+	$geoip = new GeoIPLocation();
     $country = strtolower($geoip->getCountryCode());
     $user['country'] = $country == null ? 'bd': $country;
     $user['group'] =  $user->group;
@@ -41,3 +41,7 @@ Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
 // Broadcast::channel('game.{id}', function ($user, $id) {
 //     return $user;
 // });
+
+Broadcast::channel('emailEvent', function ($user) {
+    return $user;
+});

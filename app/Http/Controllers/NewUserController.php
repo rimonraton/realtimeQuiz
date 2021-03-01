@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Admin;
+use App\Events\UserCredentialEvent;
 use App\Mail\UserCredential;
 use App\Mail\WelcomeMail;
 use App\Role;
@@ -68,7 +69,9 @@ class NewUserController extends Controller
 
     public function sendEmail(User $user){
         \Mail::to($user->email)->send(new UserCredential($user));
-        return redirect('new-user');
+//        event(new UserCredentialEvent($user));
+//        return redirect('new-user');
+        return "success";
     }
 
 
