@@ -130,7 +130,8 @@ class HomeController extends Controller
         $questionType = QuestionType::all();
         $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
         $lang = $this->lang;
-        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang']));
+        return $challenges = Challenge::latest()->cat()->paginate(9);
+        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges']));
     }
 
     public function createChallenge(Request $request)
@@ -152,10 +153,21 @@ class HomeController extends Controller
         $challenge->schedule = $request->schedule;
         $challenge->save();
 
+        return redirect()->back();
         return $request->all();
 
-        return Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->get();
-        return $request->all();
+    }
+    public function Challenge(Challenge $challenge, $uid)
+    {
+        $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
+        $id = $challenge->id;
+        $questions = Question::with('options')
+            ->whereIn('id', explode(",", $challenge->question_id))->get();
+        $user = Auth::user();
+        $user['lang'] = app()->getLocale();
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('games.' . strtolower('challenge'), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
+
     }
 
 }

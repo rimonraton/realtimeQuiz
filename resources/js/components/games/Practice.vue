@@ -130,7 +130,7 @@ export default {
 
             }, 1000);
         },
-        checkAnswer(q, a, rw) {
+        checkAnswer: function (q, a, rw) {
             this.right_wrong = rw
             this.gamedata.['id'] = this.qid + 1
             this.gamedata.['question'] = this.questions[this.qid].question_text
@@ -138,7 +138,7 @@ export default {
             this.gamedata.['selected'] = a
             this.gamedata.['isCorrect'] = rw
             this.gamedata.['time'] = this.answer_minutes + ':' + this.answer_seconds
-            rw === 1 ? this.correct++ : this.wrong++
+            rw == 1 ? this.correct++ : this.wrong++
 
             let clone = {...this.gamedata}
             this.results.push(clone)

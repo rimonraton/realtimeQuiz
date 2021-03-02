@@ -164,8 +164,10 @@ Route::get('setLanguage/{locale}', function ($locale) {
 
 Route::post('contact', 'ContractController@sendMessage');
 
-Route::get('getProgress/{id}', 'HomeController@getProgress');
+Route::get('getProgress/{id}', [HomeController::class, 'getProgress']);
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
+Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
+
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);

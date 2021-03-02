@@ -182,14 +182,18 @@
   .card{
     background: transparent !important;
   }
+  :root {
+      --animate-duration: 800ms;
+      --animate-delay: 0.5s;
+  }
 </style>
 
 @stop
 
 @section('content')
-<div class="container glass animate__animated animate__backInRight">
-  <div class="leftbg animate__animated animate__slideInLeft animate__fast animate__delay-1s"></div>
-  <div class="rightbg animate__animated animate__slideInRight animate__slow "></div>
+<div class="container glass animate__animated animate__jackInTheBox animate__slow animate__delay-1s">
+  <div class="leftbg "></div>
+  <div class="rightbg  "></div>
 
   <div class="row justify-content-center">
     <div class="btn-group " role="group" aria-label="Game Mode">
@@ -304,8 +308,8 @@
       </div>
     </div>
   </div>
-<div class="circle-left animate__animated animate__rotateInUpLeft animate__delay-1s"></div>
-<div class="circle-right animate__animated animate__rotateInUpRight animate__delay-1s"></div>
+<div class="circle-left animate__animated animate__rotateInUpLeft animate__slow"></div>
+<div class="circle-right animate__animated animate__rotateInUpRight animate__slow"></div>
 {{-- <div class="circle-center animate__animated animate__rotateIn animate__delay-1s"></div> --}}
 
 @section('js')
