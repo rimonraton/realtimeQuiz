@@ -52,9 +52,9 @@ class QuizPolicy
     {
         if ($user->roleuser->role_id === 6) {
             return false;
-        } else if ($user->roleuser->role_id === 1) {
+        } else if ($user->roleuser->role_id === 4) {
             return $user->id === $quiz->user_id;
-        } elseif ($user->roleuser->role_id === 5) {
+        } elseif ($user->roleuser->role_id === 5 || $user->roleuser->role_id === 1) {
             return true;
         }
     }

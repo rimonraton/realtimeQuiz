@@ -53,6 +53,12 @@ Route::get('question/list/view/{cid}', 'QuestionController@getQuestiontoday');
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
+
+
+//testlogin
+Route::get('t_reset',function (){
+    return view('LandingPage.reset');
+});
 // Questions Type
 Route::get('questionTypelist', 'QuestionTypeController@index');
 Route::post('questionTypesave', 'QuestionTypeController@store');
@@ -107,9 +113,9 @@ Route::post('roleuserUpdate', 'RoleController@roleuserUpdate');
 Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');
 
 // Payment
-Route::get('payment', 'PaymentController@index');
+Route::get('payment', [\App\Http\Controllers\PaymentController::class,'index']);
 //new User create
-Route::get('new-user',[NewUserController::class,'index']);
+Route::get('new-user',[NewUserController::class,'index'])->middleware(\App\Http\Middleware\HasAccess::class);
 Route::post('create-new-user',[NewUserController::class,'create']);
 Route::post('update-new-user',[NewUserController::class,'update']);
 Route::get('send-email/{user}',[NewUserController::class,'sendEmail']);

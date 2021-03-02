@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,8 @@ class PaymentController extends Controller
     public function index()
     {
         // Auth()->user()->roleuser->role;
+        $institute = Admin::all();
         $user = User::find(Auth::user()->id);
-        return view('Admin.PartialPages.Payment.payment', compact('user'));
+        return view('Admin.PartialPages.Payment.payment', compact('user','institute'));
     }
 }

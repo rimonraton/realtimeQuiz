@@ -21,4 +21,8 @@ class Question extends Model
     public function role(){
         return $this->belongsTo(RoleUser::class,'user_id');
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

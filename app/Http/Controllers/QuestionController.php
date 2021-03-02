@@ -142,6 +142,11 @@ class QuestionController extends Controller
     }
     public function getlist($id)
     {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+
+//        return Question::where('category_id', $id)->get();
+
         $id = explode(',',$id);
         $qus = Question::where('category_id', $id)->count();
         if ($qus) {
@@ -149,7 +154,7 @@ class QuestionController extends Controller
 //            with(['questions' => function ($q) use ($id) {
 //                $q->where('category_id', $id);
 //            }, 'questions.options','questions.role.role'])
-            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id'));
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users'));
         }
         return '';
     }

@@ -81,6 +81,7 @@
 
                                                 <div class="col-md-6">
                                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                                    <div id="CheckPasswordMatch"></div>
                                                 </div>
                                             </div>
 
@@ -213,10 +214,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('form.password') }}</label>
+                            <label for="uppassword" class="col-md-4 col-form-label text-md-right">{{ __('form.password') }}</label>
 
                             <div class="col-md-6">
-                                <input type="password"  class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                <input type="password" id="uppassword"  class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                                 {{--                                                    <input id="password" type="text"  value="{{$random}}">--}}
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -230,10 +231,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('form.confirm_password') }}</label>
+                            <label for="uppassword-confirm" class="col-md-4 col-form-label text-md-right">{{ __('form.confirm_password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                <input id="uppassword-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                             </div>
                         </div>
 
@@ -259,7 +260,15 @@
 @section('js')
     <script>
         $(function() {
-
+            $("#password-confirm").keyup(checkPasswordMatch);
+            function checkPasswordMatch() {
+                var password = $("#password").val();
+                var confirmPassword = $("#password-confirm").val();
+                if (password != confirmPassword)
+                    $("#CheckPasswordMatch").html("<p class='text-danger'>Passwords does not match!</p>");
+                else
+                    $("#CheckPasswordMatch").html("<p class='text-success'>Passwords match.</p>");
+            }
             $('.send-message').on('click',function (e){
                 e.preventDefault();
                 var $this = $(this);

@@ -196,6 +196,19 @@
                 <form class="form-horizontal r-separator" id="smtform" action="{{url('')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
+                        <div class="form-group row justify-content-center">
+                            <div >
+                                <label class="btn btn-primary">
+                                        <input type="radio" id="institute" value="I" name="instituteorother" class="custom-control-input" checked="">
+                                        <label class="custom-control-label" for="institute">{{__('As Institute')}}</label>
+                                </label>
+                                <label class="btn btn-primary">
+                                        <input type="radio" id="switchInstitute" value="SI" name="instituteorother" class="custom-control-input">
+                                        <label class="custom-control-label" for="switchInstitute">{{__('Switch Institute')}}</label>
+                                </label>
+                            </div>
+                        </div>
+                    <div id="as_ins">
                         <div class="form-group row pb-3" id="divImage">
                             <div class="file-upload">
                                 <div class="image-upload-wrap">
@@ -222,6 +235,22 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                        <div class="row d-none" id="other_ins">
+                            <div class="col-sm-12 col-lg-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Institute Name</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="parent_id" id="">
+                                            <option value="">{{__('Select Institute')}}</option>
+                                            @foreach($institute as $ins)
+                                                <option value="{{$ins->id}}">{{$ins->institute_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-12 col-lg-6">
                                 <div class="form-group row">
@@ -242,7 +271,8 @@
                         </div>
 
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light">Payment</button>
+                            <button type="submit" class="btn btn-info waves-effect waves-light" id="payment">Payment</button>
+                            <button type="submit" class="btn btn-info waves-effect waves-light" id="send_request">Send Request</button>
                         </div>
                     </div>
 
@@ -259,6 +289,20 @@
 @section('js')
 <script>
     $(function() {
+        $('input[name="instituteorother"]').on('change', function() {
+            // var radioValue = $('input[name="instituteorother"]:checked').val();
+            var radioValue = $(this).val();
+            if (radioValue=='SI'){
+                $('#other_ins').removeClass('d-none');
+                $('#as_ins').addClass('d-none');
+            }
+            else {
+                $('#other_ins').addClass('d-none');
+                $('#as_ins').removeClass('d-none');
+            }
+            // alert(radioValue);
+        });
+
         // file upload
         $('.file-upload-input').on('change', function() {
             var id = $("input[name='customRadio']:checked").attr('id');
