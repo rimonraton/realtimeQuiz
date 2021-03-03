@@ -56,9 +56,9 @@ Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
 
 //testlogin
-Route::get('t_reset',function (){
-    return view('LandingPage.reset');
-});
+//Route::get('t_reset',function (){
+//    return view('LandingPage.reset');
+//});
 // Questions Type
 Route::get('questionTypelist', 'QuestionTypeController@index');
 Route::post('questionTypesave', 'QuestionTypeController@store');

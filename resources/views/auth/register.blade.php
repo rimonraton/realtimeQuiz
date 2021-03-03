@@ -10,7 +10,7 @@
             </div>
             <div>
                 <div class="logo">
-                    <h3 class="box-title mb-3">Register</h3>
+                    <h3 class="box-title mb-3">{{__('auth.register_header')}}</h3>
                 </div>
                 <!-- Form -->
                 <div class="row">
@@ -20,7 +20,7 @@
                             <div class="form-group mb-3">
                                 <div class="col-xs-12">
 {{--                                    <input class="form-control" type="text" required="" placeholder="Name">--}}
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Name">
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="{{__('auth.name')}}">
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -31,7 +31,7 @@
                             <div class="form-group mb-3 ">
                                 <div class="col-xs-12">
 {{--                                    <input class="form-control" type="text" required="" placeholder="Email">--}}
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="{{__('form.email')}}">
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                             <div class="form-group mb-3 ">
                                 <div class="col-xs-12">
 {{--                                    <input class="form-control" type="password" required="" placeholder="Password">--}}
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{__('form.password')}}">
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -53,7 +53,7 @@
                             <div class="form-group mb-3">
                                 <div class="col-xs-12">
 {{--                                    <input class="form-control" type="password" required="" placeholder="Confirm Password">--}}
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="{{__('auth.confirm_password')}}">
                                 </div>
                             </div>
 {{--                            <div class="form-group mb-3">--}}
@@ -66,18 +66,19 @@
 {{--                            </div>--}}
                             <div class="form-group text-center mb-3">
                                 <div class="col-xs-12">
-                                    <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Register</button>
+                                    <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">
+                                        {{__('auth.register')}}</button>
                                 </div>
                             </div>
                             <div class="form-group mb-0 mt-2 ">
                                 <div class="col-sm-12 text-center ">
-                                    Already have an account? <a href="{{route('login')}}" class="text-info ml-1 ">Log In</a>
+                                    {{__('auth.have_an_account')}} <a href="{{route('login')}}" class="text-info ml-1 ">{{__('auth.login')}}</a>
                                 </div>
                             </div>
                         </form>
                         <div class="form-group mb-0 mt-2 ">
                             <div class="col-sm-12 text-center ">
-                                <a href="{{url('/')}}" class="text-white ml-1 btn btn-info btn-sm">Go to Home</a>
+                                <a href="{{url('/')}}" class="text-white ml-1 btn btn-info btn-sm">{{__('auth.go_to_home')}}</a>
                             </div>
                         </div>
 
