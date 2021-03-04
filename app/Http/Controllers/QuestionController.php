@@ -29,8 +29,11 @@ class QuestionController extends Controller
 
         //    return Question::whereIn('id', $values)->get();
         // dd($values);
-        $category = Category::orderBy('id', 'desc')->paginate(10);
-        return view('Admin.PartialPages.Questions.category', compact('category'));
+
+        $admin_users = \auth()->user()->admin->users()->pluck('id');
+        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
+        $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
+        return view('Admin.PartialPages.Questions.category', compact('category','category_all'));
     }
     public function store(Request $request)
     {
@@ -49,7 +52,9 @@ class QuestionController extends Controller
         Category::create([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
-            'sub_topic_id' => $parentId
+            'sub_topic_id' => $parentId,
+            'user_id'=>\auth()->user()->id,
+
         ]);
         return redirect('question/category');
     }
@@ -59,7 +64,11 @@ class QuestionController extends Controller
             'name' => 'required',
             // 'bn_name' => 'required',
         ]);
-        Category::where('id', $request->id)->update(['name' => $request->name, 'bn_name' => $request->bn_name]);
+        Category::where('id', $request->id)->update([
+            'name' => $request->name,
+            'bn_name' => $request->bn_name,
+            'sub_topic_id'=>$request->parent
+        ]);
         return redirect('question/category');
     }
     public function delete($id)

@@ -4,7 +4,7 @@
         <div class="auth-box p-4 bg-white rounded">
             <div><div class="form-group">
                     <div class="col-sm-12 text-center ">
-                        <img src="{{asset('images/logo.jpg')}}" alt="" width="50px">
+                        <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
                     </div>
                 </div>
                 <div class="logo">

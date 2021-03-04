@@ -4,7 +4,7 @@
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
             {{--@if($q->questions->count() > 0)--}}
-                @if($q->questions->whereIn('category_id', $id)->count() > 0)
+                @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
@@ -18,7 +18,7 @@
         <div class="tab-content">
             @foreach($questions as $q)
             {{--@if($q->questions->count() > 0)--}}
-                @if($q->questions->whereIn('category_id', $id)->count() > 0)
+                @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
                 <div class="row">
                     <div class="col-md-6 pb-2">
@@ -45,7 +45,7 @@
                                         </thead>
                                         <tbody>
                                         @php
-                                            $questionCat = $q->questions()->whereIn('category_id', $id)->paginate(10);
+                                            $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
                                         @endphp
                                             @foreach($questionCat as $qq)
                                             <tr>

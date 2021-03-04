@@ -23,7 +23,7 @@
                                         <div class="col-12 m-b-20">
                                             <select class="form-control custom-select" name="topic">
                                                 <option value="">{{__('form.select_topic')}}</option>
-                                                @foreach($category as $c)
+                                                @foreach($category_all as $c)
                                                 <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
                                                 @endforeach
                                             </select>
@@ -73,7 +73,7 @@
                                             <td>{{$c->name}}</td>
                                             <td>{{$c->bn_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" data-bangla="{{$c->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" data-bangla="{{$c->bn_name}}" data-st="{{$c->sub_topic_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -106,7 +106,7 @@
     </div>
 </div>
 
-<div id="edit-category" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="edit-category" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -117,6 +117,16 @@
                 <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
+                    <div class="form-group">
+                        <div class="col-12 m-b-20">
+                            <select class="form-control custom-select" name="parent" id="sub_top">
+                                <option value="">{{__('form.select_topic')}}</option>
+                                @foreach($category_all as $c)
+                                    <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-md-12 m-b-20">
                             <input type="text" class="form-control" id="editName" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="Type Topic/Sub-Topic in English">
@@ -150,6 +160,7 @@
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
             $('#editbanglaName').val($(this).attr('data-bangla'));
+            $('#sub_top').val($(this).attr('data-st'));
             $('#edit-category').modal('show');
         })
 

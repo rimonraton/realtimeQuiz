@@ -46,13 +46,16 @@ class QuizController extends Controller
 
     public function getQuestionsByTopic($id)
     {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+
         $id = explode(',',$id);
 //        $questions = QuestionType::with(['questions' => function ($q) use ($id) {
 //            $q->where('category_id', $id);
 //        }])->get();
         $questions = QuestionType::all();
 
-        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions','id'));
+        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions','id','admin_users'));
     }
 
     public function store(Request $request)
@@ -130,7 +133,9 @@ class QuizController extends Controller
 
     public function quizList($id)
     {
-        $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->paginate(10);
+         $admin = auth()->user()->admin;
+         $admin_users = $admin->users()->pluck('id');
+        $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
     public function deleteQuiz($id)

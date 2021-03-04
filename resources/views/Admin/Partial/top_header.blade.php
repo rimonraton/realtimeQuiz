@@ -11,18 +11,18 @@
                 <b class="logo-icon">
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
-                    <img src="{{asset('images/logobe.png')}}" width="50px" alt="homepage" class="dark-logo" />
+                    <img src="{{asset(auth()->user()->admin->photo)}}" width="50px" alt="homepage" class="dark-logo" />
                     <!-- Light Logo icon -->
-                    <img src="{{asset('images/logobe.png')}}" width="50px" alt="homepage" class="light-logo" />
+                    <img src="{{asset(auth()->user()->admin->photo)}}" width="50px" alt="homepage" class="light-logo" />
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
                 <span class="logo-text">
                     <!-- dark Logo text -->
-                    <span class="dark-logo">{{__('msg.slogan')}}</span>
+                    <span class="dark-logo" onclick="window.location='{{url('dashboard')}}'">{{__('msg.slogan')}}</span>
                     <!-- <img src="{{asset('Admin/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" /> -->
                     <!-- Light Logo text -->
-                    <span class="light-logo">{{__('msg.slogan')}}</span>
+                    <span class="light-logo" onclick="window.location='{{url('dashboard')}}'">{{__('msg.slogan')}}</span>
                     <!-- <img src="{{asset('Admin/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /> -->
                 </span>
             </a>
@@ -89,6 +89,11 @@
                         </ul>
                     </div>
                 </li> -->
+                <li class="nav-item">
+                    <a class="nav-link">
+                        {{auth()->user()->admin->institute_name}}
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark lang" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Choose Language">
                         <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
