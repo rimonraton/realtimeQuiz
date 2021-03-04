@@ -171,3 +171,4 @@ Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
 Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
+Route::get('challengeShare', [HomeController::class, 'challengeShare']);

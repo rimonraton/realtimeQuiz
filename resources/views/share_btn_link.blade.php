@@ -18,7 +18,7 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="Share Post Testing" />
     <meta property="og:description"   content="Enrich your knowledge through Gyankosh. LEARN WITH FUN" />
-    <meta property="og:image"         content="https://gyankosh.org/images/logo3.png" />
+    <meta property="og:image"         content="{{url('challengeShare')}}" />
 </head>
 <body>
 
