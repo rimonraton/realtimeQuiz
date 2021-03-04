@@ -13,6 +13,8 @@ use App\Exam;
 use App\Question;
 use App\Quiz;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Imagick;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Lang\Bengali;
 use Carbon\Carbon;
@@ -167,6 +169,56 @@ class HomeController extends Controller
         $user['lang'] = app()->getLocale();
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('games.' . strtolower('challenge'), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
+
+    }
+
+    public function challengeShare()
+    {
+        $user = \App\User::whereIn('id', [7, 8, 9])->get();
+        $pp = public_path('img/');
+        $cover = \Image::make($pp.'vs.jpg');
+        $r1 = \Image::make($this->rounded($user[0]->avatar));
+        $r2 = \Image::make($this->rounded($user[1]->avatar));
+        $r3 = \Image::make($this->rounded($user[2]->avatar));
+
+        $canvas = \Image::canvas(625, 350);
+
+        $canvas->insert($cover);
+        $canvas->insert($r1, 'top-left', 100, 50);
+        $canvas->insert($r2, 'top-right', 100, 50);
+        $canvas->insert($r3, 'bottom', 20, 20);
+
+        $canvas->save('final.png');
+
+        return $canvas->response('png');
+    }
+
+    public function rounded($filename)
+    {
+        $image_s = imagecreatefromstring(file_get_contents($filename));
+        $width = imagesx($image_s);
+        $height = imagesy($image_s);
+        $newwidth = 100;
+        $newheight = 100;
+        $image = imagecreatetruecolor($newwidth, $newheight);
+        imagealphablending($image, true);
+        imagecopyresampled($image, $image_s, 0,0,0,0, $newwidth, $newheight, $width, $height);
+        $mask = imagecreatetruecolor($newwidth, $newheight);
+        $transparent = imagecolorallocate($mask, 255,0,0);
+        imagecolortransparent($mask, $transparent);
+        imagefilledellipse($mask, $newwidth/2, $newheight/2, $newwidth, $newheight, $transparent);
+        $red = imagecolorallocate($mask, 0,0,0);
+        imagecopymerge($image, $mask, 0,0,0,0, $newwidth, $newheight, 100);
+        imagecolortransparent($image, $red);
+        imagefill($image, 0,0,$red);
+       // header('Content-type:image/png');
+        $rand = Str::random(40);
+        $output = public_path('img/temp/'.$rand.'.png');
+        imagepng($image, $output);
+        imagedestroy($image);
+        imagedestroy($mask);
+
+        return $output;
 
     }
 
