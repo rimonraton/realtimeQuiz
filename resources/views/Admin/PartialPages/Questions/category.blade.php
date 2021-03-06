@@ -92,7 +92,7 @@
                                 @else
                                 <div class="text-center">
                                     <p>
-                                        No Data Found..
+                                        {{__('form.no_data_found')}}
                                     </p>
                                 </div>
                                 @endif
@@ -120,7 +120,7 @@
                     <div class="form-group">
                         <div class="col-12 m-b-20">
                             <select class="form-control custom-select" name="parent" id="sub_top">
-                                <option value="">{{__('form.select_topic')}}</option>
+                                <option value="0">{{__('form.select_topic')}}</option>
                                 @foreach($category_all as $c)
                                     <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
                                 @endforeach
@@ -166,13 +166,14 @@
 
         $(document).on('click', ".delete", function() {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: "{{__('form.are_you_sure')}}",
+                text: "{{__('form.no_revert')}}",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                cancelButtonText:"{{__('form.cancel')}}",
+                confirmButtonText: '{{__('form.yes_delete_it')}}!'
             }).then((result) => {
                 if (result.value) {
                     var $this = $(this);

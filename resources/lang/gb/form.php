@@ -153,6 +153,11 @@ return [
     'name' =>'Name',
     'auto'=>'Generated Password',
     'custom'=>'Custom Password',
-    'select_role'=>'Select Role',
+//    'select_role'=>'Select Role',
     'role_update'=>'User Update',
+    'no_data_found'=>'No Data Found..',
+    'are_you_sure'=>'Are you sure?',
+    'no_revert'=>"You won't be able to revert this!",
+    'yes_delete_it'=>'Yes, delete it!',
+
 ];

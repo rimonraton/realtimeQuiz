@@ -46,6 +46,7 @@ class QuizController extends Controller
 
     public function getQuestionsByTopic($id)
     {
+        $page = \request()->page;
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
 
@@ -55,7 +56,7 @@ class QuizController extends Controller
 //        }])->get();
         $questions = QuestionType::all();
 
-        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions','id','admin_users'));
+        return view('Admin.PartialPages.Quiz.Partial.questions_list', compact('questions','id','admin_users','page'));
     }
 
     public function store(Request $request)
