@@ -22,7 +22,7 @@ class QuizPolicy
 
     public function update(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 6) {
+        if ($user->roleuser->role_id === 6||$user->roleuser->role_id === 4) {
             return false;
         }
         return $user->id === $quiz->user_id;
@@ -60,17 +60,6 @@ class QuizPolicy
     }
 
 
-
-    public function readOwrite1(User $user)
-    {
-        dd($user);
-        if ($user->roleuser->role_id === 6) {
-            return false;
-        } elseif ($user->roleuser->role_id === 5) {
-            return true;
-        }
-    }
-
     public function readOwrite(User $user)
     {
 //        dd($user->roleuser->role_id);
@@ -84,6 +73,13 @@ class QuizPolicy
         elseif ($user->roleuser->role_id === 1){
             return true;
         }
+    }
+
+    public function viewQuestion(User $user ){
+        if ($user->roleuser->role_id === 6 || $user->roleuser->role_id ===4) {
+            return false;
+        }
+        return true;
     }
 
 }

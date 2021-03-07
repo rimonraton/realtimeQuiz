@@ -30,4 +30,14 @@ class QuestionPolicy
             return true;
         }
     }
+
+    public function QM (User $user){
+        if ($user->roleuser->role_id === 4){
+            return true;
+        }
+        else if($user->roleuser->role_id === 3 || $user->roleuser->role_id === 6){
+            return false;
+        }
+        return true;
+    }
 }

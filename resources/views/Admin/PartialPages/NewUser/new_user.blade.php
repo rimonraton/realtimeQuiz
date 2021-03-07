@@ -72,6 +72,7 @@
                                                     @enderror
                                                     <div class="input-group-append">
                                                         <button class="btn btn-success copy"  type="button"><i class="far fa-copy" data-pass="{{$random}}"></i></button>
+                                                        <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click Copy icon to fill the confirm password field.If you want to give custom password,first remove password form password field then type custom password."><i class="fas fa-info-circle"></i></button>
                                                     </div>
                                                 </div>
                                             </div>

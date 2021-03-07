@@ -69,7 +69,6 @@
 @section('content')
     <div class="selectedQuestionCount text-center">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
-
     </div>
 <div class="row">
     <div class="col-12">
@@ -82,18 +81,23 @@
                     <input type="hidden" name="cid" id="selectedCid" required>
                     <div class="form-group row justify-content-center">
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary active">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                    <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
-                                </div>
-                            </label>
-                            <label class="btn btn-primary">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                    <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
-                                </div>
-                            </label>
+
+                            @can('QM',\App\Question::class)
+                                <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+                            @else
+                                <label class="btn btn-primary active">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
+                                        <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
+                                    </div>
+                                </label>
+                                <label class="btn btn-primary">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
+                                        <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
+                                    </div>
+                                </label>
+                            @endcan
                         </div>
                     </div>
                     <div class="card-body">
@@ -131,7 +135,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-6">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
                                         <li class="dd-item" id="parentdd">
@@ -152,8 +156,12 @@
                                     </ol>
                                 </div>
                             </div>
+                            @can('QM',\App\Question::class)
+                            <div class="col-sm-3 mt-1">
+                                <input type="text" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ">
+                            </div>
+                            @endcan
                         </div>
-
                         <input type="hidden" name="selected" id="selectedQ">
                         <div id="viewData" class="justify-content-center" style="display: none">
 

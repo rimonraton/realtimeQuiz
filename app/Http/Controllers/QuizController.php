@@ -24,6 +24,7 @@ class QuizController extends Controller
 
     public function create()
     {
+
         $question_topic = Category::where('sub_topic_id', 0)->get();
         // $question_category = QuizCategory::all();
         $gameType = Game::all();
@@ -73,6 +74,19 @@ class QuizController extends Controller
 
     public function storeFromQB($request)
     {
+        $questions = '';
+
+          if ($request->NOQ){
+              $admin = auth()->user()->admin;
+              $admin_users = $admin->users()->pluck('id');
+              $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
+              $questions =  implode(',',$q_random);
+//              return 'Number-'.$questions;
+          }
+          else{
+              $questions = $request->selected;
+//              return 'No Number -'.$questions;
+          }
 //        $questions = array();
 //        foreach ($request->questions as $q) {
 //            $questions[] = $q;
@@ -82,7 +96,7 @@ class QuizController extends Controller
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,
             'game_id'           => $request->game_type,
-            'questions'         => $request->selected,
+            'questions'         => $questions,
             'category_id'       => $request->cid,
             'difficulty'        => $request->difficulty,
             'user_id'           => auth()->user()->id,
@@ -134,9 +148,16 @@ class QuizController extends Controller
 
     public function quizList($id)
     {
+         $role = auth()->user()->roleuser->role->role_name;
          $admin = auth()->user()->admin;
          $admin_users = $admin->users()->pluck('id');
-        $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+         if ($role ==='Quiz Master'){
+             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->paginate(10);
+         }
+         else{
+            $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+         }
+
         return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
     }
     public function deleteQuiz($id)

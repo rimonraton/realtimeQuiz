@@ -1,6 +1,4 @@
 @php $lang = App::getLocale(); @endphp
-Page:
-{{$page}}
 <div class="card w-100">
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
@@ -16,10 +14,10 @@ Page:
             @endif
             @endforeach
         </ul>
-
         <div class="tab-content">
             @foreach($questions as $q)
-                @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
+{{--                @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)--}}
+            @can('QM',\App\Question::class)
                     @if(auth()->user()->roleuser->role->role_name === 'Quiz Master')
                         <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
 
@@ -114,9 +112,8 @@ Page:
                                 </div>
                             </div>
                         </div>
-                    @endif
-
-
+{{--                    @endif--}}
+                    @endcan
                 @endif
             @endforeach
         </div>
