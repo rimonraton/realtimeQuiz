@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class  PerformController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         return Game::find('2')->load('perform_messages');

@@ -82,9 +82,7 @@
                     <div class="form-group row justify-content-center">
                         <div class="btn-group" data-toggle="buttons">
 
-                            @can('QM',\App\Question::class)
-                                <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
-                            @else
+                            @can('readOwrite',\App\Quiz::class)
                                 <label class="btn btn-primary active">
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
@@ -97,6 +95,8 @@
                                         <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
                                     </div>
                                 </label>
+                            @else
+                                <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
                             @endcan
                         </div>
                     </div>

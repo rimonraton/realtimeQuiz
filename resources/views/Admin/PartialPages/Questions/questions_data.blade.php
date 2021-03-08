@@ -14,6 +14,7 @@
             @endforeach
         </ul>
         <div class="tab-content">
+{{--            {{$questions->count()}}--}}
             @foreach($questions as $q)
             @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
             <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">

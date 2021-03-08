@@ -65,7 +65,7 @@ class QuizPolicy
 //        dd($user->roleuser->role_id);
         // return true;
 //        return $user->roleuser->role_id < 6;
-        if ($user->roleuser->role_id === 6) {
+        if ($user->roleuser->role_id === 6||$user->roleuser->role_id == 4) {
             return false;
         } elseif ($user->roleuser->role_id === 5) {
             return true;

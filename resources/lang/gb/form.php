@@ -160,4 +160,6 @@ return [
     'no_revert'=>"You won't be able to revert this!",
     'yes_delete_it'=>'Yes, delete it!',
     'no_of_questions'=>'No of Questions',
+    'question_update'=>'Update Question',
+    'delete_success'=>'Deleted Successfully',
 ];

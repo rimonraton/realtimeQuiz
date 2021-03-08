@@ -66,7 +66,7 @@
                                     <tbody>
                                         @foreach($quizcategory as $qc)
                                         <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
+                                            <td class="sorting_1">{{$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$qc->name}}</td>
                                             <td>{{$qc->bn_name}}</td>
                                             <td style="text-align: center; ">

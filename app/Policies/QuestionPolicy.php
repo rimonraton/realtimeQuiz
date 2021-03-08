@@ -24,9 +24,11 @@ class QuestionPolicy
 //        dd($user);
         if ($user->roleuser->role_id === 6) {
             return false;
-        } else if ($user->roleuser->role_id === 1) {
-            return $user->id === $question->user_id;
-        } elseif ($user->roleuser->role_id === 5) {
+        }
+//        else if ($user->roleuser->role_id === 1) {
+//            return $user->id === $question->user_id;
+//        }
+        elseif ($user->roleuser->role_id === 5 || $user->roleuser->role_id === 1) {
             return true;
         }
     }

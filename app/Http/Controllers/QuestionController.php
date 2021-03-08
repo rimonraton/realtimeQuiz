@@ -157,7 +157,7 @@ class QuestionController extends Controller
 //        return Question::where('category_id', $id)->get();
 
         $id = explode(',',$id);
-        $qus = Question::where('category_id', $id)->count();
+        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
         if ($qus) {
             $questions = QuestionType::all();
 //            with(['questions' => function ($q) use ($id) {

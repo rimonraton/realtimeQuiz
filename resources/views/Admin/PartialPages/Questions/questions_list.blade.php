@@ -106,7 +106,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Update Question</h4>
+                <h4 class="modal-title" id="myModalLabel">{{__('form.question_update')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -116,8 +116,8 @@
                     <div id="quistion_view">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">Update</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
                 </form>
@@ -206,7 +206,7 @@
                 $('#viewData').html(`<div class="container">
                                     <div class="row justify-content-md-center">
                                         <div class="alert alert-success text-center" role="alert" id="msg">
-                                            <p class="pt-3">Please select from the topic above and see the questions according to the topic.</p>
+                                            <p class="pt-3">{{__('form.question_notify')}}</p>
                                         </div>
                                     </div>
                                 </div>`);
@@ -277,19 +277,14 @@
                 console.log('BEFORE');
             },
             success: function(data) {
-                console.log(data);
+                console.log('data'+data);
                 if (data != '') {
                     $('#viewData').html(data);
-                    // toastr.success('Successfully Loaded', {
-                    //     "showMethod": "fadeIn",
-                    //     "hideMethod": "fadeOut",
-                    //     timeOut: 1000
-                    // });
                 } else {
 
                     $('#viewData').html(
                         `<div class="text-center">
-                            <p>Questions not available.</p>
+                            <p>{{__('form.no_data_found')}}</p>
                             </div>`
                     );
 
@@ -319,13 +314,14 @@
     $(document).on('click', ".delete", function(e) {
         // e.preventDefault();
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: "{{__('form.are_you_sure')}}",
+            text: "{{__('form.no_revert')}}",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: "{{__('form.yes_delete_it')}}",
+            cancelButtonText: "{{__('form.cancel')}}"
         }).then((result) => {
             if (result.value) {
                 var $this = $(this);
@@ -337,7 +333,7 @@
                         $this.closest("tr").remove();
                     },
                     complete: function() {
-                        toastr.success('Deleted Successfully.', {
+                        toastr.success("{{__('form.delete_success')}}", {
                             "closeButton": true
                         });
 

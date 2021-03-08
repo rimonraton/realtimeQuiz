@@ -264,7 +264,7 @@
                                 <div class="form-group row">
                                     <label for="lname2" class="col-sm-3 text-right control-label col-form-label">Mobile</label>
                                     <div class="col-sm-9">
-                                        <input type="text" value="{{$user->info->mobile}}" class="form-control" placeholder="Type Mobile No">
+                                        <input type="text" value="{{$user->info ? $user->info->mobile :''}}" class="form-control" placeholder="Type Mobile No">
                                     </div>
                                 </div>
                             </div>
@@ -272,7 +272,7 @@
 
                         <div class="form-group mb-0 text-right">
                             <button type="submit" class="btn btn-info waves-effect waves-light" id="payment">Payment</button>
-                            <button type="submit" class="btn btn-info waves-effect waves-light" id="send_request">Send Request</button>
+{{--                            <button type="submit" class="btn btn-info waves-effect waves-light" id="send_request">Send Request</button>--}}
                         </div>
                     </div>
 
