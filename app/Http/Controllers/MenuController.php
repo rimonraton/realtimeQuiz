@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\MenuRole;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -42,5 +43,10 @@ class MenuController extends Controller
     {
         Menu::where('id',$id)->delete();
         return "Deleted Successfully";
+    }
+
+   public function getselectedMenu($role_id){
+         $menu_id = MenuRole::where('role_id',$role_id)->first()->menu_id;
+         return explode(',',$menu_id);
     }
 }

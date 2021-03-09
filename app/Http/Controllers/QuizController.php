@@ -158,7 +158,7 @@ class QuizController extends Controller
             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
          }
 
-        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz'));
+        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
     }
     public function deleteQuiz($id)
     {

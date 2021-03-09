@@ -100,7 +100,7 @@
                     <div class="form-group row">
                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.role')}}</label>
                         <div class="col-md-6 col-sm-7" id="options">
-                            <select class="form-control  arcategory" name="role_id" id="">
+                            <select class="form-control" name="role_id" id="selectedrole">
                                 <option value="">{{__('form.select_role')}}</option>
                                 @foreach($roles as $role)
                                 <option value="{{$role->id}}">{{$lang=='gb'?$role->role_name:$role->bn_role_name}}</option>
@@ -243,6 +243,35 @@
                 }
             })
         });
+
+        $('#selectedrole').on('change',function (){
+            var role_id = $(this).val();
+            if(role_id != ''){
+                $.ajax({
+                    url:"{{url('selectedMenu')}}/" + role_id,
+                    type:'GET',
+                    success:function (data){
+                        $.each(data,function (key,value){
+                            console.log(value);
+                            $('.child').each(function(k, v) {
+                                if(value == v.value){
+                                    $(this).prop('checked', true);
+                                }
+                            });
+                        })
+                    }
+                })
+            }
+            else{
+                $('.child').prop('checked', false);
+            }
+
+        })
     })
+
+
+
+
+
 </script>
 @endsection
