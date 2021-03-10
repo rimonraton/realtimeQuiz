@@ -77,7 +77,6 @@
     position: absolute;
     left: 45%;
     top: 10px;
-    padding: 5;
     height: auto;
   }
   .normal {
@@ -117,30 +116,10 @@
   }
   .glass{
     background: transparent;
-    /*background: linear-gradient(to right bottom, rgba(255,255,255, 0.7), rgba(255,255,255, 0.3));*/
+    background: linear-gradient(to right bottom, rgba(255,255,255, 0.7), rgba(255,255,255, 0.3));
     border-radius: 15px;
   }
-  .leftbg, .rightbg {
-    background: white;
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    top: 0;
 
-
-  }
-  .leftbg {
-    background: linear-gradient(to right bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
-    left: 0;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-  }
-  .rightbg {
-    background: linear-gradient(to left bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.1));
-    right: 0;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-  }
 
   .circle-left,.circle-right{
     background: white;
@@ -179,22 +158,14 @@
         display: block;
     }*/
   }
-  .card{
-    background: transparent !important;
-  }
-  :root {
-      --animate-duration: 800ms;
-      --animate-delay: 0.5s;
-  }
+
+
 </style>
 
 @stop
 
 @section('content')
-<div class="container glass animate__animated animate__jackInTheBox animate__slow animate__delay-1s">
-  <div class="leftbg "></div>
-  <div class="rightbg  "></div>
-
+<div class="container glass  animate__zoomIn ">
   <div class="row justify-content-center">
     <div class="btn-group " role="group" aria-label="Game Mode">
       <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
@@ -215,7 +186,7 @@
       </a>
     </div>
       <select id="quizCat" data-dropdown='{ "closeReset": false }'>
-        <option >Select Quiz Category</option>
+        <option >{{ __('games.select_category') }}</option>
         @foreach($categories as $category)
           @if(count($category->childs))
             <optgroup label="{{ $category->bn_name }}">
@@ -233,7 +204,7 @@
   <div class="row justify-content-center mt-4 " id="quizlist">
     @foreach($quiz as $qz)
       <div class="col-md-4 col-sm-12 text-center mb-4 ">
-          <div class="card shadow h-100">
+          <div class="card shadow h-100 animate-fast animate__zoomIn animate__animated animate__delay-1s">
             <div class="d-flex justify-content-between py-1 px-2">
               <div class="text-muted">
                 @if($qz->progress->count())
@@ -254,10 +225,12 @@
                 {{ __('games.questions') }}
               </span>
             </div>
-
-            <a href="{{ url('Mode/' . $type . '/'. $qz->id . '/' . Auth::id()) }}" class="" >
+              @php
+                $mode = Auth::id() > 0 ? 'Mode/' : 'Mode';
+              @endphp
+            <a href="{{ url($mode . $type . '/'. $qz->id . '/' . Auth::id()) }}" class="" >
               <div class="card-body py-0 ">
-                <p class="my-3 text-primary">{{ $qz->quiz_name }}</p>
+                <h5 class="my-3 text-primary">{{ $qz->quiz_name }}</h5>
                   <div id="shareBtn{{ $qz->id }}" class="show_share shareBtnDiv"></div>
               </div>
             </a>

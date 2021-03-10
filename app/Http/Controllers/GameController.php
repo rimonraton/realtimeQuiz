@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
+use App\Progress;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
 use App\Events\GameStartEvent;
@@ -24,6 +27,10 @@ class GameController extends Controller
 	public function gameStart(Request $request): Request
     {
 		broadcast(new GameStartEvent($request))->toOthers();
+		$challenge = Challenge::find($request->id);
+		$challenge->users = implode(',', $request->uid);
+		$challenge->save();
+
 	    return $request;
 	}
 
@@ -56,10 +63,12 @@ class GameController extends Controller
 		broadcast(new GroupAnsSubEvent($request))->toOthers();
 		return $request;
 	}
-	public function savePractice()
+	public function savePractice(Request $request)
 	{
-		return 'success';
-	}
+        $created_at = ['created_at' => Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s')];
+        return Progress::insert(array_merge($request->all(), $created_at));
+
+    }
 
 
 

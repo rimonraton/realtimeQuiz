@@ -35,6 +35,8 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
+            <iframe :src="'/challengeShare/'+id.share_link" width="95" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+
         </div>
 
         <waiting :uid='uid' :users='users' :user='user'
@@ -53,6 +55,7 @@
                         > {{ Math.floor(progress) }}
                     </div>
                 </div>
+
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
                     <div class="card-body">
                         <span class="q_num text-right text-muted">Question {{ qid + 1 }} of {{ questions.length }}</span>
@@ -60,6 +63,7 @@
                         <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
 
                         <p v-html="question.question_text" class="my-2 font-bold"></p>
+
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, option.option, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1">
@@ -114,7 +118,7 @@
                 answered_user: 0,
                 answered_user_data: [],
                 results: [],
-                counter: 3,
+                counter: 2,
                 timer: null,
                 current: 0,
                 qid: 0,
@@ -136,7 +140,7 @@
         created(){
             Echo.channel(this.channel)
                 .listen('GameStartEvent', (data) => {
-                    console.log('GameStartEvent.............')
+                    console.log(['GameStartEvent.............', data])
                     this.game_start = 1 // Game Start from Game Owner...
                     this.screen.waiting = 0
                     this.QuestionTimer() // Set and Start QuestionTimer
@@ -161,7 +165,7 @@
         },
 
         mounted() {
-            Echo.join(`challenge.${this.id}.${this.uid}`)
+            Echo.join(`challenge.${this.id.id}.${this.uid}`)
                 .here((users) => {
                     this.users = users;
                 })
@@ -208,10 +212,11 @@
             //   event.returnValue = "";
             // },
 
-            gameStart(){
-                let gd = { channel: this.channel, gameStart:1 }
+            gameStart: function () {
+                let ids = this.users.map(u => u.id)
+                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id }
 
-                axios.post(`/api/gameStart`, gd)
+                axios.post(`/api/gameStart`, gd).then(res => console.log(res.data))
 
                 this.game_start = 1
                 this.screen.waiting = 0
@@ -305,6 +310,7 @@
 
                     if(this.qid+1 == this.questions.length){
                         this.winner()
+                        axios.get(`/challengeShare/${this.id.id}`).then(res => console.log(res.data))
                         return
                     }
 
@@ -395,7 +401,7 @@
                 this.progress = 100
                 this.answered = 0
                 this.answered_user = 0
-                this.counter = 3
+                this.counter = 2
                 this.screen.waiting = 0
                 this.screen.loading = 0
                 this.screen.result = 0
@@ -409,7 +415,7 @@
 
         computed: {
             channel(){
-                return `challenge.${this.id}.${this.uid}`
+                return `challenge.${this.id.id}.${this.uid}`
             },
             progressClass(){
                 return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'

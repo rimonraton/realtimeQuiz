@@ -160,7 +160,7 @@ export default {
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
-        winner() {
+        winner: function () {
             let perform = this.correct / this.questions.length * 100
 
             this.pm = this.gmsg.filter(g => g.perform_status >= perform)
@@ -183,7 +183,10 @@ export default {
                     zIndex: 999999, particleCount: 100, angle: 120, spread: 55, origin: {x: 1}, colors: colors
                 });
             }
-            this.saveQuiz();
+            if (!this.user.log > 0) {
+                this.saveQuiz();
+            }
+
         },
         saveQuiz() {
             let gd = {

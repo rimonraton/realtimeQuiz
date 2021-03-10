@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Game\ModeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\QuestionController;
@@ -142,10 +143,12 @@ Route::get('/home', function () {
 
 // Route::get('/home', 'HomeController@home')->name('home');
 
-Route::get('Mode/{type}/{category?}', 'HomeController@Mode');
-Route::get('getCategory/{type}/{category}', 'HomeController@getCategory');
+Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
 
-Route::get('Mode/{type}/{quiz}/{user}', 'HomeController@Game');
+Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
+
+Route::get('Mode/{type}/{quiz}/{user}', [HomeController::class, 'Game']);
+Route::get('Mode{type}/{quiz}', [\App\Http\Controllers\PracticeController::class, 'Game']);
 
 Route::get('Mode/{type}/{id}/{user}/share', 'HomeController@shareBtnLink');
 
@@ -172,4 +175,5 @@ Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
 Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
-Route::get('challengeShare', [HomeController::class, 'challengeShare']);
+Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
+Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShare']);
