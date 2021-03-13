@@ -80,7 +80,7 @@ class RegisterController extends Controller
         $ui->save();
         $ru = new RoleUser();
         $ru->user_id = $user->id;
-        $ru->role_id = 6;
+        $ru->role_id = 5;
         $ru->save();
         Mail::to($user->email)->send(new WelcomeMail($user));
         return $user;

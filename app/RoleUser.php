@@ -20,4 +20,7 @@ class RoleUser extends Model
     {
         return $this->hasOne(MenuRole::class,'role_id','role_id');
     }
+    public function users(){
+        return $this->hasMany(User::class);
+    }
 }

@@ -21,11 +21,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
- Route::get('testemail', function () {
-    $user = \App\User::find(9);
-     Mail::to($user->email)->send(new WelcomeMail($user));
-     return 'Success';
- });
+// Route::get('testemail', function () {
+//    $user = \App\User::find(9);
+//     Mail::to($user->email)->send(new WelcomeMail($user));
+//     return 'Success';
+// });
+
 Route::get('/', 'LandingPageController@index');
 // Route::get('landing/page', 'LandingPageController@index');
 // website setup
@@ -115,6 +116,7 @@ Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');
 
 // Payment
 Route::get('payment', [\App\Http\Controllers\PaymentController::class,'index']);
+Route::post('create-institute',[\App\Http\Controllers\PaymentController::class,'store']);
 //new User create
 Route::get('new-user',[NewUserController::class,'index'])->middleware(\App\Http\Middleware\HasAccess::class);
 Route::post('create-new-user',[NewUserController::class,'create']);

@@ -193,18 +193,19 @@
             <div class="card-body">
                 <h4 class="card-title text-center">Payment Form</h4>
                 <hr>
-                <form class="form-horizontal r-separator" id="smtform" action="{{url('')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
+                <form class="form-horizontal r-separator" id="smtform" action="{{url('create-institute')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
                     <div class="card-body">
                         <div class="form-group row justify-content-center">
                             <div >
                                 <label class="btn btn-primary">
                                         <input type="radio" id="institute" value="I" name="instituteorother" class="custom-control-input" checked="">
-                                        <label class="custom-control-label" for="institute">{{__('As Institute')}}</label>
+                                        <label class="custom-control-label" for="institute">{{__('form.institute')}}</label>
                                 </label>
                                 <label class="btn btn-primary">
                                         <input type="radio" id="switchInstitute" value="SI" name="instituteorother" class="custom-control-input">
-                                        <label class="custom-control-label" for="switchInstitute">{{__('Switch Institute')}}</label>
+                                        <label class="custom-control-label" for="switchInstitute">{{__('form.participant')}}</label>
                                 </label>
                             </div>
                         </div>
@@ -228,9 +229,9 @@
                         <div class="row">
                             <div class="col-sm-12 col-lg-12">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 text-right control-label col-form-label">Institute Name</label>
+                                    <label class="col-sm-3 text-right control-label col-form-label">{{__('form.institute_name')}}</label>
                                     <div class="col-sm-9">
-                                        <input value="" class="form-control" placeholder="Enter Your Institute Name Here.">
+                                        <input value="" class="form-control" name="institute_name" placeholder="{{__('form.institute_name_placeholder')}}">
                                     </div>
                                 </div>
                             </div>
@@ -239,10 +240,10 @@
                         <div class="row d-none" id="other_ins">
                             <div class="col-sm-12 col-lg-12">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 text-right control-label col-form-label">Institute Name</label>
+                                    <label class="col-sm-3 text-right control-label col-form-label">{{__('form.institute_name')}}</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" name="parent_id" id="">
-                                            <option value="">{{__('Select Institute')}}</option>
+                                        <select class="form-control" name="institute_id" id="">
+                                            <option value="">{{__('form.select_institute')}}</option>
                                             @foreach($institute as $ins)
                                                 <option value="{{$ins->id}}">{{$ins->institute_name}}</option>
                                             @endforeach
@@ -254,24 +255,24 @@
                         <div class="row">
                             <div class="col-sm-12 col-lg-6">
                                 <div class="form-group row">
-                                    <label for="fname2" class="col-sm-6 text-right control-label col-form-label">Email</label>
+                                    <label for="fname2" class="col-sm-6 text-right control-label col-form-label">{{__('form.email')}}</label>
                                     <div class="col-sm-6">
-                                        <input value="{{$user->email}}" class="form-control" readonly>
+                                        <input value="{{$user->email}}" name="email" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
                                 <div class="form-group row">
-                                    <label for="lname2" class="col-sm-3 text-right control-label col-form-label">Mobile</label>
+                                    <label for="lname2" class="col-sm-3 text-right control-label col-form-label">{{__('form.mobile')}}</label>
                                     <div class="col-sm-9">
-                                        <input type="text" value="{{$user->info ? $user->info->mobile :''}}" class="form-control" placeholder="Type Mobile No">
+                                        <input type="text" value="{{$user->info ? $user->info->mobile :''}}" name="mobile" class="form-control" placeholder="Type Mobile No">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light" id="payment">Payment</button>
+                            <button type="submit" class="btn btn-info waves-effect waves-light" id="payment">{{__('form.payment')}}</button>
 {{--                            <button type="submit" class="btn btn-info waves-effect waves-light" id="send_request">Send Request</button>--}}
                         </div>
                     </div>

@@ -21,23 +21,23 @@ class QuestionPolicy
     }
     public function QuestionreadOrwrite(User $user, Question $question)
     {
-//        dd($user);
-        if ($user->roleuser->role_id === 6) {
+//        dd($user->roleuser->role->role_name);
+        if ($user->roleuser->role_id === 5) {
             return false;
         }
 //        else if ($user->roleuser->role_id === 1) {
 //            return $user->id === $question->user_id;
 //        }
-        elseif ($user->roleuser->role_id === 5 || $user->roleuser->role_id === 1) {
+        elseif ($user->roleuser->role_id === 1 || $user->roleuser->role_id === 2) {
             return true;
         }
     }
 
     public function QM (User $user){
-        if ($user->roleuser->role_id === 4){
+        if ($user->roleuser->role_id === 3){
             return true;
         }
-        else if($user->roleuser->role_id === 3 || $user->roleuser->role_id === 6){
+        else if($user->roleuser->role_id === 4 || $user->roleuser->role_id === 5){
             return false;
         }
         return true;

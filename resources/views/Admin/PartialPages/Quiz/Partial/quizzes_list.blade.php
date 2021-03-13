@@ -48,8 +48,8 @@
                                             <td>
                                                 @can('viewQuestion',\App\Quiz::class)
                                                     <a class="view" style="cursor: pointer; color:teal;" data-question="{{$qs->quiz_name}}" data-id="{{$qs->id}}" title="View"><i class="fas fa-eye"></i></a>
-                                                @endcan
-                                                @can('update',$qs)
+{{--                                                @endcan--}}
+{{--                                                @can('update',$qs)--}}
                                                     <a class="edit" href="{{url('quiz/'.$qs->id.'/edit')}}" style="cursor: pointer; color:black;" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                                 @endcan
                                                 @can('readOrwrite',$qs)

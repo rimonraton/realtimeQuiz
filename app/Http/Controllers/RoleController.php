@@ -52,7 +52,7 @@ class RoleController extends Controller
     {
     //    return Auth()->user()->roleuser->role->role_name;
         $user_role = User::with('roleuser.role')->paginate(10);
-        $roles = Role::all()->except(5);
+        $roles = Role::all()->except(1);
         $users = User::all();
         return view('Admin.PartialPages.Role.role_user', compact(['roles', 'users', 'user_role']));
     }

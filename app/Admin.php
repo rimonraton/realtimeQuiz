@@ -10,4 +10,7 @@ class Admin extends Model
     public function users(){
         return $this->hasMany(User::class);
     }
+    public function userinfo(){
+        return $this->hasOne(UserInfo::class,'user_id','user_id');
+    }
 }

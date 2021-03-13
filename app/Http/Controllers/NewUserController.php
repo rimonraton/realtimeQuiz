@@ -22,16 +22,20 @@ class NewUserController extends Controller
         $this->middleware('auth');
     }
     public function index(){
+        $admin_id = auth()->user()->admin_id;
+         $role_wise_user = Role::with(['users.user'=>function ($q) use ($admin_id){
+                $q->where('admin_id',$admin_id);
+        }])->get()->except(1);
         $random= Str::random(2).mt_rand(100000, 999999);
 //        $users =  Admin::with('users.roleuser.role')->where('id',auth()->user()->admin->id)->paginate(10);
 //       return User::with('admin')->get();
-        $admin_id = auth()->user()->admin_id;
+
         $users = User::with('roleuser.role')
             ->where('admin_id',$admin_id)
             ->orderBy('id','desc')
             ->paginate(10);
-        $roles = Role::all()->except(5);
-        return view('Admin.PartialPages.NewUser.new_user',compact('users','admin_id','roles','random'));
+        $roles = Role::all()->except(1);
+        return view('Admin.PartialPages.NewUser.new_user',compact('users','admin_id','roles','random','role_wise_user'));
     }
 
     public function create(Request $request){

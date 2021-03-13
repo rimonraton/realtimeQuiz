@@ -22,7 +22,7 @@ class QuizPolicy
 
     public function update(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 6||$user->roleuser->role_id === 4) {
+        if ($user->roleuser->role_id === 4||$user->roleuser->role_id === 5) {
             return false;
         }
         return $user->id === $quiz->user_id;
@@ -30,14 +30,14 @@ class QuizPolicy
 
     public function delete(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 6) {
+        if ($user->roleuser->role_id === 5) {
             return false;
         }
         return $user->id === $quiz->user_id;
     }
     public function publish(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 6) {
+        if ($user->roleuser->role_id === 5) {
             return false;
         }
         return $user->id === $quiz->user_id;
@@ -45,16 +45,20 @@ class QuizPolicy
     public function create(User $user)
     {
         // return true;
-        return $user->roleuser->role_id < 6;
+//        return $user->roleuser->role_id < 6;
+        if ($user->roleuser->role_id === 4 || $user->roleuser->role_id === 5){
+            return false;
+        }
+        return true;
     }
 
     public function readOrwrite(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 6) {
+        if ($user->roleuser->role_id === 5) {
             return false;
-        } else if ($user->roleuser->role_id === 4) {
+        } else if ($user->roleuser->role_id === 3) {
             return $user->id === $quiz->user_id;
-        } elseif ($user->roleuser->role_id === 5 || $user->roleuser->role_id === 1) {
+        } elseif ($user->roleuser->role_id === 1 || $user->roleuser->role_id === 2) {
             return true;
         }
     }
@@ -65,18 +69,18 @@ class QuizPolicy
 //        dd($user->roleuser->role_id);
         // return true;
 //        return $user->roleuser->role_id < 6;
-        if ($user->roleuser->role_id === 6||$user->roleuser->role_id == 4) {
+        if ($user->roleuser->role_id === 5||$user->roleuser->role_id == 3) {
             return false;
-        } elseif ($user->roleuser->role_id === 5) {
+        } elseif ($user->roleuser->role_id === 1) {
             return true;
         }
-        elseif ($user->roleuser->role_id === 1){
+        elseif ($user->roleuser->role_id === 2){
             return true;
         }
     }
 
     public function viewQuestion(User $user ){
-        if ($user->roleuser->role_id === 6 || $user->roleuser->role_id ===4) {
+        if ($user->roleuser->role_id === 5 || $user->roleuser->role_id ===3) {
             return false;
         }
         return true;
