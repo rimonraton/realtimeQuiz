@@ -1957,12 +1957,26 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_waiting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/waiting */ "./resources/js/components/helper/waiting.vue");
 /* harmony import */ var _helper_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/result */ "./resources/js/components/helper/result.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -2398,6 +2412,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     gameStarted: function gameStarted(user) {
       console.log(['user', user]);
+    },
+    q2bNumber: function q2bNumber(numb) {
+      var numbString = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+
+      _toConsumableArray(numbString).forEach(function (n) {
+        return bn += eb[n];
+      });
+
+      return bn;
+    },
+    tbe: function tbe(b, e, l) {
+      if (l === 'bd' && b !== null) return b;
+      return e;
+    },
+    qne2b: function qne2b(q, qn, l) {
+      if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
+      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     }
   },
   computed: {
@@ -84594,13 +84638,16 @@ var render = function() {
             _c("img", {
               staticClass: "card-img img-responsive",
               staticStyle: { width: "500px !important" },
-              attrs: { src: "/challengeShareResult/" + _vm.share.link }
+              attrs: {
+                src:
+                  "https://gyankosh.org/challengeShareResult/" + _vm.share.link
+              }
             }),
             _vm._v(" "),
             _c("iframe", {
               staticStyle: { border: "none", overflow: "hidden" },
               attrs: {
-                src: "/challengeShare/" + _vm.share.link,
+                src: "https://gyankosh.org/challengeShare/" + _vm.share.link,
                 width: "95",
                 height: "30",
                 scrolling: "no",
@@ -84661,10 +84708,15 @@ var render = function() {
                           { staticClass: "q_num text-right text-muted" },
                           [
                             _vm._v(
-                              "Question " +
-                                _vm._s(_vm.qid + 1) +
-                                " of " +
-                                _vm._s(_vm.questions.length)
+                              "\n                        " +
+                                _vm._s(
+                                  _vm.qne2b(
+                                    _vm.qid,
+                                    _vm.questions.length,
+                                    _vm.user.lang
+                                  )
+                                ) +
+                                "\n                    "
                             )
                           ]
                         ),
@@ -84680,7 +84732,13 @@ var render = function() {
                         _c("p", {
                           staticClass: "my-2 font-bold",
                           domProps: {
-                            innerHTML: _vm._s(question.question_text)
+                            innerHTML: _vm._s(
+                              _vm.tbe(
+                                question.bd_question_text,
+                                question.question_text,
+                                _vm.user.lang
+                              )
+                            )
                           }
                         }),
                         _vm._v(" "),

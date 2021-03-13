@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\RoleUser;
+use App\UserInfo;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 use App\User;
@@ -39,6 +41,14 @@ class LoginController extends Controller
             $user->email = $socialUser->email;
             $user->avatar = $socialUser->avatar;
             $user->save();
+
+            $ui = new UserInfo();
+            $ui->user_id = $user->id;
+            $ui->save();
+            $ru = new RoleUser();
+            $ru->user_id = $user->id;
+            $ru->role_id = 6;
+            $ru->save();
             // DB::table('role_user')->insert([
             //     'role_id' => 2,
             //     'user_id' => $user->id
