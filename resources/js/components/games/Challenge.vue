@@ -35,8 +35,8 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            <img class="card-img img-responsive" :src="'/challengeShareResult/'+share.link" style="width: 500px !important">
-            <iframe :src="'/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <img class="card-img img-responsive" :src="'https://gyankosh.org/challengeShareResult/'+share.link" style="width: 500px !important">
+            <iframe :src="'https://gyankosh.org/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
 
         </div>
 
@@ -59,11 +59,13 @@
 
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
                     <div class="card-body">
-                        <span class="q_num text-right text-muted">Question {{ qid + 1 }} of {{ questions.length }}</span>
+                        <span class="q_num text-right text-muted">
+                            {{ qne2b(qid, questions.length, user.lang) }}
+                        </span>
 
                         <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
 
-                        <p v-html="question.question_text" class="my-2 font-bold"></p>
+                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>
 
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, option.option, option.correct)"
@@ -413,6 +415,24 @@
             },
             gameStarted(user){
                 console.log(['user', user])
+            },
+            q2bNumber(numb) {
+                let numbString = numb.toString();
+                let bn = ''
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                [...numbString].forEach(n => bn += eb[n])
+                return bn
+            },
+            tbe(b, e, l) {
+                if (l === 'bd' && b !== null)
+                    return b;
+                return e;
+            },
+            qne2b(q, qn, l) {
+
+                if (l === 'gb')
+                    return `Question ${q + 1} of ${qn} `;
+                return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
             }
 
         },
