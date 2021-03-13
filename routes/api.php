@@ -31,5 +31,8 @@ Route::post('submitAnswerGroup', 'GameController@submitAnswerGroup');
 //Practice
 Route::post('savePractice', 'GameController@savePractice');
 
+//Challenge
+Route::post('challengeResult', [\App\Http\Controllers\ShareController::class, 'challengeResult']);
+
 
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Challenge;
+use App\Models\Challenge;
 use App\Game;
 use App\QuestionType;
 use GuzzleHttp\Client;

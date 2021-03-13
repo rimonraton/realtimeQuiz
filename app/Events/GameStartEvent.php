@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 class GameStartEvent implements ShouldBroadcast
 {
-    public $channel, $gameStart, $uid, $id;
+    public $channel, $gameStart, $uid, $id, $share;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,6 +27,8 @@ class GameStartEvent implements ShouldBroadcast
         $this->gameStart = $request->gameStart;
         $this->uid = $request->uid;
         $this->id = $request->id;
+        $this->share = $request->share;
+
     }
 
     /**

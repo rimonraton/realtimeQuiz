@@ -3,52 +3,67 @@
 namespace App\Http\Controllers;
 
 use App\Challenge;
+use App\Models\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ShareController extends Controller
 {
+    public function challengeResult(Request $request)
+    {
+        $share = Share::find($request->share_id);
+        $share->results = json_encode($request->result);
+        $share->save();
+        return 'success';
+    }
     public function challengeShare($link)
     {
-        $this->challengeShareResult($link);
+       // $this->challengeShareResult($link);
         return view('result_share', compact('link'));
     }
     public function challengeShareResult($link)
     {
-        $challenge = \App\Challenge::where('share_link', $link)->first();
-        $users = \App\User::whereIn('id', explode(',',$challenge->users))->get();
+        $share = Share::where('link', $link)->first();
+        $sr = collect(json_decode($share->results));
+        $sr = $sr->keyBy('id');
+        $users = \App\User::whereIn('id', explode(',',$share->users_id))->get();
         $pp = public_path('img/');
 
         $result = \Image::make($pp.'result.jpg');
 
+        $resultFont = public_path('/fonts/result.ttf');
+        $rt = '/200';
         foreach ($users as $key => $user){
             $temp = $this->rounded($user->avatar, $link);
             $user_image = \Image::make($temp);
             if(\File::exists($temp)){ \File::delete($temp); }
             if($key % 2 == 1){
                 $result->insert($user_image, 'top-right', 36, 27);
+                $txt = $sr->get($user->id)->score .$rt;
+                $result->text($txt, 500, 250, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(40);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
             }else{
                 $result->insert($user_image, 'top-left', 40, 27);
+                $txt = $sr->get($user->id)->score .$rt;
+                $result->text($txt, 150, 250, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(40);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
             }
 
         }
 
-        $resultFont = public_path('/fonts/result.ttf');
 
-        $result->text('9/10', 150, 250, function($font) use($resultFont) {
-            $font->file($resultFont);
-            $font->size(40);
-            $font->color('#fdf6e3');
-            $font->align('center');
-            $font->valign('top');
-        });
-        $result->text('7/10', 500, 250, function($font) use($resultFont) {
-            $font->file($resultFont);
-            $font->size(40);
-            $font->color('#fdf6e3');
-            $font->align('center');
-            $font->valign('top');
-        });
+
+
         //$result->save($pp.'temp/'.$link.'.png');
 
         return $result->response('png');

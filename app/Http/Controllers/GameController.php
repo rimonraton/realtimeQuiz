@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Challenge;
+use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
+use App\Models\Share;
 use App\Progress;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use App\Events\GameStartEvent;
 use App\Events\KickUserEvent;
 use App\Events\NextQuestionEvent;
 use App\Events\AnswerPredictEvent;
+use Illuminate\Support\Str;
+
 // use App\Events\AnswerPredictEvent;
 
 class GameController extends Controller
@@ -24,14 +27,19 @@ class GameController extends Controller
 	    return $request;
 	}
 
-	public function gameStart(Request $request): Request
+	public function gameStart(Request $request)
     {
-		broadcast(new GameStartEvent($request))->toOthers();
-		$challenge = Challenge::find($request->id);
-		$challenge->users = implode(',', $request->uid);
-		$challenge->save();
+        $uid = implode(',', $request->uid);
+        $link = Str::random(50);
+        $share = new Share(array('users_id' => $uid, 'link' => $link));
+        $challenge = Challenge::find($request->id);
+        $cs = $challenge->share()->save($share);
+        $request->request->add(['share' => $cs]);
 
-	    return $request;
+        broadcast(new GameStartEvent($request))->toOthers();
+        return $cs;
+
+
 	}
 
 	public function kickUser(Request $request): Request

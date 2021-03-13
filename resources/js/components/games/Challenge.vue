@@ -35,7 +35,8 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            <iframe :src="'/challengeShare/'+id.share_link" width="95" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <img class="card-img img-responsive" :src="'/challengeShareResult/'+share.link" style="width: 500px !important">
+            <iframe :src="'/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
 
         </div>
 
@@ -133,6 +134,7 @@
                 user_ranking: null,
                 game_start:0,
                 progress: 100,
+                share:null,
 
             };
         },
@@ -141,6 +143,7 @@
             Echo.channel(this.channel)
                 .listen('GameStartEvent', (data) => {
                     console.log(['GameStartEvent.............', data])
+                    this.share = data.share
                     this.game_start = 1 // Game Start from Game Owner...
                     this.screen.waiting = 0
                     this.QuestionTimer() // Set and Start QuestionTimer
@@ -216,7 +219,7 @@
                 let ids = this.users.map(u => u.id)
                 let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id }
 
-                axios.post(`/api/gameStart`, gd).then(res => console.log(res.data))
+                axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
 
                 this.game_start = 1
                 this.screen.waiting = 0
@@ -309,8 +312,9 @@
                     this.questionInit()
 
                     if(this.qid+1 == this.questions.length){
+                        let gr = { result: this.results, 'share_id' : this.share.id }
+                        axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
                         this.winner()
-                        axios.get(`/challengeShare/${this.id.id}`).then(res => console.log(res.data))
                         return
                     }
 
