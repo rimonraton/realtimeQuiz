@@ -84761,7 +84761,15 @@ var render = function() {
                               },
                               [
                                 _c("span", {
-                                  domProps: { innerHTML: _vm._s(option.option) }
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.tbe(
+                                        option.bd_option,
+                                        option.option,
+                                        _vm.user.lang
+                                      )
+                                    )
+                                  }
                                 })
                               ]
                             )

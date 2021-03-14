@@ -70,7 +70,7 @@
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, option.option, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1">
-                                <span v-html="option.option"></span>
+                                <span v-html="tbe(option.bd_option, option.option, user.lang)"></span>
                             </li>
                         </ul>
                     </div>
