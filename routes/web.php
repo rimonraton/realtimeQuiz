@@ -52,6 +52,7 @@ Route::get('question/edit/{id}', 'QuestionController@editQuestion');
 Route::post('question/update', 'QuestionController@updateQuestion');
 Route::get('question/delete/{id}', 'QuestionController@deleteQuestion');
 Route::get('question/list/view/{cid}', 'QuestionController@getQuestiontoday');
+Route::get('deleteoption/{id}','QuestionController@deleteOption');
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 

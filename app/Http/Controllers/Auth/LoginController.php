@@ -47,7 +47,7 @@ class LoginController extends Controller
             $ui->save();
             $ru = new RoleUser();
             $ru->user_id = $user->id;
-            $ru->role_id = 6;
+            $ru->role_id = 5;
             $ru->save();
             // DB::table('role_user')->insert([
             //     'role_id' => 2,

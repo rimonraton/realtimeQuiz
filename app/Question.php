@@ -19,7 +19,7 @@ class Question extends Model
         return $this->belongsTo(QuizCategory::class,'quizcategory_id');
     }
     public function role(){
-        return $this->belongsTo(RoleUser::class,'user_id');
+        return $this->belongsTo(RoleUser::class,'user_id','user_id');
     }
 
     public function user(){

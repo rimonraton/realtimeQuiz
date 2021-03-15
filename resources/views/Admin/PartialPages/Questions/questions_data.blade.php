@@ -64,21 +64,29 @@
                                                 <td>{{$qs->bd_question_text}}</td>
                                                 <td class="text-center">
                                                     @foreach($qs->options as $qo)
-                                                        @if($qo->correct)
-                                                    <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                        {{$qo->option}}
-                                                    </span>
+                                                        @if($qo->option)
+                                                            @if($qo->correct)
+                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                {{$qo->option}}
+                                                            </span>
+                                                            @endif
+                                                        @else
+                                                            -
                                                         @endif
                                                     @endforeach
                                                 </td>
                                                 <td>
                                                     @foreach($qs->options as $qo)
-                                                    @if($qo->bd_option)
-                                                    <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                        {{$qo->bd_option}}
-                                                    </span>
+                                                        @if($qo->bd_option)
+                                                            @if($qo->correct)
+                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                {{$qo->bd_option}}
+                                                            </span>
+                                                                @endif
+                                                        @else
+                                                            -
                                                     @endif
                                                     @endforeach
                                                 </td>

@@ -50,7 +50,7 @@ class ProfileController extends Controller
             $path = public_path() . '/' . $location;
             $filename = $location . $random_name;
             $file->move($path, $filename);
-            $data['avatar'] = $filename;
+            $data['avatar'] = Request()->root().'/'.$filename;
         }
         UserInfo::where('user_id', $id)->update([
             "about" => $request->about,

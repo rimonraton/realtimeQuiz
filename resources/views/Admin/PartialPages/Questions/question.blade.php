@@ -16,7 +16,7 @@
     </div>
 </div>
 @foreach($QwithO->options as $QO)
-<div class="form-group row">
+<div class="form-group row" id="op_{{$QO->id}}">
     <div class="col-md-2">
         <label>{{__('form.option')}} :</label>
     </div>
@@ -27,11 +27,14 @@
     <div class="col-md-4">
         <input type="text" value="{{$QO->bd_option}}" class="form-control" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
         <div class="bt-switch">
             <input type="hidden" name="ans[]" class="hi" value="{{$QO->correct}}">
             <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$QO->correct == 1?"checked":""}} />
         </div>
+    </div>
+    <div class="col-md-1">
+        <a style="cursor: pointer" class="m-4 delete_q {{$QO->correct?'disabled':'text-danger'}} " data-id="{{$QO->id}}"><i class="fas fa-trash"></i></a>
     </div>
 </div>
 @endforeach
@@ -46,5 +49,6 @@
                 $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
             }
         });
+
     })
 </script>

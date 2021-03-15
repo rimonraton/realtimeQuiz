@@ -29,6 +29,12 @@
     .activeli {
         background-color: #e9ecef !important;
     }
+    .disabled {
+        /* Make the disabled links grayish*/
+        color: gray;
+        /* And disable the pointer events */
+        pointer-events: none;
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -115,11 +121,11 @@
                     <input type="hidden" id="uqid" name="qid">
                     <div id="quistion_view">
                     </div>
+                    <div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
-
                 </form>
             </div>
 
@@ -311,6 +317,40 @@
             }
         })
     })
+
+    $(document).on('click','.delete_q',function (){
+        Swal.fire({
+            title: "{{__('form.are_you_sure')}}",
+            text: "{{__('form.no_revert')}}",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "{{__('form.yes_delete_it')}}",
+            cancelButtonText: "{{__('form.cancel')}}"
+        }).then((result) => {
+            if (result.value) {
+                var $this = $(this);
+                var id = $this.attr('data-id');
+                $.ajax({
+                    url: "{{url('deleteoption')}}/" + id,
+                    type: "GET",
+                    success: function(data) {
+                        $('#op_'+ id).remove();
+                    },
+                    complete: function() {
+                        toastr.success("{{__('form.delete_success')}}", {
+                            "closeButton": true
+                        });
+
+                    }
+                })
+
+            }
+        })
+
+    })
+
     $(document).on('click', ".delete", function(e) {
         // e.preventDefault();
         Swal.fire({
@@ -343,6 +383,33 @@
             }
         })
 
+    });
+    $('#add_option').on('click',function (e){
+        e.preventDefault();
+        var data = '';
+        data += `<div class="form-group row">
+                            <label for="option1" class="col-md-2">{{__('form.option')}} :</label>
+                            <div class="col-sm-4">
+                            <input name=oid[] value='new' type='hidden' />
+                                <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control inpoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
+                            </div>
+                            <div class="col-sm-1 bt-switch">
+                                <input type="hidden" name="ans[]" class="hi" value="0">
+                                <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
+                            </div>
+                            <div class="col-md-1">
+                                <a style="cursor: pointer" class="m-4 text-danger remove"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>`;
+        $('#quistion_view').append(data);
+        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+    })
+
+    $(document).on('click', '.remove', function() {
+        $(this).closest('.row').remove();
     });
 </script>
 @endsection

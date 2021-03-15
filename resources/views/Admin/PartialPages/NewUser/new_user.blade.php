@@ -26,7 +26,7 @@
                                     <i class="fas fa-address-card"></i>
                                 </div>
                                 <div class="p-2 align-self-center">
-                                    <h4 class="mb-0 text-white">{{$rws->role_name}}</h4>
+                                    <h4 class="mb-0 text-white">{{$lang=='gb'?$rws->role_name:$rws->bn_role_name}}</h4>
                                     <!-- <span>Income</span> -->
                                 </div>
                                 <div class="ml-auto align-self-center">

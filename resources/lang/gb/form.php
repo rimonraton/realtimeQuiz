@@ -178,4 +178,5 @@ return [
     'admin'=>'Admin',
     'status'=>'Status',
     'institute'=>'Institutes',
+    'add_option'=>'Add Option',
 ];

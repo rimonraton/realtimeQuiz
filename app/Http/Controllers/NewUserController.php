@@ -22,6 +22,7 @@ class NewUserController extends Controller
         $this->middleware('auth');
     }
     public function index(){
+//        return Request()->root();
         $admin_id = auth()->user()->admin_id;
          $role_wise_user = Role::with(['users.user'=>function ($q) use ($admin_id){
                 $q->where('admin_id',$admin_id);

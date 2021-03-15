@@ -22,6 +22,7 @@ class QuestionController extends Controller
     // Questions Category
     public function index()
     {
+
         //  $c = array(Category::find(13)->name);
         //  $c = Category::find(13)->name;
         //  implode(", ",array_keys($c));
@@ -175,19 +176,36 @@ class QuestionController extends Controller
     }
     public function updateQuestion(Request $request)
     {
-        // return $request->all();
+//        return $request->all();
+       $max_id =  QuestionsOption::max('id') + 1;
         // return $request->cid;
         Question::where('id', $request->qid)->update([
             'question_text' => $request->question,
             'bd_question_text' => $request->bdquestion,
         ]);
         foreach ($request->option as  $k => $o) {
-            QuestionsOption::where('id', $request->oid[$k])->update([
-                'option' => $o,
-                'bd_option' => $request->bdoption[$k],
-                'correct' => $request->ans[$k]
-            ]);
+            $oid =$request->oid[$k];
+            if ($request->oid[$k]=='new'){
+                $oid =$max_id;
+                $max_id++;
+            }
+//            QuestionsOption::where('id', $request->oid[$k])->update([
+//                'option' => $o,
+//                'bd_option' => $request->bdoption[$k],
+//                'correct' => $request->ans[$k]
+//            ]);
+
+             QuestionsOption::updateOrCreate(
+                ['id' => $oid],
+                [ 'option' => $o,
+                    'bd_option' => $request->bdoption[$k],
+                    'correct' => $request->ans[$k],
+                    'question_id'=>$request->qid,
+                ]
+            );
         }
+
+//        QuestionsOption::insert();
         if ($request->cid) {
             return redirect('question/list/view/' . $request->cid);
         } else {
@@ -213,4 +231,13 @@ class QuestionController extends Controller
         return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today'));
     }
     // End Questions
+
+
+
+    //option delete
+    public function deleteOption($id)
+    {
+        QuestionsOption::where('id',$id)->delete();
+        return 'Delete Successfully';
+    }
 }
