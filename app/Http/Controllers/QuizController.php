@@ -67,7 +67,7 @@ class QuizController extends Controller
             $this->storeFromQB($request);
             return redirect('quiz/view/list/' . $request->cid);
         }
-        $this->storeFromCustom($request);
+         $this->storeFromCustom($request);
 
         return redirect('quiz/view/list/' . $request->cid);
     }
@@ -104,17 +104,26 @@ class QuizController extends Controller
     }
     public function storeFromCustom($request)
     {
+         $value = explode(',',$request->selectedindex);
+//        return $value[2];
+//        $option_value = 0;
         $questionId = array();
         foreach ($request->question as  $k => $qq) {
-            $bdoptions = 'bdoption' . $k;
-            $options = 'option' . $k;
-            $answers = 'answer' . $k;
+              $f = $value[$k];
+
+//            if($request->option1){
+//                return 'anmi text';
+//            }
+            $bdoptions = 'bdoption' . $f;
+            $options = 'option' . $f;
+            $answers = 'answer' . $f;
             $qid = Question::create([
                 'question_text'         => $qq,
                 'bd_question_text'      => $request->bdquestion[$k],
                 'answer_explanation'    => $request->explenation[$k],
                 'category_id'           =>  $request->cid,
                 'quizcategory_id'       =>  1,
+                'user_id'           => auth()->user()->id,
             ])->id;
             $questionId[] = $qid;
             foreach ($request->$options as  $i => $o) {

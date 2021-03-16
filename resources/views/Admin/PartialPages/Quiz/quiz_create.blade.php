@@ -163,6 +163,7 @@
                             @endcan
                         </div>
                         <input type="hidden" name="selected" id="selectedQ">
+                        <input type="hidden" name="selectedindex" id="selectedindex" value="0">
                         <div id="viewData" class="justify-content-center" style="display: none">
 
                         </div>
@@ -296,6 +297,7 @@
     $(function() {
         var lang ='{{$lang}}';
         var chkquestions = [];
+        var arrayindex = [0]
         var QC;
         $(document).on('click','.chk',function (){
             var id = $(this).val();
@@ -313,6 +315,21 @@
             $('#count').html(QC);
             $('#selectedQ').val(chkquestions);
         })
+
+        function addarrvalue(value){
+            arrayindex.push(value);
+            $('#selectedindex').val(arrayindex);
+            // console.log(arrayindex);
+        }
+        function removearrvalue(value){
+            arrayindex = arrayindex.filter(function(elem){
+                return elem != value;
+            });
+            $('#selectedindex').val(arrayindex);
+            // console.log(arrayindex);
+        }
+
+
         $(document).on('click',".checkAll", function() {
             if ($(this).is(':checked')){
                 $('.chk').each(function(k, v) {
@@ -474,6 +491,9 @@
         });
         $(document).on('click', '.removeQ', function() {
             $(this).closest('.NQ').remove();
+            var index = $(this).data('index');
+            removearrvalue(index);
+            // console.log(index);
         });
 
         $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
@@ -499,7 +519,7 @@
             var data = '';
             data += `<div class="NQ">
                 <hr>
-                <h3 class="text-center pb-2">{{__('form.new_ques')}} <i class="ti-close removeQ" style="color:red;cursor:pointer;"></i></h3>
+                <h3 class="text-center pb-2">{{__('form.new_ques')}} <i class="ti-close removeQ" style="color:red;cursor:pointer;" data-index="${eid}"></i></h3>
                 <div class="form-group row">
                     <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                     <div class="col-sm-9">
@@ -563,6 +583,7 @@
                     </div>
                 </div>
             </div>`;
+            addarrvalue(eid);
             $('#newQ').append(data);
             $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
 

@@ -180,3 +180,7 @@ Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
 Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShare']);
+Route::get('product',function (){
+
+    \Excel::import(new \App\Imports\QuestionImport(), public_path('prods.xlsx'));
+});
