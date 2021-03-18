@@ -203,8 +203,7 @@ class QuestionController extends Controller
                     'correct' => $request->ans[$k],
                     'question_id'=>$request->qid,
                     'dami'=>'english'
-
-                ],
+                ]
             );
         }
 

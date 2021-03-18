@@ -195,6 +195,7 @@
                 <hr>
                 <form class="form-horizontal r-separator" id="smtform" action="{{url('question/save')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                     @csrf
+
                     <input type="hidden" name="cid" id="selectedCid">
                     <div class="card-body">
                         <div class="form-group row justify-content-center">

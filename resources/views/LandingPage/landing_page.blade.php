@@ -212,7 +212,7 @@
                                     <p class="top-text"><strong>{{__('msg.practice')}}</strong></p>
                                     <p class="right-text"><strong>{{__('msg.challenge')}}</strong></p>
                                     <p class="left-text"> <strong>{{__('msg.team')}}</strong></p>
-                                    <p class="bottom-text"><strong>{{__('msg.moderator')}}</strong></p>
+                                    <p class="bottom-text"><strong>{{__('msg.quizmaster')}}</strong></p>
                                     <a href="{{url('Mode/Practice')}}" class="menu-item menu-red top-cercle">
                                         <i class="fas fa-address-card text-white"></i>
                                     </a>
