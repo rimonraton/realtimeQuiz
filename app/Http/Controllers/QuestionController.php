@@ -171,12 +171,13 @@ class QuestionController extends Controller
 
     public function editQuestion($id)
     {
-        $QwithO = Question::with('options')->where('id', $id)->first();
+         $QwithO = Question::with('options')->where('id', $id)->first();
         return view('Admin.PartialPages.Questions.question', compact('QwithO'));
     }
     public function updateQuestion(Request $request)
     {
 //        return $request->all();
+//        return $request->bdoption[3];
        $max_id =  QuestionsOption::max('id') + 1;
         // return $request->cid;
         Question::where('id', $request->qid)->update([
@@ -194,13 +195,14 @@ class QuestionController extends Controller
 //                'bd_option' => $request->bdoption[$k],
 //                'correct' => $request->ans[$k]
 //            ]);
-
-             QuestionsOption::updateOrCreate(
+            $flight = QuestionsOption::updateOrCreate(
                 ['id' => $oid],
-                [ 'option' => $o,
+                [
                     'bd_option' => $request->bdoption[$k],
+                    'option' => $o,
                     'correct' => $request->ans[$k],
                     'question_id'=>$request->qid,
+                    'dami'=>'english'
                 ]
             );
         }

@@ -391,10 +391,10 @@
                             <label for="option1" class="col-md-2">{{__('form.option')}} :</label>
                             <div class="col-sm-4">
                             <input name=oid[] value='new' type='hidden' />
-                                <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
+                                <input type="text" class="form-control" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control inpoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
+                                <input type="text" class="form-control" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
