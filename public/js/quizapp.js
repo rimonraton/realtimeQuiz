@@ -2110,7 +2110,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       user_ranking: null,
       game_start: 0,
       progress: 100,
-      share: null
+      share: null,
+      pm: '',
+      perform: 0
     };
   },
   created: function created() {
@@ -2195,7 +2197,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         channel: this.channel,
         gameStart: 1,
         uid: ids,
-        id: this.id.id
+        id: this.id.id,
+        users: this.users
       };
       axios.post("/api/gameStart", gd).then(function (res) {
         return _this3.share = res.data;
@@ -2259,6 +2262,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.screen.loading = true;
       this.answered_user++;
       this.loadingScreen();
+
+      if (this.qid + 1 == this.questions.length) {
+        var gr = {
+          result: this.results,
+          'share_id': this.share.id
+        };
+        axios.post("/api/challengeResult", gr).then(function (res) {
+          return console.log(res.data);
+        });
+      }
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
       return this.questions[this.qid].options.find(function (o) {
@@ -2293,14 +2306,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.questionInit();
 
         if (this.qid + 1 == this.questions.length) {
-          var gr = {
-            result: this.results,
-            'share_id': this.share.id
-          };
-          axios.post("/api/challengeResult", gr).then(function (res) {
-            return console.log(res.data);
-          });
           this.winner();
+          this.counter = 0;
           return;
         }
 
@@ -2340,6 +2347,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.user_ranking = this.results.findIndex(function (w) {
         return w.id == _this7.user.id;
+      });
+      var user_score = this.results[this.user_ranking].score;
+      this.perform = Math.round(user_score / ((this.qid + 1) * 100) * 100);
+      this.pm = this.gmsg.filter(function (gm) {
+        return gm.perform_status >= _this7.perform;
+      }).reduce(function (prev, curr) {
+        return prev.perform_status < curr.perform_status ? prev : curr;
       });
       this.questionInit();
       this.screen.result = 1;
@@ -2442,6 +2456,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     qne2b: function qne2b(q, qn, l) {
       if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
       return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+    },
+    getUrl: function getUrl(path) {
+      return location.origin + '/' + path;
+    },
+    getShareLink: function getShareLink(path) {
+      console.log(['urlencode', encodeURI(this.getUrl(path))]);
+      return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28';
     }
   },
   computed: {
@@ -3972,8 +3993,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'ws'],
+  props: ['results', 'ws', 'correct', 'wrong'],
   methods: {
     reloadPage: function reloadPage() {
       window.location.reload();
@@ -10061,7 +10087,7 @@ function getAlpha(string) {
 // generators
 function hexString(rgba, a) {
    var a = (a !== undefined && rgba.length === 3) ? a : rgba[3];
-   return "#" + hexDouble(rgba[0]) 
+   return "#" + hexDouble(rgba[0])
               + hexDouble(rgba[1])
               + hexDouble(rgba[2])
               + (
@@ -83914,7 +83940,7 @@ function addStyle (obj, options) {
 	// If a transform function was defined, run it on the css
 	if (options.transform && obj.css) {
 	    result = typeof options.transform === 'function'
-		 ? options.transform(obj.css) 
+		 ? options.transform(obj.css)
 		 : options.transform.default(obj.css);
 
 	    if (result) {
@@ -84560,7 +84586,7 @@ var render = function() {
                       _vm._v(
                         " " +
                           _vm._s(Math.floor(_vm.progress)) +
-                          "\n                    "
+                          "\n                        "
                       )
                     ]
                   )
@@ -84595,8 +84621,8 @@ var render = function() {
         ? _c("div", { staticClass: "winner" }, [
             _vm.user_ranking == 0
               ? _c("div", [
-                  _c("h1", { staticClass: "text-center" }, [
-                    _vm._v("Congratulation ! ")
+                  _c("h3", { staticClass: "text-center" }, [
+                    _vm._v(_vm._s(_vm.pm.perform_message) + " ")
                   ]),
                   _vm._v(" "),
                   _c("h3", [
@@ -84606,8 +84632,8 @@ var render = function() {
                 ])
               : _vm.user_ranking == 1
               ? _c("div", [
-                  _c("h1", { staticClass: "text-center" }, [
-                    _vm._v("Well Played ! ")
+                  _c("h3", { staticClass: "text-center" }, [
+                    _vm._v(_vm._s(_vm.pm.perform_message))
                   ]),
                   _vm._v(" "),
                   _c("h3", [
@@ -84639,17 +84665,17 @@ var render = function() {
               staticClass: "card-img img-responsive",
               staticStyle: { width: "500px !important" },
               attrs: {
-                src:
-                  "https://gyankosh.org/challengeShareResult/" + _vm.share.link
+                src: _vm.getUrl("challengeShareResult/" + _vm.share.link),
+                type: "image/png"
               }
             }),
             _vm._v(" "),
             _c("iframe", {
               staticStyle: { border: "none", overflow: "hidden" },
               attrs: {
-                src: "https://gyankosh.org/challengeShare/" + _vm.share.link,
-                width: "95",
-                height: "30",
+                src: _vm.getShareLink("challengeShareResult/" + _vm.share.link),
+                width: "77",
+                height: "28",
                 scrolling: "no",
                 frameborder: "0",
                 allowfullscreen: "true",
@@ -84690,7 +84716,7 @@ var render = function() {
                   _vm._v(
                     " " +
                       _vm._s(Math.floor(_vm.progress)) +
-                      "\n                "
+                      "\n                    "
                   )
                 ]
               )
@@ -84708,7 +84734,7 @@ var render = function() {
                           { staticClass: "q_num text-right text-muted" },
                           [
                             _vm._v(
-                              "\n                        " +
+                              "\n                            " +
                                 _vm._s(
                                   _vm.qne2b(
                                     _vm.qid,
@@ -84716,7 +84742,7 @@ var render = function() {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                    "
+                                "\n                        "
                             )
                           ]
                         ),
@@ -84788,7 +84814,9 @@ var render = function() {
         _c("div", { staticClass: "col-md-4" }, [
           _c("div", { staticClass: "card my-4" }, [
             _c("div", { staticClass: "card-header" }, [
-              _vm._v("\n                    User List\n                    "),
+              _vm._v(
+                "\n                        User List\n                        "
+              ),
               _vm.user.id == _vm.uid && _vm.qid > 0
                 ? _c(
                     "a",
@@ -84815,9 +84843,9 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                            " +
+                        "\n                                " +
                           _vm._s(u.name) +
-                          "\n                        "
+                          "\n                            "
                       )
                     ]
                   )
@@ -85472,7 +85500,12 @@ var render = function() {
             _c("h3", [_vm._v(_vm._s(_vm.pm.perform_message) + " ")]),
             _vm._v(" "),
             _c("resultdetails", {
-              attrs: { results: _vm.results, ws: _vm.winner_screen }
+              attrs: {
+                results: _vm.results,
+                ws: _vm.winner_screen,
+                correct: _vm.correct,
+                wrong: _vm.wrong
+              }
             })
           ],
           1
@@ -86514,25 +86547,66 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.ws == 1
-        ? _c("div", { staticClass: "card-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm btn-success",
-                on: { click: _vm.back }
-              },
-              [_vm._v("New Quiz")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm btn-secondary float-right",
-                on: { click: _vm.reloadPage }
-              },
-              [_vm._v("Replay")]
-            )
-          ])
+        ? _c(
+            "div",
+            { staticClass: "card-footer d-flex justify-content-between" },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-success",
+                  on: { click: _vm.back }
+                },
+                [_vm._v("New Quiz")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "btn-group mr-2",
+                  attrs: { role: "group", "aria-label": "Right Wrong" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-success",
+                      attrs: {
+                        type: "button",
+                        "data-toggle": "tooltip",
+                        "data-placement": "top",
+                        title: "Correct Answer"
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.correct))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-danger",
+                      attrs: {
+                        type: "button",
+                        "data-toggle": "tooltip",
+                        "data-placement": "top",
+                        title: "Wrong Answer"
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.wrong))]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-secondary",
+                  on: { click: _vm.reloadPage }
+                },
+                [_vm._v("Replay")]
+              )
+            ]
+          )
         : _vm._e()
     ])
   ])
@@ -99044,7 +99118,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99064,7 +99138,7 @@ component.options.__file = "resources/js/components/games/Challenge.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Challenge_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Challenge.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/Challenge.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Challenge_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Challenge_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99113,7 +99187,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99133,7 +99207,7 @@ component.options.__file = "resources/js/components/games/Moderator.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Moderator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Moderator.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/Moderator.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Moderator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Moderator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99182,7 +99256,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99202,7 +99276,7 @@ component.options.__file = "resources/js/components/games/Practice.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Practice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Practice.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/Practice.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Practice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Practice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99251,7 +99325,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99271,7 +99345,7 @@ component.options.__file = "resources/js/components/games/Team.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Team_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Team.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/Team.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Team_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Team_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99319,7 +99393,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99339,7 +99413,7 @@ component.options.__file = "resources/js/components/helper/PieChart.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PieChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/PieChart.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99370,7 +99444,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99390,7 +99464,7 @@ component.options.__file = "resources/js/components/helper/groupResult.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_groupResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./groupResult.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/groupResult.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_groupResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_groupResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99439,7 +99513,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99459,7 +99533,7 @@ component.options.__file = "resources/js/components/helper/moderator/questions.v
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99510,7 +99584,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99530,7 +99604,7 @@ component.options.__file = "resources/js/components/helper/practice/resultdetail
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./resultdetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_resultdetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99595,7 +99669,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99615,7 +99689,7 @@ component.options.__file = "resources/js/components/helper/result.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./result.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/result.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -99666,7 +99740,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -99686,7 +99760,7 @@ component.options.__file = "resources/js/components/helper/waiting.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./waiting.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/waiting.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 

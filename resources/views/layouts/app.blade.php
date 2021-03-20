@@ -121,6 +121,11 @@
         </main>
     </div>
     <script src="{{url('lang-'. app()->getLocale().'.js')}}"></script>
+    <script >
+        document.addEventListener('DOMContentLoaded', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
     @yield('js')
 </body>
 

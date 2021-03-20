@@ -107,11 +107,25 @@
 
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top d-flex align-items-center header-transparent">
-        <div class="container d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-center">
 
             <div class="logo mr-auto">
-
                 <h1 class="text-light"><a href="{{url('/')}}"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
+            </div>
+            <div class="dropdown mr-5 d-md-none">
+                <a class="btn btn-default dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a href="{{ url('setLanguage/gb') }}" class="language p-3 ">
+                        <img src="https://www.countryflags.io/gb/flat/24.png">
+                        {{ __('msg.english') }}
+                    </a><br>
+                    <a href="{{ url('setLanguage/bd') }}" class="language p-3 ">
+                        <img src="https://www.countryflags.io/bd/flat/24.png">
+                        {{ __('msg.bangla') }}
+                    </a>
+                </div>
             </div>
 
             <nav class="nav-menu d-none d-lg-block">

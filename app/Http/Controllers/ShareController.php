@@ -26,19 +26,23 @@ class ShareController extends Controller
         $share = Share::where('link', $link)->first();
         $sr = collect(json_decode($share->results));
         $sr = $sr->keyBy('id');
-        $users = \App\User::whereIn('id', explode(',',$share->users_id))->get();
+        $users = collect(json_decode($share->users));
+        //dd($users);
+        //$users = \App\User::whereIn('id', explode(',',$share->users_id))->get();
         $pp = public_path('img/');
 
         $result = \Image::make($pp.'result.jpg');
 
         $resultFont = public_path('/fonts/result.ttf');
-        $rt = '/200';
+        $rt = '/'. $share->challenge->quantity * 100;
         foreach ($users as $key => $user){
             $temp = $this->rounded($user->avatar, $link);
             $user_image = \Image::make($temp);
+            $flag = \Image::make('https://www.countryflags.io/'.$user->country.'/flat/48.png');
             if(\File::exists($temp)){ \File::delete($temp); }
             if($key % 2 == 1){
                 $result->insert($user_image, 'top-right', 36, 27);
+                $result->insert($flag, 'top-right', 55, 120);
                 $txt = $sr->get($user->id)->score .$rt;
                 $result->text($txt, 500, 250, function($font) use($resultFont) {
                     $font->file($resultFont);
@@ -49,6 +53,7 @@ class ShareController extends Controller
                 });
             }else{
                 $result->insert($user_image, 'top-left', 40, 27);
+                $result->insert($flag, 'top-left', 65, 120);
                 $txt = $sr->get($user->id)->score .$rt;
                 $result->text($txt, 150, 250, function($font) use($resultFont) {
                     $font->file($resultFont);
@@ -65,7 +70,7 @@ class ShareController extends Controller
 
 
         //$result->save($pp.'temp/'.$link.'.png');
-
+        header('Content-Type: image/png');
         return $result->response('png');
     }
 

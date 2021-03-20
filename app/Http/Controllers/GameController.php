@@ -31,14 +31,13 @@ class GameController extends Controller
     {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
-        $share = new Share(array('users_id' => $uid, 'link' => $link));
+        $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users)));
         $challenge = Challenge::find($request->id);
         $cs = $challenge->share()->save($share);
         $request->request->add(['share' => $cs]);
 
         broadcast(new GameStartEvent($request))->toOthers();
         return $cs;
-
 
 	}
 

@@ -292,6 +292,7 @@
 
 <script defer>
   document.addEventListener('DOMContentLoaded', function () {
+      $('[data-toggle="tooltip"]').tooltip();
     $('.shareBtn').on('click', function(){
       let id = $(this).attr('data-id');
       $('.loading'+id).addClass('spinner-grow spinner-grow-sm');

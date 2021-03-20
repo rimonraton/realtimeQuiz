@@ -24,20 +24,20 @@
 
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
-                <h1 class="text-center">Congratulation ! </h1>
+                <h3 class="text-center">{{ pm.perform_message }} </h3>
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
             </div>
             <div v-else-if="user_ranking == 1">
-                <h1 class="text-center">Well Played ! </h1>
+                <h3 class="text-center">{{ pm.perform_message }}</h3>
                 <h3><b>{{ user.name }}</b>, you got second place</h3>
             </div>
             <div v-else>
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            <img class="card-img img-responsive" :src="'https://gyankosh.org/challengeShareResult/'+share.link" style="width: 500px !important">
-            <iframe :src="'https://gyankosh.org/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-
+            <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
+<!--            <iframe :src="'https://gyankosh.org/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>-->
+            <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
         <waiting :uid='uid' :users='users' :user='user'
@@ -137,6 +137,8 @@
                 game_start:0,
                 progress: 100,
                 share:null,
+                pm:'',
+                perform:0
 
             };
         },
@@ -219,7 +221,7 @@
 
             gameStart: function () {
                 let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id }
+                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users }
 
                 axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
 
@@ -283,6 +285,10 @@
                 this.screen.loading = true
                 this.answered_user ++
                 this.loadingScreen()
+                if(this.qid+1 == this.questions.length) {
+                    let gr = {result: this.results, 'share_id': this.share.id}
+                    axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
+                }
 
             },
 
@@ -314,9 +320,8 @@
                     this.questionInit()
 
                     if(this.qid+1 == this.questions.length){
-                        let gr = { result: this.results, 'share_id' : this.share.id }
-                        axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
                         this.winner()
+                        this.counter =0
                         return
                     }
 
@@ -346,6 +351,12 @@
             },
             winner(){
                 this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+                let user_score = this.results[this.user_ranking].score
+                this.perform = Math.round((user_score / ((this.qid +1) * 100)) * 100)
+                this.pm = this.gmsg.filter(gm => gm.perform_status >= this.perform)
+                    .reduce(function (prev, curr) {
+                        return prev.perform_status < curr.perform_status ? prev : curr;
+                    });
                 this.questionInit()
                 this.screen.result = 1
                 this.screen.winner = 1
@@ -433,7 +444,15 @@
                 if (l === 'gb')
                     return `Question ${q + 1} of ${qn} `;
                 return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+            },
+            getUrl (path) {
+                return location.origin +'/'+ path
+            },
+            getShareLink(path){
+                console.log(['urlencode', encodeURI(this.getUrl(path))]);
+                return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
             }
+
 
         },
 

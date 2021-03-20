@@ -36,9 +36,14 @@
                 </ul>
               </div>
             </div>
-            <div class="card-footer" v-if="ws==1">
+            <div class="card-footer d-flex justify-content-between" v-if="ws==1">
                 <button @click="back" class="btn btn-sm btn-success">New Quiz</button>
-                <button @click="reloadPage" class="btn btn-sm btn-secondary float-right">Replay</button>
+                <div class="btn-group mr-2" role="group" aria-label="Right Wrong">
+                    <button type="button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Correct Answer">{{correct}}</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Wrong Answer">{{wrong}}</button>
+                </div>
+
+                <button @click="reloadPage" class="btn btn-sm btn-secondary">Replay</button>
             </div>
         </div>
     </div>
@@ -46,7 +51,7 @@
 
 <script>
     export default {
-        props: ['results', 'ws'],
+        props: ['results', 'ws', 'correct', 'wrong'],
 
         methods: {
             reloadPage(){

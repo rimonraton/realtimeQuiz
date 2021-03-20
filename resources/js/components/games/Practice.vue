@@ -3,7 +3,7 @@
         <div class="winner" v-if="winner_screen">
             <h2 class="text-center">Quiz Game Over</h2>
             <h3>{{ pm.perform_message }} </h3>
-            <resultdetails :results='results' :ws="winner_screen"/>
+            <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong"/>
         </div>
 
         <div class="row justify-content-center">
