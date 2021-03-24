@@ -193,16 +193,22 @@
                 <div class="card-body">
                     <h4 class="card-title text-center">{{__('msg.createQuestion')}}</h4>
                     <hr>
-                    <form class="form-horizontal r-separator" id="smtform" action="{{url('question_store_by_excel')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-center">
+                        <div>{{__('form.download_excel')}} <a href="{{asset('dami.xlsx')}}" download>{{__('form.dami_excel')}}</a>
+                            {{__('form.custom_msg')}}</div>
+{{--                        <a href="{{asset('dami.xlsx')}}" class="pl-2" download>Download Excel File</a>--}}
+                    </div>
+                    <hr>
+                    <form class="form-horizontal r-separator" id="uploadForm" action="{{url('question_store_by_excel')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                         @csrf
-
+                        <input type="hidden" name="file_url" id="file_url" class="form-control" required>
                         <div class="card-body">
                             <div class="form-group row pb-3" id="divImage">
                                 <div class="file-upload">
                                     <div class="image-upload-wrap">
-                                        <input class="file-upload-input ipf" name="file" type='file' accept=".xlsx, .xls, .csv" />
+                                        <input class="file-upload-input" id="file_path" name="file" type='file' accept=".xlsx, .xls, .csv" />
                                         <div class="drag-text">
-                                            <h3 id="txt">{{__('Drag and Drop or select a Excel file')}}</h3>
+                                            <h3 id="txt">{{__('form.excel_title')}}</h3>
                                         </div>
                                     </div>
                                     <div class="file-upload-content">
@@ -221,11 +227,10 @@
                         </div>
 
                     </form>
+                    <iframe id="docView" src='' width='100%' height='565px' frameborder='0' class="d-none"> </iframe>
                 </div>
             </div>
         </div>
-
-
     </div>
 
 
@@ -233,6 +238,11 @@
 @section('js')
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
+        // $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     }
+        // });
         $.noConflict();
         $(function() {
             // file upload
@@ -257,6 +267,8 @@
                             $('.file-upload-content').show();
 
                             $('.image-title').html(input.files[0].name);
+                            console.log("File Upload");
+                            // $('#uploadForm').change();
                         };
                     }
                     reader.readAsDataURL(input.files[0]);
@@ -271,6 +283,8 @@
                 // $('.file-upload-input').replaceWith($('.file-upload-input').clone());
                 $('.file-upload-content').hide();
                 $('.image-upload-wrap').show();
+                console.log('File Removed');
+                deleteFile()
             }
             $('.image-upload-wrap').bind('dragover', function() {
                 // alert('dragover');
@@ -281,15 +295,76 @@
                 $('.image-upload-wrap').removeClass('image-dropping');
             });
 
-            $('#image').on('change', function() {
-                $('#divImage').removeClass('d-none');
-                $('#divVideo').addClass('d-none');
-                // changeVI('Drag and drop a Image file or select add Image', 'image/*');
-            })
+            // $('#image').on('change', function() {
+            //     $('#divImage').removeClass('d-none');
+            //     $('#divVideo').addClass('d-none');
+            //     console.log('File Upload');
+            //
+            //     // changeVI('Drag and drop a Image file or select add Image', 'image/*');
+            // })
 
-            function changeVI(msg, type) {
-                $('#txt').html(msg);
-                $('.ipf').attr('accept', type);
+            function saveFile(input){
+                // var file = $('#file_path')[0].files[0];
+                // console.log(file);
+                // var formData = new FormData();
+                // formData.append('file_path',file);
+
+                $.ajax({
+                    url:"{{url('saveFile')}}",
+                    type:"POST",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data:{
+                        file_path:new FormData(input[0])
+                    },
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    // dataType: 'json',
+                    success:function (data){
+                        console.log(data);
+                    }
+                })
+            }
+            // $('.ipf').on('change',function (){
+            //     console.log('Changes');
+            // })
+            // function changeVI(msg, type) {
+            //     $('#txt').html(msg);
+            //     $('.ipf').attr('accept', type);
+            // }
+
+
+            $('#uploadForm').on('change', function(event){
+                event.preventDefault();
+                $.ajax({
+                    url:"{{ url('saveFile') }}",
+                    method:"POST",
+                    data:new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    success:function(data)
+                    {
+                        $('#docView').removeClass('d-none');
+                        var url ="https://view.officeapps.live.com/op/embed.aspx?src=";
+                        var file_url = "{{asset('/temp')}}/"+data;
+                       $('#file_url').val(data);
+                       $('#docView').attr('src',url + file_url);
+                    }
+                })
+            });
+
+            function deleteFile(){
+                $.ajax({
+                    url:"{{url('deleteFile')}}/" + $('#file_url').val(),
+                    method:"GET",
+                    success:function (data){
+                        $('#docView').addClass('d-none');
+                        $('#docView').attr('src','');
+                        $('#file_url').val('');
+                    }
+                })
             }
         })
     </script>

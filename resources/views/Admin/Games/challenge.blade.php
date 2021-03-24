@@ -1,10 +1,10 @@
 @extends('Admin.Layout.dashboard')
-<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
+{{--<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">--}}
 <link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
 <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
 
 @section('css')
-    <style>
+<style>
         .myadmin-dd .dd-list .dd-item .dd-handle-new {
             background: #fff;
             border: 1px solid rgba(120, 130, 140, .13);
@@ -71,7 +71,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body wizard-content">
-                    <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle">
+                    <h4 class="card-title text-center">{{__('msg.challenge')}} <button class="float-lg-right btn btn-primary" id="create_challenge">Create Challenge</button></h4>
+
+                    <hr>
+                    <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle d-none">
                         @csrf
                         <!-- Step 1 -->
                         <h6>Select Question Group </h6>
@@ -199,7 +202,7 @@
         </div>
 
     </div>
-    <div class="row justify-content-center mt-4 " id="quizlist">
+    <div class="row justify-content-center mt-0 " id="quizlist">
         @foreach($challenges as $ch)
             <div class="col-md-4 col-sm-12 text-center mb-4 ">
                 <div class="card shadow h-100">
@@ -340,6 +343,21 @@
                 format: 'YYYY-MM-DD h:mm:ss'
             }
         });
+
+        $('#create_challenge').on('click',function (){
+            if($('#tf').hasClass('d-none')){
+                $('#tf').removeClass('d-none');
+                $(this).text('Close')
+                $(this).removeClass('btn-primary');
+                $(this).addClass('btn-danger');
+            }
+            else {
+                $('#tf').addClass('d-none');
+                $(this).text('Create Challenge');
+                $(this).removeClass('btn-danger');
+                $(this).addClass('btn-primary');
+            }
+        })
     </script>
 
     <script>

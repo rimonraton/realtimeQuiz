@@ -271,7 +271,7 @@
                     <div class="col-lg-6 col-md-4">
                         <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
                             {!! '<i class="'.$f->icon.'" style="color:'.$f->icon_color.'"></i>' !!}
-                            <h3><a href="">{{$lang=='gb'?$f->gb_game_name:$f->bd_game_name}}</a></h3>
+                            <h3><a>{{$lang=='gb'?$f->gb_game_name:$f->bd_game_name}}</a></h3>
                         </div>
                         <ul class="list-group list-group-flush">
                             @foreach($f->features as $ff)
