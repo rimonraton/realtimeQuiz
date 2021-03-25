@@ -4,6 +4,9 @@
 {{-- <link rel="stylesheet" href="{{ asset('extra/css/codehim-dropdown.css') }}"> --}}
 
 <style type="text/css">
+    .card.shadow{
+        max-height: 140px ;
+    }
   a:hover{
     text-decoration: none !important;
   }
