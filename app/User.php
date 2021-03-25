@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function group()
     {
-        return $this->belongsTo('App\Models\Group');
+        return $this->belongsTo('App\Models\Group', 'gid');
     }
 
     public function info()

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Category;
 use App\Lang\Bengali;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,8 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-         $bang = new Bengali();
-         view()->share('bang', $bang);
+        $categories = Category::where('sub_topic_id', 0)->get();
+
+        view()->share(['bang'=> new Bengali(), 'categories' => $categories ]);
     }
 }
 

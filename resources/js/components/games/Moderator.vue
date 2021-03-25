@@ -21,14 +21,14 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            
+
         </div>
 
-        <group-result 
-            :results='results' 
-            :groupName='user.group.name' 
+        <group-result
+            :results='results'
+            :groupName='user.group.name'
             :lastQuestion='(qid + 1) == questions.length'
-                v-if="screen.result">                       
+                v-if="screen.result">
         </group-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
@@ -38,7 +38,7 @@
 
             <div class="col-md-5">
                 <div class="card text-white bg-secondary">
-                  <div class="card-header card-title d-flex justify-content-between"> 
+                  <div class="card-header card-title d-flex justify-content-between">
                     <a @click="reloadPage" class="btn btn-sm btn-warning" >Reset</a>
                     <!-- <strong>Information</strong> -->
                     <a class="btn btn-sm btn-warning" @click="nextQuestion">NEXT QUESTION</a>
@@ -48,20 +48,20 @@
                           <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
                             <div :id="'accordion' + key" class="w-100">
                                 <div class="card text-white bg-secondary">
-                                    <div class="card-header py-1 bg-secondary d-flex justify-content-between" 
-                                        :id="'heading' + key" data-toggle="collapse" 
-                                        :data-target="'#collapse' + key" aria-expanded="true" 
+                                    <div class="card-header py-1 bg-secondary d-flex justify-content-between"
+                                        :id="'heading' + key" data-toggle="collapse"
+                                        :data-target="'#collapse' + key" aria-expanded="true"
                                         :aria-controls="'collapse' + key">
                                         <small class="mb-0 cursor">
                                             {{ result.name }}
                                         </small>
                                         <span class="badge badge-success badge-pill">
-                                            {{ result.score  }} 
+                                            {{ result.score  }}
                                         </span>
                                     </div>
 
-                                    <div :id="'collapse' + key" class="collapse show" 
-                                        :aria-labelledby="'heading' + key" 
+                                    <div :id="'collapse' + key" class="collapse show"
+                                        :aria-labelledby="'heading' + key"
                                         :data-parent="'#accordion' + key">
                                       <div class="card-body p-0">
                                         <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
@@ -70,21 +70,21 @@
                                                     <!-- <span class="font-weight-bold">
                                                         {{ answer.question }}
                                                     </span> -->
-                                                    <span class="font-weight-light font-italic"> 
+                                                    <span class="font-weight-light font-italic">
                                                         {{ answer.user.name + ' - ' + answer.selected }}
                                                     </span>
-                                        <i v-if="answer.isCorrect" class="fa fa-check text-success" aria-hidden="true" ></i>
+                                        <i v-if="answer.isCorrect == 1" class="fa fa-check text-success" aria-hidden="true" ></i>
                                         <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
-                                                    
+
                                                 </div>
-                                                
+
                                             </li>
-                                          
+
                                         </ul>
                                       </div>
                                     </div>
                                 </div>
-                              
+
                             </div>
                           </li>
                         </ul>
@@ -99,9 +99,9 @@
                       </h3>
                         <ul class="list-group" >
                             <li class="list-group-item">
-                              
+
                             </li>
-                            
+
                         </ul>
                     </div>
 
@@ -126,7 +126,7 @@
                           <mark>Abul Bashar</mark>
                           <small class="text-white">5</small>
                         </li>
-                        
+
                         <li class="list-group-item">
                           <mark>Zulfiker Ali</mark>
                           <small class="text-white">1</small>
@@ -147,28 +147,28 @@
                                 <div class="col-xs-11">
                                     <h6 class="pl-1 element-animation0"> {{ ToText(question.question_text) }}</h6>
                                 </div>
-                                
+
                             </div>
                             <div class="modal-body">
                                 <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
                                     <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
                                 </div>
-                                
+
                                 <ul class="list-group" v-for="(option, index) in question.options">
-                                    <li @click="clickSelect(index, option)" 
+                                    <li @click="clickSelect(index, option)"
                                         class="list-group-item list-group-item-action cursor my-1"
                                         :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
                                         {{ ToText(option.option) }}
                                     </li>
-                                </ul> 
+                                </ul>
                             </div>
                             <div class="modal-footer text-muted d-flex justify-content-between">
-                                <button class="btn btn-secondary rounded-pill element-animation5" 
+                                <button class="btn btn-secondary rounded-pill element-animation5"
                                     :class="{disabled: !qoption.selected }"
                                     @click="predictAnswer">
                                     Group Predict
                                 </button>
-                                <button class="btn btn-success float-right rounded-pill element-animation5" 
+                                <button class="btn btn-success float-right rounded-pill element-animation5"
                                     :class="{disabled:qoption.selected == null}"
                                     @click="submitAnswer">
                                     Submit
@@ -188,7 +188,7 @@
                     <div class="card-header py-1 text-primary">{{ ug.group }} group member</div>
                     <div class="card-body p-0">
                         <ul class="list-group" v-for="member in ug.members" >
-                            <li class="list-group-item py-1" 
+                            <li class="list-group-item py-1"
                                 :class="{'text-success': member.id == user.id}"
                                 >
                                 {{ member.name }}
@@ -309,7 +309,9 @@
 
                         this.answered_user_data.push(req.data)
                         this.getResult()
-                        if(req.data.user.group_id == this.user.group_id && this.user.id != this.uid){
+                    console.log([req.data,  this.user, this.user.id, this.uid])
+
+                    if(req.data.user.gid == this.user.gid && this.user.id != this.uid){
                             this.screen.result = 1
                         }
                         if(this.user.id == this.uid){
@@ -320,17 +322,17 @@
                 .listen('PageReloadEvent', (data) => {
                     console.log('PageReloadEvent.............')
                     window.location.reload()
-                    
+
                 });
 
         },
-       
+
 
         methods: {
-            
+
             nextQuestion(){
                 console.log('NextQuestion Clicked')
-                
+
                 if(this.qid+1 == this.questions.length){
                     clearInterval(this.timer);
                         this.winner()
@@ -352,7 +354,7 @@
                     alert('Please select an option first!')
                     return;
                 }
-                
+
                 this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
                 this.qoption.selected = null
                 this.qoption.id = null
@@ -380,18 +382,18 @@
                 this.results = _(this.answered_user_data).groupBy('group')
                                 .map((answers, name) => ({
                                     name: name,
-                                    score: _.sumBy(answers, 'isCorrect'),
+                                    score: _.sumBy(answers, item => Number(item.isCorrect)),
                                     answers: _.orderBy(answers, ['id'],['desc'])
                                 }))
                                 .sortBy('score')
                                 .value()
                     console.log(JSON.stringify(this.results))
-                
+
             },
 
             predictAnswer(){
 
-                let pre = { 
+                let pre = {
                     ans: this.ToText(this.qoption.option),
                     user:this.user,
                     channel: this.channel,
@@ -419,9 +421,9 @@
             getPredict(){
                 var counts = {};
                 let options = this.questions[this.qid].options
-                this.prediction.forEach(p => { 
+                this.prediction.forEach(p => {
                     if(p.user.group_id === this.user.group_id){
-                        counts[p.ans] = (counts[p.ans] || 0)+1; 
+                        counts[p.ans] = (counts[p.ans] || 0)+1;
                     }
                 });
 
@@ -429,7 +431,7 @@
                     var c = counts[this.ToText(o.option)]
                     if(c === undefined)
                         return 0
-                    return c 
+                    return c
                 })
 
             },
@@ -455,10 +457,11 @@
                 axios.post(`/api/pageReload`, {channel: this.channel})
                 .then((response) =>{
                     console.log(['page reload event log ', response])
-                    window.location.reload()    
-                }) 
+                    window.location.reload()
+                })
             },
             clickSelect(index, option){
+                console.log([index, option])
                 if(this.qoption.selected == index){
                     this.qoption.selected = null
                     this.qoption.id = option.question_id
@@ -470,7 +473,7 @@
                     this.qoption.option= option.option
                     this.qoption.correct= option.correct
                 }
-                console.log(this.isPredict())
+                // console.log(this.isPredict())
 
             },
 
@@ -488,13 +491,13 @@
             },
 
             ToText(input){
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');  
+              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
             },
 
             answer(){
                 return this.ans;
             },
-            
+
         },
 
         computed: {
@@ -510,9 +513,9 @@
             setProgress(){
                 return {'width': 100 / this.userGroup.length  + '%', }
             },
-            
+
         }
-        
+
 
     };
 

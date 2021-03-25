@@ -63,6 +63,49 @@
             border: 1px solid blue !important;
             color: blue !important;
         }
+
+        .iframe-size{
+            width: 90vw;
+            height: 90vh;
+            left: 3vw;
+        }
+        .hide_share{
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .3s linear;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .show_share {
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition:  .5s linear;
+            opacity: 1;
+
+        }
+        .pointer{
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+        .stars {
+            position: absolute;
+            font-size: 10px;
+        }
+        .checked {
+            color: gold;
+        }
+
+        /*For menu toggler mismatch fix*/
+        .sidebartoggler{  position: absolute; margin-top: -10px;  }
+        .profile-pic{ margin-top: 20px; }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -206,11 +249,6 @@
                     <div class="d-flex justify-content-between py-1 px-2">
                         <div class="text-muted">
                             @include('includes.stars.0')
-{{--                            @if($qz->progress->count())--}}
-{{--                                @include('includes.stars.4')--}}
-{{--                            @else--}}
-{{--                                @include('includes.stars.0')--}}
-{{--                            @endif--}}
                         </div>
                         <div class="d-flex pointer p-2"
                              title="{{ __('msg.easy') }}"
@@ -219,7 +257,7 @@
                             @include('includes.difficulty.1')
                         </div>
                         <span class="text-muted">
-                @php $qc = count(explode(',', $ch->question_id)); @endphp
+                @php $qc = count(explode(',', $ch->question_id)); $cq =0; @endphp
                             {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}
                             {{ __('games.questions') }}
               </span>
@@ -227,7 +265,19 @@
 
                     <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="" >
                         <div class="card-body py-0 ">
-                            <p class="my-3 text-primary">{{ $ch->name }}</p>
+                            <p class="my-3 text-primary">{{ $ch->name }} </p>
+                            <ul class="list-group list-group-full">
+
+                                @foreach($ch->category as $clc)
+                                    <li class="list-group-item d-flex py-1"> {{$clc->name}}
+                                        <span class="badge badge-info ml-auto">
+                                            {{ $questions->where('category_id', $clc->id)->count() }}
+                                        </span>
+                                    </li>
+                                    @php $cq @endphp
+                                @endforeach
+
+                            </ul>
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
                         </div>
                     </a>
@@ -340,6 +390,27 @@
                 format: 'YYYY-MM-DD h:mm:ss'
             }
         });
+        $(window).click(function() {
+            $('.show_share').empty();
+        });
+        $('.shareBtn').on('click', function(e){
+            e.stopPropagation();
+            let id = $(this).attr('data-id');
+            $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
+
+            let hasShow = $('#shareBtn'+id).hasClass('show_share');
+            let url = '{{ url('/Mode/Challenge') }}/' + id + '/{{ Auth::id() }}' + '/share';
+            let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+
+            $('.show_share').empty();
+            $('#shareBtn'+id).append(iframe);
+
+            $('#shareFrame'+id).on('load', function(){
+                $('.loading'+id).removeClass('spinner-grow spinner-grow-sm');
+            });
+
+        });
+
     </script>
 
     <script>

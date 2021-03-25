@@ -35,10 +35,7 @@
     opacity: 1;
 
   }
-  .pointer{
-      cursor: pointer;
-      text-decoration: none !important;
-  }
+
   .stars {
     position: absolute;
     font-size: 10px;
@@ -46,7 +43,10 @@
   .checked {
     color: gold;
   }
-
+  .pointer{
+    cursor: pointer;
+    text-decoration: none !important;
+  }
 
   .info .pointer {
     background: linear-gradient(to right, #6c757d, #6c757d);
@@ -168,19 +168,19 @@
 <div class="container glass  animate__zoomIn ">
   <div class="row justify-content-center">
     <div class="btn-group " role="group" aria-label="Game Mode">
-      <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ route('practice') }}" class="btn btn-outline-success">
         <i class="fas fa-address-card "></i>
         {{ __('msg.practice') }}
       </a>
-      <a href="{{ url('game/mode/challenge') }}" class="btn btn-{{ $type =='Challenge' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Challenge') }}" class="btn btn-outline-primary">
         <i class="fas fa-people-arrows "></i>
         {{ __('msg.challenge') }}
       </a>
-      <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Moderator') }}" class="btn btn-outline-primary">
         <i class="fas fa-user "></i>
         {{ __('msg.quizmaster') }}
       </a>
-      <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Team') }}" class="btn btn-outline-primary">
         <i class="fas fa-users "></i>
         {{ __('msg.team') }}
       </a>
@@ -203,7 +203,7 @@
 
   <div class="row justify-content-center mt-4 " id="quizlist">
     @foreach($quiz as $qz)
-      @include('_quiz_card', ['qz', $qz])
+      @include('games.mode._quiz_card', ['qz'=>$qz])
     @endforeach
 
     <div class="d-flex justify-content-center my-3 table-responsive">
@@ -248,7 +248,7 @@
       $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
       let hasShow = $('#shareBtn'+id).hasClass('show_share');
-      let url = '{{ url('/Mode/' .$type) }}/' + id + '/{{ Auth::id() }}' + '/share';
+      let url = '{{ url('/Mode/Practice') }}/' + id + '/{{ Auth::id() }}' + '/share';
       let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
 
       $('.show_share').empty();
@@ -282,7 +282,7 @@
 
     $('#quizCat').on('dropdown.select', function( e, item, previous, dropdown ){
       $.ajax({
-        url: "{{ url('getCategory/'.$type) }}/" + item.value,
+        url: "{{ url('getCategory/Practice') }}/" + item.value,
         type: "GET",
         success: function(data) {
          $('#quizlist').html(data);
