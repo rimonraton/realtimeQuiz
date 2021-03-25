@@ -182,5 +182,10 @@ return [
     'add_option'=>'Add Option',
     'download_excel'=>'Please Download',
     'dami_excel'=>'Demo Excel file',
-    'custom_msg'=>'.Upload your Excel file just like the demo Excel file.'
+    'custom_msg'=>'.Upload your Excel file just like the demo Excel file.',
+    'create_challenge'=> 'Create Challenge',
+//    'close' =>'Close',
+    'select_question_group'=>'Select Question Group',
+    'question_type_number' => 'Question Type & Number',
+    'name_schedule'=>'Name and Schedule',
 ];

@@ -71,13 +71,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body wizard-content">
-                    <h4 class="card-title text-center">{{__('msg.challenge')}} <button class="float-lg-right btn btn-primary" id="create_challenge">Create Challenge</button></h4>
+                    <h4 class="card-title text-center">{{__('msg.challenge')}} <button class="float-lg-right btn btn-primary" id="create_challenge">
+                        {{__('form.create_challenge')}}</button></h4>
 
                     <hr>
                     <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle d-none">
                         @csrf
                         <!-- Step 1 -->
-                        <h6>Select Question Group </h6>
+                        <h6>{{__('form.select_question_group')}}</h6>
                         <section>
                             <div class="card my-0">
                                 <div class="card-body my-0">
@@ -126,7 +127,7 @@
                             </div>
                         </section>
                         <!-- Step 2 -->
-                        <h6>Question Type & Number</h6>
+                        <h6>{{__('form.question_type_number')}}</h6>
                         <section>
                             <div class="card">
                                 <div class="card-body">
@@ -160,7 +161,7 @@
                             </div>
                         </section>
                         <!-- Step 3 -->
-                        <h6>Name and Schedule</h6>
+                        <h6>{{__('form.name_schedule')}}</h6>
                         <section>
                             <div class="card">
                                 <div class="card-body">
@@ -299,7 +300,7 @@
             headerTag: "h6",
             bodyTag: "section",
             transitionEffect: "fade",
-            titleTemplate: '<span class="step">#index#</span> #title#',
+            titleTemplate: '<span class="step"></span>#title#',
             labels: {
                 finish: "Submit"
             },
@@ -312,6 +313,7 @@
             onFinished: function(event, currentIndex) {
                 $('#tf').submit();
             }
+
         }),
             $(".validation-wizard").validate({
             ignore: "input[type=hidden]",
@@ -345,15 +347,19 @@
         });
 
         $('#create_challenge').on('click',function (){
+            var create_challenge = "{{__('form.create_challenge')}}";
+            var close = "{{__('form.cancel')}}";
             if($('#tf').hasClass('d-none')){
+                // console.log(close);
                 $('#tf').removeClass('d-none');
-                $(this).text('Close')
+                $(this).text(close)
                 $(this).removeClass('btn-primary');
                 $(this).addClass('btn-danger');
             }
             else {
+                // console.log(create_challenge);
                 $('#tf').addClass('d-none');
-                $(this).text('Create Challenge');
+                $(this).text(create_challenge);
                 $(this).removeClass('btn-danger');
                 $(this).addClass('btn-primary');
             }
