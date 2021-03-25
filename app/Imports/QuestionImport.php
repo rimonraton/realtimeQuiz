@@ -2,10 +2,12 @@
 
 namespace App\Imports;
 
+use App\Category;
 use App\Question;
 use App\QuestionsOption;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use function React\Promise\Stream\first;
 
 class QuestionImport implements ToCollection
 {
@@ -15,10 +17,23 @@ class QuestionImport implements ToCollection
     public function collection(Collection $collection)
     {
 //        dd($collection[1][1]);
+        $topic = '';
+//        dd($topic);
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
         foreach ($collection as $k=>$row)
         {
             if($k==0){
                 continue;
+            }
+          $tdata = Category::where('name',$row[1])->whereIn('user_id',$admin_users)->first();
+            if ($tdata){
+                $topic = $tdata->id;
+            }else{
+              $topic_id =  Category::create([
+                    'name'=>$row[1]
+                ])->id;
+                $topic = $topic_id;
             }
 //            dd($row[1]);
 
@@ -26,7 +41,7 @@ class QuestionImport implements ToCollection
                 'user_id'=> auth()->user()->id,
                 'question_text' => $row[0],
                 'status'=>count($row),
-                'category_id'=>$row[1],
+                'category_id'=>$topic,
                 'quizcategory_id'=>1,
             ]);
             $co = explode(" ",$row[7])[1];
