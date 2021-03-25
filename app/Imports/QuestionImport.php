@@ -20,7 +20,9 @@ class QuestionImport implements ToCollection
             if($k==0){
                 continue;
             }
-         $Qid =   Question::create([
+//            dd($row[1]);
+
+            $Qid =   Question::create([
                 'user_id'=> auth()->user()->id,
                 'question_text' => $row[0],
                 'status'=>count($row),
