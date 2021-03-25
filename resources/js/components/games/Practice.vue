@@ -203,9 +203,7 @@ export default {
             window.location.reload()
         },
         tbe(b, e, l) {
-            if (l === 'bd' && b !== null)
-                return b;
-            return e;
+            return l === 'bd' ? (b !== null ? b : e) : (e !== null ? e : b)
         },
         q2bNumber(numb) {
             let numbString = numb.toString();
