@@ -4,6 +4,9 @@
 {{-- <link rel="stylesheet" href="{{ asset('extra/css/codehim-dropdown.css') }}"> --}}
 
 <style type="text/css">
+    .card.shadow{
+        max-height: 140px ;
+    }
   a:hover{
     text-decoration: none !important;
   }
@@ -163,7 +166,7 @@
 </style>
 
 @stop
-
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="container glass  animate__zoomIn ">
   <div class="row justify-content-center">
@@ -189,13 +192,13 @@
         <option >{{ __('games.select_category') }}</option>
         @foreach($categories as $category)
           @if(count($category->childs))
-            <optgroup label="{{ $category->bn_name }}">
+            <optgroup label="{{ $lang == 'bd' ? $category->bn_name : $category->name }}">
               @foreach($category->childs as $cc)
-              <option>{{ $cc->bn_name }}</option>
+              <option>{{ $lang == 'bd' ? $cc->bn_name : $cc->name  }}</option>
               @endforeach
             </optgroup>
           @else
-          <option>{{ $category->bn_name }}</option>
+          <option>{{ $lang == 'bd' ? $category->bn_name : $category->name  }}</option>
           @endif
         @endforeach
       </select>
