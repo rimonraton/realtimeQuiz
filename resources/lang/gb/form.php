@@ -6,6 +6,7 @@ return [
     'video' => 'Video',
     'image_title' => 'Drag and drop a Image file or select add Image',
     'video_title' => 'Drag and drop a Video file or select add Video',
+    'excel_title' => 'Drag and drop a Excel file or select add Video',
     'remove' => 'Remove',
     'uploaded_image' => 'Uploaded Image',
     'uploaded_video' => 'Uploaded Video',
@@ -179,4 +180,7 @@ return [
     'status'=>'Status',
     'institute'=>'Institutes',
     'add_option'=>'Add Option',
+    'download_excel'=>'Please Download',
+    'dami_excel'=>'Demo Excel file',
+    'custom_msg'=>'.Upload your Excel file just like the demo Excel file.'
 ];

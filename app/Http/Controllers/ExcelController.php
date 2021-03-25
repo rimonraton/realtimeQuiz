@@ -8,6 +8,10 @@ use Illuminate\Support\Str;
 
 class ExcelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         return view('Admin.PartialPages.Questions.partial.question_excel');
@@ -15,22 +19,10 @@ class ExcelController extends Controller
 
     public function store(Request $request)
     {
-        $imgPath='';
-        if ($request->hasFile('file')) {
-            $original_name = $request->file('file')->getClientOriginalName();
-            $ext = strtolower(\File::extension($original_name));
-            $created_at = Carbon::now('Asia/Dhaka');
-            $t = $created_at->timestamp;
-            $r = Str::random(40);
-            $random_name = $t . '' . $r . '.' . $ext;
-            $path = public_path() . '/' . 'excel_file/';
-            $filename = "excel_file/" . $random_name;
-            $request->file('file')->move($path, $filename);
-            $imgPath = $filename;
+        \Excel::import(new \App\Imports\QuestionImport(), public_path('temp/'.$request->file_url));
+        if(\File::exists(public_path('temp/'.$request->file_url))){
+            \File::delete(public_path('temp/'.$request->file_url));
         }
-//        return public_path($imgPath);
-//        return asset($imgPath);
-        \Excel::import(new \App\Imports\QuestionImport(), public_path($imgPath));
         return redirect('question/list');
     }
 }
