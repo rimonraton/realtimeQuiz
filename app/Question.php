@@ -11,7 +11,7 @@ class Question extends Model
 
     public function options()
     {
-        return $this->hasMany(QuestionsOption::class);
+        return $this->hasMany(QuestionsOption::class)->inRandomOrder();
     }
 
     public function category()

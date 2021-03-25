@@ -54,6 +54,7 @@ class HomeController extends Controller
         //  $questions = $exam->questions()->with('options')->get();
         $user = Auth::user();
         $user['lang'] = app()->getLocale();
+        $user['group'] = Auth::user()->group;
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('games.' . strtolower($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
     }
@@ -108,8 +109,9 @@ class HomeController extends Controller
         $questionType = QuestionType::all();
         $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
         $lang = $this->lang;
-         $challenges = Challenge::latest()->paginate(9);
-        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges']));
+        $challenges = Challenge::latest()->paginate(9);
+        $questions = Question::all();
+        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions']));
     }
 
     public function createChallenge(Request $request)

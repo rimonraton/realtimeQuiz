@@ -1,10 +1,10 @@
 @extends('Admin.Layout.dashboard')
-{{--<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">--}}
+<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
 <link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
 <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
 
 @section('css')
-<style>
+    <style>
         .myadmin-dd .dd-list .dd-item .dd-handle-new {
             background: #fff;
             border: 1px solid rgba(120, 130, 140, .13);
@@ -63,6 +63,49 @@
             border: 1px solid blue !important;
             color: blue !important;
         }
+
+        .iframe-size{
+            width: 90vw;
+            height: 90vh;
+            left: 3vw;
+        }
+        .hide_share{
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .3s linear;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .show_share {
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition:  .5s linear;
+            opacity: 1;
+
+        }
+        .pointer{
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+        .stars {
+            position: absolute;
+            font-size: 10px;
+        }
+        .checked {
+            color: gold;
+        }
+
+        /*For menu toggler mismatch fix*/
+        .sidebartoggler{  position: absolute; margin-top: -10px;  }
+        .profile-pic{ margin-top: 20px; }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -71,14 +114,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body wizard-content">
-                    <h4 class="card-title text-center">{{__('msg.challenge')}} <button class="float-lg-right btn btn-primary" id="create_challenge">
-                        {{__('form.create_challenge')}}</button></h4>
-
-                    <hr>
-                    <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle d-none">
+                    <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle">
                         @csrf
                         <!-- Step 1 -->
-                        <h6>{{__('form.select_question_group')}}</h6>
+                        <h6>Select Question Group </h6>
                         <section>
                             <div class="card my-0">
                                 <div class="card-body my-0">
@@ -127,7 +166,7 @@
                             </div>
                         </section>
                         <!-- Step 2 -->
-                        <h6>{{__('form.question_type_number')}}</h6>
+                        <h6>Question Type & Number</h6>
                         <section>
                             <div class="card">
                                 <div class="card-body">
@@ -161,7 +200,7 @@
                             </div>
                         </section>
                         <!-- Step 3 -->
-                        <h6>{{__('form.name_schedule')}}</h6>
+                        <h6>Name and Schedule</h6>
                         <section>
                             <div class="card">
                                 <div class="card-body">
@@ -203,18 +242,13 @@
         </div>
 
     </div>
-    <div class="row justify-content-center mt-0 " id="quizlist">
+    <div class="row justify-content-center mt-4 " id="quizlist">
         @foreach($challenges as $ch)
             <div class="col-md-4 col-sm-12 text-center mb-4 ">
                 <div class="card shadow h-100">
                     <div class="d-flex justify-content-between py-1 px-2">
                         <div class="text-muted">
                             @include('includes.stars.0')
-{{--                            @if($qz->progress->count())--}}
-{{--                                @include('includes.stars.4')--}}
-{{--                            @else--}}
-{{--                                @include('includes.stars.0')--}}
-{{--                            @endif--}}
                         </div>
                         <div class="d-flex pointer p-2"
                              title="{{ __('msg.easy') }}"
@@ -223,7 +257,7 @@
                             @include('includes.difficulty.1')
                         </div>
                         <span class="text-muted">
-                @php $qc = count(explode(',', $ch->question_id)); @endphp
+                @php $qc = count(explode(',', $ch->question_id)); $cq =0; @endphp
                             {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}
                             {{ __('games.questions') }}
               </span>
@@ -231,7 +265,19 @@
 
                     <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="" >
                         <div class="card-body py-0 ">
-                            <p class="my-3 text-primary">{{ $ch->name }}</p>
+                            <p class="my-3 text-primary">{{ $ch->name }} </p>
+                            <ul class="list-group list-group-full">
+
+                                @foreach($ch->category as $clc)
+                                    <li class="list-group-item d-flex py-1"> {{$clc->name}}
+                                        <span class="badge badge-info ml-auto">
+                                            {{ $questions->where('category_id', $clc->id)->count() }}
+                                        </span>
+                                    </li>
+                                    @php $cq @endphp
+                                @endforeach
+
+                            </ul>
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
                         </div>
                     </a>
@@ -300,7 +346,7 @@
             headerTag: "h6",
             bodyTag: "section",
             transitionEffect: "fade",
-            titleTemplate: '<span class="step"></span>#title#',
+            titleTemplate: '<span class="step">#index#</span> #title#',
             labels: {
                 finish: "Submit"
             },
@@ -313,7 +359,6 @@
             onFinished: function(event, currentIndex) {
                 $('#tf').submit();
             }
-
         }),
             $(".validation-wizard").validate({
             ignore: "input[type=hidden]",
@@ -345,25 +390,27 @@
                 format: 'YYYY-MM-DD h:mm:ss'
             }
         });
+        $(window).click(function() {
+            $('.show_share').empty();
+        });
+        $('.shareBtn').on('click', function(e){
+            e.stopPropagation();
+            let id = $(this).attr('data-id');
+            $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
-        $('#create_challenge').on('click',function (){
-            var create_challenge = "{{__('form.create_challenge')}}";
-            var close = "{{__('form.cancel')}}";
-            if($('#tf').hasClass('d-none')){
-                // console.log(close);
-                $('#tf').removeClass('d-none');
-                $(this).text(close)
-                $(this).removeClass('btn-primary');
-                $(this).addClass('btn-danger');
-            }
-            else {
-                // console.log(create_challenge);
-                $('#tf').addClass('d-none');
-                $(this).text(create_challenge);
-                $(this).removeClass('btn-danger');
-                $(this).addClass('btn-primary');
-            }
-        })
+            let hasShow = $('#shareBtn'+id).hasClass('show_share');
+            let url = '{{ url('/Mode/Challenge') }}/' + id + '/{{ Auth::id() }}' + '/share';
+            let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+
+            $('.show_share').empty();
+            $('#shareBtn'+id).append(iframe);
+
+            $('#shareFrame'+id).on('load', function(){
+                $('.loading'+id).removeClass('spinner-grow spinner-grow-sm');
+            });
+
+        });
+
     </script>
 
     <script>

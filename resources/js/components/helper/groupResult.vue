@@ -7,20 +7,20 @@
               <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
                 <div :id="'accordion' + key" class="w-100">
                     <div class="card text-white bg-secondary">
-                        <div class="card-header py-1 bg-secondary d-flex justify-content-between" 
-                            :id="'heading' + key" data-toggle="collapse" 
-                            :data-target="'#collapse' + (result.name == groupName? key:'')" aria-expanded="true" 
+                        <div class="card-header py-1 bg-secondary d-flex justify-content-between"
+                            :id="'heading' + key" data-toggle="collapse"
+                            :data-target="'#collapse' + (result.name == groupName? key:'')" aria-expanded="true"
                             :aria-controls="'collapse' + key">
                             <small class="mb-0 cursor">
                                 {{ result.name }}
                             </small>
                             <span class="badge badge-success badge-pill">
-                                {{ result.score  }} 
+                                {{ result.score  }}
                             </span>
                         </div>
 
                         <div :id="'collapse' + key" class="collapse" :class="{show: result.name == groupName}"
-                            :aria-labelledby="'heading' + key" 
+                            :aria-labelledby="'heading' + key"
                             :data-parent="'#accordion' + key">
                           <div class="card-body p-0">
                             <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
@@ -29,21 +29,21 @@
                                         <!-- <span class="font-weight-bold">
                                             {{ answer.question }}
                                         </span> -->
-                                        <span class="font-weight-light font-italic"> 
+                                        <span class="font-weight-light font-italic">
                                             {{ answer.user.name + ' - ' + answer.selected }}
                                         </span>
-                            <i v-if="answer.isCorrect" class="fa fa-check text-success" aria-hidden="true" ></i>
+                            <i v-if="answer.isCorrect==1" class="fa fa-check text-success" aria-hidden="true" ></i>
                             <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
-                                        
+
                                     </div>
-                                    
+
                                 </li>
-                              
+
                             </ul>
                           </div>
                         </div>
                     </div>
-                  
+
                 </div>
               </li>
             </ul>
@@ -66,7 +66,7 @@ export default{
     }
 
 };
-	
+
 </script>
 <style>
 

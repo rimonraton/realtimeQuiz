@@ -234,7 +234,7 @@
                                         <a data-url="A4jqX3Psbig" href="#" class="play-btn mb-4 yt"></a>
                                     </div>
 
-                                    <a href="{{url('Mode/Challenge')}}" class="menu-item menu-green right-cercle">
+                                    <a href="{{url('game/mode/challenge')}}" class="menu-item menu-green right-cercle">
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
 

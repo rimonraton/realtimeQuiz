@@ -1,14 +1,18 @@
 <?php
 
+use App\Http\Controllers\Game\ChallengeController;
 use App\Http\Controllers\Game\ModeController;
+use App\Http\Controllers\Game\PracticeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserCredential;
 use App\Mail\WelcomeMail;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 //use Mail;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -149,6 +153,8 @@ Route::get('/home', function () {
 // Route::get('/home', 'HomeController@home')->name('home');
 
 Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
+//Route::get('Mode/Practice', [PracticeController::class, 'Practice'])->name('practice');
+//Route::get('Mode/Challenge', [ChallengeController::class, 'Challenge'])->name('challenge');
 
 Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
 
