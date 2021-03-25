@@ -16,7 +16,7 @@
             </div>
             <span class="text-muted">
                 @php $qc = count(explode(',', $qz->questions)); @endphp
-                {{ app()->getLocale() == 'bd'? $ban->bn_number($qc) . 'টি ' : $qc  }}
+                {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}
                 {{ __('games.questions') }}
               </span>
         </div>
