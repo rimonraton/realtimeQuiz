@@ -195,3 +195,8 @@ Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::clas
 
 Route::post('saveFile',[\App\Http\Controllers\FileController::class,'store']);
 Route::get('deleteFile/{path}',[\App\Http\Controllers\FileController::class,'deleteFile']);
+
+
+//export
+
+Route::get('export_questions',[\App\Http\Controllers\ExcelController::class,'export']);

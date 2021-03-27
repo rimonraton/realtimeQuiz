@@ -22,7 +22,6 @@ class QuestionController extends Controller
     // Questions Category
     public function index()
     {
-
         //  $c = array(Category::find(13)->name);
         //  $c = Category::find(13)->name;
         //  implode(", ",array_keys($c));
@@ -82,16 +81,20 @@ class QuestionController extends Controller
     // Questions
     public function list($id = '')
     {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
         $catName = '';
         if ($id) {
             $catName = Category::find($id)->name;
         }
-        $topic = Category::where('sub_topic_id', 0)->get();
+         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName']));
     }
     public function create()
     {
-        $category = Category::where('sub_topic_id', 0)->get();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         $quizCategory = QuestionType::all();
         return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory']));
     }

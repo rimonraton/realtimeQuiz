@@ -24,8 +24,9 @@ class QuizController extends Controller
 
     public function create()
     {
-
-        $question_topic = Category::where('sub_topic_id', 0)->get();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+         $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         // $question_category = QuizCategory::all();
         $gameType = Game::all();
         return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType']));
@@ -33,6 +34,8 @@ class QuizController extends Controller
 
     public function list($tid = '')
     {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
         $catName = '';
         if ($tid) {
             if (app()->getLocale() == 'gb') {
@@ -41,7 +44,7 @@ class QuizController extends Controller
                 $catName = Category::find($tid)->bn_name;
             }
         }
-        $category = Category::where('sub_topic_id', 0)->get();
+        $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid', 'catName'));
     }
 
