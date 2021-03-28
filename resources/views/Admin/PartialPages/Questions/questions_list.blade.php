@@ -58,12 +58,18 @@
                                         @foreach($topic as $c)
                                         <li class="dd-item">
                                             <div class="dd-handle-new topicls" data-cid="{{$c->id}}">
+
 {{--                                                @if(count($c->childs) == 0)--}}
 {{--                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">--}}
 {{--                                                @endif--}}
-                                                <span>{{$lang=='gb'?$c->name:$c->bn_name}}</span></div>
+
+                                                <span>
+                                                    {{$c->name == 'gb'?($c->name?$c->name:$c->bn_name):($c->bn_name?$c->bn_name:$c->name)}}
+
+                                                </span>
+                                            </div>
                                             @if(count($c->childs))
-                                            @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
+                                                @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
                                             @endif
                                         </li>
                                         @endforeach
@@ -73,9 +79,11 @@
                         </div>
 
                     </div>
+
 {{--                    <div class="col-sm-2 mt-1">--}}
 {{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
 {{--                    </div>--}}
+
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
 

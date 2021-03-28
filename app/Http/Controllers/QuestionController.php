@@ -107,16 +107,19 @@ class QuestionController extends Controller
         //     'option' => 'required',
         //     'correct' => 'required',
         // ]);
+
         $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
         if ($request->customRadio == 'image') {
             $location = 'images/question_images/';
             $file = $request->file('file');
-        } else {
+        }
+        else {
             $location = 'videos/question_videos/';
             $file = $request->file('video');
         }
+
         if ($request->hasFile('file') || $request->hasFile('video')) {
             $original_name = $file->getClientOriginalName();
             $ext = strtolower(\File::extension($original_name));
@@ -129,6 +132,7 @@ class QuestionController extends Controller
             $file->move($path, $filename);
             $imgPath = $filename;
         }
+
         $question = Question::create([
             'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,
@@ -144,13 +148,17 @@ class QuestionController extends Controller
             $data[$k]['question_id'] = $question->id;
             $data[$k]['option'] = $o;
         }
+
         foreach ($request->optionbd as  $k => $o) {
             $data[$k]['bd_option'] = $o;
         }
+
         foreach ($request->ans as  $k => $a) {
             $data[$k]['correct'] = $a;
         }
+
         QuestionsOption::insert($data);
+
         return redirect('question/list/view' . '/' . $categoryid);
     }
     public function getlist($id)
@@ -228,12 +236,10 @@ class QuestionController extends Controller
     public function getQuestiontoday($id)
     {
         $today = Carbon::parse(Carbon::now())->format('Y-m-d');
-//        $questions =  QuestionType::with(['questions' => function ($q) use ($today, $id) {
-//            $q->where('created_at', '>', $today);
-//            $q->where('category_id', $id);
-//        }, 'questions.options'])->get();
         $questions =  QuestionType::all();
-        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today'));
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today','admin_users'));
     }
     // End Questions
 
