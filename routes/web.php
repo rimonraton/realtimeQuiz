@@ -42,10 +42,11 @@ Route::get('faq', 'SetupController@faq');
 // dashboard
 Route::get('dashboard', 'AdminController@index');
 // Question Category
-Route::get('question/category', 'QuestionController@index');
+Route::get('question/category', [QuestionController::class,'index']);
 Route::post('question/savecategory', 'QuestionController@store');
-Route::post('question/updatecategory', 'QuestionController@update');
+Route::post('question/updatecategory', [QuestionController::class,'update']);
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
+Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::class,'search']);
 
 // Questions
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);

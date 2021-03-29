@@ -188,4 +188,5 @@ return [
     'select_question_group'=>'Select Question Group',
     'question_type_number' => 'Question Type & Number',
     'name_schedule'=>'Name and Schedule',
+    'search'=>'Search..',
 ];

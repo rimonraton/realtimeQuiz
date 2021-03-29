@@ -188,5 +188,5 @@ return [
     'select_question_group'=>'প্রশ্ন গ্রুপ নির্বাচন করুন',
     'question_type_number' => 'প্রশ্নের ধরণ এবং নম্বর',
     'name_schedule'=>'নাম এবং সময়সূচী',
-
+    'search'=>'অনুসন্ধান করুন..',
 ];

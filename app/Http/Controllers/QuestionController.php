@@ -31,9 +31,9 @@ class QuestionController extends Controller
         // dd($values);
 
         $admin_users = \auth()->user()->admin->users()->pluck('id');
-        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
+//        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
         $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
-        return view('Admin.PartialPages.Questions.category', compact('category','category_all'));
+        return view('Admin.PartialPages.Questions.category', compact('category_all'));
     }
     public function store(Request $request)
     {
@@ -60,16 +60,21 @@ class QuestionController extends Controller
     }
     public function update(Request $request)
     {
+//       return $request->all();
         $request->validate([
             'name' => 'required',
             // 'bn_name' => 'required',
         ]);
-        Category::where('id', $request->id)->update([
+      $category =  Category::where('id', $request->id)->update([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
             'sub_topic_id'=>$request->parent
         ]);
-        return redirect('question/category');
+        return [
+            'name' =>$request->name,
+            'bn_name'=>$request->bn_name,
+        ];
+//        return redirect('question/category');
     }
     public function delete($id)
     {
