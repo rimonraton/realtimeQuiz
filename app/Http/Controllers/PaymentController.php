@@ -24,7 +24,7 @@ class PaymentController extends Controller
         return view('Admin.PartialPages.Payment.payment', compact('user','institute'));
     }
     public function store(Request $request){
-        return $request->all();
+//        return $request->all();
         $imgPath ='';
         $user_id = \auth()->user()->id;
         if($request->instituteorother == 'I'){
