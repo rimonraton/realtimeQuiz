@@ -48,7 +48,7 @@ class PaymentController extends Controller
                 'photo'=>$imgPath,
             ]);
             RoleUser::where('user_id',$user_id)->update([
-                'role_id'=> 1,
+                'role_id'=> 2,
             ]);
             User::where('id',$user_id)->update([
                 'admin_id'=>$admin->id
