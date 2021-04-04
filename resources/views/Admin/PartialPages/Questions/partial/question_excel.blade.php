@@ -194,7 +194,7 @@
                     <h4 class="card-title text-center">{{__('msg.createQuestion')}}</h4>
                     <hr>
                     <div class="d-flex justify-content-center">
-                        <div>{{__('form.download_excel')}} <a href="{{asset('dami.xlsx')}}" download>{{__('form.dami_excel')}}</a>
+                        <div>{{__('form.download_excel')}} <a href="{{url('export_questions')}}" download>{{__('form.dami_excel')}}</a>
                             {{__('form.custom_msg')}}</div>
 {{--                        <a href="{{asset('dami.xlsx')}}" class="pl-2" download>Download Excel File</a>--}}
                     </div>

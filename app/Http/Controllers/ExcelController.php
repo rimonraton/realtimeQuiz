@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\QuestionExport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,5 +25,10 @@ class ExcelController extends Controller
             \File::delete(public_path('temp/'.$request->file_url));
         }
         return redirect('question/list');
+    }
+
+    public function export()
+    {
+        return \Excel::download(new QuestionExport(), 'dami.xlsx');
     }
 }

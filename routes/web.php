@@ -42,10 +42,11 @@ Route::get('faq', 'SetupController@faq');
 // dashboard
 Route::get('dashboard', 'AdminController@index');
 // Question Category
-Route::get('question/category', 'QuestionController@index');
+Route::get('question/category', [QuestionController::class,'index']);
 Route::post('question/savecategory', 'QuestionController@store');
-Route::post('question/updatecategory', 'QuestionController@update');
+Route::post('question/updatecategory', [QuestionController::class,'update']);
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
+Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::class,'search']);
 
 // Questions
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
@@ -149,6 +150,7 @@ Route::get('/home', function () {
 });
 
 
+
 // Route::get('/home', 'HomeController@home')->name('home');
 
 Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
@@ -160,7 +162,7 @@ Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory'
 Route::get('Mode/{type}/{quiz}/{user}', [HomeController::class, 'Game']);
 Route::get('Mode{type}/{quiz}', [\App\Http\Controllers\PracticeController::class, 'Game']);
 
-Route::get('Mode/{type}/{id}/{user}/share', [HomeController::class, 'shareBtnLink']);
+Route::get('Mode/{type}/{id}/{user}/share', 'HomeController@shareBtnLink');
 
 // Route::get('game/{id}/{user}', 'HomeController@game');
 
@@ -182,7 +184,7 @@ Route::get('getProgress/{id}', [HomeController::class, 'getProgress']);
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
-Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge']);
+Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
@@ -194,4 +196,8 @@ Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::clas
 
 Route::post('saveFile',[\App\Http\Controllers\FileController::class,'store']);
 Route::get('deleteFile/{path}',[\App\Http\Controllers\FileController::class,'deleteFile']);
-Route::get('makeQuizImage', [\App\Http\Controllers\ShareController::class, 'makeQuizImage']);
+
+
+//export
+
+Route::get('export_questions',[\App\Http\Controllers\ExcelController::class,'export']);

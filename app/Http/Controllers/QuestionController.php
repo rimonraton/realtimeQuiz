@@ -22,7 +22,6 @@ class QuestionController extends Controller
     // Questions Category
     public function index()
     {
-
         //  $c = array(Category::find(13)->name);
         //  $c = Category::find(13)->name;
         //  implode(", ",array_keys($c));
@@ -32,9 +31,9 @@ class QuestionController extends Controller
         // dd($values);
 
         $admin_users = \auth()->user()->admin->users()->pluck('id');
-        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
+//        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
         $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
-        return view('Admin.PartialPages.Questions.category', compact('category','category_all'));
+        return view('Admin.PartialPages.Questions.category', compact('category_all'));
     }
     public function store(Request $request)
     {
@@ -61,16 +60,21 @@ class QuestionController extends Controller
     }
     public function update(Request $request)
     {
+//       return $request->all();
         $request->validate([
             'name' => 'required',
             // 'bn_name' => 'required',
         ]);
-        Category::where('id', $request->id)->update([
+      $category =  Category::where('id', $request->id)->update([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
             'sub_topic_id'=>$request->parent
         ]);
-        return redirect('question/category');
+        return [
+            'name' =>$request->name,
+            'bn_name'=>$request->bn_name,
+        ];
+//        return redirect('question/category');
     }
     public function delete($id)
     {
@@ -82,16 +86,20 @@ class QuestionController extends Controller
     // Questions
     public function list($id = '')
     {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
         $catName = '';
         if ($id) {
             $catName = Category::find($id)->name;
         }
-        $topic = Category::where('sub_topic_id', 0)->get();
+         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName']));
     }
     public function create()
     {
-        $category = Category::where('sub_topic_id', 0)->get();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         $quizCategory = QuestionType::all();
         return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory']));
     }
@@ -104,16 +112,19 @@ class QuestionController extends Controller
         //     'option' => 'required',
         //     'correct' => 'required',
         // ]);
+
         $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
         if ($request->customRadio == 'image') {
             $location = 'images/question_images/';
             $file = $request->file('file');
-        } else {
+        }
+        else {
             $location = 'videos/question_videos/';
             $file = $request->file('video');
         }
+
         if ($request->hasFile('file') || $request->hasFile('video')) {
             $original_name = $file->getClientOriginalName();
             $ext = strtolower(\File::extension($original_name));
@@ -126,6 +137,7 @@ class QuestionController extends Controller
             $file->move($path, $filename);
             $imgPath = $filename;
         }
+
         $question = Question::create([
             'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,
@@ -141,13 +153,17 @@ class QuestionController extends Controller
             $data[$k]['question_id'] = $question->id;
             $data[$k]['option'] = $o;
         }
+
         foreach ($request->optionbd as  $k => $o) {
             $data[$k]['bd_option'] = $o;
         }
+
         foreach ($request->ans as  $k => $a) {
             $data[$k]['correct'] = $a;
         }
+
         QuestionsOption::insert($data);
+
         return redirect('question/list/view' . '/' . $categoryid);
     }
     public function getlist($id)
@@ -225,12 +241,10 @@ class QuestionController extends Controller
     public function getQuestiontoday($id)
     {
         $today = Carbon::parse(Carbon::now())->format('Y-m-d');
-//        $questions =  QuestionType::with(['questions' => function ($q) use ($today, $id) {
-//            $q->where('created_at', '>', $today);
-//            $q->where('category_id', $id);
-//        }, 'questions.options'])->get();
         $questions =  QuestionType::all();
-        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today'));
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today','admin_users'));
     }
     // End Questions
 

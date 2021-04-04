@@ -1,109 +1,87 @@
 @extends('Admin.Layout.dashboard')
 @php $lang = App::getLocale(); @endphp
+@section('css')
+    <style>
+        .custom-select {
+            display: inline-block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem 1.75rem .375rem .75rem;
+            font-size: .875rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #54667a;
+            vertical-align: middle;
+            background: #fff url("{{asset('images/custom-select.png')}}") no-repeat right .75rem center/8px 5px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            appearance: none;
+        }
+    </style>
+@endsection
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsTopics')}}</h4>
+                <h4 class="card-title text-center">{{__('msg.questionsTopics')}}
+                <button type="button" class="btn btn-info btn-rounded float-lg-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
+                </h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
-                <!-- Add Contact Popup Model -->
-                <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">{{__('form.new_topic')}}</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal form-material" method="POST" action="{{url('question/savecategory')}}" autocomplete="off">
-                                    @csrf
-                                    <div class="form-group">
-                                        <div class="col-12 m-b-20">
-                                            <select class="form-control custom-select" name="topic">
-                                                <option value="">{{__('form.select_topic')}}</option>
-                                                @foreach($category_all as $c)
-                                                <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.sub_topic_en')}}" require>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-12 m-b-20">
-                                            <input type="text" class="form-control" name="bn_name" placeholder="{{__('form.sub_topic_bn')}}" require>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                        <!-- /.modal-content -->
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="category_search">
                     </div>
-                    <!-- /.modal-dialog -->
                 </div>
-                <div class="table-responsive" style="overflow-x: hidden">
+                <div id="showCategory">
 
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @if($category->count() > 0)
-                                <table class="table table-striped table-bordered" >
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 0px;">{{__('form.sl')}}</th>
-                                            <th style="width: 0px;">{{__('form.topic_en')}}</th>
-                                            <th style="width: 0px;">{{__('form.topic_bn')}}</th>
-                                            <th style="width: 0px;">{{__('form.action')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($category as $c)
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$c->name}}</td>
-                                            <td>{{$c->bn_name}}</td>
-                                            <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" data-bangla="{{$c->bn_name}}" data-st="{{$c->sub_topic_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.topic_en')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.topic_bn')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                    {{$category->links()}}
-                                @else
-                                <div class="text-center">
-                                    <p>
-                                        {{__('form.no_data_found')}}
-                                    </p>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Add Contact Popup Model -->
+<div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{__('form.new_topic')}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-material" method="POST" action="{{url('question/savecategory')}}" autocomplete="off">
+                    @csrf
+                    <div class="form-group">
+                        <div class="col-12 m-b-20">
+                            <select class="form-control custom-select" name="topic">
+                                <option value="">{{__('form.select_topic')}}</option>
+                                @foreach($category_all as $c)
+                                    <option value="{{$c->id}}">{{$lang=='gb'?$c->name:$c->bn_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-12 m-b-20">
+                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.sub_topic_en')}}" require>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-12 m-b-20">
+                            <input type="text" class="form-control" name="bn_name" placeholder="{{__('form.sub_topic_bn')}}" require>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 
 <div id="edit-category" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -114,8 +92,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}" autocomplete="off">
-                    @csrf
+{{--                <form class="form-horizontal form-material" method="POST" action="{{url('question/updatecategory')}}" autocomplete="off">--}}
+{{--                    @csrf--}}
                     <input type="hidden" id="uid" name="id">
                     <div class="form-group">
                         <div class="col-12 m-b-20">
@@ -138,11 +116,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+{{--                        <button type="submit" class="btn btn-info waves-effect upt">{{__('form.update')}}</button>--}}
+                        <button type="button" class="btn btn-info waves-effect upt">{{__('form.update')}}</button>
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
-                </form>
+{{--                </form>--}}
             </div>
 
         </div>
@@ -155,6 +134,43 @@
 @section('js')
 <script>
     $(function() {
+        allCategory();
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function() {
+                    // $('.loading').show();
+                    // $('#msg').hide();
+                    // $('#viewData').hide();
+                    console.log('BEFORE');
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data != '') {
+                        $('#showCategory').html(data);
+                    } else {
+
+                        $('#showCategory').html(
+                            `<div class="text-center">
+                            <p>Questions not available.</p>
+                            </div>`
+                        );
+
+                    }
+                    console.log(data);
+                },
+                complete: function() {
+                    // $('.loading').hide();
+                    $('#showCategory').show();
+                    console.log('COMPLETE');
+
+                }
+            })
+            // window.history.pushState("", "", url);
+        });
         $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
@@ -197,6 +213,58 @@
                 }
             })
         });
+
+        $(document).on('keyup','#category_search',function (){
+            let keyword = $(this).val();
+            if (keyword != '')
+            {
+                $.ajax({
+                    url:"{{url('search_category')}}/" + keyword,
+                    type:"GET",
+                    success:function (data){
+                        $('#showCategory').html(data);
+                    }
+                })
+            }
+            else {
+                allCategory();
+            }
+        });
+
+        function allCategory(){
+            $.ajax({
+                url:"{{url('search_category')}}/" + 'all',
+                type:"GET",
+                success:function (data){
+                    $('#showCategory').html(data);
+                }
+            })
+        }
+    });
+    $('.upt').on('click',function (){
+        let uid = $('#uid').val();
+        let sub_id = $('#sub_top').val();
+        let name = $('#editName').val();
+        let bn_name = $('#editbanglaName').val();
+        let _token   = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url:"{{url('question/updatecategory')}}",
+            type:"POST",
+            data:{
+                _token:_token,
+                id:uid,
+                parent :sub_id,
+                name:name,
+                bn_name:bn_name
+            },
+            success:function (data){
+                $('#btn_'+uid).attr('data-name',data.name).attr('data-bangla',data.bn_name);
+                $('#name_'+uid).html(data.name);
+                $('#edit-category').modal('hide');
+
+            }
+        })
+        console.warn(uid,sub_id,name,bn_name);
     })
 </script>
 @endsection

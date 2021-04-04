@@ -24,7 +24,7 @@ class PaymentController extends Controller
         return view('Admin.PartialPages.Payment.payment', compact('user','institute'));
     }
     public function store(Request $request){
-        return $request->all();
+//        return $request->all();
         $imgPath ='';
         $user_id = \auth()->user()->id;
         if($request->instituteorother == 'I'){
@@ -48,7 +48,7 @@ class PaymentController extends Controller
                 'photo'=>$imgPath,
             ]);
             RoleUser::where('user_id',$user_id)->update([
-                'role_id'=> 1,
+                'role_id'=> 2,
             ]);
             User::where('id',$user_id)->update([
                 'admin_id'=>$admin->id

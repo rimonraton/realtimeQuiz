@@ -77,7 +77,8 @@
                                                                             </thead>
                                                                             <tbody>
                                                                             @php
-                                                                                $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->paginate(10);
+
+                                                                                    $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->whereIn('user_id',$admin_users)->paginate(10);
                                                                             @endphp
                                                                                 @foreach($questionCat as $qs)
                                                                                 <tr>
