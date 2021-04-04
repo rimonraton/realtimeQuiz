@@ -109,7 +109,7 @@ class HomeController extends Controller
         $questionType = QuestionType::all();
         $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
         $lang = $this->lang;
-        $challenges = Challenge::latest()->paginate(9);
+        $challenges = Challenge::latest()->paginate(12);
         $questions = Question::all();
         return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions']));
     }

@@ -101,4 +101,28 @@ class ShareController extends Controller
         return $output;
 
     }
+
+    public function makeQuizImage()
+    {
+        $pp = public_path('img/quiz/');
+
+
+        $gk = \Image::make($pp.'gk.jpg');
+        $sp = \Image::make($pp.'sp.jpg');
+        $al = \Image::make($pp.'al.jpg');
+
+        $gk->resize(100, null);
+        $sp->resize(100, null);
+        $al->resize(100, null);
+
+        $img_canvas = \Image::canvas(300, 200);
+        $img_canvas->insert($al, 'left');
+        $img_canvas->insert($sp, 'right');
+        $img_canvas->insert($gk, 'center');
+        $img_canvas->save($pp.'ags'.'.jpg');
+
+//        $img_canvas->insert($al, 'right');
+        header('Content-Type: image/png');
+        return $img_canvas->response('png');
+    }
 }
