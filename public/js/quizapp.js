@@ -4057,7 +4057,8 @@ __webpack_require__.r(__webpack_exports__);
       return "/images/gp/".concat(random, ".jpg");
     },
     back: function back() {
-      window.history.back(); // window.history.back()
+      // window.history.back()
+      window.location = '/game/mode/challenge';
     }
   }
 });

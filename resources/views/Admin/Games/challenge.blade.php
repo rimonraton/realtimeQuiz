@@ -150,7 +150,9 @@
                                                                         <label class="" for="topic{{$c->id}}">
                                                                             {{$lang=='gb'?$c->name:$c->bn_name}}
                                                                             @if( ! count($c->childs))
-                                                                                <span class="badge badge-pill badge-info float-right">{{$c->questions_count}}</span>
+                                                                                <span class="badge badge-pill badge-info float-right">
+                                                                                    {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}
+                                                                                </span>
                                                                             @endif
                                                                         </label>
 
@@ -281,9 +283,9 @@
                             @endforeach
 
                             {{ trans('games.challeng_message', [ 'questions' => $beq, 'categories' => $qcat ])}}
-                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>
 
                             </p>
+{{--                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
                         </div>
                         <div class="d-flex justify-content-between">
                             <a class="shareBtn pointer small btn btn-xs btn-outline-info" data-id="{{ $ch->id }}">
@@ -393,15 +395,19 @@
     <script>
         var form = $(".validation-wizard").show();
 
+
         $(".validation-wizard").steps({
             headerTag: "h6",
             bodyTag: "section",
             transitionEffect: "fade",
             titleTemplate: '<span class="step">#index#</span> #title#',
             labels: {
-                finish: "Submit"
+                finish: "Submit",
+                next: "{{__('games.next')}}",
+                previous: "{{__('games.previous')}}",
             },
             onStepChanging: function(event, currentIndex, newIndex) {
+                console.log([event, currentIndex, newIndex]);
                 return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
             },
             onFinishing: function(event, currentIndex) {
@@ -450,7 +456,7 @@
             $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
             let hasShow = $('#shareBtn'+id).hasClass('show_share');
-            let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}";
+            let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
             let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
 
             $('.show_share').empty();
@@ -501,7 +507,11 @@
                 $('#categoryId').val(topics_id.slice(0, -1));
 
                 $('.selectedTopic').html(topics)
-                $('.selectedTopic').append(`<span class="badge badge-pill badge-danger float-right">${qCount}</span>`);
+                $('.selectedTopic')
+                    .append(`
+                        <span class="badge badge-pill badge-danger float-right">
+                        ${e2bNumber(qCount, '{{ app()->getLocale() }}')}</span>
+                    `);
 
                 $('.smt').attr('data-tid',topics_id);
             })
@@ -582,6 +592,16 @@
 
             $('#nestable-menu').nestable();
         })
+
+        function e2bNumber(numb, l) {
+            if (l === 'gb')
+                return numb;
+            let numbString = numb.toString();
+            let bn = '';
+            let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+            [...numbString].forEach(n => bn += eb[n]);
+            return bn
+        }
 
         function topicwithcategory(id) {
 

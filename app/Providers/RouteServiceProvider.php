@@ -63,6 +63,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(function ($router){
                 require base_path( 'routes/web.php');
                 require base_path( 'routes/admin.php');
+                require base_path( 'routes/games.php');
             });
     }
 

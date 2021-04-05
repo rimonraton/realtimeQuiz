@@ -32,8 +32,8 @@ export default{
             return `/images/gp/${random}.jpg`;
         },
         back(){
-            window.history.back()
             // window.history.back()
+            window.location = '/game/mode/challenge';
         },
     }
 

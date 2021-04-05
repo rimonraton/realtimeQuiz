@@ -36,7 +36,8 @@ class ShareController extends Controller
         $resultFont = public_path('/fonts/result.ttf');
         $rt = '/'. $share->challenge->quantity * 100;
         foreach ($users as $key => $user){
-            $temp = $this->rounded($user->avatar, $link);
+            $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
+            $temp = $this->rounded($avatar, $link);
             $user_image = \Image::make($temp);
             $flag = \Image::make('https://www.countryflags.io/'.$user->country.'/flat/48.png');
             if(\File::exists($temp)){ \File::delete($temp); }
