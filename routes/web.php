@@ -184,10 +184,11 @@ Route::get('getProgress/{id}', [HomeController::class, 'getProgress']);
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
-Route::get('Challenge/{challenge}/{user}', 'HomeController@Challenge');
+Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge']);
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
+Route::get('challengeShareResult/{link}/details', [\App\Http\Controllers\ShareController::class, 'challengeShareResultDetails']);
 Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShare']);
 //Route::get('product',function (){
 //

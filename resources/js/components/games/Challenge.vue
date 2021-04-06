@@ -36,11 +36,10 @@
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
             <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
-<!--            <iframe :src="'https://gyankosh.org/challengeShare/'+share.link" width="95" height="30" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>-->
-            <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <iframe :src="getShareLink('challengeShareResult/'+share.link+'/details')" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
-        <waiting :uid='uid' :users='users' :user='user'
+        <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
                 @gameReset="gameReset"

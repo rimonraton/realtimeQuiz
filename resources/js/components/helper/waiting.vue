@@ -1,7 +1,7 @@
 <template>
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
-	        <div class="card-header">Player Joined. 
+	        <div class="card-header">Player Joined.
 	            <code v-if="user.id != uid" class="ml-2">Please Wait until Game Start..</code>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
@@ -17,14 +17,19 @@
 	                    </span>
 	                    <button
 	                    	v-if="( u.id != user.id) && (user.id == uid)"
-	                    	@click="kickingUser(u.id)" 
+	                    	@click="kickingUser(u.id)"
 	                    	class="close">
 	                        <span title="Kick User">&times;</span>
 	                    </button>
 	                </li>
 	            </ul>
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
-	            <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
+	            <div class="d-flex justify-content-between">
+                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
+                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">
+                    </a>
+
+                </div>
 	        </div>
 	       <!--  <div class="card-footer">
 	            <div v-if="user.id == uid" class="sharethis-inline-share-buttons"></div>
@@ -32,13 +37,22 @@
 	    </div>
 
 	</div>
-	
+
 </template>
 
 <script>
 export default{
-	props:['user', 'uid', 'users'],
-
+	props:['user', 'uid', 'users', 'time'],
+    data() {
+        return {
+            days: '',
+            hours: '',
+            minutes: '',
+            seconds: '',
+            schedule: '',
+            timer: null
+        };
+    },
     methods:{
     	kickingUser(id){
     		this.$emit("kickingUser", id);
@@ -51,10 +65,31 @@ export default{
         getFlag(country){
         	return 'https://www.countryflags.io/'+country+'/flat/48.png';
         },
+        scheduledTimer(){
+            let countDownDate = new Date(this.time).getTime();
+            this.timer = setInterval(() => {
+                let now = new Date().getTime();
+                let distance = countDownDate - now;
+                this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                this.schedule = this.days + "d " + this.hours + "h " + this.minutes + "m " + this.seconds + "s ";
+                if (distance < 0) {
+                    clearInterval(this.timer);
+                    this.schedule = '<i class="fas fa-check"></i>';
+                }
+
+            }, 1000);
+        }
+    },
+    created: function(){
+        this.scheduledTimer()
+        console.log('scheduledTimer started')
     }
 
 };
-	
+
 </script>
 <style>
 	.circle{
@@ -68,7 +103,7 @@ export default{
         font-size: 1.5rem;
         background: gray;
         color: white;
-        
+
     }
     .flag{
 		position: absolute;
@@ -76,9 +111,9 @@ export default{
 		top: 0px;
     }
     .close{
-    	position: absolute; 
-    	top: -5px;	
-    	right: 0px;	
+    	position: absolute;
+    	top: -5px;
+    	right: 0px;
     	color: red;
     }
 </style>

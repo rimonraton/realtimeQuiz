@@ -298,59 +298,7 @@
                         </div>
                     </div>
                 </div>
-                            {{--                <div class="card shadow h-100">--}}
-{{--                    <div class="d-flex justify-content-between py-1 px-2">--}}
-{{--                        <div class="text-muted">--}}
-{{--                            @include('includes.stars.0')--}}
-{{--                        </div>--}}
-{{--                        <div class="d-flex pointer p-2"--}}
-{{--                             title="{{ __('msg.easy') }}"--}}
-{{--                             data-placement="top"--}}
-{{--                             data-toggle="tooltip">--}}
-{{--                            @include('includes.difficulty.1')--}}
-{{--                        </div>--}}
-{{--                        <span class="text-muted">--}}
-{{--                @php $qc = count(explode(',', $ch->question_id)); $cq =0; @endphp--}}
-{{--                            {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}--}}
-{{--                            {{ __('games.questions') }}--}}
-{{--              </span>--}}
-{{--                    </div>--}}
 
-{{--                    <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="" >--}}
-{{--                        <div class="card-body py-0 ">--}}
-{{--                            <p class="my-3 text-primary">{{ $ch->name }} </p>--}}
-{{--                            <ul class="list-group list-group-full">--}}
-
-{{--                                @foreach($ch->category as $clc)--}}
-{{--                                    <li class="list-group-item d-flex py-1"> {{$clc->name}}--}}
-{{--                                        <span class="badge badge-info ml-auto">--}}
-{{--                                            {{ $questions->where('category_id', $clc->id)->count() }}--}}
-{{--                                        </span>--}}
-{{--                                    </li>--}}
-{{--                                    @php $cq @endphp--}}
-{{--                                @endforeach--}}
-
-{{--                            </ul>--}}
-{{--                            <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>--}}
-{{--                        </div>--}}
-{{--                    </a>--}}
-
-{{--                    <div class="info d-flex justify-content-between py-1 px-2 mt-auto ">--}}
-{{--                        <a class="lessonResult pointer " id="{{ $ch->id }}"--}}
-{{--                           title="{{ __('msg.history') }}"--}}
-{{--                           data-placement="top"--}}
-{{--                           data-toggle="tooltip">--}}
-{{--                            <i class="fas fa-user-clock"></i>--}}
-{{--                            0--}}
-{{--                        </a>--}}
-{{--                            <a class="shareBtn pointer small " data-id="{{ $ch->id }}">--}}
-{{--                                <i class="fas fa-share-alt"></i> {{ __('msg.share') }}--}}
-{{--                                <div class="loading{{ $ch->id }}"></div>--}}
-{{--                            </a>--}}
-
-{{--                        <i class="fas fa-check text-success"></i>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
         @endforeach
 
