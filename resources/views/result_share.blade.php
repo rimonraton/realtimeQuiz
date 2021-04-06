@@ -1,9 +1,11 @@
 <!Doctype>
 <html>
 <head>
-    <title>Gyankosh</title>
-    <meta property="og:title" content="Gyankosh Challenge Result">
-    <meta property="og:image" content="{{url('challengeShareResult/'.$link)}}">
+    <meta property="og:url"           content="{{url('challengeShareResult/'.$link .'/details')}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Gyankosh Challenge Result" />
+    <meta property="og:description"   content="Gyankosh {{challenge->name}} জ্ঞানের সমৃদ্ধি জ্ঞানকোষের সাথে " />
+    <meta property="og:image"         content="{{url('challengeShareResult/'.$link)}}" />
 </head>
 <body>
 
@@ -16,11 +18,6 @@
         js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-
-<!-- Your share button code -->
-<div class="fb-share-button"
-     data-layout="button_count">
-</div>
 
 </body>
 </html>
