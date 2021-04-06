@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Challenge;
+use App\Category;
+use App\Models\Challenge;
 use App\Models\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -21,11 +22,21 @@ class ShareController extends Controller
        // $this->challengeShareResult($link);
         return view('result_share', compact('link'));
     }
+
+    public function challengeShareResultDetails($link)
+    {
+        $share = Share::where('link', $link)->first();
+        $challenge = Challenge::find($share->challenge_id);
+        $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
+        $sr = collect(json_decode($share->results));
+        $sr = $sr->keyBy('id')->sortByDesc('score');
+        return view('result_share_details', compact('sr','link', 'challenge', 'categories'));
+    }
     public function challengeShareResult($link)
     {
         $share = Share::where('link', $link)->first();
         $sr = collect(json_decode($share->results));
-        $sr = $sr->keyBy('id');
+        $sr = $sr->keyBy('id')->sortByDesc('score');
         $users = collect(json_decode($share->users));
         //dd($users);
         //$users = \App\User::whereIn('id', explode(',',$share->users_id))->get();
@@ -36,51 +47,89 @@ class ShareController extends Controller
         $resultFont = public_path('/fonts/result.ttf');
         $rt = '/'. $share->challenge->quantity * 100;
         foreach ($users as $key => $user){
-            $temp = $this->rounded($user->avatar, $link);
+            $s = $key >1 ? 50 : 90;
+            if($key >2){$s = 40;}
+            $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
+            $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
             $flag = \Image::make('https://www.countryflags.io/'.$user->country.'/flat/48.png');
             if(\File::exists($temp)){ \File::delete($temp); }
-            if($key % 2 == 1){
-                $result->insert($user_image, 'top-right', 36, 27);
-                $result->insert($flag, 'top-right', 55, 120);
-                $txt = $sr->get($user->id)->score .$rt;
-                $result->text($txt, 500, 250, function($font) use($resultFont) {
+            $name = $sr->get($user->id)->name;
+            $score = $sr->get($user->id)->score .$rt;
+
+            if($key == 0){
+                $result->insert($user_image, 'top-left', 40, 27);
+                $result->text($name, 85, 125, function($font) use($resultFont) {
                     $font->file($resultFont);
-                    $font->size(40);
+                    $font->size(18);
                     $font->color('#fdf6e3');
                     $font->align('center');
                     $font->valign('top');
                 });
-            }else{
-                $result->insert($user_image, 'top-left', 40, 27);
-                $result->insert($flag, 'top-left', 65, 120);
-                $txt = $sr->get($user->id)->score .$rt;
-                $result->text($txt, 150, 250, function($font) use($resultFont) {
+                $result->insert($flag, 'top-left', 65, 140);
+                $result->text($score, 90, 200, function($font) use($resultFont) {
                     $font->file($resultFont);
-                    $font->size(40);
+                    $font->size(30);
                     $font->color('#fdf6e3');
                     $font->align('center');
                     $font->valign('top');
                 });
             }
+            if($key == 1){
+                $result->insert($user_image, 'top-right', 36, 27);
+                $result->text($name, 570, 125, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(18);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
+                $result->insert($flag, 'top-right', 55, 140);
+                $result->text($score, 570, 200, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(30);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
+            }
+            if($key == 2){
+                $result->insert($user_image, 'bottom', 70,75);
+                $result->text($name, 330, 275, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(18);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
+                $result->insert($flag, 'bottom', 10, 15);
+                $result->text($score, 330, 330, function($font) use($resultFont) {
+                    $font->file($resultFont);
+                    $font->size(25);
+                    $font->color('#fdf6e3');
+                    $font->align('center');
+                    $font->valign('top');
+                });
+            }
+            if($key >2){
+                $result->insert($user_image, 'bottom');
+            }
+
 
         }
-
-
-
 
         //$result->save($pp.'temp/'.$link.'.png');
         header('Content-Type: image/png');
         return $result->response('png');
     }
 
-    public function rounded($file, $name)
+    public function rounded($file, $name, $s = 90)
     {
         $image_s = imagecreatefromstring(file_get_contents($file));
         $width = imagesx($image_s);
         $height = imagesy($image_s);
-        $newwidth = 90;
-        $newheight = 90;
+        $newwidth = $s;
+        $newheight = $s;
         $image = imagecreatetruecolor($newwidth, $newheight);
         imagealphablending($image, true);
         imagecopyresampled($image, $image_s, 0,0,0,0, $newwidth, $newheight, $width, $height);
@@ -100,5 +149,29 @@ class ShareController extends Controller
 
         return $output;
 
+    }
+
+    public function makeQuizImage()
+    {
+        $pp = public_path('img/quiz/');
+
+
+        $gk = \Image::make($pp.'gk.jpg');
+        $sp = \Image::make($pp.'sp.jpg');
+        $al = \Image::make($pp.'al.jpg');
+
+        $gk->resize(100, null);
+        $sp->resize(100, null);
+        $al->resize(100, null);
+
+        $img_canvas = \Image::canvas(300, 200);
+        $img_canvas->insert($al, 'left');
+        $img_canvas->insert($sp, 'right');
+        $img_canvas->insert($gk, 'center');
+        $img_canvas->save($pp.'ags'.'.jpg');
+
+//        $img_canvas->insert($al, 'right');
+        header('Content-Type: image/png');
+        return $img_canvas->response('png');
     }
 }

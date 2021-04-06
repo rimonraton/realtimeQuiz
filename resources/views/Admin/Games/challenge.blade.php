@@ -82,14 +82,13 @@
         }
         .show_share {
             position: absolute;
-            left: 3%;
-            top: -25px;
+            left: -17px;
             height: 40px;
             width: 300px;
             overflow: hidden;
-            transition:  .5s linear;
+            transition: .5s linear;
             opacity: 1;
-
+            bottom: -25px;
         }
         .pointer{
             cursor: pointer;
@@ -151,7 +150,9 @@
                                                                         <label class="" for="topic{{$c->id}}">
                                                                             {{$lang=='gb'?$c->name:$c->bn_name}}
                                                                             @if( ! count($c->childs))
-                                                                                <span class="badge badge-pill badge-info float-right">{{$c->questions_count}}</span>
+                                                                                <span class="badge badge-pill badge-info float-right">
+                                                                                    {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}
+                                                                                </span>
                                                                             @endif
                                                                         </label>
 
@@ -249,61 +250,55 @@
 
     </div>
     <div class="row justify-content-center mt-4 " id="quizlist">
+        @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
-            <div class="col-md-4 col-sm-12 text-center mb-4 ">
-                <div class="card shadow h-100">
-                    <div class="d-flex justify-content-between py-1 px-2">
-                        <div class="text-muted">
-                            @include('includes.stars.0')
+            <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
+                <div class="card bg-inverse ">
+                    <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">
+                    <div class="card-body text-white d-flex flex-column justify-content-between">
+                        <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
+                        <div>
+                            <h4 class="card-title text-white">{{ $ch->name }}</h4>
+                            <p class="card-text">
+                            @php
+                                $qc = count(explode(',', $ch->question_id));
+                                $beq = app()->getLocale() == 'bd'? ($bang->bn_number($qc) . ' টি') : ($qc .' questions ');
+                                $total =0;
+                                $qcat = '';
+                            @endphp
+
+                            @foreach($ch->category as $clc)
+                                @php
+                                    $cqc = $questions->where('category_id', $clc->id)->count();
+                                    $total += $cqc;
+                                    if(app()->getLocale() == 'bd'){
+                                        $qcat .= $clc->bn_name . '-'. $bang->bn_number($cqc);
+                                        $qcat .= $loop->last ? ' মোট '. $bang->bn_number($total) : ', ';
+                                    }else{
+                                        $qcat .= $clc->name . '-'. $cqc;
+                                        $qcat .= $loop->last ? ' total '. $total : ', ';
+                                    }
+
+                                @endphp
+                            @endforeach
+
+                            {{ trans('games.challeng_message', [ 'questions' => $beq, 'categories' => $qcat ])}}
+
+                            </p>
+{{--                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
                         </div>
-                        <div class="d-flex pointer p-2"
-                             title="{{ __('msg.easy') }}"
-                             data-placement="top"
-                             data-toggle="tooltip">
-                            @include('includes.difficulty.1')
-                        </div>
-                        <span class="text-muted">
-                @php $qc = count(explode(',', $ch->question_id)); $cq =0; @endphp
-                            {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}
-                            {{ __('games.questions') }}
-              </span>
-                    </div>
-
-                    <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="" >
-                        <div class="card-body py-0 ">
-                            <p class="my-3 text-primary">{{ $ch->name }} </p>
-                            <ul class="list-group list-group-full">
-
-                                @foreach($ch->category as $clc)
-                                    <li class="list-group-item d-flex py-1"> {{$clc->name}}
-                                        <span class="badge badge-info ml-auto">
-                                            {{ $questions->where('category_id', $clc->id)->count() }}
-                                        </span>
-                                    </li>
-                                    @php $cq @endphp
-                                @endforeach
-
-                            </ul>
-                            <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
-                        </div>
-                    </a>
-
-                    <div class="info d-flex justify-content-between py-1 px-2 mt-auto ">
-                        <a class="lessonResult pointer " id="{{ $ch->id }}"
-                           title="{{ __('msg.history') }}"
-                           data-placement="top"
-                           data-toggle="tooltip">
-                            <i class="fas fa-user-clock"></i>
-                            0
-                        </a>
-                            <a class="shareBtn pointer small " data-id="{{ $ch->id }}">
+                        <div class="d-flex justify-content-between">
+                            <a class="shareBtn pointer small btn btn-xs btn-outline-info" data-id="{{ $ch->id }}">
                                 <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
                                 <div class="loading{{ $ch->id }}"></div>
                             </a>
-
-                        <i class="fas fa-check text-success"></i>
+                            <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="btn btn btn-xs btn-outline-info" >
+                                {{__('msg.start')}}
+                            </a>
+                        </div>
                     </div>
                 </div>
+
             </div>
         @endforeach
 
@@ -348,15 +343,19 @@
     <script>
         var form = $(".validation-wizard").show();
 
+
         $(".validation-wizard").steps({
             headerTag: "h6",
             bodyTag: "section",
             transitionEffect: "fade",
             titleTemplate: '<span class="step">#index#</span> #title#',
             labels: {
-                finish: "Submit"
+                finish: "Submit",
+                next: "{{__('games.next')}}",
+                previous: "{{__('games.previous')}}",
             },
             onStepChanging: function(event, currentIndex, newIndex) {
+                console.log([event, currentIndex, newIndex]);
                 return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
             },
             onFinishing: function(event, currentIndex) {
@@ -405,7 +404,7 @@
             $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
             let hasShow = $('#shareBtn'+id).hasClass('show_share');
-            let url = '{{ url('/Mode/Challenge') }}/' + id + '/{{ Auth::id() }}' + '/share';
+            let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
             let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
 
             $('.show_share').empty();
@@ -456,7 +455,11 @@
                 $('#categoryId').val(topics_id.slice(0, -1));
 
                 $('.selectedTopic').html(topics)
-                $('.selectedTopic').append(`<span class="badge badge-pill badge-danger float-right">${qCount}</span>`);
+                $('.selectedTopic')
+                    .append(`
+                        <span class="badge badge-pill badge-danger float-right">
+                        ${e2bNumber(qCount, '{{ app()->getLocale() }}')}</span>
+                    `);
 
                 $('.smt').attr('data-tid',topics_id);
             })
@@ -537,6 +540,16 @@
 
             $('#nestable-menu').nestable();
         })
+
+        function e2bNumber(numb, l) {
+            if (l === 'gb')
+                return numb;
+            let numbString = numb.toString();
+            let bn = '';
+            let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+            [...numbString].forEach(n => bn += eb[n]);
+            return bn
+        }
 
         function topicwithcategory(id) {
 
