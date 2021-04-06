@@ -22,7 +22,8 @@ class TeamController extends Controller
             'name' => 'required',
         ]);
         Team::create([
-            "name" => $request->name
+            "name" => $request->name,
+            'bn_name'=>$request->bn_name
         ]);
         return redirect('teamlist');
     }
@@ -33,7 +34,8 @@ class TeamController extends Controller
             'name' => 'required',
         ]);
         Team::where('id', $request->id)->update([
-            "name" => $request->name
+            "name" => $request->name,
+            "bn_name"=>$request->bnName,
         ]);
         return redirect('teamlist');
     }

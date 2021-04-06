@@ -1,3 +1,4 @@
+@php $lang = App::getLocale(); @endphp
 <div class="table-responsive" style="overflow-x: hidden">
 
     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -16,7 +17,7 @@
                         <tbody>
                         @foreach($category as $c)
                             <tr role="row" class="odd">
-                                <td class="sorting_1">{{$loop->iteration}}</td>
+                                <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                 <td id="name_{{$c->id}}">{{$c->name}}</td>
                                 <td id="bn_name_{{$c->id}}">{{$c->bn_name}}</td>
                                 <td style="text-align: center; ">

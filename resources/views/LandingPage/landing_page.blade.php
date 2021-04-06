@@ -256,7 +256,10 @@
             </div>
         </section>
         <!-- End About Section -->
-        @php $lang = App::getLocale();@endphp
+        @php
+            $lang = App::getLocale();
+            $bang = new \App\Lang\Bengali();
+        @endphp
         <!-- ======= Features Section ======= -->
         <section id="features" class="features">
             <div class="container">
@@ -349,47 +352,48 @@
         </section><!-- End Topics Section -->
 
         <!-- ======= Counts Section ======= -->
-        <section id="counts" class="counts">
-            <div class="container">
+{{--        <section id="counts" class="counts">--}}
+{{--            <div class="container">--}}
 
-                <div class="row" data-aos="fade-up">
+{{--                <div class="row" data-aos="fade-up">--}}
 
-                    <div class="col-lg-3 col-md-6">
-                        <div class="count-box">
-                            <i class="fas fa-user"></i>
-                            <span data-toggle="counter-up">1,463</span>
-                            <p>{{__('msg.participants')}}</p>
-                        </div>
-                    </div>
+{{--                    <div class="col-lg-3 col-md-6">--}}
+{{--                        <div class="count-box">--}}
+{{--                            <i class="fas fa-user"></i>--}}
+{{--                            <span data-toggle="counter-up">1463</span>--}}
+{{--                            <p>{{__('msg.participants')}}</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
-                        <div class="count-box">
-                            <i class="fas fa-users"></i>
-                            <span data-toggle="counter-up">521</span>
-                            <p>{{__('msg.teams')}}</p>
-                        </div>
-                    </div>
+{{--                    <div class="col-lg-3 col-md-6 mt-5 mt-md-0">--}}
+{{--                        <div class="count-box">--}}
+{{--                            <i class="fas fa-users"></i>--}}
+{{--                            <span data-toggle="counter-up">521</span>--}}
+{{--                            <p>{{__('msg.teams')}}</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
-                        <div class="count-box">
-                            <i class="fas fa-brain"></i>
-                            <span data-toggle="counter-up">200</span>
-                            <p>{{__('msg.quiz')}}</p>
-                        </div>
-                    </div>
+{{--                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">--}}
+{{--                        <div class="count-box">--}}
+{{--                            <i class="fas fa-brain"></i>--}}
+{{--                            <span data-toggle="counter-up">200</span>--}}
+{{--                            <p>{{__('msg.quiz')}}</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
-                        <div class="count-box">
-                            <i class="fas fa-trophy"></i>
-                            <span data-toggle="counter-up">15</span>
-                            <p>{{__('msg.winner')}}</p>
-                        </div>
-                    </div>
+{{--                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">--}}
+{{--                        <div class="count-box">--}}
+{{--                            <i class="fas fa-trophy"></i>--}}
+{{--                            <span data-toggle="counter-up">15</span>--}}
+{{--                            <p>{{__('msg.winner')}}</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                </div>
+{{--                </div>--}}
 
-            </div>
-        </section><!-- End Counts Section -->
+{{--            </div>--}}
+{{--        </section>--}}
+        <!-- End Counts Section -->
 
         <!-- ======= Testimonials Section ======= -->
         <section id="testimonials" class="testimonials">
@@ -400,7 +404,7 @@
                     <div class="testimonial-item">
                         <p>
                             <i class="fas fa-quote-left"></i>
-                            Gyankosh
+                            {{$lang=='gb'?'Gyankosh':'জ্ঞানকোষ'}}
                             <i class="fas fa-quote-right"></i>
                         </p>
                     </div>
@@ -424,7 +428,13 @@
                             <div class="address">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <h4>{{__('msg.location')}}:</h4>
-                                <p>House: 1150, Road: 9/A, Avenue:11, Mirpur DOHS, Dhaka-1216</p>
+                                <p>@if($lang == 'gb')
+                                        House: 1150, Road: 9/A, Avenue: 11
+                                        Mirpur DOHS, Dhaka-1216
+                                    @else
+                                        বাড়িঃ ১১৫০,রাস্তা, ৯/এ, এভিনিউঃ ১১
+                                        মিরপুর ডিওএইচএস, ঢাকা - ১২১৬
+                                    @endif</p>
                             </div>
 
                             <div class="email">
@@ -436,7 +446,7 @@
                             <div class="phone">
                                 <i class="fas fa-phone"></i>
                                 <h4>{{__('msg.call')}}:</h4>
-                                <p>+880 9617171125</p>
+                                <p>{{$lang == 'gb'?'+880 9617171125':'+৮৮০ ৯৬১৭১৭১১২৫'}}</p>
                             </div>
 
                         </div>
@@ -490,12 +500,18 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <h3>Darco Technologies Limited</h3>
+                            <h3>{{__('msg.companyName')}}</h3>
                             <p>
+                                @if($lang == 'gb')
                                 House: 1150, Road: 9/A, Avenue: 11 <br>
-                                Mirpur DOHS, Dhaka-1216<br><br>
-                                <strong>Phone:</strong> +880 9617171125<br>
-                                <strong>Email:</strong> info@maharah.online<br>
+                                Mirpur DOHS, Dhaka-1216
+                                @else
+                                    বাড়িঃ ১১৫০,রাস্তা, ৯/এ, এভিনিউঃ ১১ <br>
+                                    মিরপুর ডিওএইচএস, ঢাকা - ১২১৬
+                                @endif
+                                    <br><br>
+                                <strong>{{__('msg.call')}}: </strong> {{$lang == 'gb'?'+880 9617171125':'+৮৮০ ৯৬১৭১৭১১২৫'}}<br>
+                                <strong>{{__('msg.email')}}:</strong> info@maharah.online<br>
                             </p>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $roles = Role::paginate(10);
+         $roles = Role::where('id','!=',1)->paginate(10);
         return view('Admin.PartialPages.Role.role_list', compact('roles'));
     }
     public function createRole(Request $request)
@@ -25,9 +25,11 @@ class RoleController extends Controller
         // Role::insert($request->except('_token'));
         $request->validate([
             'role_name' => 'required',
+
         ]);
         Role::create([
-            'role_name' => $request->role_name
+            'role_name' => $request->role_name,
+            'bn_role_name'=>$request->bn_role_name
         ]);
         return redirect('rolelist');
     }
@@ -38,7 +40,8 @@ class RoleController extends Controller
             'role_name' => 'required',
         ]);
         Role::where('id', $request->id)->update([
-            'role_name' => $request->role_name
+            'role_name' => $request->role_name,
+            'bn_role_name'=>$request->bn_role_name
         ]);
         return redirect('rolelist');
     }
@@ -50,15 +53,17 @@ class RoleController extends Controller
 
     public function assignRoleList()
     {
+       $user_id = RoleUser::pluck('user_id');
     //    return Auth()->user()->roleuser->role->role_name;
-        $user_role = User::with('roleuser.role')->paginate(10);
+//       return $user_role = User::with('roleuser.role')->where('id',28)->get();
+        $user_role = User::with('roleuser.role')->where('admin_id',\auth()->user()->admin->id)->paginate(10);
         $roles = Role::all()->except(1);
-        $users = User::all();
+        $users = User::whereNotIn('id',$user_id)->get();
         return view('Admin.PartialPages.Role.role_user', compact(['roles', 'users', 'user_role']));
     }
     public function createRoleUser(Request $request)
     {
-        // return $request->all();
+//         return $request->all();
         $request->validate([
             'role_id' => 'required',
             'user_id' => 'required',

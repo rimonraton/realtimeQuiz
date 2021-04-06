@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="ml-auto align-self-center">
                                     <!-- <h2 class="font-weight-medium mb-0 text-white">$2900</h2> -->
-                                    <a data-role_id="{{$rws->id}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> নতুন যুক্ত করুন</a>
+                                    <a data-role_id="{{$rws->id}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> {{__('form.add_new')}}</a>
                                 </div>
                             </div>
                         </div>

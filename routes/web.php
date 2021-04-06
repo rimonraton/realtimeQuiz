@@ -34,13 +34,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'LandingPageController@index');
 // Route::get('landing/page', 'LandingPageController@index');
 // website setup
-Route::get('features', 'SetupController@features');
+Route::get('features', [\App\Http\Controllers\SetupController::class,'features']);
 Route::post('features/save', 'SetupController@featureStore');
 Route::post('features/update', 'SetupController@featureUpdate');
 Route::get('features/delete/{id}', 'SetupController@featureDelete');
 Route::get('faq', 'SetupController@faq');
 // dashboard
-Route::get('dashboard', 'AdminController@index');
+Route::get('dashboard', [\App\Http\Controllers\AdminController::class,'index']);
 // Question Category
 Route::get('question/category', [QuestionController::class,'index']);
 Route::post('question/savecategory', 'QuestionController@store');
@@ -70,7 +70,7 @@ Route::get('question/subtopic/{id}', 'SubTopicController@index');
 //    return view('LandingPage.reset');
 //});
 // Questions Type
-Route::get('questionTypelist', 'QuestionTypeController@index');
+Route::get('questionTypelist', [\App\Http\Controllers\QuestionTypeController::class,'index']);
 Route::post('questionTypesave', 'QuestionTypeController@store');
 Route::post('questionTypeupdate', 'QuestionTypeController@update');
 Route::get('questionTypedelete/{id}', 'QuestionTypeController@delete');
@@ -107,17 +107,17 @@ Route::post('game/perform-message/edit', 'PerformController@performmessagesupdat
 Route::get('game/perform-message/delete/{id}', 'PerformController@performmessagesdelete');
 
 // Team
-Route::get('teamlist', 'TeamController@index');
-Route::post('createTeam', 'TeamController@createTeam');
+Route::get('teamlist', [\App\Http\Controllers\TeamController::class,'index']);
+Route::post('createTeam', [\App\Http\Controllers\TeamController::class,'createTeam']);
 Route::post('updateTeam', 'TeamController@updateTeam');
 Route::get('deleteTeam/{id}', 'TeamController@deleteTeam');
 
 // Role
-Route::get('rolelist', 'RoleController@index');
-Route::post('createRole', 'RoleController@createRole');
+Route::get('rolelist', [\App\Http\Controllers\RoleController::class,'index']);
+Route::post('createRole', [\App\Http\Controllers\RoleController::class,'createRole']);
 Route::post('roleUpdate', 'RoleController@roleUpdate');
 Route::get('roleDelete/{id}', 'RoleController@roleDelete');
-Route::get('assignRoleList', 'RoleController@assignRoleList');
+Route::get('assignRoleList', [\App\Http\Controllers\RoleController::class,'assignRoleList']);
 Route::post('createRoleUser', 'RoleController@createRoleUser');
 Route::post('roleuserUpdate', 'RoleController@roleuserUpdate');
 Route::get('deleteroleUser/{id}', 'RoleController@deleteroleUser');

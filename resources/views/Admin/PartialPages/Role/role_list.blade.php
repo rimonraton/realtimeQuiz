@@ -20,9 +20,12 @@
                                 <form class="form-horizontal form-material" method="POST" action="{{url('createRole')}}" autocomplete="off">
                                     @csrf
 
-                                    <div class="form-group">
-                                        <div class="col-12 m-b-20">
+                                    <div class="form-group row">
+                                        <div class="col-6 m-b-20">
                                             <input type="text" class="form-control" name="role_name" placeholder="{{__('form.add_role_placeholder')}}" require>
+                                        </div>
+                                        <div class="col-6 m-b-20">
+                                            <input type="text" class="form-control" name="bn_role_name" placeholder="{{__('form.add_bn_role_placeholder')}}" require>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -53,13 +56,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach($roles as $role)
                                         <tr>
                                             <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$role->role_name}}</td>
                                             <td>{{$role->bn_role_name}}</td>
                                             <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$role->id}}" data-name="{{$role->role_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="edit" href="" data-id="{{$role->id}}" data-name="{{$role->role_name}}" data-bn_name="{{$role->bn_role_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$role->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -103,14 +107,17 @@
                 <form class="form-horizontal form-material" method="POST" action="{{url('roleUpdate')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
-                    <div class="form-group">
-                        <div class="col-md-12 m-b-20">
-                            <input type="text" class="form-control" id="editName" name="role_name">
+                    <div class="form-group row">
+                        <div class="col-md-6 m-b-20">
+                            <input type="text" class="form-control" name="role_name" id="editName">
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
-                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        <div class="col-md-6 m-b-20">
+                            <input type="text" class="form-control" name="bn_role_name" id="bneditName">
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
                 </form>
@@ -130,6 +137,7 @@
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
+            $('#bneditName').val($(this).attr('data-bn_name'))
             $('#edit-category').modal('show');
         })
 

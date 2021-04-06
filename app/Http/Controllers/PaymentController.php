@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Admin;
+use App\QuestionType;
 use App\RoleUser;
 use App\User;
 use Carbon\Carbon;
@@ -18,6 +19,8 @@ class PaymentController extends Controller
     }
     public function index()
     {
+//      $admin_users = \auth()->user()->admin->users()->pluck('id');
+//      return  $qt = QuestionType::whereIn('user_id',$admin_users)->get();
         // Auth()->user()->roleuser->role;
         $institute = Admin::all();
         $user = User::find(Auth::user()->id);

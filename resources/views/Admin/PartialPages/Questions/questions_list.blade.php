@@ -64,7 +64,7 @@
 {{--                                                @endif--}}
 
                                                 <span>
-                                                    {{$c->name == 'gb'?($c->name?$c->name:$c->bn_name):($c->bn_name?$c->bn_name:$c->name)}}
+                                                    {{$lang == 'gb'?($c->name?$c->name:$c->bn_name):($c->bn_name?$c->bn_name:$c->name)}}
 
                                                 </span>
                                             </div>

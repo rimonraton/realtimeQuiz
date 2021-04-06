@@ -1,3 +1,4 @@
+@php $lang = App::getLocale(); @endphp
 <header class="topbar">
     <nav class="navbar top-navbar navbar-expand-md navbar-dark">
         <div class="navbar-header">
@@ -91,7 +92,19 @@
                 </li> -->
                 <li class="nav-item">
                     <a class="nav-link">
-                        {{auth()->user()->admin->institute_name}}
+                        @if($lang == 'gb')
+                            @if(auth()->user()->admin->institute_name != null)
+                            {{auth()->user()->admin->institute_name}}
+                            @else
+                                {{auth()->user()->admin->bn_institute_name}}
+                            @endif
+                        @else
+                            @if(auth()->user()->admin->bn_institute_name != null)
+                                {{auth()->user()->admin->bn_institute_name}}
+                            @else
+                                {{auth()->user()->admin->institute_name}}
+                            @endif
+                        @endif
                     </a>
                 </li>
                 <li class="nav-item dropdown">

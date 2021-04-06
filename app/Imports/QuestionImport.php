@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Category;
 use App\Question;
 use App\QuestionsOption;
+use App\QuestionType;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use function React\Promise\Stream\first;
@@ -18,6 +19,7 @@ class QuestionImport implements ToCollection
     {
 //        dd($collection[1][1]);
         $topic = '';
+//        $qt ='';
 //        dd($topic);
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
@@ -27,6 +29,7 @@ class QuestionImport implements ToCollection
                 continue;
             }
           $tdata = Category::where('name',$row[1])->whereIn('user_id',$admin_users)->first();
+//            $qt = QuestionType::whereIn('user_id',$admin_users)->first();
             if ($tdata){
                 $topic = $tdata->id;
             }else{

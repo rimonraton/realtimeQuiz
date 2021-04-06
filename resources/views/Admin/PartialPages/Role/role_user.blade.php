@@ -73,9 +73,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach($user_role as $ur)
-                                        @if($ur->roleuser)
+                                        @if($ur->roleuser && $ur->roleuser->role->id != 1)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                             <td>{{$ur->name}}</td>
                                             <td>{{$ur->email}}</td>
                                             <td>{{$ur->roleuser->role->role_name}}</td>
@@ -101,7 +101,7 @@
                                 @else
                                 <div class="text-center">
                                     <p>
-                                        No Data Found..
+                                        {{__('form.no_data_found')}}
                                     </p>
                                 </div>
                                 @endif
