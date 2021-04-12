@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Game;
 use App\Models\Challenge;
 use App\Models\Share;
 use Illuminate\Http\Request;
@@ -30,7 +31,9 @@ class ShareController extends Controller
         $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
         $sr = collect(json_decode($share->results));
         $sr = $sr->keyBy('id')->sortByDesc('score');
-        return view('result_share_details', compact('sr','link', 'challenge', 'categories'));
+        $features = Game::with('features')->get();
+        $category = Category::where('sub_topic_id', 0)->get();
+        return view('result_share_details', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
     }
     public function challengeShareResult($link)
     {
@@ -46,9 +49,11 @@ class ShareController extends Controller
 
         $resultFont = public_path('/fonts/result.ttf');
         $rt = '/'. $share->challenge->quantity * 100;
+        $otheruser = 2;
+
         foreach ($users as $key => $user){
             $s = $key >1 ? 50 : 90;
-            if($key >2){$s = 40;}
+            if($key >2){break;}
             $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
             $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
@@ -66,8 +71,8 @@ class ShareController extends Controller
                     $font->align('center');
                     $font->valign('top');
                 });
-                $result->insert($flag, 'top-left', 65, 140);
-                $result->text($score, 90, 200, function($font) use($resultFont) {
+                $result->insert($flag, 'top-left', 140, 50);
+                $result->text($score, 90, 150, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(30);
                     $font->color('#fdf6e3');
@@ -84,8 +89,8 @@ class ShareController extends Controller
                     $font->align('center');
                     $font->valign('top');
                 });
-                $result->insert($flag, 'top-right', 55, 140);
-                $result->text($score, 570, 200, function($font) use($resultFont) {
+                $result->insert($flag, 'top-right', 135, 50);
+                $result->text($score, 570, 150, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(30);
                     $font->color('#fdf6e3');
@@ -95,15 +100,15 @@ class ShareController extends Controller
             }
             if($key == 2){
                 $result->insert($user_image, 'bottom', 70,75);
-                $result->text($name, 330, 275, function($font) use($resultFont) {
+                $result->text($name, 330, 280, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(18);
                     $font->color('#fdf6e3');
                     $font->align('center');
                     $font->valign('top');
                 });
-                $result->insert($flag, 'bottom', 10, 15);
-                $result->text($score, 330, 330, function($font) use($resultFont) {
+                $result->insert($flag, 'bottom-right', 250, 75);
+                $result->text($score, 330, 300, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(25);
                     $font->color('#fdf6e3');
@@ -111,10 +116,11 @@ class ShareController extends Controller
                     $font->valign('top');
                 });
             }
-            if($key >2){
-                $result->insert($user_image, 'bottom');
-            }
 
+            if($key >2){
+                $result->insert($user_image, 'bottom-left', $otheruser, 2);
+                $otheruser +=55;
+            }
 
         }
 
