@@ -192,5 +192,8 @@ return [
     'name_schedule'=>'Name and Schedule',
     'search'=>'Search..',
     'confirm_password'=>'Confirm Password',
-    'role_select' => 'Select Role'
+    'role_select' => 'Select Role',
+    'google'=> 'Google',
+    'facebook'=>'facebook',
+
 ];
