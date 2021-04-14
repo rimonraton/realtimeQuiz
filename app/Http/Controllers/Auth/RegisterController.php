@@ -83,7 +83,7 @@ class RegisterController extends Controller
         $ru->user_id = $user->id;
         $ru->role_id = 5;
         $ru->save();
-        Mail::to($user->email)->send(new WelcomeMail($user));
+//        Mail::to($user->email)->send(new WelcomeMail($user));
         return $user;
     }
 }
