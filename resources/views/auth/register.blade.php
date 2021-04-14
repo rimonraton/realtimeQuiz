@@ -24,10 +24,17 @@
             color: #67757c;
             text-align: left;
         }
-        .auth-wrapper {
-            position: relative;
+        .auth-wrapper .auth-box {
+            box-shadow: 1px 0 20px rgba(0,0,0,.08);
+            margin: 2% 0;
+            max-width: 400px;
+            width: 90%;
             min-height: 100vh;
         }
+        /*.auth-wrapper {*/
+        /*    position: relative;*/
+        /*    min-height: 100vh;*/
+        /*}*/
         .align-items-center {
             align-items: center !important;
         }
@@ -61,6 +68,20 @@
             top: 234px;
             left: 21px;
         }
+        /*.wd{*/
+        /*    width: 30%;*/
+        /*}*/
+        /*@media screen and (min-device-width: 480px) {*/
+        /*    .wd{*/
+        /*        width: 90%;*/
+        /*    }*/
+        /*}*/
+
+        /*@media (min-width:768px) {*/
+        /*    .wd{*/
+        /*        width: 90%;*/
+        /*    }*/
+        /*}*/
 
     </style>
 </head>
@@ -68,7 +89,7 @@
 <body>
 
 <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url({{asset('Landing/assets/img/cta-bg.jpg')}}) no-repeat center center; background-size: cover;">
-    <div class="auth-box p-4 bg-white rounded">
+    <div class="auth-box p-4 bg-white rounded wd">
 
 
         <div class="form-group">

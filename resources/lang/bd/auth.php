@@ -21,7 +21,7 @@ return [
     'forgot_pwd'=>'আপনি কি পাসওয়ার্ড ভুলে গেছেন?',
     'do_not_have_account'=> 'কোন অ্যাকাউন্ট নেই?',
     'register' =>'রেজিস্টার করুন',
-    'register_header' =>'রেজিস্টার',
+    'register_header' =>'রেজিস্ট্রেশন',
     'go_to_home'=>'হোমে ফিরে যান',
     'name'=>'নাম',
     'confirm_password'=>'পাসওয়ার্ড নিশ্চিত করুন',

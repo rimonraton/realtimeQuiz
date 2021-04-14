@@ -31,6 +31,11 @@
         .align-items-center {
             align-items: center !important;
         }
+        .show {
+            position: absolute;
+            right: 21px;
+            top: 74px;
+        }
 
     </style>
 </head>
@@ -85,6 +90,8 @@
                                             <i class="fa fa-lock mr-1"></i> {{__('auth.forgot_pwd')}}
                                         </a>
                                     @endif
+                                        <button class="btn btn-info btn-sm show" id="show" ><i class="fas fa-eye-slash"></i></button>
+                                        <button class="btn btn-info btn-sm show d-none" id="hide" ><i class="fas fa-eye"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +126,26 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script>
+    $(function (){
+        $('#show').on('click',function (e){
+            e.preventDefault();
+            $('#hide').removeClass('d-none');
+            $(this).addClass('d-none');
+            $('#password').attr('type','text');
+
+        })
+        $('#hide').on('click',function (e){
+            e.preventDefault();
+            $('#show').removeClass('d-none');
+            $(this).addClass('d-none');
+            $('#password').attr('type','password');
+
+        })
+    })
+</script>
 </body>
 
 </html>

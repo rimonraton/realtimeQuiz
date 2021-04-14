@@ -21,7 +21,7 @@ return [
     'forgot_pwd'=>'Forgot Your Password?',
     'do_not_have_account'=> "Don't have an account?",
     'register' =>'Register',
-    'register_header' =>'Register',
+    'register_header' =>'Registration',
     'go_to_home'=>'Go to Home',
     'name'=>'Name',
     'confirm_password'=>'Confirm Password',
