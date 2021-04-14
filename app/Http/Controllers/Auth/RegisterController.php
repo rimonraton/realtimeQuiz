@@ -77,6 +77,7 @@ class RegisterController extends Controller
         ]);
         $ui = new UserInfo();
         $ui->user_id = $user->id;
+        $ui->nick_name = $data['special_name'];
         $ui->save();
         $ru = new RoleUser();
         $ru->user_id = $user->id;

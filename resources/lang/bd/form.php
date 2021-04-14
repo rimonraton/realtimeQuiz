@@ -194,4 +194,7 @@ return [
     'role_select'=>'রোল নির্বাচন করুন',
     'google'=> 'গুগল',
     'facebook'=>'ফেসবুক',
+    'password_matched'=>'পাসওয়ার্ড মিলেছে',
+    'password_not_matched'=>'পাসওয়ার্ড মিলছে না',
+    'special_name_or_nickname'=>'বিশেষ নাম বা ডাক নাম লিখুন',
 ];
