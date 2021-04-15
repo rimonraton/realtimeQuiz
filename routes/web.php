@@ -202,6 +202,6 @@ Route::get('deleteFile/{path}',[\App\Http\Controllers\FileController::class,'del
 //export
 
 Route::get('export_questions',[\App\Http\Controllers\ExcelController::class,'export']);
-Route::get('newlogin',function (){
-return view('auth.register2');
+Route::get('newreset',function (){
+return view('auth.passwords.newreset');
 });

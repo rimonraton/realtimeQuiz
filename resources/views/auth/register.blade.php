@@ -29,20 +29,16 @@
             margin: 2% 0;
             max-width: 400px;
             width: 90%;
+            /*min-height: 100vh;*/
+        }
+        .auth-wrapper {
+            position: relative;
             min-height: 100vh;
         }
-        /*.auth-wrapper {*/
-        /*    position: relative;*/
-        /*    min-height: 100vh;*/
-        /*}*/
         .align-items-center {
             align-items: center !important;
         }
-        .show {
-            position: absolute;
-            right: 21px;
-            top: 74px;
-        }
+
         .show {
             position: absolute;
             right: 18px;
