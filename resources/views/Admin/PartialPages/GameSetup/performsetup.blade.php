@@ -182,13 +182,14 @@
 
         $(".delete").click(function() {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '{{__('form.are_you_sure')}}',
+                text: "{{__('form.no_revert')}}",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                cancelButtonText:'{{__('form.cancel')}}',
+                confirmButtonText: '{{__('form.yes_delete_it')}}!'
             }).then((result) => {
                 if (result.value) {
                     var $this = $(this);

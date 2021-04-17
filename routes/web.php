@@ -97,11 +97,11 @@ Route::post('profile/update', 'ProfileController@update');
 
 // Game
 Route::get('perform-message', 'PerformController@index');
-Route::get('game/setup', 'PerformController@gamesetup');
+Route::get('game/setup', [\App\Http\Controllers\PerformController::class,'gamesetup']);
 Route::post('game/gamemode/save', 'PerformController@gamemodestore');
 Route::post('game/gamemode/update', 'PerformController@gamemodeupdate');
 Route::get('game/gamemode/delete/{id}', 'PerformController@gamemodedelete');
-Route::get('game/perform-message', 'PerformController@performmessagesetup');
+Route::get('game/perform-message', [\App\Http\Controllers\PerformController::class,'performmessagesetup']);
 Route::post('game/perform-message/save', 'PerformController@performmessagesstore');
 Route::post('game/perform-message/edit', 'PerformController@performmessagesupdate');
 Route::get('game/perform-message/delete/{id}', 'PerformController@performmessagesdelete');
@@ -133,7 +133,7 @@ Route::get('send-email/{user}',[NewUserController::class,'sendEmail']);
 Route::get('userCredential/{token}',[UserCredential::class,'userCredential']);
 
 //Menu Setup
-Route::get('menu','MenuController@index');
+Route::get('menu',[\App\Http\Controllers\MenuController::class,'index']);
 Route::post('saveMenu','MenuController@store');
 Route::post('menuUpdate','MenuController@updateMenu');
 Route::get('deleteMenu/{id}','MenuController@delete');

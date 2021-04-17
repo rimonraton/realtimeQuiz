@@ -24,8 +24,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsTopics')}}
-                <button type="button" class="btn btn-info btn-rounded float-lg-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
+                <h4 class="card-title text-center">
+                    {{__('msg.questionsTopics')}}
+                    <button type="button" class="btn btn-info btn-rounded float-lg-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
                 </h4>
                 <hr>
                 <div class="col-sm-6 offset-sm-3">
@@ -260,6 +261,7 @@
             success:function (data){
                 $('#btn_'+uid).attr('data-name',data.name).attr('data-bangla',data.bn_name);
                 $('#name_'+uid).html(data.name);
+                $('#bn_name_'+uid).html(data.bn_name);
                 $('#edit-category').modal('hide');
 
             }

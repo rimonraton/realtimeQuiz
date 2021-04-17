@@ -160,7 +160,7 @@ return [
     'role_update'=>'User Update',
     'no_data_found'=>'No Data Found..',
     'are_you_sure'=>'Are you sure?',
-    'no_revert'=>"You won't be able to revert this!",
+    'no_revert'=>"You want not be able to revert this!",
     'yes_delete_it'=>'Yes, delete it!',
     'no_of_questions'=>'No of Questions',
     'question_update'=>'Update Question',
