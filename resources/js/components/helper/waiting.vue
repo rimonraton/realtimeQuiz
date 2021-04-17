@@ -10,7 +10,7 @@
 	                    v-for="u in users" :key="u.id"
 	                    :class="{active : u.id == user.id}"
 	                    >
-	                    <img :src="u.avatar" :alt="getAvatarAlt(u.name)" class="circle mr-2">
+	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
 	                    <span class="ml-5">{{ u.name }}</span>
 	                    <span class="flag" >
 	                    	<img :src="getFlag(u.country)">
@@ -58,6 +58,10 @@ export default{
     		this.$emit("kickingUser", id);
         },
 
+        getAvatar(link){
+    	    if(link) return link;
+            return '/img/avatar.png';
+        },
         getAvatarAlt(name){
             return name.substring(0, 2);
         },

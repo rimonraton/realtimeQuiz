@@ -6,7 +6,7 @@
         <div class="card mt-1" style="width: 24rem;">
             <div class="card-header">Results</div>
             <div class="card-body">
-                <img class="card-img img-responsive" :src="addImage()">
+<!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
                     <li class="list-group-item" v-for="(v, i) in results" :key="i">
                         {{ v.name + ' : ' + v.score }}
