@@ -86,20 +86,10 @@
                             <li class="list-group-item user-list"
                                 v-for="u in users" :key="u.id"
                                 :class="{active : u.id == user.id}"
-                            >
+                                >
                                 {{ u.name }}
                             </li>
                         </ul>
-                        <ul class="list-group ">
-                            <li class="list-group-item user-list my-1"
-                                v-for="res in results" :key="res.id"
-                                :class="{active : res.id == user.id}"
-                            >
-                                {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
-                            </li>
-                        </ul>
-
-
                     </div>
                 </div>
             </div>
@@ -122,7 +112,7 @@
             return {
                 qt:{
                     ms: 0,
-                    time:50,
+                    time:100,
                     timer:null
                 },
                 users: [],
@@ -165,9 +155,8 @@
                 .listen('QuestionClickedEvent', (data) => {
                     console.log('QuestionClickedEvent.............')
                     this.answered_user_data.push(data)
-                    this.getResult()
-                    // this.answered_user ++
-                    // this.loadingScreen()
+                    this.answered_user ++
+                    this.loadingScreen()
                 })
                 .listen('KickUserEvent', (data) => {
                     console.log('KickUserEvent.............')
@@ -232,10 +221,13 @@
             gameStart: function () {
                 let ids = this.users.map(u => u.id)
                 let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users }
+
                 axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
+
                 this.game_start = 1
                 this.screen.waiting = 0
                 this.QuestionTimer()
+
             },
             gameReset(){
                 this.questionInit()
@@ -248,7 +240,34 @@
                 this.user_ranking = null
                 this.game_start = 0
                 this.current = this.questions[this.qid].id
+
             },
+            QuestionTimer(){
+                let pdec = 100 / (10 * this.qt.time);
+                console.log('QuestionTimer started')
+                this.qt.timer =
+                    setInterval(() => {
+                        if(this.qt.time == 0){
+                            if(!this.answered){
+                                this.checkAnswer(this.qid, 'Not Answered', 0);
+                            }
+                            this.questionInit();
+                            this.resultScreen();
+                        }
+                        else{
+                            this.qt.ms ++
+                            this.progress -= pdec
+
+                            if(this.qt.ms == 10){
+                                this.qt.time --
+                                this.qt.ms=0
+                            }
+
+                        }
+
+                    }, 100);
+            },
+
             checkAnswer(q, a, rw){
                 this.answered = 1
                 this.right_wrong = rw
@@ -277,45 +296,21 @@
             },
 
             loadingScreen(){
-                this.resultScreen();
+                if(this.users.length == this.answered_user){
+                    this.screen.loading = false;
+                    this.resultScreen();
+                }
             },
             resultScreen(){
                 console.log('resultScreen')
-                this.getResult() //Sorting this.results
-                this.countDown()
-                this.questionInit()
-                if(this.qid+1 == this.questions.length){
-                    this.winner()
-                    return
-                }
-                this.qid ++
-                this.current = this.questions[this.qid].id
-                this.QuestionTimer()
+                this.getResult()
+                this.screen.result = true
+                this.startTimer()
             },
-            QuestionTimer(){
-                let pdec = 100 / (10 * this.qt.time);
-                console.log('QuestionTimer started')
-                this.qt.timer =
-                    setInterval(() => {
-                        if(this.qt.time == 0){
-                            if(!this.answered){
-                                this.checkAnswer(this.qid, 'Not Answered', 0);
-                            }
-                            this.questionInit();
-                            this.resultScreen();
-                        }
-                        else{
-                            this.qt.ms ++
-                            this.progress -= pdec
-
-                            if(this.qt.ms == 10){
-                                this.qt.time --
-                                this.qt.ms=0
-                            }
-
-                        }
-
-                    }, 100);
+            startTimer(){
+                console.log('startTimer')
+                this.screen.result = 1
+                this.timer = setInterval(() => { this.countDown(); }, 1000);
             },
             countDown(){
                 console.log('countDown')
@@ -338,6 +333,7 @@
             },
             getResult(){
                 console.log('getResult')
+
                 this.results = []
                 this.users.forEach(user => {
                     let score = 0;
@@ -438,15 +434,12 @@
                 return bn
             },
             tbe(b, e, l) {
-                if(b !== null && e !== null){
-                    if(l === 'bd') return b;
-                    return e;
-                }
-                else if(b !== null && e === null) return b;
-                else if(b === null && e !== null) return e;
-                return b;
+                if (l === 'bd' && b !== null)
+                    return b;
+                return e;
             },
             qne2b(q, qn, l) {
+
                 if (l === 'gb')
                     return `Question ${q + 1} of ${qn} `;
                 return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
