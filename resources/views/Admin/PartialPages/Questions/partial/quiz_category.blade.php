@@ -5,9 +5,19 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_new_type')}}</button>
                 <h4 class="card-title text-center">{{__('form.questions_type')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_new_type')}}</button>
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="type_search">
+                    </div>
+                </div>
+
+                <div id="dataview">
+
+                </div>
+
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -48,54 +58,8 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
-                <div class="table-responsive" style="overflow-x: hidden">
 
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @if($quizcategory->count() > 0)
-                                <table class="table table-striped table-bordered" >
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 0px;">{{__('form.sl')}}</th>
-                                            <th style="width: 0px;">{{__('form.question_type_en')}}</th>
-                                            <th style="width: 0px;">{{__('form.question_type_bn')}}</th>
-                                            <th style="width: 0px;">{{__('form.action')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($quizcategory as $qc)
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                            <td>{{$qc->name}}</td>
-                                            <td>{{$qc->bn_name}}</td>
-                                            <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$qc->id}}" data-name="{{$qc->name}}" data-bnname="{{$qc->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$qc->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.question_type_en')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.question_type_bn')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                    {{$quizcategory->links()}}
-                                @else
-                                <div class="text-center">
-                                    <p>{{__('form.no_data_found')}}</p>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -126,7 +90,8 @@
                         </div>
                     </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+{{--                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>--}}
+                            <button type="button" class="btn btn-info waves-effect upt">{{__('form.update')}}</button>
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                         </div>
 
@@ -143,7 +108,44 @@
 @section('js')
 <script>
     $(function() {
-        $('.edit').on('click', function(e) {
+        allCategory();
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function() {
+                    // $('.loading').show();
+                    // $('#msg').hide();
+                    // $('#viewData').hide();
+                    console.log('BEFORE');
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data != '') {
+                        $('#showCategory').html(data);
+                    } else {
+
+                        $('#showCategory').html(
+                            `<div class="text-center">
+                            <p>Questions not available.</p>
+                            </div>`
+                        );
+
+                    }
+                    console.log(data);
+                },
+                complete: function() {
+                    // $('.loading').hide();
+                    $('#showCategory').show();
+                    console.log('COMPLETE');
+
+                }
+            })
+            // window.history.pushState("", "", url);
+        });
+        $(document).on('click','.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editName').val($(this).attr('data-name'));
@@ -151,7 +153,7 @@
             $('#edit-category').modal('show');
         })
 
-        $(".delete").click(function() {
+        $(document).on('click',".delete",function() {
             Swal.fire({
                 title: '{{__('form.are_you_sure')}}',
                 text: "{{__('form.no_revert')}}",
@@ -195,5 +197,56 @@
             }
         })
     }
+
+    $(document).on('keyup','#type_search',function (){
+        let keyword = $(this).val();
+        if (keyword != '')
+        {
+            $.ajax({
+                url:"{{url('search_type')}}/" + keyword,
+                type:"GET",
+                success:function (data){
+                    $('#dataview').html(data);
+                }
+            })
+        }
+        else {
+            allCategory();
+        }
+    });
+    function allCategory(){
+        $.ajax({
+            url:"{{url('search_type')}}/" + 'all',
+            type:"GET",
+            success:function (data){
+                $('#dataview').html(data);
+            }
+        })
+    }
+
+    $('.upt').on('click',function (){
+        let uid = $('#uid').val();
+        let name = $('#editName').val();
+        let bn_name = $('#editbnName').val();
+        let _token   = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url:"{{url('questionTypeupdate')}}",
+            type:"POST",
+            data:{
+                _token:_token,
+                id:uid,
+                name:name,
+                bn_name:bn_name
+            },
+            success:function (data){
+                $('#btn_'+uid).attr('data-name',data.name).attr('data-bnname',data.bn_name);
+                $('#name_'+uid).html(data.name);
+                $('#bn_name_'+uid).html(data.bn_name);
+                $('#edit-category').modal('hide');
+                console.log(data);
+
+            }
+        })
+    })
 </script>
 @endsection

@@ -63,6 +63,10 @@ Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::cl
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
+//search
+Route::get('search_type/{keyword}',[\App\Http\Controllers\SearchController::class,'type_search']);
+Route::get('search_quiz/{keyword?}/{top_id}',[\App\Http\Controllers\SearchController::class,'quiz_search']);
+
 
 
 //testlogin

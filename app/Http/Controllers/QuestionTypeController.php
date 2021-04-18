@@ -41,11 +41,17 @@ class QuestionTypeController extends Controller
     }
     public function update(Request $request)
     {
+//        return $request->all();
+
         QuestionType::where('id', $request->id)->update([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
         ]);
-        return redirect('questionTypelist');
+        return [
+            'name'=>$request->name,
+            'bn_name'=>$request->bn_name,
+        ];
+//        return redirect('questionTypelist');
     }
 
     public function delete($id)

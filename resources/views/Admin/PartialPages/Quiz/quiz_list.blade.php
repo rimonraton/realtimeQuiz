@@ -64,6 +64,7 @@
                 <div class="form-group row pb-3">
                     <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                     <div class="col-sm-9">
+                        <input type="hidden" id="top_id" />
                         <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
@@ -256,6 +257,7 @@
                 $('#selectedCid').val($(this).attr('data-cid'));
                 $('.selectedTopic').html($(this).text());
                 quizList($(this).attr('data-cid'));
+                $('#top_id').val($(this).attr('data-cid'));
             }
 
         })
