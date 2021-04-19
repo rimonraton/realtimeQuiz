@@ -5,9 +5,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_game_mode')}}</button>
                 <h4 class="card-title text-center">{{__('form.game_mode_list')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_game_mode')}}</button>
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="game_search">
+                    </div>
+                </div>
+                <div id="showgame">
+
+                </div>
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -42,57 +50,7 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
-                <div class="table-responsive" style="overflow-x: hidden">
 
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 0px;">{{__('form.sl')}}</th>
-                                            <th style="width: 0px;">{{__('form.game_mode_en')}}</th>
-                                            <th style="width: 0px;">{{__('form.game_mode_bn')}}</th>
-                                            <th style="width: 0px;">{{__('form.action')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($game as $g)
-                                        <tr>
-                                            <td class="sorting_1">{{$lang=='bd'?$bang->bn_number($loop->iteration):$loop->iteration}}</td>
-                                            <td>{{$g->gb_game_name}}</td>
-                                            <td>{{$g->bd_game_name}}</td>
-                                            <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$g->id}}" data-gb="{{$g->gb_game_name}}" data-bd="{{$g->bd_game_name}}" title="Edit">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                                <a class="delete" style="cursor: pointer;" data-id="{{$g->id}}" title="Remove">
-                                                    <i class="fas fa-trash text-danger"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.game_mode_en')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.game_mode_bn')}}</th>
-                                            <th rowspan="1" colspan="1">{{__('form.action')}}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                {{$game->links()}}
-                                <!-- <div class="text-center">
-                                    <p>
-                                        No Data Found..
-                                    </p>
-                                </div> -->
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -137,7 +95,8 @@
 @section('js')
 <script>
     $(function() {
-        $('.edit').on('click', function(e) {
+        allCategory();
+        $(document).on('click','.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
             $('#editgb').val($(this).attr('data-gb'));
@@ -145,7 +104,7 @@
             $('#edit-gamemode').modal('show');
         })
 
-        $(".delete").click(function() {
+        $(document).on('click',".delete",function() {
             Swal.fire({
                 title: '{{__('form.are_you_sure')}}',
                 text: "{{__('form.no_revert')}}",
@@ -183,6 +142,32 @@
                 }
             })
         });
+        $(document).on('keyup','#game_search',function (){
+            let keyword = $(this).val();
+            if (keyword != '')
+            {
+                $.ajax({
+                    url:"{{url('search_game_cat')}}/" + keyword,
+                    type:"GET",
+                    success:function (data){
+                        $('#showgame').html(data);
+                    }
+                })
+            }
+            else {
+                allCategory();
+            }
+        });
+
+        function allCategory(){
+            $.ajax({
+                url:"{{url('search_game_cat')}}/" + 'all',
+                type:"GET",
+                success:function (data){
+                    $('#showgame').html(data);
+                }
+            })
+        }
     })
 </script>
 @endsection

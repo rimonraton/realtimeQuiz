@@ -66,6 +66,7 @@ Route::get('question/subtopic/{id}', 'SubTopicController@index');
 //search
 Route::get('search_type/{keyword}',[\App\Http\Controllers\SearchController::class,'type_search']);
 Route::get('search_quiz/{keyword?}/{top_id}',[\App\Http\Controllers\SearchController::class,'quiz_search']);
+Route::get('search_game_cat/{keyword}',[\App\Http\Controllers\SearchController::class,'search_game_cat']);
 
 
 
