@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
-                    <div class="card-body">
+                    <div class="card-body animate__animated animate__backInRight animate__faster">
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
@@ -75,29 +75,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card my-4">
+            <div class="col-md-4" >
+                <div class="card my-4" >
                     <div class="card-header">
-                        User List
-                        <a @click="gameReset" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
+                        Score Board
+                        <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group ">
-                            <li class="list-group-item user-list"
-                                v-for="u in users" :key="u.id"
-                                :class="{active : u.id == user.id}"
-                            >
-                                {{ u.name }}
-                            </li>
-                        </ul>
+                    <div class="card-body" v-if="results.length>0">
                         <ul class="list-group ">
                             <li class="list-group-item user-list my-1"
-                                v-for="res in results" :key="res.id"
+                                v-for="(res, index) in results" :key="res.id"
                                 :class="{active : res.id == user.id}"
                             >
-                                {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
+                                <span v-html="getMedel(index)"></span>
+                                {{ res.name }} <span class="badge badge-dark float-right">{{ res.score}}</span>
                             </li>
                         </ul>
+
 
 
                     </div>
@@ -162,12 +156,14 @@
                     this.QuestionTimer() // Set and Start QuestionTimer
 
                 })
+                .listen('GameResetEvent', (data) => {
+                    console.log(['GameResetEvent.............', data])
+                    this.gameReset()
+                })
                 .listen('QuestionClickedEvent', (data) => {
                     console.log('QuestionClickedEvent.............')
                     this.answered_user_data.push(data)
                     this.getResult()
-                    // this.answered_user ++
-                    // this.loadingScreen()
                 })
                 .listen('KickUserEvent', (data) => {
                     console.log('KickUserEvent.............')
@@ -237,6 +233,10 @@
                 this.screen.waiting = 0
                 this.QuestionTimer()
             },
+            gameResetCall() {
+                axios.post(`/api/gameReset`, {channel: this.channel }).then(res => console.log(res.data))
+                this.gameReset()
+            },
             gameReset(){
                 this.questionInit()
                 this.screen.waiting = 1
@@ -264,7 +264,7 @@
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
                 this.answered_user ++
-                this.loadingScreen()
+                this.resultScreen();
                 if(this.qid+1 == this.questions.length) {
                     let gr = {result: this.results, 'share_id': this.share.id}
                     axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
@@ -276,9 +276,6 @@
                 return this.questions[this.qid].options.find(o => o.correct == 1).option
             },
 
-            loadingScreen(){
-                this.resultScreen();
-            },
             resultScreen(){
                 console.log('resultScreen')
                 this.getResult() //Sorting this.results
@@ -417,7 +414,7 @@
                 clearInterval(this.timer)
                 clearInterval(this.qt.timer)
                 this.qt.ms = 0
-                this.qt.time = 100
+                this.qt.time = 50
                 this.progress = 100
                 this.answered = 0
                 this.answered_user = 0
@@ -457,7 +454,15 @@
             getShareLink(path){
                 console.log(['urlencode', encodeURI(this.getUrl(path))]);
                 return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
+            },
+            getMedel(index){
+                if(index == 0) return '<i class="fas fa-award fa-lg" style="color: gold"></i>'
+                if(index == 1) return '<i class="fas fa-award" style="color: silver"></i>'
+                if(index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>'
+                return '';
             }
+
+
 
 
         },

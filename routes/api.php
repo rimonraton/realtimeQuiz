@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,18 +19,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('questionClick', 'GameController@questionClick');
-Route::post('gameStart', 'GameController@gameStart');
-Route::post('kickUser', 'GameController@kickUser');
+Route::post('questionClick', [GameController::class, 'questionClick']);
+Route::post('gameStart', [GameController::class, 'gameStart']);
+Route::post('gameReset', [GameController::class, 'gameReset']);
+Route::post('kickUser', [GameController::class, 'kickUser']);
 
 //Moderator
-Route::post('nextQuestion', 'GameController@nextQuestion');
-Route::post('answerPredict', 'GameController@answerPredict');
-Route::post('pageReload', 'GameController@pageReload');
-Route::post('submitAnswerGroup', 'GameController@submitAnswerGroup');
+Route::post('nextQuestion', [GameController::class, 'nextQuestion']);
+Route::post('answerPredict', [GameController::class, 'answerPredict']);
+Route::post('pageReload', [GameController::class, 'pageReload']);
+Route::post('submitAnswerGroup', [GameController::class, 'submitAnswerGroup']);
 
 //Practice
-Route::post('savePractice', 'GameController@savePractice');
+Route::post('savePractice', [GameController::class, 'savePractice']);
 
 //Challenge
 Route::post('challengeResult', [\App\Http\Controllers\ShareController::class, 'challengeResult']);

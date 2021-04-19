@@ -26,6 +26,7 @@ class ShareController extends Controller
 
     public function challengeShareResultDetails($link)
     {
+
         $share = Share::where('link', $link)->first();
         $challenge = Challenge::find($share->challenge_id);
         $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
@@ -33,6 +34,7 @@ class ShareController extends Controller
         $sr = $sr->keyBy('id')->sortByDesc('score');
         $features = Game::with('features')->get();
         $category = Category::where('sub_topic_id', 0)->get();
+        return view('result_share', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
         return view('result_share_details', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
     }
     public function challengeShareResult($link)

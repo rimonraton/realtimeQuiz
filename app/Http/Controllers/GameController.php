@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GameResetEvent;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
@@ -27,7 +28,7 @@ class GameController extends Controller
 	    return $request;
 	}
 
-	public function gameStart(Request $request)
+    public function gameStart(Request $request)
     {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
@@ -39,7 +40,13 @@ class GameController extends Controller
         broadcast(new GameStartEvent($request))->toOthers();
         return $cs;
 
-	}
+    }
+    public function gameReset(Request $request)
+    {
+        broadcast(new GameResetEvent($request))->toOthers();
+        return 'GameResetEvent call from server';
+
+    }
 
 	public function kickUser(Request $request): Request
     {
