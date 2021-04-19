@@ -12,7 +12,7 @@ Route::get('webrtcReceiver', function (){
 Route::get('webrtcSender', function (){
     return view('webrtc.sender');
 });
-Route::get('webrtc', function(){
+Route::get('webrtctest', function(){
     return view('webrtc.index');
 });
 
