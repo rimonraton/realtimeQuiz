@@ -28,7 +28,8 @@ class ShareController extends Controller
     {
 
         $share = Share::where('link', $link)->first();
-        $challenge = Challenge::find($share->challenge_id);
+        $challenge = Challenge::findOrFail($share->challenge_id);
+
         $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
         $sr = collect(json_decode($share->results));
         $sr = $sr->keyBy('id')->sortByDesc('score');
