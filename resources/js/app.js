@@ -21,8 +21,8 @@ Vue.prototype.__ = str => _.get(window.i18n, str)
 
 import Practice from './components/games/Practice'
 import Challenge from './components/games/Challenge'
-import Moderator from './components/games/Moderator'
-import Team from './components/games/Team'
+// import Moderator from './components/games/Moderator'
+// import Team from './components/games/Team'
 // import router from './router/Router.js';
 
 /**
@@ -42,8 +42,8 @@ const app = new Vue({
     components: {
 	    'Practice': Practice,
 	    'Challenge': Challenge,
-	    'Moderator': Moderator,
-	    'Team': Team,
+	    // 'Moderator': Moderator,
+	    // 'Team': Team,
 	}
     // router
 });
