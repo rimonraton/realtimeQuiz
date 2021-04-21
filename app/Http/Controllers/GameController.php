@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
@@ -45,7 +46,11 @@ class GameController extends Controller
     {
         broadcast(new GameResetEvent($request))->toOthers();
         return 'GameResetEvent call from server';
-
+    }
+    public function gameEndUser(Request $request)
+    {
+        broadcast(new GameEndUserEvent($request))->toOthers();
+        return 'GameEndUserEvent call from server';
     }
 
 	public function kickUser(Request $request): Request

@@ -68,6 +68,7 @@ function joinCall() {
         }
 
         peerConn = new RTCPeerConnection(configuration)
+        console.log(peerConn);
         peerConn.addStream(localStream)
 
         peerConn.onaddstream = (e) => {

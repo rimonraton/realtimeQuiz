@@ -12129,6 +12129,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -12146,7 +12152,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       },
       users: [],
       answered: 0,
-      answered_user: 0,
+      end_user: 0,
       answered_user_data: [],
       results: [],
       counter: 2,
@@ -12157,6 +12163,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         waiting: 1,
         loading: 0,
         result: 0,
+        resultWaiting: 0,
         winner: 0
       },
       gamedata: {},
@@ -12185,6 +12192,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(['GameResetEvent.............', data]);
 
       _this.gameReset();
+    }).listen('GameEndUserEvent', function (data) {
+      console.log(['GameEndUserEvent.............', data]);
+      _this.end_user++;
+
+      if (_this.users.length == _this.end_user) {
+        _this.winner();
+      }
     }).listen('QuestionClickedEvent', function (data) {
       console.log('QuestionClickedEvent.............');
 
@@ -12198,7 +12212,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
 
       if (_this.user.id == data.uid) {
-        window.location.href = "http://quiz.erendevu.net";
+        window.location.href = "http://quiz.test";
       }
     });
   },
@@ -12299,7 +12313,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.answered_user_data.push(clone);
       this.screen.loading = true;
-      this.answered_user++;
       this.resultScreen();
 
       if (this.qid + 1 == this.questions.length) {
@@ -12325,7 +12338,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.questionInit();
 
       if (this.qid + 1 == this.questions.length) {
-        this.winner();
+        axios.post("/api/gameEndUser", {
+          'channel': this.channel
+        });
+        this.end_user++;
+
+        if (this.users.length == this.end_user) {
+          this.winner();
+          return;
+        }
+
+        this.screen.resultWaiting = 1;
         return;
       }
 
@@ -12476,7 +12499,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.qt.time = 50;
       this.progress = 100;
       this.answered = 0;
-      this.answered_user = 0;
       this.counter = 2;
       this.screen.waiting = 0;
       this.screen.loading = 0;
@@ -12532,6 +12554,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (index == 1) return '<i class="fas fa-award" style="color: silver"></i>';
       if (index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>';
       return '';
+    },
+    waitingResult: function waitingResult() {
+      return 'waiting-result';
     }
   },
   computed: {
@@ -94682,6 +94707,10 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _vm.screen.resultWaiting
+        ? _c("div", { staticClass: "result-waiting" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
       _vm.screen.loading
         ? _c("div", { staticClass: "loading" }, [
             _c("div", { staticClass: "row justify-content-center" }, [
@@ -94963,7 +94992,7 @@ var render = function() {
                         "li",
                         {
                           key: res.id,
-                          staticClass: "list-group-item user-list my-1",
+                          staticClass: "list-group-item user-list",
                           class: { active: res.id == _vm.user.id }
                         },
                         [
@@ -94977,7 +95006,9 @@ var render = function() {
                           ),
                           _c(
                             "span",
-                            { staticClass: "badge badge-dark float-right" },
+                            {
+                              staticClass: "badge badge-dark float-right mt-1"
+                            },
                             [_vm._v(_vm._s(res.score))]
                           )
                         ]
@@ -94994,7 +95025,25 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center bg-light" }, [
+      _c("img", {
+        attrs: {
+          src: "/img/quiz/result-waiting.gif",
+          alt: "Waiting for game end."
+        }
+      }),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-center px-5" }, [
+        _vm._v("Please wait for game end and view result..")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

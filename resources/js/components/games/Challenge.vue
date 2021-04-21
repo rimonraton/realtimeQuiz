@@ -1,5 +1,11 @@
 <template>
     <div class="container">
+        <div class="result-waiting" v-if="screen.resultWaiting">
+            <div class="text-center bg-light">
+                <img src="/img/quiz/result-waiting.gif" alt="Waiting for game end.">
+                <p class="text-center px-5">Please wait for game end and view result..</p>
+            </div>
+        </div>
         <div class="loading" v-if="screen.loading">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -83,12 +89,12 @@
                     </div>
                     <div class="card-body" v-if="results.length>0">
                         <ul class="list-group ">
-                            <li class="list-group-item user-list my-1"
+                            <li class="list-group-item user-list"
                                 v-for="(res, index) in results" :key="res.id"
                                 :class="{active : res.id == user.id}"
                             >
                                 <span v-html="getMedel(index)"></span>
-                                {{ res.name }} <span class="badge badge-dark float-right">{{ res.score}}</span>
+                                {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
                             </li>
                         </ul>
 
@@ -121,7 +127,7 @@
                 },
                 users: [],
                 answered:0,
-                answered_user: 0,
+                end_user: 0,
                 answered_user_data: [],
                 results: [],
                 counter: 2,
@@ -132,6 +138,7 @@
                     waiting: 1,
                     loading: 0,
                     result: 0,
+                    resultWaiting: 0,
                     winner: 0,
                 },
                 gamedata: {},
@@ -160,6 +167,13 @@
                     console.log(['GameResetEvent.............', data])
                     this.gameReset()
                 })
+                .listen('GameEndUserEvent', (data) => {
+                    console.log(['GameEndUserEvent.............', data])
+                    this.end_user ++
+                    if(this.users.length == this.end_user) {
+                        this.winner()
+                    }
+                })
                 .listen('QuestionClickedEvent', (data) => {
                     console.log('QuestionClickedEvent.............')
                     this.answered_user_data.push(data)
@@ -170,7 +184,7 @@
                     this.users = this.users.filter( u => u.id !== data.uid )
 
                     if(this.user.id == data.uid){
-                        window.location.href = "http://quiz.erendevu.net"
+                        window.location.href = "http://quiz.test"
                     }
 
                 });
@@ -263,7 +277,6 @@
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
-                this.answered_user ++
                 this.resultScreen();
                 if(this.qid+1 == this.questions.length) {
                     let gr = {result: this.results, 'share_id': this.share.id}
@@ -282,7 +295,13 @@
                 this.countDown()
                 this.questionInit()
                 if(this.qid+1 == this.questions.length){
-                    this.winner()
+                    axios.post(`/api/gameEndUser`, {'channel': this.channel})
+                    this.end_user ++
+                    if(this.users.length == this.end_user) {
+                        this.winner()
+                        return
+                    }
+                    this.screen.resultWaiting = 1;
                     return
                 }
                 this.qid ++
@@ -417,7 +436,6 @@
                 this.qt.time = 50
                 this.progress = 100
                 this.answered = 0
-                this.answered_user = 0
                 this.counter = 2
                 this.screen.waiting = 0
                 this.screen.loading = 0
@@ -460,6 +478,9 @@
                 if(index == 1) return '<i class="fas fa-award" style="color: silver"></i>'
                 if(index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>'
                 return '';
+            },
+            waitingResult(){
+                return 'waiting-result';
             }
 
 

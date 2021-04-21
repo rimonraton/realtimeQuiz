@@ -10931,7 +10931,8 @@ a.text-dark:focus {
 .waiting,
 .loading,
 .result,
-.winner {
+.winner,
+.result-waiting {
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -10952,6 +10953,10 @@ a.text-dark:focus {
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #0083B0, #00B4DB);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.result-waiting {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .q_num {
