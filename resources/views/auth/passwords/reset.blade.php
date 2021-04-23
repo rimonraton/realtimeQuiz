@@ -114,27 +114,38 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group mb-3 ">
-                            <div class="col-xs-12">
-                                {{--                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">--}}
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" autofocus placeholder="{{__('auth.new_password')}}">
+                        <div class="input-group mb-3 ">
+                            <input id="password" type="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   name="password" required autocomplete="new-password"
+                                   autofocus placeholder="{{__('auth.new_password')}}">
+                            <div class="input-group-append">
+                                <button class="btn btn-info btn-sm input-group-text showhide" data-id="password">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                <button class="btn btn-info btn-sm show" id="show" ><i class="fas fa-eye-slash"></i></button>
-                                <button class="btn btn-info btn-sm show d-none" id="hide" ><i class="fas fa-eye"></i></button>
-                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <div class="col-xs-12">
-                                {{--                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">--}}
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="{{__('auth.confirm_password')}}">
+                        <div class="input-group ">
+                            <input id="password-confirm"
+                                   type="password" class="form-control"
+                                   name="password_confirmation"
+                                   required autocomplete="new-password"
+                                   placeholder="{{__('auth.confirm_password')}}">
+                            <div class="input-group-append">
+                                <button class="btn btn-info btn-sm input-group-text showhide" data-id="password-confirm">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
                             </div>
-                            <div id="divCheckPasswordMatch"></div>
+
                         </div>
-                        <div class="form-group text-center mb-3">
+                        <div id="divCheckPasswordMatch" class="mb-3"></div>
+
+                        <div class="form-group text-center mt-3">
                             <div class="col-xs-12">
                                 <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">
                                     {{__('auth.reset')}}</button>
@@ -149,21 +160,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(function (){
-        // alert('hello')
-
-        $('#show').on('click',function (e){
+        $('.showhide').on('click',function (e){
             e.preventDefault();
-            $('#hide').removeClass('d-none');
-            $(this).addClass('d-none');
-            $('#password').attr('type','text');
-
-        })
-        $('#hide').on('click',function (e){
-            e.preventDefault();
-            $('#show').removeClass('d-none');
-            $(this).addClass('d-none');
-            $('#password').attr('type','password');
-
+            let did = '#'+$(this).attr('data-id');
+            let textIcon = '<i class="fas fa-eye"></i>';
+            let passIcon = '<i class="fas fa-eye-slash"></i>';
+            let textOrPassword = $(did).attr('type');
+            $(did).focus();
+            if (textOrPassword === 'password') {
+                $(this).html(textIcon);
+                $(did).attr('type', 'text');
+            }
+            else {
+                $(this).html(passIcon);
+                $(did).attr('type', 'password');
+            }
         })
         $('#password-confirm').keyup(function (){
             checkPasswordMatch();
