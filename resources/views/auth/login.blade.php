@@ -68,15 +68,22 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group mb-4">
-                            <div class="">
-                                <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="current-password" placeholder="{{__('form.password')}}">
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
+
+                        <div class="input-group mb-3 ">
+                            <input id="password" type="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   name="password" required autocomplete="current-password"
+                                   autofocus placeholder="{{__('form.password')}}">
+                            <div class="input-group-append">
+                                <button class="btn btn-info btn-sm input-group-text showhide" data-id="password">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
-                            </div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <div class="d-flex">
@@ -143,6 +150,22 @@
             $(this).addClass('d-none');
             $('#password').attr('type','password');
 
+        })
+        $('.showhide').on('click',function (e){
+            e.preventDefault();
+            let did = '#'+$(this).attr('data-id');
+            let textIcon = '<i class="fas fa-eye"></i>';
+            let passIcon = '<i class="fas fa-eye-slash"></i>';
+            let textOrPassword = $(did).attr('type');
+            $(did).focus();
+            if (textOrPassword === 'password') {
+                $(this).html(textIcon);
+                $(did).attr('type', 'text');
+            }
+            else {
+                $(this).html(passIcon);
+                $(did).attr('type', 'password');
+            }
         })
     })
 </script>
