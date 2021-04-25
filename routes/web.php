@@ -89,7 +89,7 @@ Route::post('quizPublished', 'QuizController@quizPublished');
 
 // Quiz with Option by id
 Route::get('quiz/quiz/{id}', 'QuizController@quiz');
-Route::get('quiz/quiz/list/{id}', 'QuizController@quizList');
+Route::get('quiz/quiz/list/{id}', [\App\Http\Controllers\QuizController::class,'quizList']);
 
 // profile
 Route::get('profile', 'ProfileController@index');
@@ -205,3 +205,8 @@ Route::get('export_questions',[\App\Http\Controllers\ExcelController::class,'exp
 Route::get('newreset',function (){
 return view('auth.passwords.newreset');
 });
+
+//Search
+Route::get('search_Q_type/{keyword}',[\App\Http\Controllers\SearchController::class,'search_Q_type']);
+Route::get('search_quiz/{keyword}/{tid}',[\App\Http\Controllers\SearchController::class,'quiz_search']);
+Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::class,'search_role']);

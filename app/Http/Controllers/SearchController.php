@@ -6,6 +6,7 @@ use App\Category;
 use App\Game;
 use App\QuestionType;
 use App\Quiz;
+use App\Role;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -83,5 +84,33 @@ class SearchController extends Controller
         })
             ->paginate(10);
         return view('Admin.Games.partials._game_search',compact('game'));
+    }
+
+    public function search_Q_type($keyword)
+    {
+        if ($keyword == 'all'){
+            $quizcategory = QuestionType::orderBy('id', 'desc')->paginate(10);
+            return view('Admin.PartialPages.Questions.partial._searchType',compact('quizcategory'));
+        }
+        $quizcategory = QuestionType::where(function ($query) use($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('bn_name', 'like', '%' . $keyword . '%');
+        })
+            ->paginate(10);
+        return view('Admin.PartialPages.Questions.partial._searchType',compact('quizcategory'));
+    }
+
+    public function search_role($keyword)
+    {
+        if ($keyword == 'all'){
+            $roles = Role::orderBy('id', 'desc')->paginate(10);
+            return view('Admin.PartialPages.Role.partial._search_role',compact('roles'));
+        }
+        $roles = Role::where(function ($query) use($keyword) {
+            $query->where('role_name', 'like', '%' . $keyword . '%')
+                ->orWhere('bn_role_name', 'like', '%' . $keyword . '%');
+        })
+            ->paginate(10);
+        return view('Admin.PartialPages.Role.partial._search_role',compact('roles'));
     }
 }

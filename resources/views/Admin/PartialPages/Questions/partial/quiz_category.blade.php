@@ -108,7 +108,7 @@
 @section('js')
 <script>
     $(function() {
-        allCategory();
+        searchQuestionType('all');
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -202,21 +202,15 @@
         let keyword = $(this).val();
         if (keyword != '')
         {
-            $.ajax({
-                url:"{{url('search_type')}}/" + keyword,
-                type:"GET",
-                success:function (data){
-                    $('#dataview').html(data);
-                }
-            })
+            searchQuestionType(keyword);
         }
         else {
-            allCategory();
+            searchQuestionType('all');
         }
     });
-    function allCategory(){
+    function searchQuestionType(keyword){
         $.ajax({
-            url:"{{url('search_type')}}/" + 'all',
+            url:"{{url('search_Q_type')}}/" + keyword,
             type:"GET",
             success:function (data){
                 $('#dataview').html(data);

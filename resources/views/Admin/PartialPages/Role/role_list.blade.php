@@ -5,97 +5,53 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.add_role')}}</button>
                 <h4 class="card-title text-center">{{__('form.role_list')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.add_role')}}</button>
-                <!-- Add Contact Popup Model -->
-                <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">{{__('form.add_role_header')}}</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal form-material" method="POST" action="{{url('createRole')}}" autocomplete="off">
-                                    @csrf
-
-                                    <div class="form-group row">
-                                        <div class="col-6 m-b-20">
-                                            <input type="text" class="form-control" name="role_name" placeholder="{{__('form.add_role_placeholder')}}" require>
-                                        </div>
-                                        <div class="col-6 m-b-20">
-                                            <input type="text" class="form-control" name="bn_role_name" placeholder="{{__('form.add_bn_role_placeholder')}}" require>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
-                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                        <!-- /.modal-content -->
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="role_search">
                     </div>
-                    <!-- /.modal-dialog -->
                 </div>
-                <div class="table-responsive" style="overflow-x: hidden">
+                <div id="role_view">
 
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @if($roles->count() > 0)
-                                <table class="table table-striped table-bordered" >
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 10%;">{{__('form.sl')}}</th>
-                                            <th style="width: 35%;">{{__('form.role_name')}}</th>
-                                            <th style="width: 35%;">{{__('form.role_name_bn')}}</th>
-                                            <th style="width: 20%;">{{__('form.action')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach($roles as $role)
-                                        <tr>
-                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                            <td>{{$role->role_name}}</td>
-                                            <td>{{$role->bn_role_name}}</td>
-                                            <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$role->id}}" data-name="{{$role->role_name}}" data-bn_name="{{$role->bn_role_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$role->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>{{__('form.sl')}}</th>
-                                            <th>{{__('form.role_name')}}</th>
-                                            <th>{{__('form.role_name_bn')}}</th>
-                                            <th>{{__('form.action')}}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                    {{$roles->links()}}
-                                @else
-                                <div class="text-center">
-                                    <p>
-                                        No Data Found..
-                                    </p>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Add Contact Popup Model -->
+<div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{__('form.add_role_header')}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-material" method="POST" action="{{url('createRole')}}" autocomplete="off">
+                    @csrf
 
+                    <div class="form-group row">
+                        <div class="col-6 m-b-20">
+                            <input type="text" class="form-control" name="role_name" placeholder="{{__('form.add_role_placeholder')}}" require>
+                        </div>
+                        <div class="col-6 m-b-20">
+                            <input type="text" class="form-control" name="bn_role_name" placeholder="{{__('form.add_bn_role_placeholder')}}" require>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <div id="edit-category" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -133,6 +89,26 @@
 @section('js')
 <script>
     $(function() {
+        searchrole('all');
+        $(document).on('keyup','#role_search',function (){
+            let keyword = $(this).val();
+            if (keyword != '')
+            {
+                searchrole(keyword);
+            }
+            else {
+                searchrole('all');
+            }
+        });
+        function searchrole(keyword){
+            $.ajax({
+                url:"{{url('search_role')}}/" + keyword,
+                type:"GET",
+                success:function (data){
+                    $('#role_view').html(data);
+                }
+            })
+        }
         $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));

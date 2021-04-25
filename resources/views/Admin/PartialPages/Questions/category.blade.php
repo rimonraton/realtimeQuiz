@@ -242,7 +242,7 @@
             })
         }
     });
-    $('.upt').on('click',function (){
+    $(document).on('click','.upt',function (){
         let uid = $('#uid').val();
         let sub_id = $('#sub_top').val();
         let name = $('#editName').val();
