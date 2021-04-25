@@ -196,5 +196,5 @@ return [
     'facebook'=>'ফেসবুক',
     'password_matched'=>'পাসওয়ার্ড মিলেছে',
     'password_not_matched'=>'পাসওয়ার্ড মিলছে না',
-    'special_name_or_nickname'=>'বিশেষ নাম বা ডাক নাম লিখুন',
+    'special_name_or_nickname'=>'ইউজার নাম লিখুন',
 ];

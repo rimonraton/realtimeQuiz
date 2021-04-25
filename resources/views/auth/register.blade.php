@@ -146,7 +146,7 @@
                                 </button>
                             </div>
                             @error('password')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="invalid-feedback" role="alert" id="pass_msg">
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
@@ -163,12 +163,12 @@
                                     <i class="fas fa-eye-slash"></i>
                                 </button>
                             </div>
-
                         </div>
-                            <div id="divCheckPasswordMatch"></div>
+                        <div id="divCheckPasswordMatch"></div>
+
                         <div class="form-group text-center mb-3">
                             <div class="col-xs-12">
-                                <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">
+                                <button id="smt_btn" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit" disabled>
                                     {{__('auth.register')}}</button>
                             </div>
                         </div>
@@ -191,6 +191,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(function (){
+        $('#password').on('keypress',function (){
+            $('#pass_msg').addClass('d-none');
+            $(this).removeClass('is-invalid');
+            // console.log('keypress successfull');
+        });
         $('.showhide').on('click',function (e){
             e.preventDefault();
             let did = '#'+$(this).attr('data-id');
@@ -208,20 +213,33 @@
             }
         })
         $('#password-confirm').keyup(function (){
-            checkPasswordMatch();
+
+            if($("#password-confirm").val() != ''){
+                checkPasswordMatch();
+            }else{
+                $("#divCheckPasswordMatch").addClass('d-none');
+            }
+
         })
         function checkPasswordMatch() {
             var password = $("#password").val();
             var confirmPassword = $("#password-confirm").val();
             var pass_match = "{{__('form.password_matched')}}";
             var pass_not_match = "{{__('form.password_not_matched')}}";
+                if (password != confirmPassword){
+                    $('#smt_btn').prop('disabled',true);;
+                    $("#divCheckPasswordMatch").removeClass('d-none');
+                    $("#divCheckPasswordMatch").html(pass_not_match).addClass('text-danger').removeClass('text-success');
+                }
+                else{
+                    $("#divCheckPasswordMatch").removeClass('d-none');
+                    $("#divCheckPasswordMatch").html(pass_match).addClass('text-success').removeClass('text-danger');
+                    $('#smt_btn').removeAttr('disabled');
+                }
+            }
 
-            if (password != confirmPassword)
-                $("#divCheckPasswordMatch").html(pass_not_match).addClass('text-danger').removeClass('text-success');
 
-            else
-                $("#divCheckPasswordMatch").html(pass_match).addClass('text-success').removeClass('text-danger');
-        }
+
     })
 
 </script>
