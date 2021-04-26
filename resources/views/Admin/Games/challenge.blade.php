@@ -105,6 +105,13 @@
         /*For menu toggler mismatch fix*/
         .sidebartoggler{  position: absolute; margin-top: -10px;  }
         .profile-pic{ margin-top: 20px; }
+
+        @media only screen and (max-width: 600px) {
+
+            .dd-list .dd-list {
+                padding-left: 10px !important;
+            }
+        }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -128,7 +135,7 @@
                                 <div class="card-body my-0">
                                     <div class="form-group row pb-3">
                                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12 px-0 px-md-2">
                                             <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                                 <ol class="dd-list">
                                                     <li class="dd-item" id="parentdd">
