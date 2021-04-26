@@ -8,7 +8,7 @@ return [
     'quizmaster' => 'Quiz Master',
     'team' => 'Team',
     'start' => 'Start',
-    'share' => 'Share',
+    'share' => 'Invite',
     'quiz' => 'Quiz',
     'slogan' => 'LEARN WITH FUN',
     'logo'  => 'Gyankosh',
