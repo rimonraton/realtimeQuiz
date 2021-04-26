@@ -11,7 +11,7 @@
                     <li class="list-group-item" v-for="(v, i) in results" :key="i">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
-                        {{v.name}}<span class="badge badge-dark float-right mt-1">{{ v.score}}</span>
+                        {{v.name}}<span class="badge badge-info float-right mt-1">{{ v.score}}</span>
 
                     </li>
                 </ul>
@@ -26,7 +26,7 @@
 <!--                </ul>-->
             </div>
             <div class="card-footer" v-if="lastQuestion">
-                <button @click="back" class="btn btn-sm btn-success">New Quiz</button>
+                <button @click="back" class="btn btn-sm btn-success">Dashboard</button>
 <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>
         </div>

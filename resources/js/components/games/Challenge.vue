@@ -25,7 +25,7 @@
             <div v-else>
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
-            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
+            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
             <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
             <iframe :src="getShareLink('challengeShareResult/'+share.link+'/details')" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
