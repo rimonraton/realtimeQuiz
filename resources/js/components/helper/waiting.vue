@@ -1,8 +1,8 @@
 <template>
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
-	        <div class="card-header">Player Joined.
-	            <code v-if="user.id != uid" class="ml-2">Please Wait until Game Start..</code>
+	        <div class="card-header">
+	            <span v-if="user.id != uid" class="ml-2 text-primary">Please wait, the quiz host will start the game soon..</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
 	            <ul class="list-group ">

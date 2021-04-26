@@ -3,22 +3,7 @@
         <div class="result-waiting" v-if="screen.resultWaiting">
             <div class="text-center bg-light">
                 <img src="/img/quiz/result-waiting.gif" alt="Waiting for game end.">
-                <p class="text-center px-5">Please wait for game end and view result..</p>
-            </div>
-        </div>
-        <div class="loading" v-if="screen.loading">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <h2 class="text-center">Waiting for other user response.</h2>
-                    <div class="progress m-2">
-                        <div class="progress-bar progress-bar-striped"
-                            :style="progressWidth"
-                            :class="progressClass"
-                            > {{ Math.floor(progress) }}
-                        </div>
-                    </div>
-                    <img src="/images/loading/bar.svg" class="m-2">
-                </div>
+                <p class="text-center px-5">Please wait result is processing..</p>
             </div>
         </div>
 

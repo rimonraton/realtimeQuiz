@@ -107,9 +107,14 @@
         .profile-pic{ margin-top: 20px; }
 
         @media only screen and (max-width: 600px) {
-
+            .card-body.wizard-content{
+                padding: 0;
+            }
             .dd-list .dd-list {
                 padding-left: 10px !important;
+            }
+            [type="checkbox"] + label {
+                font-size: .8rem;
             }
         }
     </style>
@@ -130,12 +135,12 @@
                         @csrf
                         <!-- Step 1 -->
                             <h6>{{__('form.select_question_group')}}</h6>
-                        <section>
+                        <section class="px-0 px-md-2">
                             <div class="card my-0">
                                 <div class="card-body my-0">
                                     <div class="form-group row pb-3">
                                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                                        <div class="col-sm-12 px-0 px-md-2">
+                                        <div class="col-sm-6 px-0 px-md-2">
                                             <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                                 <ol class="dd-list">
                                                     <li class="dd-item" id="parentdd">
@@ -181,9 +186,9 @@
                         </section>
                         <!-- Step 2 -->
                             <h6>{{__('form.question_type_number')}}</h6>
-                        <section>
+                        <section class="px-0 px-md-2">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body px-0 px-md-2">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="card">
@@ -215,7 +220,7 @@
                         </section>
                         <!-- Step 3 -->
                             <h6>{{__('form.name_schedule')}}</h6>
-                        <section>
+                        <section class="px-0 px-md-2">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
