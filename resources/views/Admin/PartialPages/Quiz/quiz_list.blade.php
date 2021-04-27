@@ -138,8 +138,6 @@
 <script>
     $(function() {
 
-
-
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');

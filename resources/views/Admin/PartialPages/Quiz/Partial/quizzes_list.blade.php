@@ -9,7 +9,8 @@
     @include('Admin.PartialPages.Quiz.Partial._quiz_search')
 
     </div>
-</div> <!-- end card-body-->
+</div>
+<!-- end card-body-->
 {{--</div> <!-- end card-->--}}
 <script>
     $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();

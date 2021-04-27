@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Category;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Challenge extends Model
@@ -20,6 +21,11 @@ class Challenge extends Model
         }
 
         return $this->getRelation('category');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'id');
     }
 
 }

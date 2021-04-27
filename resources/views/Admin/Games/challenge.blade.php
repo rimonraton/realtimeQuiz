@@ -264,6 +264,8 @@
     <div class="row justify-content-center mt-4 " id="quizlist">
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
+            @if($ch->user_id != Auth::user()->id)
+                @if($ch->is_published)
             <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
                 <div class="card bg-inverse ">
                     <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">
@@ -297,7 +299,7 @@
                             {{ trans('games.challeng_message', [ 'questions' => $beq, 'categories' => $qcat ])}}
 
                             </p>
-{{--                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
+                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <a class="shareBtn pointer small btn btn-xs btn-outline-info" data-id="{{ $ch->id }}">
@@ -312,6 +314,58 @@
                 </div>
 
             </div>
+                @endif
+            @else
+                <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
+                    <div class="card bg-inverse ">
+                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">
+                        <div class="card-body text-white d-flex flex-column justify-content-between">
+                            <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
+                            <div>
+                                <h4 class="card-title text-white">{{ $ch->name }}</h4>
+                                <p class="card-text">
+                                    @php
+                                        $qc = count(explode(',', $ch->question_id));
+                                        $beq = app()->getLocale() == 'bd'? ($bang->bn_number($qc) . ' টি') : ($qc .' questions ');
+                                        $total =0;
+                                        $qcat = '';
+                                    @endphp
+
+                                    @foreach($ch->category as $clc)
+                                        @php
+                                            $cqc = $questions->where('category_id', $clc->id)->count();
+                                            $total += $cqc;
+                                            if(app()->getLocale() == 'bd'){
+                                                $qcat .= $clc->bn_name . '-'. $bang->bn_number($cqc);
+                                                $qcat .= $loop->last ? ' মোট '. $bang->bn_number($total) : ', ';
+                                            }else{
+                                                $qcat .= $clc->name . '-'. $cqc;
+                                                $qcat .= $loop->last ? ' total '. $total : ', ';
+                                            }
+
+                                        @endphp
+                                    @endforeach
+
+                                    {{ trans('games.challeng_message', [ 'questions' => $beq, 'categories' => $qcat ])}}
+
+                                </p>
+                                {{--                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a class="shareBtn pointer small btn btn-xs btn-outline-info" data-id="{{ $ch->id }}">
+                                    <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
+                                    <div class="loading{{ $ch->id }}"></div>
+                                </a>
+                                <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="btn btn btn-xs btn-outline-info" >
+                                    {{__('msg.start')}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            @endif
+
         @endforeach
 
         <div class="d-flex justify-content-center my-3 table-responsive">

@@ -21,6 +21,10 @@ class RoleUser extends Model
         return $this->hasOne(MenuRole::class,'role_id','role_id');
     }
     public function users(){
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class,'id');
+    }
+    public function challange()
+    {
+        return $this->hasMany('App\Models\Challenge','user_id');
     }
 }

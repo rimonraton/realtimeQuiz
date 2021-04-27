@@ -210,3 +210,7 @@ return view('auth.passwords.newreset');
 Route::get('search_Q_type/{keyword}',[\App\Http\Controllers\SearchController::class,'search_Q_type']);
 Route::get('search_quiz/{keyword}/{tid}',[\App\Http\Controllers\SearchController::class,'quiz_search']);
 Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::class,'search_role']);
+
+//challamge setup
+Route::get('challenge_setup',[HomeController::class,'challenge_setup']);
+Route::post('challange-Published',[HomeController::class,'challenge_publish']);

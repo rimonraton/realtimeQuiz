@@ -68,4 +68,9 @@ class User extends Authenticatable
     public function admin(){
         return $this->belongsTo(Admin::class);
     }
+
+    public function challange()
+    {
+        return $this->hasMany('App\Models\Challenge');
+    }
 }

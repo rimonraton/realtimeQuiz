@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Challenge;
 use App\Game;
 use App\QuestionType;
+use App\Role;
+use App\RoleUser;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Auth;
@@ -15,9 +17,11 @@ use App\Quiz;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Imagick;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Lang\Bengali;
 use Carbon\Carbon;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -102,6 +106,7 @@ class HomeController extends Controller
 
     public function gameInAdmin($type,$id = null)
     {
+         $admin_users = auth()->user()->admin->users()->pluck('id');
         $catName = '';
         if ($id) {
             $catName = Category::find($id)->name;
@@ -109,7 +114,10 @@ class HomeController extends Controller
         $questionType = QuestionType::all();
         $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
         $lang = $this->lang;
-        $challenges = Challenge::latest()->paginate(12);
+//        $challenges = Challenge::latest()->paginate(12);
+
+        $challenges = Challenge::whereIn('user_id',$admin_users)->latest()->paginate(12);
+
         $questions = Question::all();
         return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions']));
     }
@@ -149,6 +157,32 @@ class HomeController extends Controller
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('games.challenge', compact(['id', 'user', 'questions', 'uid', 'gmsg']));
 
+    }
+
+    public function challenge_setup()
+    {
+        $admin_users = auth()->user()->admin->users()->pluck('id');
+        $role_id = Auth::user()->roleuser->role_id;
+//        RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
+//         Role::with('users.challange')->where('id','<',3)->get();
+       if($role_id < 3){
+           $challange = Challenge::whereIn('user_id',$admin_users)->paginate(10);
+       }
+       else{
+           $challange =  Auth::user()->challange()->paginate(10);
+
+       }
+
+        return view('Admin.Games.challenge_setup',compact('challange'));
+    }
+
+    public function challenge_publish(Request $req)
+    {
+
+        Challenge::where('id',$req->id)->update([
+            'is_published'=>$req->value
+        ]);
+        return 'success';
     }
 
 }
