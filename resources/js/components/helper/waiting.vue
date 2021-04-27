@@ -67,7 +67,7 @@ export default{
         },
 
         getFlag(country){
-        	return 'https://www.countryflags.io/'+country+'/flat/48.png';
+        	return 'https://flagcdn.com/40x30/'+country+'.png';
         },
         scheduledTimer(){
             let countDownDate = new Date(this.time).getTime();
@@ -112,7 +112,7 @@ export default{
     .flag{
 		position: absolute;
 		right: 15px;
-		top: 0px;
+		top: 8px;
     }
     .close{
     	position: absolute;

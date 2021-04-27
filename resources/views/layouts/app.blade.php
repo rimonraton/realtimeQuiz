@@ -66,15 +66,15 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png" >
+                                <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png" >
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
-                                    <img src="https://www.countryflags.io/gb/flat/24.png" >
+                                    <img src="https://flagcdn.com/40x30/gb.png" >
                                     {{ __('english') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
-                                    <img src="https://www.countryflags.io/bd/flat/24.png">
+                                    <img src="https://flagcdn.com/40x30/bd.png">
                                     {{ __('bangla') }}
                                 </a>
                             </div>

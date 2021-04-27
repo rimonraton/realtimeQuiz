@@ -60,7 +60,7 @@ class ShareController extends Controller
             $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
             $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
-            //$flag = \Image::make('https://www.countryflags.io/'.$user->country.'/flat/48.png');
+            $flag = \Image::make('https://flagcdn.com/40x30/'.$user->country.'.png');
             if(\File::exists($temp)){ \File::delete($temp); }
             $name = $sr->get($user->id)->name;
             $score = $sr->get($user->id)->score .$rt;
@@ -74,7 +74,7 @@ class ShareController extends Controller
                     $font->align('center');
                     $font->valign('top');
                 });
-                //$result->insert($flag, 'top-left', 140, 50);
+                $result->insert($flag, 'top-left', 140, 50);
                 $result->text($score, 90, 150, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(30);
@@ -92,7 +92,7 @@ class ShareController extends Controller
                     $font->align('center');
                     $font->valign('top');
                 });
-                //$result->insert($flag, 'top-right', 135, 50);
+                $result->insert($flag, 'top-right', 135, 50);
                 $result->text($score, 570, 150, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(30);
@@ -110,7 +110,7 @@ class ShareController extends Controller
                     $font->align('center');
                     $font->valign('top');
                 });
-                //$result->insert($flag, 'bottom-right', 250, 75);
+                $result->insert($flag, 'bottom-right', 250, 75);
                 $result->text($score, 330, 300, function($font) use($resultFont) {
                     $font->file($resultFont);
                     $font->size(25);

@@ -109,7 +109,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark lang" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Choose Language">
-                        <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                        <img src="https://flagcdn.com/40x30//{{ session('locale', config('app.locale')) }}4.png">
                         <i class="fas fa-angle-down" style="color: black;"></i>
                             <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                     </a>
@@ -124,14 +124,14 @@
                                         </div>
                                     </a> -->
                                     <a href="{{ url('setLanguage/gb') }}" class="message-item d-flex align-items-center border-bottom px-3 py-2">
-                                        <img src="https://www.countryflags.io/gb/flat/24.png">
+                                        <img src="https://flagcdn.com/40x30/gb.png">
                                         <div class="w-75 d-inline-block v-middle pl-2">
                                             <h5 class="message-title mb-0 mt-1">{{ __('msg.english') }}</h5>
                                         </div>
 
                                     </a>
                                     <a href="{{ url('setLanguage/bd') }}" class="message-item d-flex align-items-center border-bottom px-3 py-2">
-                                        <img src="https://www.countryflags.io/bd/flat/24.png">
+                                        <img src="https://flagcdn.com/40x30/bd.png">
 
                                         <div class="w-75 d-inline-block v-middle pl-2">
                                             <h5 class="message-title mb-0 mt-1">{{ __('msg.bangla') }}</h5>

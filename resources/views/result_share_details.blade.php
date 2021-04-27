@@ -115,15 +115,15 @@
         </div>
         <div class="dropdown mr-5 d-md-none">
             <a class="btn btn-default dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a href="{{ url('setLanguage/gb') }}" class="language p-3 ">
-                    <img src="https://www.countryflags.io/gb/flat/24.png">
+                    <img src="https://flagcdn.com/40x30/gb.png">
                     {{ __('msg.english') }}
                 </a><br>
                 <a href="{{ url('setLanguage/bd') }}" class="language p-3 ">
-                    <img src="https://www.countryflags.io/bd/flat/24.png">
+                    <img src="https://flagcdn.com/40x30/bd.png">
                     {{ __('msg.bangla') }}
                 </a>
             </div>
@@ -149,19 +149,19 @@
                 </form>
                 <li class="drop-down">
                     <a href="#">
-                        <img src="https://www.countryflags.io/{{ session('locale', config('app.locale')) }}/flat/24.png">
+                        <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
                         <i class="fas fa-angle-down"></i>
                     </a>
                     <ul>
                         <li>
                             <a href="{{ url('setLanguage/gb') }}" class="language">
-                                <img src="https://www.countryflags.io/gb/flat/24.png">
+                                <img src="https://flagcdn.com/40x30/gb.png">
                                 {{ __('msg.english') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ url('setLanguage/bd') }}" class="language">
-                                <img src="https://www.countryflags.io/bd/flat/24.png">
+                                <img src="https://flagcdn.com/40x30/bd.png">
                                 {{ __('msg.bangla') }}
                             </a>
                         </li>

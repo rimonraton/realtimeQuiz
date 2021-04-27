@@ -123,8 +123,10 @@
                             </div>
                             <div class="col-md-3 col-xs-6"> <strong>{{__('form.location')}}</strong>
                                 <br>
-                                <p class="text-muted"><img src="https://www.countryflags.io/{{$geoip->getCountryCode()}}/flat/24.png"> {{$geoip->getCountry()}}</p>
-                                <!-- <img src="https://www.countryflags.io/bd/flat/24.png"> -->
+                                <p class="text-muted">
+                                    <img src="https://flagcdn.com/40x30/{{ $geoip->getCountryCode() }}.png">
+                                    {{$geoip->getCountry()}}
+                                </p>
                             </div>
                         </div>
                         <hr>
