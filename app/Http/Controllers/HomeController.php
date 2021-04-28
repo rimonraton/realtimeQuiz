@@ -168,10 +168,10 @@ class HomeController extends Controller
 //            $q->whereIn('user_id',$admin_users);
 //    }])->get();
        if($role_id < 3){
-           $challange = Challenge::whereIn('user_id',$role_user)->paginate(10);
+           $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
        }
        else{
-           $challange =  Auth::user()->challange()->paginate(10);
+           $challange =  Auth::user()->challange()->latest()->paginate(10);
 
        }
 
