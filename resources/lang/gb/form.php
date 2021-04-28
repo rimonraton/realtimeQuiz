@@ -198,4 +198,6 @@ return [
     'password_matched'=>'Password Match',
     'password_not_matched'=>'Password does not Match',
     'special_name_or_nickname'=>'Enter User Name',
+    'challenge_name'=>'Challenge Name',
+
 ];

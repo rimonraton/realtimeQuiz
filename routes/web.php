@@ -214,3 +214,4 @@ Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::clas
 //challamge setup
 Route::get('challenge_setup',[HomeController::class,'challenge_setup']);
 Route::post('challange-Published',[HomeController::class,'challenge_publish']);
+Route::get('delete_challange/{id}',[HomeController::class,'delete_challange']);

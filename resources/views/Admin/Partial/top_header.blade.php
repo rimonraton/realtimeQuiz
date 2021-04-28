@@ -109,7 +109,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark lang" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Choose Language">
-                        <img src="https://flagcdn.com/40x30//{{ session('locale', config('app.locale')) }}4.png">
+                        <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
                         <i class="fas fa-angle-down" style="color: black;"></i>
                             <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                     </a>

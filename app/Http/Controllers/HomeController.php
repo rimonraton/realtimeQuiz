@@ -163,10 +163,12 @@ class HomeController extends Controller
     {
         $admin_users = auth()->user()->admin->users()->pluck('id');
         $role_id = Auth::user()->roleuser->role_id;
-//        RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
-//         Role::with('users.challange')->where('id','<',3)->get();
+        $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
+//         $challange_testing = Role::with(['users.challange'=>function($q) use ($admin_users){
+//            $q->whereIn('user_id',$admin_users);
+//    }])->get();
        if($role_id < 3){
-           $challange = Challenge::whereIn('user_id',$admin_users)->paginate(10);
+           $challange = Challenge::whereIn('user_id',$role_user)->paginate(10);
        }
        else{
            $challange =  Auth::user()->challange()->paginate(10);
@@ -183,6 +185,12 @@ class HomeController extends Controller
             'is_published'=>$req->value
         ]);
         return 'success';
+    }
+
+    public function delete_challange($id)
+    {
+        Challenge::where('id',$id)->delete();
+        return 'Deleted Successfully';
     }
 
 }
