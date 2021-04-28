@@ -26,8 +26,8 @@
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
                     <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
-                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">
-                    </a>
+<!--                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">-->
+<!--                    </a>-->
 
                 </div>
 	        </div>
