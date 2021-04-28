@@ -21,7 +21,7 @@
                                             <tr role="row" class="text-center">
                                                 <th style="width: 10%;">{{__('form.sl')}}</th>
                                                 <th style="width: 30%;">{{__('form.challenge_name')}}</th>
-                                                <th style="width: 20%;">{{__('form.user_name')}}</th>
+{{--                                                <th style="width: 20%;">{{__('form.user_name')}}</th>--}}
                                                 <th style="width: 18%;">{{__('form.noq')}}</th>
                                                 <th style="width: 12%;">{{__('form.publish')}}</th>
                                                 <th style="width: 10%;">{{__('form.action')}}</th>
@@ -34,7 +34,7 @@
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$ch->name}}</td>
-                                                <td>{{$ch->user->name}}</td>
+{{--                                                <td>{{$ch->user->name}}</td>--}}
                                                 <td>{{$ch->quantity}}</td>
                                                 <td class="text-center">
                                                     <div class="bt-switch">
@@ -54,7 +54,7 @@
                                             <tr class="text-center">
                                                 <th>{{__('form.sl')}}</th>
                                                 <th>{{__('form.challenge_name')}}</th>
-                                                <th>{{__('form.user_name')}}</th>
+{{--                                                <th>{{__('form.user_name')}}</th>--}}
                                                 <th>{{__('form.noq')}}</th>
                                                 <th>{{__('form.publish')}}</th>
                                                 <th>{{__('form.action')}}</th>
