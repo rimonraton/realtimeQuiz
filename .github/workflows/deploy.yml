@@ -18,7 +18,6 @@ jobs:
       - name: Composer install
         run: |
           composer update
-          composer install --no-dev
       - name: Javascript Compile
         run: |
           npm install
