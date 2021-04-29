@@ -13,5 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@master
       - name: Javascript Compile
-        run: npm run prod
+        run: |
+          npm install
+          npm run prod
 
