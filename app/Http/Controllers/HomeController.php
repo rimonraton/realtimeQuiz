@@ -128,6 +128,8 @@ class HomeController extends Controller
 
     public function createChallenge(Request $request)
     {
+//        return $request->all();
+        $is_published = $request->is_published ? 1 : 0;
         $cat = explode(',', $request->category);
         $q_ids =Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
         $name =$request->name;
@@ -144,10 +146,11 @@ class HomeController extends Controller
         $challenge->qt_id = implode(',', $request->question_type);
         $challenge->schedule = $request->schedule;
         $challenge->share_link = Str::random(50);
+        $challenge->is_published = $is_published;
         $challenge->save();
 
         return redirect()->back();
-        return $request->all();
+
 
     }
     public function Challenge(Challenge $challenge, $uid)

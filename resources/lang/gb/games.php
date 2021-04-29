@@ -13,6 +13,13 @@ return [
     'total' => 'total',
     'next' => 'Next',
     'previous' => 'Previous',
-
+    'submit' => 'Create',
+    'question_type' => 'Select Question Type',
+    'challenge_name' => 'Challenge Name',
+    'challenge_name_placholder' => 'Type Challenge Name',
+    'optional'=>'Optional',
+    'schedule'=>'Schedule',
+    'public_private'=>'Public/Private',
+    'public'=>'Public',
 ];
 

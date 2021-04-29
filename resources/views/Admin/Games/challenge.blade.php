@@ -193,7 +193,7 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h4 class="card-title">Select Question Type (Optional)</h4>
+                                                    <h4 class="card-title">{{__('games.question_type')}} (<small>{{__('games.optional')}}</small>)</h4>
                                                     @foreach($questionType as $qt)
                                                     <div class="form-check my-2"><br>
                                                         <input name="question_type[]" id="checkbox{{$qt->id}}" value="{{$qt->id}}" class="form-check-input material-inputs" type="checkbox" >
@@ -207,7 +207,7 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h4 class="card-title"> Number of Question</h4>
+                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>
                                                     <div class="form-group">
                                                         <input name="qq" type="number" class="form-control" value="10">
                                                     </div>
@@ -224,21 +224,22 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+
+                                        <div class="col-md-4">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h4 class="card-title">Challenge Name (<small>Optional</small>)</h4>
+                                                    <h4 class="card-title">{{__('games.challenge_name')}} (<small>{{__('games.optional')}}</small>)</h4>
                                                     <div class="form-group">
                                                         <input name="name" type="text" class="form-control"
-                                                               id="placeholder" placeholder="Challenge Name">
+                                                               id="placeholder" placeholder="{{__('games.challenge_name_placholder')}}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h4 class="card-title"> Schedule (<small>Optional</small>)</h4>
+                                                    <h4 class="card-title"> {{__('games.schedule')}} (<small>{{__('games.optional')}}</small>)</h4>
                                                     <div class='input-group mb-3'>
                                                         <input name="schedule" type='text' class="form-control timeseconds"/>
                                                         <div class="input-group-append">
@@ -246,6 +247,17 @@
                                                                 <span class="ti-calendar"></span>
                                                             </span>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title"> {{__('games.public_private')}} (<small>{{__('games.optional')}}</small>)</h4>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input material-inputs" type="checkbox" name="is_published" id="published" value="1">
+                                                        <label class="form-check-label" for="published">{{__('games.public')}}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -362,7 +374,7 @@
             transitionEffect: "fade",
             titleTemplate: '<span class="step">#index#</span> #title#',
             labels: {
-                finish: "Submit",
+                finish: "{{__('games.submit')}}",
                 next: "{{__('games.next')}}",
                 previous: "{{__('games.previous')}}",
             },
