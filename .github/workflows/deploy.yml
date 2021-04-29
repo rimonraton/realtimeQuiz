@@ -15,9 +15,6 @@ jobs:
           php-version: 7.4
       - name: Checkout Repository
         uses: actions/checkout@master
-      - name: Composer install
-        run: |
-          composer update
       - name: Javascript Compile
         run: |
           npm install
