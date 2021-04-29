@@ -1,0 +1,21 @@
+name: Gyankosh
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build and deploy
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+      - name: Composer install
+        run: composer install --no-dev
+      - name: Javascript Compile
+        run: |
+          npm install
+          npm run prod
+
