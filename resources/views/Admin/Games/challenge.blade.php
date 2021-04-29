@@ -271,7 +271,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="row justify-content-center mt-4 " id="quizlist">
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
@@ -282,6 +281,7 @@
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
                             <div>
+
                                 <h4 class="card-title text-white">{{ $ch->name }}</h4>
                                 <p class="card-text">
                                     @php

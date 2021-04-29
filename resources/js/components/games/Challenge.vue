@@ -73,7 +73,7 @@
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
                     <div class="card-body" v-if="results.length>0">
-                        <ul class="list-group ">
+                        <transition-group name="slide-up" class="list-group" tag="ul" appear>
                             <li class="list-group-item user-list"
                                 v-for="(res, index) in results" :key="res.id"
                                 :class="{active : res.id == user.id}"
@@ -81,7 +81,7 @@
                                 <span v-html="getMedel(index)"></span>
                                 {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
                             </li>
-                        </ul>
+                        </transition-group>
 
 
 

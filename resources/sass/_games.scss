@@ -66,6 +66,21 @@
   opacity: 0;
 }
 
+.slide-up-enter{
+    transform: translateY(10px);
+    opacity: 0;
+}
+.slide-up-enter-active{
+    transition: all 0.2s ease;
+}
+.slide-up-move{
+    -webkit-transition: transform 0.2s ease-out;
+    -moz-transition: transform 0.2s ease-out;
+    -ms-transition: transform 0.2s ease-out;
+    -o-transition: transform 0.2s ease-out;
+    transition: transform 0.2s ease-out;
+}
+
 .f-13 {
   font-size: 13px;
 }
