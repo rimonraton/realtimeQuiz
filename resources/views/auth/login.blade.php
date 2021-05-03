@@ -41,7 +41,6 @@
 </head>
 
 <body>
-
 <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url({{asset('Landing/assets/img/cta-bg.jpg')}}) no-repeat center center; background-size: cover;">
     <div class="auth-box p-4 bg-white rounded">
         <div class="form-group mb-0">

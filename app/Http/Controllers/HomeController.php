@@ -168,21 +168,18 @@ class HomeController extends Controller
 
     public function challenge_setup()
     {
+
         $admin_users = auth()->user()->admin->users()->pluck('id');
         $role_id = Auth::user()->roleuser->role_id;
         $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
-//         $challange_testing = Role::with(['users.challange'=>function($q) use ($admin_users){
-//            $q->whereIn('user_id',$admin_users);
-//    }])->get();
        if($role_id < 3){
            $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
        }
        else{
            $challange =  Auth::user()->challange()->latest()->paginate(10);
-
        }
 
-        return view('Admin.Games.challenge_setup',compact('challange'));
+        return view('Admin.Games.challenge_setup',compact('challange',));
     }
 
     public function challenge_publish(Request $req)
@@ -200,4 +197,26 @@ class HomeController extends Controller
         return 'Deleted Successfully';
     }
 
+    public function challange_search($keyword)
+    {
+        $role_id = Auth::user()->roleuser->role_id;
+        $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
+        if ($keyword == 'all'){
+            if($role_id < 3){
+                $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
+            }
+            else{
+                $challange =  Auth::user()->challange()->latest()->paginate(10);
+            }
+            return view('Admin.Games.partials._challange_search',compact('challange'));
+        }
+        if($role_id < 3){
+            $challange = Challenge::whereIn('user_id',$role_user)->where('name', 'like', '%' . $keyword . '%')->paginate(10);
+        }
+        else{
+            $challange =  Challenge::where('user_id',Auth::user()->id)->where('name', 'like', '%' . $keyword . '%')->paginate(10);
+        }
+
+        return view('Admin.Games.partials._challange_search',compact('challange'));
+    }
 }
