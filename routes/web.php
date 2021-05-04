@@ -25,11 +25,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('testemail', function () {
+ Route::get('testregistration', function () {
 //    $user = \App\User::find(9);
 //     Mail::to($user->email)->send(new WelcomeMail($user));
 //     return 'Success';
-// });
+
+//     return \App\UserInfo::where('mobile','01723144904')->first()->user;
+     return view('auth.registertoday');
+ });
 
 Route::get('/', 'LandingPageController@index');
 // Route::get('landing/page', 'LandingPageController@index');

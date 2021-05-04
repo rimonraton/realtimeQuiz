@@ -31,23 +31,39 @@
         .align-items-center {
             align-items: center !important;
         }
-        .show {
-            position: absolute;
-            right: 21px;
-            top: 74px;
-        }
+
 
     </style>
 </head>
-
 <body>
 <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url({{asset('Landing/assets/img/cta-bg.jpg')}}) no-repeat center center; background-size: cover;">
     <div class="auth-box p-4 bg-white rounded">
-        <div class="form-group mb-0">
-            <div class="col-sm-12 text-center ">
-                <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
+        <div class="d-flex justify-content-between">
+
+            <div class="dropdown show">
+                <a class="btn btn-default dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a href="{{ url('setLanguage/gb') }}" class="language p-3 ">
+                        <img src="https://flagcdn.com/40x30/gb.png">
+                        {{ __('msg.english') }}
+                    </a><br>
+                    <a href="{{ url('setLanguage/bd') }}" class="language p-3 ">
+                        <img src="https://flagcdn.com/40x30/bd.png">
+                        {{ __('msg.bangla') }}
+                    </a>
+                </div>
             </div>
+            <div class="form-group mb-0">
+                <div class="col-sm-12 text-center ">
+                    <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
+                </div>
+            </div>
+
         </div>
+
         <div id="loginform">
             <div class="logo">
                 <h3 class="box-title mb-3">{{__('auth.login')}}</h3>
@@ -96,8 +112,7 @@
                                             <i class="fa fa-lock mr-1"></i> {{__('auth.forgot_pwd')}}
                                         </a>
                                     @endif
-                                        <button class="btn btn-info btn-sm show" id="show" ><i class="fas fa-eye-slash"></i></button>
-                                        <button class="btn btn-info btn-sm show d-none" id="hide" ><i class="fas fa-eye"></i></button>
+
                                 </div>
                             </div>
                         </div>
@@ -122,6 +137,9 @@
                             </div>
                         </div>
                     </form>
+{{--                    @if(Session::has('status'))--}}
+{{--                        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('status') }}</p>--}}
+{{--                    @endif--}}
                     <div class="form-group mb-0 mt-4">
                         <div class="col-sm-12 justify-content-center d-flex">
                             <a href="{{ url('/') }}" class="text-white font-weight-normal ml-1 btn btn-info">{{__('auth.go_to_home')}}</a>
@@ -133,6 +151,8 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <script>
     $(function (){

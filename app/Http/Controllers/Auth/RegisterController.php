@@ -56,7 +56,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string','email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -86,4 +86,47 @@ class RegisterController extends Controller
         Mail::to($user->email)->send(new WelcomeMail($user));
         return $user;
     }
+//    protected function create(array $data)
+//    {
+//        $email = '';
+//        $ui = new UserInfo();
+//        if(is_numeric($data['email'])){
+////            if(UserInfo::where('mobile',$data['email'])->count()){
+////                \Session::flash('status', 'You are already Registered');
+////                return redirect()->back();
+////            }
+//            $email = 'user' .Str::random(5). '@gyankosh.com';
+//            $ui->mobile = $data['email'];
+//        }
+//        else{
+////            if(User::where('email',$data['email'])->count()){
+////                \Session::flash('status', 'You are already Registered');
+////                return redirect()->back();
+////            }
+//            $email = $data['email'];
+//        }
+//        $user = User::create([
+//            'name' => $data['name'],
+//            'email' => $email,
+//            'password' => Hash::make($data['password']),
+////            'tokan' => Str::random(60),
+//        ]);
+//
+//        $ui->user_id = $user->id;
+//        $ui->nick_name = $data['special_name'];
+//        $ui->save();
+//        $ru = new RoleUser();
+//        $ru->user_id = $user->id;
+//        $ru->role_id = 5;
+//        $ru->save();
+//        if(is_numeric($data['email'])){
+//
+//        }
+//        else{
+//            Mail::to($user->email)->send(new WelcomeMail($user));
+//        }
+//
+//        return $user;
+//    }
+
 }

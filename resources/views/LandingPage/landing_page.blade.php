@@ -349,7 +349,8 @@
 
 
             </div>
-        </section><!-- End Topics Section -->
+        </section>
+        <!-- End Topics Section -->
 
         <!-- ======= Counts Section ======= -->
 {{--        <section id="counts" class="counts">--}}
