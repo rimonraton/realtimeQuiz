@@ -75,7 +75,9 @@
                         @csrf
                         <div class="form-group mb-3">
                             <div class="">
-                                <input id="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <input id="emailormobile" class="form-control" type="text"  required  autofocus placeholder="{{__('auth.emailOrMobile')}}">
+                                <input id="email" class="form-control @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <span id="show_msg" class="text-danger"></span>
                             </div>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -186,6 +188,65 @@
                 $(did).attr('type', 'password');
             }
         })
+        $(document).on('focusout','#emailormobile',function (){
+            var emailaddress = $(this).val();
+            if (emailaddress != ''){
+                if( validateEmail(emailaddress)) {
+                    UserCedential(emailaddress);
+                }
+                else{
+                    if(is_numeric(emailaddress))  {
+                        if(!emailaddress.match('[0-9]{11}')){
+                            $('#show_msg').removeClass('d-none');
+                            $('#show_msg').html('{{__('auth.mobile_11_no')}}');
+                        }
+                        else{
+                            if(emailaddress.length > 11){
+                                $('#show_msg').removeClass('d-none');
+                                $('#show_msg').html('{{__('auth.mobile_11_no')}}');
+                            }
+                            else{
+                                UserCedential(emailaddress);
+                            }
+                        }
+                        // alert("Please put 10 digit mobile number");
+                        // return;
+                    }
+                    else{
+                        $('#show_msg').removeClass('d-none');
+                        $('#show_msg').html('{{__('auth.valid_email')}}');
+                    }
+                }
+            }
+
+        });
+        function validateEmail($email) {
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            return emailReg.test( $email );
+        }
+        function is_numeric(value){
+            return /^\d*$/.test(value);
+        }
+        $('#emailormobile').keyup(function (){
+            $('#show_msg').addClass('d-none');
+        })
+        function UserCedential(value){
+            $.ajax({
+                url:"{{url('user_cedential')}}/" + value,
+                type:"GET",
+                success:function (data){
+
+                    if (data == '0'){
+                        $('#show_msg').removeClass('d-none');
+                        $('#show_msg').html('{{__('auth.not_registered_user')}}');
+                    }
+                    else {
+                        $('#email').val(data);
+
+                    }
+                }
+            })
+        }
     })
 </script>
 </body>

@@ -219,3 +219,6 @@ Route::get('challenge_setup',[HomeController::class,'challenge_setup']);
 Route::post('challange-Published',[HomeController::class,'challenge_publish']);
 Route::get('delete_challange/{id}',[HomeController::class,'delete_challange']);
 Route::get('challange_search/{keyword}',[HomeController::class,'challange_search']);
+
+//login User Cedentials
+Route::get('user_cedential/{value}',[\App\Http\Controllers\Auth\LoginController::class,'user_cedential']);

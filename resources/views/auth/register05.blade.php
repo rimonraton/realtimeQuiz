@@ -39,7 +39,11 @@
             align-items: center !important;
         }
 
-
+        .show {
+            position: absolute;
+            right: 18px;
+            top: 182px;
+        }
         .name_astarik {
             position: absolute;
             top: 75px;
@@ -85,30 +89,10 @@
     <div class="auth-box p-4 bg-white rounded wd">
 
 
-        <div class="d-flex justify-content-between">
-
-            <div class="dropdown show">
-                <a class="btn btn-default dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a href="{{ url('setLanguage/gb') }}" class="language p-3 ">
-                        <img src="https://flagcdn.com/40x30/gb.png">
-                        {{ __('msg.english') }}
-                    </a><br>
-                    <a href="{{ url('setLanguage/bd') }}" class="language p-3 ">
-                        <img src="https://flagcdn.com/40x30/bd.png">
-                        {{ __('msg.bangla') }}
-                    </a>
-                </div>
+        <div class="form-group">
+            <div class="col-sm-12 text-center ">
+                <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
             </div>
-            <div class="form-group mb-0">
-                <div class="col-sm-12 text-center ">
-                    <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
-                </div>
-            </div>
-
         </div>
         <div id="loginform">
             <div class="logo">
@@ -121,7 +105,7 @@
                         @csrf
                         <div class="form-group mb-3">
                             <div class="col-xs-12">
-                                {{--<input class="form-control" type="text" required="" placeholder="Name">--}}
+                                {{--                                    <input class="form-control" type="text" required="" placeholder="Name">--}}
                                 <input type="text" class="form-control" name="special_name"   placeholder="{{__('form.special_name_or_nickname')}}">
                             </div>
                         </div>
@@ -141,8 +125,7 @@
                             <div class="col-xs-12">
                                 <span class="text-danger email_astarik">*</span>
                                 {{--                                    <input class="form-control" type="text" required="" placeholder="Email">--}}
-                                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="{{__('form.email')}}">
-                                <span id="show_msg" class="text-danger"></span>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="{{__('form.email')}}">
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -206,8 +189,6 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
     $(function (){
         $('#password').on('keypress',function (){
@@ -256,44 +237,9 @@
                     $('#smt_btn').removeAttr('disabled');
                 }
             }
-            $(document).on('focusout','#email',function (){
-                var emailaddress = $(this).val();
-                if( validateEmail(emailaddress)) {
-                    return;
-                }
-                else{
-                    if(is_numeric(emailaddress))  {
-                        if(!emailaddress.match('[0-9]{11}')){
-                            $('#show_msg').removeClass('d-none');
-                            $('#show_msg').html('Please put 11 digit mobile number');
-                        }
-                        else{
-                            if(emailaddress.length > 11){
-                                $('#show_msg').removeClass('d-none');
-                                $('#show_msg').html('Please put 11 digit mobile number');
-                            }
-                        }
-                        // alert("Please put 10 digit mobile number");
-                        // return;
-                    }
-                    else{
-                        $('#show_msg').removeClass('d-none');
-                        $('#show_msg').html('Please put valid email address');
-                    }
-                }
-            });
 
-        function validateEmail($email) {
-            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-            return emailReg.test( $email );
-        }
-        function is_numeric(value){
-            return /^\d*$/.test(value);
-        }
 
-        $('#email').keyup(function (){
-            $('#show_msg').addClass('d-none');
-        })
+
     })
 
 </script>
