@@ -95,7 +95,7 @@ Route::get('quiz/quiz/{id}', 'QuizController@quiz');
 Route::get('quiz/quiz/list/{id}', [\App\Http\Controllers\QuizController::class,'quizList']);
 
 // profile
-Route::get('profile', 'ProfileController@index');
+Route::get('profile', [\App\Http\Controllers\ProfileController::class,'index']);
 Route::post('profile/update', 'ProfileController@update');
 
 // Game

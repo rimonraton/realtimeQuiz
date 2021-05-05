@@ -124,7 +124,7 @@
                             <div class="col-md-3 col-xs-6"> <strong>{{__('form.location')}}</strong>
                                 <br>
                                 <p class="text-muted">
-                                    <img src="https://flagcdn.com/40x30/{{ $geoip->getCountryCode() }}.png">
+                                    <img src="https://flagcdn.com/40x30/{{ \Str::lower($geoip->getCountryCode()) }}.png">
                                     {{$geoip->getCountry()}}
                                 </p>
                             </div>

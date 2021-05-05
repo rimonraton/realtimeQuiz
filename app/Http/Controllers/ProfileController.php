@@ -23,7 +23,7 @@ class ProfileController extends Controller
         //    return $userInfo = Auth::user()->info;
         $geoip = new GeoIPLocation();
         $geoip->setIP('27.147.187.184');
-        // dd($geoip);
+//        dd(Str::lower($geoip->getCountryCode()));
 
         // $country = strtolower($geoip->getCountryCode());
 //        return Auth()->user()->id;
