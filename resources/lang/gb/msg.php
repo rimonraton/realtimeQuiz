@@ -73,4 +73,6 @@ return [
     'add' => 'Add',
     'payment' => 'Payment',
     'menu_setup' => 'Menu Setup',
+    'loading'=>'Please wait..',
+    'send_msg'=>'Your message has been sent. Thank you!',
 ];

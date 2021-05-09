@@ -66,12 +66,11 @@ Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::cl
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
-
-
 //testlogin
 //Route::get('t_reset',function (){
 //    return view('LandingPage.reset');
 //});
+
 // Questions Type
 Route::get('questionTypelist', [\App\Http\Controllers\QuestionTypeController::class,'index']);
 Route::post('questionTypesave', 'QuestionTypeController@store');
@@ -181,7 +180,7 @@ Route::get('setLanguage/{locale}', function ($locale) {
 	return redirect()->back();
 });
 
-Route::post('contact', 'ContractController@sendMessage');
+Route::post('contact', [\App\Http\Controllers\ContractController::class ,'sendMessage']);
 
 Route::get('getProgress/{id}', [HomeController::class, 'getProgress']);
 Route::get('/lang-{lang}.js', 'LanguageController@show');

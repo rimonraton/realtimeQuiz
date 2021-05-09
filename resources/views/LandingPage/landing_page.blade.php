@@ -456,7 +456,7 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-                        <form action="{{url('contact')}}" method="post" role="form" class="php-email-form">
+                        <form action="{{url('contact')}}" method="POST" role="form" class="php-email-form">
                             @csrf
                             <div class="form-row">
                                 <div class="col-md-6 form-group">
@@ -477,9 +477,9 @@
                                 <div class="validate"></div>
                             </div>
                             <div class="mb-3">
-                                <div class="loading">Loading</div>
+                                <div class="loading">{{__('msg.loading')}}</div>
                                 <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                                <div class="sent-message">{{__('msg.send_msg')}}</div>
                             </div>
                             <div class="text-center"><button type="submit">{{__('msg.sendmessage')}}</button></div>
                         </form>
