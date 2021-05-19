@@ -25,4 +25,10 @@ class Category extends Model
     {
         return $this->hasOne(Category::class, "id", "sub_topic_id");
     }
+
+    public function scopeAdmin($query)
+    {
+        $users = Admin::find(1)->users()->pluck('id');
+        return $query->whereIn('user_id', $users);
+    }
 }
