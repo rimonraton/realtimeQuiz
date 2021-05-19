@@ -2,7 +2,7 @@
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
 	        <div class="card-header">
-	            <span v-if="user.id != uid" class="ml-2 text-primary">Please wait, the quiz host will start the game soon..</span>
+	            <span v-if="user.id != uid" class="ml-1 text-primary">Please wait, the Quiz Host will start the game soon..</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
 	            <ul class="list-group ">
@@ -12,11 +12,13 @@
 	                    >
 	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
 	                    <span class="ml-5">{{ u.name }}</span>
+	                    <span v-if="u.id == uid" class="ml-1 badge badge-info">Host</span>
+
 	                    <span class="flag" >
 	                    	<img :src="getFlag(u.country)">
 	                    </span>
 	                    <button
-	                    	v-if="( u.id != user.id) && (user.id == uid)"
+	                    	v-if="(u.id != user.id) && (user.id == uid)"
 	                    	@click="kickingUser(u.id)"
 	                    	class="close">
 	                        <span title="Kick User">&times;</span>

@@ -312,6 +312,7 @@
 
                     <div class="row justify-content-center ml-0 mb-5">
                         @foreach($category as $cat)
+{{--                            @if( App\User::where('id',$cat->user_id)->first()->admin_id == 1)--}}
                         <div class="col-md-4 col-sm-12 text-center">
                             <div class="wrap my-3">
                                 <div class="task">
@@ -342,6 +343,7 @@
                                 </div>
                             </div>
                         </div>
+{{--                            @endif--}}
                         @endforeach
 
                     </div>
