@@ -198,4 +198,5 @@ return [
     'password_not_matched'=>'পাসওয়ার্ড মিলছে না',
     'special_name_or_nickname'=>'ইউজার নাম লিখুন',
     'challenge_name'=>'প্রতিযোগিতার নাম',
+    'success'=>'সফল হয়েছে',
 ];

@@ -256,4 +256,15 @@ class QuestionController extends Controller
         QuestionsOption::where('id',$id)->delete();
         return 'Delete Successfully';
     }
+
+    //category published
+    public function published_category(Request $request)
+    {
+//        return $request->all();
+        Category::where('id',$request->id)->update([
+            'is_published'=>$request->value
+        ]);
+
+        return 'success';
+    }
 }

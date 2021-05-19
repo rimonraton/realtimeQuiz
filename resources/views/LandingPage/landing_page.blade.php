@@ -328,7 +328,7 @@
                                     <div class="details" id="sub__{{$cat->id}}">
                                         <div class="details__inner">
                                             <div id="list-example" class="list-group">
-                                                @foreach($cat->childs as $cc)
+                                                @foreach($cat->childs->where('is_published',1) as $cc)
                                                 <!-- <i class="fas fa-angle-right"></i> -->
                                                 <a class="list-group-item list-group-item-action gb">
                                                     <i class="fas fa-check text-success"></i>

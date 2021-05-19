@@ -12,7 +12,7 @@ class LandingPageController extends Controller
     public function index()
     {
         $features = Game::with('features')->get();
-        $category = Category::where('sub_topic_id', 0)->get();
+        $category = Category::where('sub_topic_id', 0)->where('is_published',1)->get();
         return view('LandingPage.landing_page', compact('category', 'features'));
     }
 }
