@@ -7,6 +7,7 @@ use App\Game;
 use App\Models\Challenge;
 use App\Models\Share;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ShareController extends Controller
@@ -31,12 +32,12 @@ class ShareController extends Controller
         $challenge = Challenge::findOrFail($share->challenge_id);
 
         $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
-        $sr = collect(json_decode($share->results));
-        $sr = $sr->keyBy('id')->sortByDesc('score');
+        $results = collect(json_decode($share->results));
+        //$sr = $sr->keyBy('id')->sortByDesc('score');
         $features = Game::with('features')->get();
         $category = Category::where('sub_topic_id', 0)->get();
-        return view('result_share', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
-        return view('result_share_details', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
+        return view('result_share', compact('results','link', 'challenge', 'categories', 'features', 'category'));
+        return view('result_share_details', compact('results','link', 'challenge', 'categories', 'features', 'category'));
     }
     public function challengeShareResult($link)
     {
@@ -182,5 +183,13 @@ class ShareController extends Controller
 //        $img_canvas->insert($al, 'right');
         header('Content-Type: image/png');
         return $img_canvas->response('png');
+    }
+
+    public function challengeUserResultList()
+    {
+        $uid = Auth::id();
+         $results = Share::where(function($q) use ($uid) { $q->whereRaw("FIND_IN_SET($uid,users_id)"); })->get();
+//        return $users = collect(json_decode($results[0]->users));
+        return view('Admin.Games.resultList', compact('results'));
     }
 }

@@ -15,4 +15,5 @@ Route::get('webrtcSender', function (){
 Route::get('webrtctest', function(){
     return view('webrtc.index');
 });
+Route::get('challenge/resultList', [\App\Http\Controllers\ShareController::class, 'challengeUserResultList']);
 
