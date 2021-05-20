@@ -75,4 +75,5 @@ return [
     'menu_setup' => 'Menu Setup',
     'loading'=>'Please wait..',
     'send_msg'=>'Your message has been sent. Thank you!',
+    'result'=>'Result',
 ];
