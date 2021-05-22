@@ -443,7 +443,7 @@
                             <div class="email">
                                 <i class="fas fa-envelope"></i>
                                 <h4>{{__('msg.email')}}:</h4>
-                                <p>info@maharah.online</p>
+                                <p>info@gyankosh.info</p>
                             </div>
 
                             <div class="phone">
@@ -503,7 +503,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <h3>{{__('msg.companyName')}}</h3>
+                            <h4>{{__('msg.companyName')}}</h4>
                             <p>
                                 @if($lang == 'gb')
                                 House: 1150, Road: 9/A, Avenue: 11 <br>
@@ -514,7 +514,7 @@
                                 @endif
                                     <br><br>
                                 <strong>{{__('msg.call')}}: </strong> {{$lang == 'gb'?'+880 9617171125':'+৮৮০ ৯৬১৭১৭১১২৫'}}<br>
-                                <strong>{{__('msg.email')}}:</strong> info@maharah.online<br>
+                                <strong>{{__('msg.email')}}:</strong> info@gyankosh.info<br>
                             </p>
                         </div>
                     </div>
