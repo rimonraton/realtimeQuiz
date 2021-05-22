@@ -222,3 +222,4 @@ Route::get('challange_search/{keyword}',[HomeController::class,'challange_search
 //login User Cedentials
 Route::get('user_cedential/{value}',[\App\Http\Controllers\Auth\LoginController::class,'user_cedential']);
 Route::post('category-Published',[QuestionController::class,'published_category']);
+Route::post('question-update',[QuestionController::class,'question_update']);

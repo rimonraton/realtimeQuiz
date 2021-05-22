@@ -131,7 +131,8 @@
                     </div>
                     <div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+{{--                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>--}}
+                        <button type="button" class="btn btn-primary waves-effect " id="tet" >{{__('form.update')}}</button>
                         <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
                 </form>
@@ -398,14 +399,14 @@
         data += `<div class="form-group row">
                             <label for="option1" class="col-md-2">{{__('form.option')}} :</label>
                             <div class="col-sm-4">
-                            <input name=oid[] value='new' type='hidden' />
-                                <input type="text" class="form-control" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
+                            <input name=oid[] class="oid" value='new' type='hidden' />
+                                <input type="text" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
+                                <input type="text" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-1 bt-switch">
-                                <input type="hidden" name="ans[]" class="hi" value="0">
+                                <input type="hidden" name="ans[]" class="hi ans" value="0">
                                 <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                             <div class="col-md-1">
@@ -419,5 +420,98 @@
     $(document).on('click', '.remove', function() {
         $(this).closest('.row').remove();
     });
+    var oid =[];
+    var option =[];
+    var bdoption =[];
+    var ans =[];
+    function updateQuestion(){
+        $.ajax({
+            url:"{{url('question-update')}}",
+            type:"Post",
+            data:{
+                "_token": "{{ csrf_token() }}",
+                qid:$('#uqid').val(),
+                cat_id:$('#ucat_id').val(),
+                oid:oid,
+                option:option,
+                bdoption:bdoption,
+                ans:ans,
+                question:$('#uquestion').val(),
+                bdquestion:$('#ubdquestion').val(),
+
+            },
+            success:function (data){
+                // console.log(data);
+                $('#eo_'+$('#uqid').val()).html('');
+                $('#bo_'+$('#uqid').val()).html('');
+                $.each(data.options, function(key, value) {
+                    if(value.correct == 1){
+                    console.log(value.option);
+                    console.log(value.bd_option);
+                        if(value.option != null){
+                            $('#eo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                                ${value.option}
+                                                            </span>`)
+                        }
+                        else{
+                            $('#eo_'+$('#uqid').val()).html('- - - -');
+                        }
+
+                        if(value.bd_option != null){
+                            $('#bo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                                ${value.bd_option}
+                                                            </span>`)
+                        }
+                        else{
+                            $('#bo_'+$('#uqid').val()).html('- - - -');
+                        }
+
+                    }
+                });
+
+                $('#edit-questions').modal('hide');
+            }
+        })
+    }
+    function getoid(){
+        oid = [];
+        $('.oid').each(function(i, obj) {
+            oid.push($(this).val());
+        });
+       // return oid;
+    }
+    function geoption(){
+        option = [];
+        $('.option').each(function(i, obj) {
+            option.push($(this).val());
+        });
+        // return oid;
+    }
+    function getbdoption(){
+        bdoption = [];
+        $('.bdoption').each(function(i, obj) {
+            bdoption.push($(this).val());
+        });
+        // return oid;
+    }
+    function getans(){
+        ans = [];
+        $('.ans').each(function(i, obj) {
+            ans.push($(this).val());
+        });
+        // return oid;
+    }
+
+    $('#tet').click(function (){
+        // alert('hello');
+        getoid();
+        geoption();
+        getbdoption();
+        getans();
+        updateQuestion();
+        console.log(oid,option,bdoption,ans);
+    })
 </script>
 @endsection
