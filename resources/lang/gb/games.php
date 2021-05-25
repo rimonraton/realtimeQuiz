@@ -21,5 +21,9 @@ return [
     'schedule'=>'Schedule',
     'public_private'=>'Public/Private',
     'public'=>'Public',
+    'participants'=>'Participants',
+    'participation_time'=>'Participation time',
+    'results'=>'Results',
+    'view_result'=> 'View Results',
 ];
 

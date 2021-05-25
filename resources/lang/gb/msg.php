@@ -22,7 +22,7 @@ return [
     'register' => 'Register',
     'login' => 'Login',
     'english' => 'English',
-    'bangla' => 'Bangla',
+    'bangla' => 'বাংলা',
     'checkfeatures' => 'Check The Features',
     'checktopics' => 'Check The Topics',
     'checkfaq' => 'Frequently Asked Questions',

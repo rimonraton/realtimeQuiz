@@ -54,11 +54,14 @@ class ShareController extends Controller
         $resultFont = public_path('/fonts/result.ttf');
         $rt = '/'. $share->challenge->quantity * 100;
         $otheruser = 2;
-
+//        return $users;
         foreach ($users as $key => $user){
             $s = $key >1 ? 50 : 90;
             if($key >2){break;}
-            $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
+            $avatar = $user->avatar != ''|| $user->avatar != null ? $user->avatar : $pp.'avatar.png';
+            if ($key==1){
+                return $avatar;
+            }
             $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
             $flag = \Image::make('https://flagcdn.com/40x30/'.$user->country.'.png');
@@ -135,6 +138,7 @@ class ShareController extends Controller
 
     public function rounded($file, $name, $s = 90)
     {
+//        return $file;
         $image_s = imagecreatefromstring(file_get_contents($file));
         $width = imagesx($image_s);
         $height = imagesy($image_s);
@@ -188,8 +192,14 @@ class ShareController extends Controller
     public function challengeUserResultList()
     {
         $uid = Auth::id();
-         $results = Share::where(function($q) use ($uid) { $q->whereRaw("FIND_IN_SET($uid,users_id)"); })->get();
+        $results = Share::where(function($q) use ($uid) { $q->whereRaw("FIND_IN_SET($uid,users_id)"); })->orderBy('id','DESC')->paginate(10);
 //        return $users = collect(json_decode($results[0]->users));
         return view('Admin.Games.resultList', compact('results'));
+    }
+
+    public function deleteResult($id)
+    {
+        Share::where('id',$id)->delete();
+        return 'success';
     }
 }

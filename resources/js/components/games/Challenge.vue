@@ -226,7 +226,8 @@
 
             gameStart: function () {
                 let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users }
+                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
+                console.log(gd);
                 axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
                 this.game_start = 1
                 this.screen.waiting = 0

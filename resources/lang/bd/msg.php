@@ -21,7 +21,7 @@ return [
     'contact' => 'যোগাযোগ',
     'register' => 'রেজিস্টার করুন',
     'login' => 'লগইন করুন',
-    'english' => 'ইংরেজি',
+    'english' => 'English',
     'bangla' => 'বাংলা',
     'checkfeatures' => 'বৈশিষ্ট্যগুলি পরীক্ষা করুন',
     'checktopics' => 'বিষয়গুলি পরীক্ষা করুন',
