@@ -59,9 +59,9 @@ class ShareController extends Controller
             $s = $key >1 ? 50 : 90;
             if($key >2){break;}
             $avatar = $user->avatar != ''|| $user->avatar != null ? $user->avatar : $pp.'avatar.png';
-            if ($key==1){
-                return $avatar;
-            }
+//            if ($key==1){
+//                return $avatar;
+//            }
             $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
             $flag = \Image::make('https://flagcdn.com/40x30/'.$user->country.'.png');

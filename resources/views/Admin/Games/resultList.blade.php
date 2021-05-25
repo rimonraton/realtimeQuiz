@@ -59,7 +59,7 @@
                                         </a>
                                         @if($result)
                                             @if($result->host_id == Auth::id())
-                                                <span href="" class="dlt_result" data-id="{{$result->id}}" style="cursor: pointer; color:black;" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}">
+                                                <span href="" class="dlt_result" data-id="{{$result->id}}" style="cursor: pointer; color:black;" data-toggle="tooltip" data-placement="top" title="{{__('msg.delete')}}">
                                                     <i class="fas fa-trash text-danger"></i>
                                                 </span>
                                             @endif
