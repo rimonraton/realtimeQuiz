@@ -9,7 +9,7 @@
             <div class="card-body">
                 <h4 class="card-title text-center">{{__('form.role_user')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.assign_role')}}</button>
+{{--                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.assign_role')}}</button>--}}
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -140,10 +140,10 @@
                     <div class="form-group row">
                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.user')}}</label>
                         <div class="col-sm-9" id="options">
-                            <select class="form-control  arcategory" name="upuser_id" id="upuser">
+                            <select class="form-control  arcategory" name="upuser_id" id="upuser" disabled>
                                 <option value="">{{__('form.user_select')}}</option>
-                                @foreach($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                @foreach($user_role as $user)
+                                <option value="{{$user->id}}">{{$user->email}}</option>
                                 @endforeach
                             </select>
                         </div>

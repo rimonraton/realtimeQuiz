@@ -12,14 +12,15 @@
                 <div class="row justify-content-center">
                     <!-- col -->
                     @foreach($quizzes as $q)
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card bg-dark-success">
+                    <div class="col-lg-3 col-md-6 mt-3">
+                        <div class="card bg-light-primary h-100 ">
                             <div class="card-body">
+                                <h5 class="card-title text-center font-20">{{$q->quiz_name}}</h5>
                                 <div  class="carousel slide">
                                     <!-- Carousel items -->
                                     <div class="carousel-inner">
                                         <div class=" flex-column">
-                                            <h3 class="font-20 text-white text-center">{{$q->quiz_name}}</h3>
+{{--                                            <h3 class="font-20 text-center">{{$q->quiz_name}}</h3>--}}
 {{--                                            <p class="text-white">25th Jan</p>--}}
                                             <div class="text-white mt-2 text-center">
                                                 @foreach(App\Team::whereIn('id',explode(',',$q->team_ids))->get() as $team)
@@ -32,8 +33,8 @@
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between">
-                                <a class="btn btn-outline-purple" href="">Invite</a>
-                                <a class="btn btn-outline-inverse" href="">Start</a>
+                                <a class="btn btn-outline-purple" href=""><i class="fas fa-share-alt"></i> {{ __('msg.share') }}</a>
+                                <a class="btn btn-outline-inverse" href="">{{__('msg.start')}}</a>
                             </div>
                         </div>
                     </div>
