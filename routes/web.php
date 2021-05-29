@@ -226,3 +226,12 @@ Route::post('question-update',[QuestionController::class,'question_update']);
 
 //delete Result
 Route::get('deleteresult/{id}',[\App\Http\Controllers\ShareController::class,'deleteResult']);
+
+//Team Member
+Route::post('team-members',[\App\Http\Controllers\TeamController::class,'teamMember']);
+Route::get('delete-team/{id}',[\App\Http\Controllers\TeamController::class,'teamDelete']);
+Route::post('save_team',[\App\Http\Controllers\TeamController::class,'save_team']);
+
+//Team Quiz
+Route::get('team_quiz',[\App\Http\Controllers\TeamController::class,'team_quiz']);
+

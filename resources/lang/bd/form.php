@@ -199,4 +199,8 @@ return [
     'special_name_or_nickname'=>'ইউজার নাম লিখুন',
     'challenge_name'=>'প্রতিযোগিতার নাম',
     'success'=>'সফল হয়েছে',
+    'team_member'=>'দলের সদস্যরা',
+    'create'=>'তৈরী করুন',
+    'teams'=>'দলসমূহ',
+    'quiz'=>'কুইজের তালিকা',
 ];

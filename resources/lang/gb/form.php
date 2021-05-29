@@ -200,5 +200,8 @@ return [
     'special_name_or_nickname'=>'Enter User Name',
     'challenge_name'=>'Challenge Name',
     'success'=>'Success',
-
+    'team_member'=>'Team members',
+    'create'=>'Create',
+    'teams'=>'Teams',
+    'quiz'=>'Quiz List',
 ];

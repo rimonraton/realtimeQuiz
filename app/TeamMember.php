@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Team extends Model
+class TeamMember extends Model
 {
     protected $guarded = [];
 
-    public function members()
+    public function team()
     {
-        return $this->hasOne(TeamMember::class);
+        return $this->belongsTo(Team::class);
     }
 }
