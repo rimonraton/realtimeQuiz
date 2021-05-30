@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
+use App\Events\TeamJoin;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
@@ -87,6 +88,12 @@ class GameController extends Controller
         $created_at = ['created_at' => Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s')];
         return Progress::insert(array_merge($request->all(), $created_at));
 
+    }
+
+    public function joinTeam(Request $request)
+    {
+        broadcast(new TeamJoin($request))->toOthers();
+//        return $request->all();
     }
 
 

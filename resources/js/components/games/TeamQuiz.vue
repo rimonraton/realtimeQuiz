@@ -30,6 +30,10 @@
             <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
+        <team-member :teams="teams" :user="user" @joinTeam="joinTeam"
+                 v-if="screen.team == 0">
+        </team-member>
+
         <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
@@ -95,13 +99,14 @@
 <script>
 
     import waiting from '../helper/waiting'
+    import TeamMember from '../helper/TeamMember'
     import result from '../helper/result'
 
     export default {
 
         props : ['id', 'uid', 'user', 'questions', 'gmsg','teams'],
 
-        components: { waiting, result },
+        components: { waiting, result,TeamMember },
 
         data() {
             return {
@@ -120,11 +125,12 @@
                 current: 0,
                 qid: 0,
                 screen:{
-                    waiting: 1,
+                    waiting: 0,
                     loading: 0,
                     result: 0,
                     resultWaiting: 0,
                     winner: 0,
+                    team:0,
                 },
                 gamedata: {},
                 score: [],
@@ -133,7 +139,8 @@
                 progress: 100,
                 share:null,
                 pm:'',
-                perform:0
+                perform:0,
+                teamUser:[]
 
             };
         },
@@ -171,6 +178,10 @@
                     if(this.user.id == data.uid){
                         window.location.href = "http://quiz.test"
                     }
+
+                })
+                .listen('TeamJoin', (data) => {
+                    console.log(['Team Join.............',data])
 
                 });
 
@@ -467,7 +478,11 @@
             },
             waitingResult(){
                 return 'waiting-result';
-            }
+            },
+            joinTeam:function (id){
+                let obj = {channel: this.channel, team: id, user:this.user.id}
+                axios.post(`/api/jointeam`, obj).then(res => console.log(res.data))
+            },
 
 
 

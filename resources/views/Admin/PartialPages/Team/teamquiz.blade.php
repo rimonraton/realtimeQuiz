@@ -34,7 +34,7 @@
                             </div>
                             <div class="card-footer d-flex justify-content-between">
                                 <a class="btn btn-outline-purple" href=""><i class="fas fa-share-alt"></i> {{ __('msg.share') }}</a>
-                                <a class="btn btn-outline-inverse" href="">{{__('msg.start')}}</a>
+                                <a class="btn btn-outline-inverse" href="{{url('Team/'.$q->id.'/'.auth()->user()->id)}}">{{__('msg.start')}}</a>
                             </div>
                         </div>
                     </div>

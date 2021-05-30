@@ -12123,7 +12123,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['id', 'uid', 'user', 'questions', 'gmsg'],
+  props: ['id', 'uid', 'user', 'questions', 'gmsg', 'teams'],
   components: {
     waiting: _helper_waiting__WEBPACK_IMPORTED_MODULE_0__["default"],
     result: _helper_result__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -12840,6 +12840,632 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     qne2b: function qne2b(q, qn, l) {
       if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
       return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helper_waiting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/waiting */ "./resources/js/components/helper/waiting.vue");
+/* harmony import */ var _helper_TeamMember__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/TeamMember */ "./resources/js/components/helper/TeamMember.vue");
+/* harmony import */ var _helper_result__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/result */ "./resources/js/components/helper/result.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['id', 'uid', 'user', 'questions', 'gmsg', 'teams'],
+  components: {
+    waiting: _helper_waiting__WEBPACK_IMPORTED_MODULE_0__["default"],
+    result: _helper_result__WEBPACK_IMPORTED_MODULE_2__["default"],
+    TeamMember: _helper_TeamMember__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      qt: {
+        ms: 0,
+        time: 50,
+        timer: null
+      },
+      users: [],
+      answered: 0,
+      end_user: 0,
+      answered_user_data: [],
+      results: [],
+      counter: 2,
+      timer: null,
+      current: 0,
+      qid: 0,
+      screen: {
+        waiting: 0,
+        loading: 0,
+        result: 0,
+        resultWaiting: 0,
+        winner: 0,
+        team: 0
+      },
+      gamedata: {},
+      score: [],
+      user_ranking: null,
+      game_start: 0,
+      progress: 100,
+      share: null,
+      pm: '',
+      perform: 0,
+      teamUser: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    Echo.channel(this.channel).listen('GameStartEvent', function (data) {
+      console.log(['GameStartEvent.............', data]);
+      _this.share = data.share;
+      _this.game_start = 1; // Game Start from Game Owner...
+
+      _this.screen.waiting = 0;
+
+      _this.QuestionTimer(); // Set and Start QuestionTimer
+
+    }).listen('GameResetEvent', function (data) {
+      console.log(['GameResetEvent.............', data]);
+
+      _this.gameReset();
+    }).listen('GameEndUserEvent', function (data) {
+      console.log(['GameEndUserEvent.............', data]);
+      _this.end_user++;
+
+      if (_this.users.length == _this.end_user) {
+        _this.winner();
+      }
+    }).listen('QuestionClickedEvent', function (data) {
+      console.log('QuestionClickedEvent.............');
+
+      _this.answered_user_data.push(data);
+
+      _this.getResult();
+    }).listen('KickUserEvent', function (data) {
+      console.log('KickUserEvent.............');
+      _this.users = _this.users.filter(function (u) {
+        return u.id !== data.uid;
+      });
+
+      if (_this.user.id == data.uid) {
+        window.location.href = "http://quiz.test";
+      }
+    }).listen('TeamJoin', function (data) {
+      console.log(['Team Join.............', data]);
+    });
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    Echo.join("challenge.".concat(this.id.id, ".").concat(this.uid)).here(function (users) {
+      _this2.users = users;
+    }).joining(function (user) {
+      _this2.users.push(user);
+
+      if (_this2.game_start) {
+        _this2.kickUser(user.id);
+      }
+    }).leaving(function (user) {
+      _this2.users = _this2.users.filter(function (u) {
+        return u.id != user.id;
+      });
+      console.log("".concat(user.name, " leaving"));
+    });
+    this.current = this.questions[this.qid].id;
+    this.externalJS();
+  },
+  // beforeMount() {
+  //     window.addEventListener("beforeunload", this.preventNav);
+  //     this.$once("hook:beforeDestroy", () => {
+  //       window.removeEventListener("beforeunload", this.preventNav);
+  //     });
+  //   },
+  // beforeRouteLeave(to, from, next) {
+  //     if (this.game_start) {
+  //       if (!window.confirm("Do You Realy Want to Leave This Game?")) {
+  //         return;
+  //       }
+  //     }
+  //     next();
+  // },
+  methods: {
+    // preventNav(event) {
+    //   if (!this.game_start) return;
+    //   event.preventDefault();
+    //   // Chrome requires returnValue to be set.
+    //   event.returnValue = "";
+    // },
+    gameStart: function gameStart() {
+      var _this3 = this;
+
+      var ids = this.users.map(function (u) {
+        return u.id;
+      });
+      var gd = {
+        channel: this.channel,
+        gameStart: 1,
+        uid: ids,
+        id: this.id.id,
+        users: this.users,
+        host_id: this.uid
+      };
+      console.log(gd);
+      axios.post("/api/gameStart", gd).then(function (res) {
+        return _this3.share = res.data;
+      });
+      this.game_start = 1;
+      this.screen.waiting = 0;
+      this.QuestionTimer();
+    },
+    gameResetCall: function gameResetCall() {
+      axios.post("/api/gameReset", {
+        channel: this.channel
+      }).then(function (res) {
+        return console.log(res.data);
+      });
+      this.gameReset();
+    },
+    gameReset: function gameReset() {
+      this.questionInit();
+      this.screen.waiting = 1;
+      this.answered_user_data = [];
+      this.results = [];
+      this.qid = 0;
+      this.gamedata = {};
+      this.score = [];
+      this.user_ranking = null;
+      this.game_start = 0;
+      this.current = this.questions[this.qid].id;
+    },
+    checkAnswer: function checkAnswer(q, a, rw) {
+      this.answered = 1;
+      this.right_wrong = rw;
+      this.gamedata['uid'] = this.user.id;
+      this.gamedata['channel'] = this.channel;
+      this.gamedata['name'] = this.user.name;
+      this.gamedata['question'] = this.questions[this.qid].question_text;
+      this.gamedata['answer'] = this.getCorrectAnswertext();
+      this.gamedata['selected'] = a;
+      this.gamedata['isCorrect'] = rw == 1 ? Math.floor(this.progress) : 0;
+      axios.post("/api/questionClick", this.gamedata);
+
+      var clone = _objectSpread({}, this.gamedata);
+
+      this.answered_user_data.push(clone);
+      this.screen.loading = true;
+      this.resultScreen();
+
+      if (this.qid + 1 == this.questions.length) {
+        var gr = {
+          result: this.results,
+          'share_id': this.share.id
+        };
+        axios.post("/api/challengeResult", gr).then(function (res) {
+          return console.log(res.data);
+        });
+      }
+    },
+    getCorrectAnswertext: function getCorrectAnswertext() {
+      return this.questions[this.qid].options.find(function (o) {
+        return o.correct == 1;
+      }).option;
+    },
+    resultScreen: function resultScreen() {
+      console.log('resultScreen');
+      this.getResult(); //Sorting this.results
+
+      this.countDown();
+      this.questionInit();
+
+      if (this.qid + 1 == this.questions.length) {
+        axios.post("/api/gameEndUser", {
+          'channel': this.channel
+        });
+        this.end_user++;
+
+        if (this.users.length == this.end_user) {
+          this.winner();
+          return;
+        }
+
+        this.screen.resultWaiting = 1;
+        return;
+      }
+
+      this.qid++;
+      this.current = this.questions[this.qid].id;
+      this.QuestionTimer();
+    },
+    QuestionTimer: function QuestionTimer() {
+      var _this4 = this;
+
+      var pdec = 100 / (10 * this.qt.time);
+      console.log('QuestionTimer started');
+      this.qt.timer = setInterval(function () {
+        if (_this4.qt.time == 0) {
+          if (!_this4.answered) {
+            _this4.checkAnswer(_this4.qid, 'Not Answered', 0);
+          }
+
+          _this4.questionInit();
+
+          _this4.resultScreen();
+        } else {
+          _this4.qt.ms++;
+          _this4.progress -= pdec;
+
+          if (_this4.qt.ms == 10) {
+            _this4.qt.time--;
+            _this4.qt.ms = 0;
+          }
+        }
+      }, 100);
+    },
+    countDown: function countDown() {
+      console.log('countDown');
+
+      if (this.counter == 0) {
+        this.questionInit();
+
+        if (this.qid + 1 == this.questions.length) {
+          this.winner();
+          this.counter = 0;
+          return;
+        }
+
+        this.qid++;
+        this.current = this.questions[this.qid].id;
+        this.QuestionTimer();
+      }
+
+      this.counter--;
+    },
+    getResult: function getResult() {
+      var _this5 = this;
+
+      console.log('getResult');
+      this.results = [];
+      this.users.forEach(function (user) {
+        var score = 0;
+
+        _this5.answered_user_data.filter(function (f) {
+          return f.uid === user.id;
+        }).map(function (u) {
+          score += u.isCorrect;
+        });
+
+        _this5.results.push({
+          id: user.id,
+          name: user.name,
+          score: score
+        });
+      });
+      this.results.sort(function (a, b) {
+        return b.score - a.score;
+      });
+    },
+    winner: function winner() {
+      var _this6 = this;
+
+      this.user_ranking = this.results.findIndex(function (w) {
+        return w.id == _this6.user.id;
+      });
+      var user_score = this.results[this.user_ranking].score;
+      this.perform = Math.round(user_score / ((this.qid + 1) * 100) * 100);
+      this.pm = this.gmsg.filter(function (gm) {
+        return gm.perform_status >= _this6.perform;
+      }).reduce(function (prev, curr) {
+        return prev.perform_status < curr.perform_status ? prev : curr;
+      });
+      this.questionInit();
+      this.screen.result = 1;
+      this.screen.winner = 1;
+      this.game_start = 0;
+
+      if (this.user_ranking == 0) {
+        confetti({
+          zIndex: 999999,
+          particleCount: 200,
+          spread: 120,
+          origin: {
+            y: 0.6
+          }
+        });
+      } else {
+        var colors = ['#bb0000', '#ffffff'];
+        confetti({
+          zIndex: 999999,
+          particleCount: 100,
+          angle: 60,
+          spread: 55,
+          origin: {
+            x: 0
+          },
+          colors: colors
+        });
+        confetti({
+          zIndex: 999999,
+          particleCount: 100,
+          angle: 120,
+          spread: 55,
+          origin: {
+            x: 1
+          },
+          colors: colors
+        });
+      }
+    },
+    externalJS: function externalJS() {
+      var confetti = document.createElement('script');
+      confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js');
+      document.head.appendChild(confetti);
+    },
+    kickUser: function kickUser(id) {
+      if (id != this.uid) {
+        this.users = this.users.filter(function (u) {
+          return u.id !== id;
+        });
+        var channelUser = {
+          channel: this.channel,
+          uid: id
+        };
+        axios.post("/api/kickUser", channelUser);
+      }
+    },
+    questionInit: function questionInit() {
+      clearInterval(this.timer);
+      clearInterval(this.qt.timer);
+      this.qt.ms = 0;
+      this.qt.time = 50;
+      this.progress = 100;
+      this.answered = 0;
+      this.counter = 2;
+      this.screen.waiting = 0;
+      this.screen.loading = 0;
+      this.screen.result = 0;
+      this.screen.winner = 0;
+    },
+    gameStarted: function gameStarted(user) {
+      console.log(['user', user]);
+    },
+    q2bNumber: function q2bNumber(numb) {
+      var numbString = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+
+      _toConsumableArray(numbString).forEach(function (n) {
+        return bn += eb[n];
+      });
+
+      return bn;
+    },
+    tbe: function tbe(b, e, l) {
+      if (b !== null && e !== null) {
+        if (l === 'bd') return b;
+        return e;
+      } else if (b !== null && e === null) return b;else if (b === null && e !== null) return e;
+
+      return b;
+    },
+    qne2b: function qne2b(q, qn, l) {
+      if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
+      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+    },
+    getUrl: function getUrl(path) {
+      return location.origin + '/' + path;
+    },
+    getShareLink: function getShareLink(path) {
+      console.log(['urlencode', encodeURI(this.getUrl(path))]);
+      return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28';
+    },
+    getMedel: function getMedel(index) {
+      if (index == 0) return '<i class="fas fa-award fa-lg" style="color: gold"></i>';
+      if (index == 1) return '<i class="fas fa-award" style="color: silver"></i>';
+      if (index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>';
+      return '';
+    },
+    waitingResult: function waitingResult() {
+      return 'waiting-result';
+    },
+    joinTeam: function joinTeam(id) {
+      var obj = {
+        channel: this.channel,
+        team: id,
+        user: this.user.id
+      };
+      axios.post("/api/jointeam", obj).then(function (res) {
+        return console.log(res.data);
+      });
+    }
+  },
+  computed: {
+    channel: function channel() {
+      return "challenge.".concat(this.id.id, ".").concat(this.uid);
+    },
+    progressClass: function progressClass() {
+      return this.progress > 66 ? 'bg-success' : this.progress > 33 ? 'bg-info' : 'bg-danger';
+    },
+    progressWidth: function progressWidth() {
+      return {
+        'width': this.progress + '%'
+      };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['teams', 'user'],
+  data: function data() {
+    return {
+      colors: ['bg-info', 'bg-danger', 'bg-success', 'bg-dark', 'bg-primary']
+    };
+  },
+  methods: {
+    cardColor: function cardColor(index) {
+      return this.colors[index];
     }
   }
 });
@@ -17518,6 +18144,25 @@ __webpack_require__.r(__webpack_exports__);
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
@@ -54836,6 +55481,36 @@ runtime.setup(pusher_Pusher);
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamMember.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/practice/resultdetails.vue?vue&type=style&index=0&lang=css&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/practice/resultdetails.vue?vue&type=style&index=0&lang=css& ***!
@@ -56052,6 +56727,414 @@ var render = function() {
       ])
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _vm.screen.resultWaiting
+        ? _c("div", { staticClass: "result-waiting" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "transition",
+        { attrs: { name: "fade" } },
+        [
+          _vm.screen.result
+            ? _c("result", {
+                attrs: {
+                  results: _vm.results,
+                  lastQuestion: _vm.qid + 1 == _vm.questions.length
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.screen.winner
+        ? _c("div", { staticClass: "winner" }, [
+            _vm.user_ranking == 0
+              ? _c("div", [
+                  _c("h3", { staticClass: "text-center" }, [
+                    _vm._v(_vm._s(_vm.pm.perform_message) + " ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you won this game.")
+                  ])
+                ])
+              : _vm.user_ranking == 1
+              ? _c("div", [
+                  _c("h3", { staticClass: "text-center" }, [
+                    _vm._v(_vm._s(_vm.pm.perform_message))
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you got second place")
+                  ])
+                ])
+              : _c("div", [
+                  _c("h3", { staticClass: "text-center" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you need more concentration ")
+                  ])
+                ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-secondary",
+                on: {
+                  click: function($event) {
+                    _vm.screen.winner = 0
+                  }
+                }
+              },
+              [_vm._v("More Result")]
+            ),
+            _vm._v(" "),
+            _c("img", {
+              staticClass: "card-img img-responsive my-3",
+              staticStyle: { width: "500px !important" },
+              attrs: {
+                src: _vm.getUrl("challengeShareResult/" + _vm.share.link),
+                type: "image/png"
+              }
+            }),
+            _vm._v(" "),
+            _c("iframe", {
+              staticStyle: { border: "none", overflow: "hidden" },
+              attrs: {
+                src: _vm.getShareLink("challengeShareResult/" + _vm.share.link),
+                width: "77",
+                height: "28",
+                scrolling: "no",
+                frameborder: "0",
+                allowfullscreen: "true",
+                allow:
+                  "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              }
+            })
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.team == 0
+        ? _c("team-member", {
+            attrs: { teams: _vm.teams, user: _vm.user },
+            on: { joinTeam: _vm.joinTeam }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.waiting
+        ? _c("waiting", {
+            attrs: {
+              uid: _vm.uid,
+              users: _vm.users,
+              user: _vm.user,
+              time: _vm.id.schedule
+            },
+            on: {
+              kickingUser: function($event) {
+                return _vm.kickUser($event)
+              },
+              gameStart: _vm.gameStart,
+              gameReset: _vm.gameReset
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-8" },
+          [
+            _c("div", { staticClass: "progress" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "progress-bar progress-bar-striped",
+                  class: _vm.progressClass,
+                  style: _vm.progressWidth
+                },
+                [
+                  _vm._v(
+                    " " +
+                      _vm._s(Math.floor(_vm.progress)) +
+                      "\n                "
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.questions, function(question) {
+              return question.id == _vm.current
+                ? _c("div", { staticClass: "card my-4" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card-body animate__animated animate__backInRight animate__faster"
+                      },
+                      [
+                        _c(
+                          "span",
+                          { staticClass: "q_num text-right text-muted" },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  _vm.qne2b(
+                                    _vm.qid,
+                                    _vm.questions.length,
+                                    _vm.user.lang
+                                  )
+                                ) +
+                                "\n                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        question.more_info_link
+                          ? _c("img", {
+                              staticClass: "image w-100 mt-1 rounded",
+                              staticStyle: { "max-height": "70vh" },
+                              attrs: { src: question.more_info_link }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("p", {
+                          staticClass: "my-2 font-bold",
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.tbe(
+                                question.bd_question_text,
+                                question.question_text,
+                                _vm.user.lang
+                              )
+                            )
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._l(question.options, function(option) {
+                          return _c("ul", { staticClass: "list-group" }, [
+                            _c(
+                              "li",
+                              {
+                                staticClass:
+                                  "list-group-item list-group-item-action cursor my-1",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.checkAnswer(
+                                      question.id,
+                                      option.option,
+                                      option.correct
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("span", {
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.tbe(
+                                        option.bd_option,
+                                        option.option,
+                                        _vm.user.lang
+                                      )
+                                    )
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                : _vm._e()
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "card my-4" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("\n                    Score Board\n                    "),
+              _vm.user.id == _vm.uid && _vm.qid > 0
+                ? _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-sm btn-danger float-right",
+                      on: { click: _vm.gameResetCall }
+                    },
+                    [_vm._v("RESET")]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm.results.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "transition-group",
+                      {
+                        staticClass: "list-group",
+                        attrs: { name: "slide-up", tag: "ul", appear: "" }
+                      },
+                      _vm._l(_vm.results, function(res, index) {
+                        return _c(
+                          "li",
+                          {
+                            key: res.id,
+                            staticClass: "list-group-item user-list",
+                            class: { active: res.id == _vm.user.id }
+                          },
+                          [
+                            _c("span", {
+                              domProps: {
+                                innerHTML: _vm._s(_vm.getMedel(index))
+                              }
+                            }),
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(res.name) +
+                                " "
+                            ),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "badge badge-dark float-right mt-1"
+                              },
+                              [_vm._v(_vm._s(res.score))]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ],
+                  1
+                )
+              : _vm._e()
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center bg-light" }, [
+      _c("img", {
+        attrs: {
+          src: "/img/quiz/result-waiting.gif",
+          alt: "Waiting for game end."
+        }
+      }),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-center px-5" }, [
+        _vm._v("Please wait result is processing..")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "waiting bg-team" },
+    [
+      _c("h2", [_vm._v("Please Select Your Team")]),
+      _vm._v(" "),
+      _vm._l(_vm.teams, function(team, index) {
+        return _c(
+          "div",
+          {
+            key: team.id,
+            staticClass: "card mb-2 pointer",
+            staticStyle: { width: "24rem" },
+            on: {
+              click: function($event) {
+                return _vm.$emit("joinTeam", team.id)
+              }
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "card-body ",
+                class: _vm.cardColor(index),
+                staticStyle: { "max-height": "90vh", overflow: "auto" }
+              },
+              [
+                _c("h1", { staticClass: "text-center text-white" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(team.name) +
+                      "\n                    "
+                  )
+                ])
+              ]
+            )
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -68617,9 +69700,10 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_games_Practice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/games/Practice */ "./resources/js/components/games/Practice.vue");
 /* harmony import */ var _components_games_Challenge__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/games/Challenge */ "./resources/js/components/games/Challenge.vue");
-/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
+/* harmony import */ var _components_games_TeamQuiz__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/games/TeamQuiz */ "./resources/js/components/games/TeamQuiz.vue");
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -68642,6 +69726,7 @@ Vue.prototype.__ = function (str) {
 
 
 
+
  // import Moderator from './components/games/Moderator'
 // import Team from './components/games/Team'
 // import router from './router/Router.js';
@@ -68655,13 +69740,14 @@ Vue.prototype.__ = function (str) {
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__["faUserSecret"]);
-Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_4__["FontAwesomeIcon"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__["faUserSecret"]);
+Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_5__["FontAwesomeIcon"]);
 var app = new Vue({
   el: '#app',
   components: {
     'Practice': _components_games_Practice__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'Challenge': _components_games_Challenge__WEBPACK_IMPORTED_MODULE_1__["default"] // 'Moderator': Moderator,
+    'Challenge': _components_games_Challenge__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'TeamQuiz': _components_games_TeamQuiz__WEBPACK_IMPORTED_MODULE_2__["default"] // 'Moderator': Moderator,
     // 'Team': Team,
 
   } // router
@@ -68863,6 +69949,162 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Practice_vue_vue_type_template_id_2e0baf74___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Practice_vue_vue_type_template_id_2e0baf74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamQuiz.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/games/TeamQuiz.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TeamQuiz.vue?vue&type=template&id=4b6fa5ea& */ "./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea&");
+/* harmony import */ var _TeamQuiz_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TeamQuiz.vue?vue&type=script&lang=js& */ "./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TeamQuiz_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/games/TeamQuiz.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamQuiz_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamQuiz.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamQuiz_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamQuiz.vue?vue&type=template&id=4b6fa5ea& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamQuiz_vue_vue_type_template_id_4b6fa5ea___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamMember.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/helper/TeamMember.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TeamMember.vue?vue&type=template&id=2d9fe5bd& */ "./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd&");
+/* harmony import */ var _TeamMember_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TeamMember.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TeamMember.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _TeamMember_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/TeamMember.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamMember.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamMember.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamMember.vue?vue&type=template&id=2d9fe5bd& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamMember.vue?vue&type=template&id=2d9fe5bd&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

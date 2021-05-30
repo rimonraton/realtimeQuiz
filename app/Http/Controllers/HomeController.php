@@ -165,6 +165,19 @@ class HomeController extends Controller
         return view('games.challenge', compact(['id', 'user', 'questions', 'uid', 'gmsg']));
 
     }
+    public function Team(Quiz $quiz, $uid)
+    {
+        $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
+        $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
+        $id = $quiz;
+        $questions = Question::with('options')
+            ->whereIn('id', explode(",", $quiz->questions))->get();
+        $user = Auth::user();
+        $user['lang'] = app()->getLocale();
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('games.teamwisequiz', compact(['id', 'user', 'questions', 'uid', 'gmsg','team']));
+
+    }
 
     public function challenge_setup()
     {

@@ -10955,6 +10955,11 @@ a.text-dark:focus {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.bg-team {
+  background: #fff;
+  /* fallback for old browsers */
+}
+
 .result-waiting {
   background: rgba(0, 0, 0, 0.2);
 }

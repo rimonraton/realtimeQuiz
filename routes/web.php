@@ -187,6 +187,7 @@ Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
 Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge']);
+Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team']);
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
