@@ -5,9 +5,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('quiz/create')}}" >{{__('form.create_quiz')}}</a>
                 <h4 class="card-title text-center">{{__('form.quiz')}}</h4>
                 <hr>
-{{--                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_team')}}</button>--}}
+
 
                 <div class="row justify-content-center">
                     <!-- col -->

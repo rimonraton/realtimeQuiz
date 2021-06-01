@@ -71,7 +71,7 @@
             <!-- Form -->
             <div class="row">
                 <div class="col-12">
-                    <form class="form-horizontal mt-3 form-material" method="POST" action="{{ route('login') }}" autocomplete="off">
+                    <form class="form-horizontal mt-3 form-material" method="POST" action="{{ route('login') }}" id="lngform" autocomplete="off">
                         @csrf
                         <div class="form-group mb-3">
                             <div class="">
@@ -158,6 +158,22 @@
 
 <script>
     $(function (){
+
+        $("#lngform").on("submit", function(){
+           if ($('#email').val() == ''){
+               if(is_numeric($('#emailormobile').val())){
+                   var email = $('#emailormobile').val()+'@gyankosh.org';
+                   $('#email').val(email);
+               }else{
+                   $('#email').val($('#emailormobile').val());
+               }
+
+           }
+           else{
+
+           }
+        })
+
         $('#show').on('click',function (e){
             e.preventDefault();
             $('#hide').removeClass('d-none');
@@ -188,38 +204,39 @@
                 $(did).attr('type', 'password');
             }
         })
-        $(document).on('focusout','#emailormobile',function (){
-            var emailaddress = $(this).val();
-            if (emailaddress != ''){
-                if( validateEmail(emailaddress)) {
-                    UserCedential(emailaddress);
-                }
-                else{
-                    if(is_numeric(emailaddress))  {
-                        if(!emailaddress.match('[0-9]{11}')){
-                            $('#show_msg').removeClass('d-none');
-                            $('#show_msg').html('{{__('auth.mobile_11_no')}}');
-                        }
-                        else{
-                            if(emailaddress.length > 11){
-                                $('#show_msg').removeClass('d-none');
-                                $('#show_msg').html('{{__('auth.mobile_11_no')}}');
-                            }
-                            else{
-                                UserCedential(emailaddress);
-                            }
-                        }
-                        // alert("Please put 10 digit mobile number");
-                        // return;
-                    }
-                    else{
-                        $('#show_msg').removeClass('d-none');
-                        $('#show_msg').html('{{__('auth.valid_email')}}');
-                    }
-                }
-            }
+        {{--$(document).on('focusout','#emailormobile',function (){--}}
+        {{--    var emailaddress = $(this).val();--}}
+        {{--    if (emailaddress != ''){--}}
+        {{--        if( validateEmail(emailaddress)) {--}}
+        {{--            UserCedential(emailaddress);--}}
+        {{--        }--}}
+        {{--        else{--}}
+        {{--            if(is_numeric(emailaddress))  {--}}
+        {{--                if(!emailaddress.match('[0-9]{11}')){--}}
+        {{--                    $('#show_msg').removeClass('d-none');--}}
+        {{--                    $('#show_msg').html('{{__('auth.mobile_11_no')}}');--}}
+        {{--                }--}}
+        {{--                else{--}}
+        {{--                    if(emailaddress.length > 11){--}}
+        {{--                        $('#show_msg').removeClass('d-none');--}}
+        {{--                        $('#show_msg').html('{{__('auth.mobile_11_no')}}');--}}
+        {{--                    }--}}
+        {{--                    else{--}}
+        {{--                        UserCedential(emailaddress);--}}
+        {{--                    }--}}
+        {{--                }--}}
+        {{--                // alert("Please put 10 digit mobile number");--}}
+        {{--                // return;--}}
+        {{--            }--}}
+        {{--            else{--}}
+        {{--                $('#show_msg').removeClass('d-none');--}}
+        {{--                $('#show_msg').html('{{__('auth.valid_email')}}');--}}
+        {{--            }--}}
+        {{--        }--}}
+        {{--    }--}}
 
-        });
+        {{--});--}}
+
         function validateEmail($email) {
             var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
             return emailReg.test( $email );

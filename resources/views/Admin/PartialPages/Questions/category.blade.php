@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-12 m-b-20">
-                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.sub_topic_en')}}" require>
+                            <input type="text" class="form-control" name="name"  placeholder="{{__('form.sub_topic_en')}}" require>
                         </div>
                     </div>
                     <div class="form-group">
@@ -239,7 +239,7 @@
                             // alert($this.parent().parent());
                             $this.closest("tr").remove();
                             Swal.fire({
-                                text: data,
+                                text: '{{__('form.delete_success')}}',
                                 type: 'success',
                                 timer: 1000,
                                 showConfirmButton: false

@@ -94,4 +94,16 @@ class RoleController extends Controller
         RoleUser::where('id', $id)->delete();
         return "Deleted Successfully";
     }
+
+    public function searchRoleUser($keyword)
+    {
+//        return $keyword;
+        if ($keyword=='all'){
+            $user_role = User::with('roleuser.role')->where('admin_id',\auth()->user()->admin->id)->paginate(10);
+           return view('Admin.PartialPages.Role.partial._search_role_user',compact('user_role'));
+        }
+         $user_role = User::with('roleuser.role')->where('admin_id',\auth()->user()->admin->id)->where('name','LIKE',"{$keyword}%")->paginate(10);
+        return view('Admin.PartialPages.Role.partial._search_role_user',compact('user_role'));
+
+    }
 }

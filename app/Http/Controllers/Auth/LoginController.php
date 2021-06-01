@@ -62,8 +62,8 @@ class LoginController extends Controller
     public function user_cedential($value)
     {
         if(is_numeric($value)){
-            if (User::where('email',$value.'@gyankosh.com')->count()){
-                return User::where('email',$value.'@gyankosh.com')->first()->email;
+            if (User::where('email',$value.'@gyankosh.org')->count()){
+                return User::where('email',$value.'@gyankosh.org')->first()->email;
             }
             else{
                 return '0';

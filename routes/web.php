@@ -236,3 +236,6 @@ Route::post('save_team',[\App\Http\Controllers\TeamController::class,'save_team'
 //Team Quiz
 Route::get('team_quiz',[\App\Http\Controllers\TeamController::class,'team_quiz']);
 
+//role user search
+Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::class,'searchRoleUser']);
+

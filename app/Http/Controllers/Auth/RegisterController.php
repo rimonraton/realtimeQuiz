@@ -52,7 +52,7 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
         if(is_numeric($request->email)){
-            if (User::where('email',$request->email.'@gyankosh.com')->count()){
+            if (User::where('email',$request->email.'@gyankosh.org')->count()){
                 \Session::flash('status', __('auth.already_registered'));
                 return redirect()->back();
             }
@@ -118,7 +118,7 @@ class RegisterController extends Controller
         $email = '';
         $ui = new UserInfo();
         if(is_numeric($data['email'])){
-            $email = $data['email'].'@gyankosh.com';
+            $email = $data['email'].'@gyankosh.org';
             $ui->mobile = $data['email'];
         }
         else{
