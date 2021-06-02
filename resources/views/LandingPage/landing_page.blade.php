@@ -237,12 +237,18 @@
                                     <a href="{{url('game/mode/challenge')}}" class="menu-item menu-green right-cercle">
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
-
-                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">
+{{--                                    exampleModal--}}
+{{--                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">--}}
+{{--                                        <i class="fas fa-user text-white"></i>--}}
+{{--                                    </a>--}}
+                                    <a href="" class="menu-item menu-blue bottom-cercle alt_notify">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
 
-                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">
+{{--                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">--}}
+{{--                                        <i class="fas fa-users text-white"></i>--}}
+{{--                                    </a>--}}
+                                    <a href="" class="menu-item menu-purple left-cercle alt_notify">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
 
@@ -562,6 +568,30 @@
     <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('msg.notify')}}</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if($lang=='gb')
+                        Coming very soon. Please try <a href="{{url('Mode/Practice')}}">Practice</a> Or <a href="{{url('game/mode/challenge')}}">Challenge.</a>
+                    @else
+                        খুব শীঘ্রই আসছে. দয়া করে <a href="{{url('Mode/Practice')}}">অনুশীলন</a> অথবা <a href="{{url('game/mode/challenge')}}">প্রতিযোগিতা</a> চেষ্টা করুন।
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">{{__('form.cancel')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{asset('js/theme-site.js')}}"></script>
     <script>
         $(function() {
@@ -599,6 +629,10 @@
             //     })
             //     }
             // })
+            $('.alt_notify').on('click',function (e){
+                e.preventDefault();
+                $('#exampleModal').modal('show');
+            })
             $('.yt').on('click', function(event) {
                 event.preventDefault();
                 var idVideo = $(this).data('url');

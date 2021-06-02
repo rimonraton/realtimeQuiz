@@ -71,11 +71,11 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('setLanguage/gb') }}">
                                     <img src="https://flagcdn.com/40x30/gb.png" >
-                                    {{ __('english') }}
+                                    {{ __('msg.english') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ url('setLanguage/bd') }}">
                                     <img src="https://flagcdn.com/40x30/bd.png">
-                                    {{ __('bangla') }}
+                                    {{ __('msg.bangla') }}
                                 </a>
                             </div>
                         </li>

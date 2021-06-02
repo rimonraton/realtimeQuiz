@@ -179,10 +179,14 @@ class QuizController extends Controller
              $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->paginate(10);
          }
          else{
+             $games = Game::all();
+             $quizgame = Game::with(['quiz'=>function($q) use ($id,$admin_users){
+                 $q->where('category_id', $id)->whereIn('user_id',$admin_users);
+             }])->get();
             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
          }
 
-        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
+        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','quizgame','id','admin_users','games'));
     }
     public function deleteQuiz($id)
     {

@@ -316,6 +316,7 @@
     }
     $(document).on('click', '.edit', function() {
         var id = $(this).attr('data-id');
+        // alert(id);
         $('#uqid').val(id);
         $.ajax({
             url: "{{url('question/edit')}}/" + id,
@@ -441,7 +442,16 @@
 
             },
             success:function (data){
-                // console.log(data);
+                if(data.question_text != null){
+                    $('#eq_'+$('#uqid').val()).html(data.question_text);
+                }else{
+                    $('#eq_'+$('#uqid').val()).html('-----');
+                }
+                if(data.bd_question_text != null){
+                    $('#bq_'+$('#uqid').val()).html(data.bd_question_text);
+                }else{
+                    $('#bq_'+$('#uqid').val()).html('-----');
+                }
                 $('#eo_'+$('#uqid').val()).html('');
                 $('#bo_'+$('#uqid').val()).html('');
                 $.each(data.options, function(key, value) {
@@ -511,7 +521,7 @@
         getbdoption();
         getans();
         updateQuestion();
-        console.log(oid,option,bdoption,ans);
+        // console.log(oid,option,bdoption,ans);
     })
 </script>
 @endsection

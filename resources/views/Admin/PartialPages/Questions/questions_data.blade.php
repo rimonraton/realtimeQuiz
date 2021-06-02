@@ -58,10 +58,10 @@
                                                     <span>__</span>
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td id="eq_{{$qs->id}}">
                                                     {{$qs->question_text}}
                                                 </td>
-                                                <td>{{$qs->bd_question_text}}</td>
+                                                <td id="bq_{{$qs->id}}">{{$qs->bd_question_text}}</td>
                                                 <td class="text-center" id="eo_{{$qs->id}}">
                                                     @foreach($qs->options as $qo)
                                                         @if($qo->option)

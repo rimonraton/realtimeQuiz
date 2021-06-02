@@ -179,11 +179,11 @@
         <i class="fas fa-people-arrows "></i>
         {{ __('msg.challenge') }}
       </a>
-      <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }} disabled">
         <i class="fas fa-user "></i>
         {{ __('msg.quizmaster') }}
       </a>
-      <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }} disabled" >
         <i class="fas fa-users "></i>
         {{ __('msg.team') }}
       </a>
