@@ -30,16 +30,16 @@
             <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
-        <team-member :teams="teams" :user="user" @joinTeam="joinTeam"
-                 v-if="screen.team == 0">
-        </team-member>
-
-        <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
-                @kickingUser="kickUser($event)"
-                @gameStart="gameStart"
-                @gameReset="gameReset"
-                v-if="screen.waiting">
+        <waiting :teams="teams" :teamUser="teamUser" :uid='uid' :users='users' :user='user' :time='id.schedule'
+                 @kickingUser="kickUser($event)"
+                 @gameStart="gameStart"
+                 @gameReset="gameReset"
+                 v-if="screen.waiting">
         </waiting>
+
+        <team-member :teams="teams" :user="user" @joinTeam="joinTeam($event)"
+                     v-if="screen.team == 1">
+        </team-member>
 
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -98,7 +98,7 @@
 
 <script>
 
-    import waiting from '../helper/waiting'
+    import waiting from '../helper/moderator/waiting'
     import TeamMember from '../helper/TeamMember'
     import result from '../helper/result'
 
@@ -125,12 +125,12 @@
                 current: 0,
                 qid: 0,
                 screen:{
-                    waiting: 0,
+                    waiting: 1,
                     loading: 0,
                     result: 0,
                     resultWaiting: 0,
                     winner: 0,
-                    team:0,
+                    team:1,
                 },
                 gamedata: {},
                 score: [],
@@ -140,13 +140,12 @@
                 share:null,
                 pm:'',
                 perform:0,
-                teamUser:[]
-
+                teamUser:[],
             };
         },
 
         created(){
-            Echo.channel(this.channel)
+            Echo.channel(`challenge.${this.id.id}.${this.uid}`)
                 .listen('GameStartEvent', (data) => {
                     console.log(['GameStartEvent.............', data])
                     this.share = data.share
@@ -182,7 +181,13 @@
                 })
                 .listen('TeamJoin', (data) => {
                     console.log(['Team Join.............',data])
-
+                    this.teamUser.push({team: data.team, users: data.user});
+                    this.users.map(u=> {
+                        if(u.id === data.user.id){
+                            u.gid = data.team;
+                        }
+                    })
+                    this.teams.find(team => team.id === data.team).users.push({user:data.user});
                 });
 
         },
@@ -235,6 +240,31 @@
             //   event.returnValue = "";
             // },
 
+            QuestionTimer(){
+                let pdec = 100 / (10 * this.qt.time);
+                console.log('QuestionTimer started')
+                this.qt.timer =
+                    setInterval(() => {
+                        if(this.qt.time == 0){
+                            if(!this.answered){
+                                this.checkAnswer(this.qid, 'Not Answered', 0);
+                            }
+                            this.questionInit();
+                            this.resultScreen();
+                        }
+                        else{
+                            this.qt.ms ++
+                            this.progress -= pdec
+
+                            if(this.qt.ms == 10){
+                                this.qt.time --
+                                this.qt.ms=0
+                            }
+
+                        }
+
+                    }, 100);
+            },
             gameStart: function () {
                 let ids = this.users.map(u => u.id)
                 let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
@@ -260,6 +290,7 @@
                 this.game_start = 0
                 this.current = this.questions[this.qid].id
             },
+
             checkAnswer(q, a, rw){
                 this.answered = 1
                 this.right_wrong = rw
@@ -285,7 +316,6 @@
             getCorrectAnswertext(){
                 return this.questions[this.qid].options.find(o => o.correct == 1).option
             },
-
             resultScreen(){
                 console.log('resultScreen')
                 this.getResult() //Sorting this.results
@@ -304,31 +334,6 @@
                 this.qid ++
                 this.current = this.questions[this.qid].id
                 this.QuestionTimer()
-            },
-            QuestionTimer(){
-                let pdec = 100 / (10 * this.qt.time);
-                console.log('QuestionTimer started')
-                this.qt.timer =
-                    setInterval(() => {
-                        if(this.qt.time == 0){
-                            if(!this.answered){
-                                this.checkAnswer(this.qid, 'Not Answered', 0);
-                            }
-                            this.questionInit();
-                            this.resultScreen();
-                        }
-                        else{
-                            this.qt.ms ++
-                            this.progress -= pdec
-
-                            if(this.qt.ms == 10){
-                                this.qt.time --
-                                this.qt.ms=0
-                            }
-
-                        }
-
-                    }, 100);
             },
             countDown(){
                 console.log('countDown')
@@ -479,11 +484,18 @@
             waitingResult(){
                 return 'waiting-result';
             },
-            joinTeam:function (id){
-                let obj = {channel: this.channel, team: id, user:this.user.id}
-                axios.post(`/api/jointeam`, obj).then(res => console.log(res.data))
-            },
+            joinTeam(id){
+                let obj = {channel: this.channel, team: id, user:this.user}
+                this.teamUser.push({team: id, users:this.user});
+                this.users.map(u=> {
+                    if(u.id === this.user.id){
+                        u.gid = id;
+                    }
+                })
+                axios.post(`/api/jointeam`, obj).then(res => this.screen.team = 0)
 
+
+            },
 
 
 
@@ -498,7 +510,8 @@
             },
             progressWidth(){
                 return {'width':this.progress + '%', }
-            }
+            },
+
         }
 
 
