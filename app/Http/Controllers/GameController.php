@@ -34,8 +34,8 @@ class GameController extends Controller
     {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
-        $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
-        $challenge = Challenge::find($request->id);
+        return $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
+        return $challenge = Challenge::find($request->id);
         $cs = $challenge->share()->save($share);
         $request->request->add(['share' => $cs]);
 
@@ -93,7 +93,7 @@ class GameController extends Controller
     public function joinTeam(Request $request)
     {
         broadcast(new TeamJoin($request))->toOthers();
-//        return $request->all();
+        return $request->all();
     }
 
 
