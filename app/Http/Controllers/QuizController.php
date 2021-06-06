@@ -47,6 +47,7 @@ class QuizController extends Controller
                 $catName = Category::find($tid)->bn_name;
             }
         }
+
         $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid', 'catName'));
     }
@@ -177,6 +178,7 @@ class QuizController extends Controller
          $admin_users = $admin->users()->pluck('id');
          if ($role ==='Quiz Master'){
              $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->paginate(10);
+             return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
          }
          else{
              $games = Game::all();
@@ -184,9 +186,10 @@ class QuizController extends Controller
                  $q->where('category_id', $id)->whereIn('user_id',$admin_users);
              }])->get();
             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+            return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
          }
 
-        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','quizgame','id','admin_users','games'));
+//        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
     }
     public function deleteQuiz($id)
     {

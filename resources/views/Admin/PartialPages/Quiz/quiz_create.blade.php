@@ -136,13 +136,14 @@
                             </div>
                         </div>
                         @can('QM',\App\Question::class)
+{{--                            {{auth()->user()->roleuser->role_id}}--}}
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-8">
                                 <div class="row justify-content-center" id="team_load">
                                     @foreach($teams as $team)
                                             <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">
-                                                <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs chk child">
+                                                <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">
                                                 <label for="chce_{{$team->id}}">
                                                     @if($lang == 'gb')
                                                         @if($team->name == null)
@@ -170,7 +171,7 @@
 {{--                                </select>--}}
                             </div>
                             <div class="col-sm-1">
-                                <a class="btn btn-info text-white" id="addteam">Add Team</a>
+                                <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>
                             </div>
 
                         </div>
