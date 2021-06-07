@@ -243,7 +243,9 @@
 
 {{-- <script src="{{ asset('extra/js/codehim.dropdown.js') }}" defer></script> --}}
 
+
 <script defer>
+
   document.addEventListener('DOMContentLoaded', function () {
       $('[data-toggle="tooltip"]').tooltip();
     $('.shareBtn').on('click', function(){
@@ -288,7 +290,8 @@
         url: "{{ url('getCategory/'.$type) }}/" + item.value,
         type: "GET",
         success: function(data) {
-         $('#quizlist').html(data);
+            $('#quizlist').html(data);
+            // $('body .pagination a').addClass('nothind..');
         }
       });
 
@@ -296,8 +299,44 @@
 
     $('[data-toggle="tooltip"]').tooltip();
     // $(".dropdown-items").CodehimDropdown();
+      $('body').on('click', '.newone .pagination a', function(e) {
+          e.preventDefault();
+          var url = $(this).attr('href');
+          $.ajax({
+              url: url,
+              type: "GET",
+              beforeSend: function() {
+                  // $('.loading').show();
+                  // $('#msg').hide();
+                  // $('#viewData').hide();
+                  console.log('BEFORE');
+              },
+              success: function(data) {
+                  console.log(data);
+                  if (data != '') {
+                      $('#quizlist').html(data);
+                  } else {
 
+                      $('#quizlist').html(
+                          `<div class="text-center">
+                            <p>Data not available.</p>
+                            </div>`
+                      );
+
+                  }
+                  console.log(data);
+              },
+              complete: function() {
+                  // $('.loading').hide();
+                  // $('#showCategory').show();
+                  console.log('COMPLETE');
+
+              }
+          })
+          // window.history.pushState("", "", url);
+      });
   });
+
 
 </script>
 
