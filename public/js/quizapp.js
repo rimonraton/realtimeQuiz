@@ -13263,7 +13263,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     checkAnswer: function checkAnswer(q, a, rw) {
       this.right_wrong = rw;
       this.gamedata['id'] = this.qid + 1;
-      this.gamedata['question'] = this.questions[this.qid].question_text;
+      this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang);
       this.gamedata['answer'] = this.getCorrectAnswertext();
       this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw;
@@ -13862,6 +13862,639 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/PieChart */ "./resources/js/components/helper/PieChart.vue");
+/* harmony import */ var _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/moderator/questions */ "./resources/js/components/helper/moderator/questions.vue");
+/* harmony import */ var _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/groupResult */ "./resources/js/components/helper/groupResult.vue");
+/* harmony import */ var _helper_moderator_waiting__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/moderator/waiting */ "./resources/js/components/helper/moderator/waiting.vue");
+/* harmony import */ var _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helper/TeamMember */ "./resources/js/components/helper/TeamMember.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['id', 'uid', 'user', 'questions', 'teams', 'gmsg'],
+  components: {
+    PieChart: _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__["default"],
+    questions: _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__["default"],
+    groupResult: _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__["default"],
+    waiting: _helper_moderator_waiting__WEBPACK_IMPORTED_MODULE_3__["default"],
+    TeamMember: _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  data: function data() {
+    return {
+      answered_user_data: [],
+      answered_group: [],
+      users: [],
+      datacollection: null,
+      progress: {},
+      qoption: {
+        selected: null,
+        id: null,
+        option: null,
+        correct: null
+      },
+      prediction: [],
+      current: 0,
+      qid: 0,
+      results: [],
+      gamedata: {},
+      pie_data: [],
+      screen: {
+        waiting: 1,
+        loading: 0,
+        result: 0,
+        winner: 0,
+        team: 1
+      },
+      teamUser: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // window.onblur = alert('blurd')
+    this.current = this.questions[this.qid].id;
+    this.fillPie();
+    Echo.join("team.".concat(this.id, ".").concat(this.uid)).here(function (users) {
+      _this.users = users.filter(function (u) {
+        return u.id != _this.uid;
+      });
+    }).joining(function (user) {
+      if (user.id != _this.uid) _this.users.push(user);
+      console.log("".concat(user.name, " join"));
+      if (_this.game_start) _this.kickUser(user.id);
+    }).leaving(function (user) {
+      _this.users = _this.users.filter(function (u) {
+        return u.id != user.id;
+      });
+      console.log("".concat(user.name, " leaving"));
+    });
+    this.current = this.questions[this.qid].id;
+  },
+  created: function created() {
+    var _this2 = this;
+
+    Echo.channel(this.channel).listen('GameStartEvent', function (data) {
+      console.log('GameStartEvent.............');
+      _this2.game_start = 1; // Game Start from Game Owner...
+
+      _this2.screen.waiting = 0;
+
+      _this2.QuestionTimer(); // Set and Start QuestionTimer
+
+    }).listen('NextQuestionEvent', function (data) {
+      console.log('NextQuestionEvent.............');
+      _this2.qid = data.qid;
+      _this2.current = _this2.questions[_this2.qid].id; // Next Question from Moderator...
+
+      _this2.pie_data = [];
+      _this2.prediction = [];
+      _this2.qoption.selected = null;
+      _this2.screen.result = 0;
+
+      _this2.fillPie();
+    }).listen('AnswerPredictEvent', function (data) {
+      console.log('AnswerPredictEvent.............');
+
+      _this2.prediction.push(data);
+
+      _this2.getPredict();
+
+      _this2.fillPie();
+    }).listen('QuestionClickedEvent', function (data) {
+      console.log('QuestionClickedEvent.............');
+
+      _this2.answered_user_data.push(data);
+
+      _this2.answered_user++;
+
+      _this2.loadingScreen();
+    }).listen('GroupAnsSubEvent', function (req) {
+      console.log('GroupAnsSubEvent....');
+
+      _this2.answered_user_data.push(req.data);
+
+      _this2.getResult();
+
+      console.log([req.data, _this2.user, _this2.user.id, _this2.uid]);
+
+      if (req.data.user.gid == _this2.user.gid && _this2.user.id != _this2.uid) {
+        _this2.screen.result = 1;
+      }
+
+      if (_this2.user.id == _this2.uid) {
+        _this2.answered_group.push(req.data);
+      }
+    }).listen('PageReloadEvent', function (data) {
+      console.log('PageReloadEvent.............');
+      window.location.reload();
+    }).listen('TeamJoin', function (data) {
+      console.log(['Team Join.............', data]);
+
+      _this2.teamUser.push({
+        team: data.team,
+        users: data.user
+      });
+
+      _this2.users.map(function (u) {
+        if (u.id === data.user.id) {
+          u.gid = data.team;
+        }
+      });
+
+      _this2.teams.find(function (team) {
+        return team.id === data.team;
+      }).users.push({
+        user: data.user
+      });
+    });
+  },
+  methods: {
+    gameStart: function gameStart() {
+      var _this3 = this;
+
+      var ids = this.users.map(function (u) {
+        return u.id;
+      });
+      var gd = {
+        channel: this.channel,
+        gameStart: 1,
+        uid: ids,
+        id: this.id.id,
+        users: this.users,
+        host_id: this.uid
+      };
+      console.log(gd);
+      axios.post("/api/gameStart", gd).then(function (res) {
+        return _this3.share = res.data;
+      });
+      this.game_start = 1;
+      this.screen.waiting = 0;
+      this.QuestionTimer();
+    },
+    gameReset: function gameReset() {
+      this.questionInit();
+      this.screen.waiting = 1;
+      this.answered_user_data = [];
+      this.results = [];
+      this.qid = 0;
+      this.gamedata = {};
+      this.score = [];
+      this.user_ranking = null;
+      this.game_start = 0;
+      this.current = this.questions[this.qid].id;
+    },
+    nextQuestion: function nextQuestion() {
+      console.log('NextQuestion Clicked');
+
+      if (this.qid + 1 == this.questions.length) {
+        clearInterval(this.timer);
+        this.winner();
+        return;
+      }
+
+      this.qid++;
+      this.current = this.questions[this.qid].id;
+      this.fillPie();
+      this.answered_group = [];
+      var next = {
+        channel: this.channel,
+        qid: this.qid
+      };
+      axios.post("/api/nextQuestion", next);
+    },
+    submitAnswer: function submitAnswer() {
+      if (this.qoption.selected == null) {
+        alert('Please select an option first!');
+        return;
+      }
+
+      this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
+      this.qoption.selected = null;
+      this.qoption.id = null;
+      this.qoption.option = null;
+      this.qoption.correct = null;
+      this.screen.result = 1;
+    },
+    checkAnswer: function checkAnswer(q, a, rw) {
+      var _this4 = this;
+
+      this.gamedata['id'] = this.qid + 1;
+      this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text);
+      this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext());
+      this.gamedata['selected'] = this.ToText(a);
+      this.gamedata['isCorrect'] = rw;
+      this.gamedata['user'] = this.user;
+      this.gamedata['channel'] = this.channel;
+      this.gamedata['group'] = this.user.group.name;
+
+      var clone = _objectSpread({}, this.gamedata);
+
+      this.answered_user_data.push(clone);
+      axios.post("/api/submitAnswerGroup", {
+        data: clone
+      }).then(function (response) {
+        return _this4.getResult();
+      });
+    },
+    getResult: function getResult() {
+      this.results = _(this.answered_user_data).groupBy('group').map(function (answers, name) {
+        return {
+          name: name,
+          score: _.sumBy(answers, function (item) {
+            return Number(item.isCorrect);
+          }),
+          answers: _.orderBy(answers, ['id'], ['desc'])
+        };
+      }).sortBy('score').value();
+      console.log(JSON.stringify(this.results));
+    },
+    predictAnswer: function predictAnswer() {
+      var pre = {
+        ans: this.ToText(this.qoption.option),
+        user: this.user,
+        channel: this.channel
+      };
+
+      if (this.isPredict()) {
+        this.prediction.push(pre);
+        axios.post("/api/answerPredict", pre);
+        this.getPredict();
+        this.fillPie();
+      }
+    },
+    isPredict: function isPredict() {
+      var _this5 = this;
+
+      return !this.prediction.find(function (p) {
+        return p.user.id === _this5.user.id;
+      });
+    },
+    groupPredict: function groupPredict() {
+      var _this6 = this;
+
+      return this.prediction.find(function (p) {
+        return p.user.group_id === _this6.user.group_id;
+      });
+    },
+    getPredict: function getPredict() {
+      var _this7 = this;
+
+      var counts = {};
+      var options = this.questions[this.qid].options;
+      this.prediction.forEach(function (p) {
+        if (p.user.group_id === _this7.user.group_id) {
+          counts[p.ans] = (counts[p.ans] || 0) + 1;
+        }
+      });
+      this.pie_data = options.map(function (o) {
+        var c = counts[_this7.ToText(o.option)];
+
+        if (c === undefined) return 0;
+        return c;
+      });
+    },
+    getCorrectAnswertext: function getCorrectAnswertext() {
+      return this.questions[this.qid].options.find(function (o) {
+        return o.correct == 1;
+      }).option;
+    },
+    winner: function winner() {
+      var _this8 = this;
+
+      this.user_ranking = this.results.findIndex(function (w) {
+        return w.id == _this8.user.id;
+      });
+      this.screen.winner = 1;
+
+      if (this.wrong == 0) {
+        confetti({
+          zIndex: 999999,
+          particleCount: 200,
+          spread: 120,
+          origin: {
+            y: 0.6
+          }
+        });
+      }
+    },
+    reloadPage: function reloadPage() {
+      axios.post("/api/pageReload", {
+        channel: this.channel
+      }).then(function (response) {
+        console.log(['page reload event log ', response]);
+        window.location.reload();
+      });
+    },
+    clickSelect: function clickSelect(index, option) {
+      console.log([index, option]);
+
+      if (this.qoption.selected == index) {
+        this.qoption.selected = null;
+        this.qoption.id = option.question_id;
+        this.qoption.option = null;
+        this.qoption.correct = null;
+      } else {
+        this.qoption.selected = index;
+        this.qoption.id = option.question_id;
+        this.qoption.option = option.option;
+        this.qoption.correct = option.correct;
+      } // console.log(this.isPredict())
+
+    },
+    fillPie: function fillPie() {
+      var _this9 = this;
+
+      this.datacollection = {
+        labels: this.questions[this.qid].options.map(function (o) {
+          return _this9.ToText(o.option);
+        }),
+        datasets: [{
+          borderWidth: 1,
+          borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+          backgroundColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+          data: this.pie_data
+        }]
+      };
+    },
+    ToText: function ToText(input) {
+      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+    },
+    answer: function answer() {
+      return this.ans;
+    },
+    joinTeam: function joinTeam(id) {
+      var _this10 = this;
+
+      var obj = {
+        channel: this.channel,
+        team: id,
+        user: this.user
+      };
+      this.teamUser.push({
+        team: id,
+        users: this.user
+      });
+      this.users.map(function (u) {
+        if (u.id === _this10.user.id) {
+          u.gid = id;
+        }
+      });
+      axios.post("/api/jointeam", obj).then(function (res) {
+        return _this10.screen.team = 0;
+      });
+    }
+  },
+  computed: {
+    channel: function channel() {
+      return "team.".concat(this.id, ".").concat(this.uid);
+    },
+    userGroup: function userGroup() {
+      return _(this.users).groupBy('group.name').map(function (value, key) {
+        return {
+          group: key,
+          members: value
+        };
+      }).value();
+    },
+    setProgress: function setProgress() {
+      return {
+        'width': 100 / this.userGroup.length + '%'
+      };
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamQuiz.vue?vue&type=script&lang=js& ***!
@@ -13892,6 +14525,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -97165,6 +97799,642 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container mt-n2" },
+    [
+      _vm.uid == _vm.user.id
+        ? _c(
+            "div",
+            { staticClass: "progress mb-3" },
+            _vm._l(_vm.answered_group, function(group, i) {
+              return _c(
+                "div",
+                {
+                  staticClass: "progress-bar",
+                  class: [i % 2 == 0 ? "bg-danger" : "bg-success"],
+                  style: _vm.setProgress
+                },
+                [_vm._v("\n          " + _vm._s(group.group) + "\n        ")]
+              )
+            }),
+            0
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.winner
+        ? _c("div", { staticClass: "winner" }, [
+            _vm.user_ranking == 0
+              ? _c("div", [
+                  _c("h1", { staticClass: "text-center" }, [
+                    _vm._v("Congratulation ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you won this game.")
+                  ])
+                ])
+              : _vm.user_ranking == 1
+              ? _c("div", [
+                  _c("h1", { staticClass: "text-center" }, [
+                    _vm._v("Well Played ! ")
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you got second place")
+                  ])
+                ])
+              : _c("div", [
+                  _c("h3", { staticClass: "text-center" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.user.name))]),
+                    _vm._v(", you need more concentration ")
+                  ])
+                ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-secondary",
+                on: {
+                  click: function($event) {
+                    _vm.screen.winner = 0
+                  }
+                }
+              },
+              [_vm._v("Close")]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.waiting
+        ? _c("waiting", {
+            attrs: {
+              teams: _vm.teams,
+              teamUser: _vm.teamUser,
+              uid: _vm.uid,
+              users: _vm.users,
+              user: _vm.user,
+              time: _vm.id.schedule
+            },
+            on: {
+              kickingUser: function($event) {
+                return _vm.kickUser($event)
+              },
+              gameStart: _vm.gameStart,
+              gameReset: _vm.gameReset
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.team == 1
+        ? _c("team-member", {
+            attrs: { teams: _vm.teams, user: _vm.user },
+            on: {
+              joinTeam: function($event) {
+                return _vm.joinTeam($event)
+              }
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.screen.result
+        ? _c("group-result", {
+            attrs: {
+              results: _vm.results,
+              groupName: _vm.user.group.name,
+              lastQuestion: _vm.qid + 1 == _vm.questions.length
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.user.id == _vm.uid
+        ? _c("div", { staticClass: "row justify-content-center" }, [
+            _c(
+              "div",
+              { staticClass: "col-md-7" },
+              [
+                _c("questions", {
+                  attrs: { questions: _vm.questions, qid: _vm.qid }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-5" }, [
+              _c("div", { staticClass: "card text-white bg-secondary" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "card-header card-title d-flex justify-content-between"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: _vm.reloadPage }
+                      },
+                      [_vm._v("Reset")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: _vm.nextQuestion }
+                      },
+                      [_vm._v("NEXT QUESTION")]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c(
+                    "ul",
+                    { staticClass: "list-group text-dark" },
+                    _vm._l(_vm.results, function(result, key) {
+                      return _c(
+                        "li",
+                        {
+                          key: key,
+                          staticClass:
+                            "list-group-item d-flex justify-content-between align-items-center p-0"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-100",
+                              attrs: { id: "accordion" + key }
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "card text-white bg-secondary" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "card-header py-1 bg-secondary d-flex justify-content-between",
+                                      attrs: {
+                                        id: "heading" + key,
+                                        "data-toggle": "collapse",
+                                        "data-target": "#collapse" + key,
+                                        "aria-expanded": "true",
+                                        "aria-controls": "collapse" + key
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "mb-0 cursor" },
+                                        [
+                                          _vm._v(
+                                            "\n                                        " +
+                                              _vm._s(result.name) +
+                                              "\n                                    "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "badge badge-success badge-pill"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                        " +
+                                              _vm._s(result.score) +
+                                              "\n                                    "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "collapse show",
+                                      attrs: {
+                                        id: "collapse" + key,
+                                        "aria-labelledby": "heading" + key,
+                                        "data-parent": "#accordion" + key
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        { staticClass: "card-body p-0" },
+                                        [
+                                          _c(
+                                            "ul",
+                                            {
+                                              staticClass:
+                                                "list-group text-dark",
+                                              staticStyle: {
+                                                "max-height": "380px",
+                                                overflow: "auto"
+                                              }
+                                            },
+                                            _vm._l(result.answers, function(
+                                              answer,
+                                              key
+                                            ) {
+                                              return _c(
+                                                "li",
+                                                {
+                                                  key: key,
+                                                  staticClass:
+                                                    "list-group-item d-flex justify-content-between align-items-center p-1"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-light f-13"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "font-weight-light font-italic"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                    " +
+                                                              _vm._s(
+                                                                answer.user
+                                                                  .name +
+                                                                  " - " +
+                                                                  answer.selected
+                                                              ) +
+                                                              "\n                                                "
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      answer.isCorrect == 1
+                                                        ? _c("i", {
+                                                            staticClass:
+                                                              "fa fa-check text-success",
+                                                            attrs: {
+                                                              "aria-hidden":
+                                                                "true"
+                                                            }
+                                                          })
+                                                        : _c("i", {
+                                                            staticClass:
+                                                              "fa fa-times text-danger",
+                                                            attrs: {
+                                                              "aria-hidden":
+                                                                "true"
+                                                            }
+                                                          })
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            }),
+                                            0
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.user.id != _vm.uid
+        ? _c("div", { staticClass: "row justify-content-center" }, [
+            _c("div", { staticClass: "col-md-8" }, [
+              _c(
+                "div",
+                { staticClass: "container-fluid px-0" },
+                _vm._l(_vm.questions, function(question) {
+                  return question.id == _vm.current
+                    ? _c("div", { staticClass: "modal-content" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-header",
+                            staticStyle: { "justify-content": "flex-start" }
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "col-xs-1 my-1 element-animation0"
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "bg-success text-white rounded-circle",
+                                    attrs: { id: "qid" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.qid + 1))]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-xs-11" }, [
+                              _c(
+                                "h6",
+                                { staticClass: "pl-1 element-animation0" },
+                                [
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(_vm.ToText(question.question_text))
+                                  )
+                                ]
+                              )
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "modal-body" },
+                          [
+                            question.more_info_link
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "col-md-8 offset-md-2 element-animation1"
+                                  },
+                                  [
+                                    _c("img", {
+                                      staticClass: "image w-100 mb-2 rounded",
+                                      staticStyle: { "max-height": "40vh" },
+                                      attrs: { src: question.more_info_link }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm._l(question.options, function(option, index) {
+                              return _c("ul", { staticClass: "list-group" }, [
+                                _c(
+                                  "li",
+                                  {
+                                    staticClass:
+                                      "list-group-item list-group-item-action cursor my-1",
+                                    class: [
+                                      "element-animation" + (index + 1),
+                                      {
+                                        selected: _vm.qoption.selected == index
+                                      }
+                                    ],
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.clickSelect(index, option)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(_vm.ToText(option.option)) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              ])
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "modal-footer text-muted d-flex justify-content-between"
+                          },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-secondary rounded-pill element-animation5",
+                                class: { disabled: !_vm.qoption.selected },
+                                on: { click: _vm.predictAnswer }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Group Predict\n                            "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-success float-right rounded-pill element-animation5",
+                                class: {
+                                  disabled: _vm.qoption.selected == null
+                                },
+                                on: { click: _vm.submitAnswer }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Submit\n                            "
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-4" },
+              [
+                _vm._l(_vm.questions, function(question) {
+                  return question.id == _vm.current && _vm.groupPredict()
+                    ? _c(
+                        "div",
+                        { staticClass: "card mb-4" },
+                        [
+                          _vm._m(1, true),
+                          _vm._v(" "),
+                          _c("pie-chart", {
+                            attrs: { "chart-data": _vm.datacollection }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.userGroup, function(ug) {
+                  return ug.group != "undefined"
+                    ? _c("div", { staticClass: "card my-2" }, [
+                        _c(
+                          "div",
+                          { staticClass: "card-header py-1 text-primary" },
+                          [_vm._v(_vm._s(ug.group) + " group member")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "card-body p-0" },
+                          _vm._l(ug.members, function(member) {
+                            return _c("ul", { staticClass: "list-group" }, [
+                              _c(
+                                "li",
+                                {
+                                  staticClass: "list-group-item py-1",
+                                  class: {
+                                    "text-success": member.id == _vm.user.id
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(member.name) +
+                                      "\n                        "
+                                  )
+                                ]
+                              )
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    : _vm._e()
+                })
+              ],
+              2
+            )
+          ])
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "leaderboard mt-4" }, [
+      _c("div", { staticClass: " mt-4" }, [
+        _c("h3", { staticClass: "text-white p-2" }, [
+          _c("i", {
+            staticClass: "fa fa-trophy",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v("\n                    Participant Group\n                  ")
+        ]),
+        _vm._v(" "),
+        _c("ul", { staticClass: "list-group" }, [
+          _c("li", { staticClass: "list-group-item" })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("h3", { staticClass: "text-white p-2" }, [
+        _c("i", {
+          staticClass: "fa fa-trophy",
+          attrs: { "aria-hidden": "true" }
+        }),
+        _vm._v("\n                    Leader Board\n                ")
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "list-group" }, [
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Rasel Mia")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("8")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Motaharul Islam")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("7")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Mahmudul Hassan")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("6")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Abul Bashar")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("5")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "list-group-item" }, [
+          _c("mark", [_vm._v("Zulfiker Ali")]),
+          _vm._v(" "),
+          _c("small", { staticClass: "text-white" }, [_vm._v("1")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-center" }, [
+      _c("strong", [_vm._v("Group Prediction")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/games/TeamQuiz.vue?vue&type=template&id=4b6fa5ea& ***!
@@ -110549,9 +111819,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_games_TeamQuiz__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/games/TeamQuiz */ "./resources/js/components/games/TeamQuiz.vue");
 /* harmony import */ var _components_games_Moderator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/games/Moderator */ "./resources/js/components/games/Moderator.vue");
 /* harmony import */ var _components_games_Team__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/games/Team */ "./resources/js/components/games/Team.vue");
-/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
+/* harmony import */ var _components_games_TeamModerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/games/TeamModerator */ "./resources/js/components/games/TeamModerator.vue");
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/vue-fontawesome */ "./node_modules/@fortawesome/vue-fontawesome/index.es.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -110577,6 +111848,7 @@ Vue.prototype.__ = function (str) {
 
 
 
+
  // import router from './router/Router.js';
 
 /**
@@ -110588,8 +111860,8 @@ Vue.prototype.__ = function (str) {
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_5__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_6__["faUserSecret"]);
-Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_7__["FontAwesomeIcon"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_6__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_7__["faUserSecret"]);
+Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_8__["FontAwesomeIcon"]);
 var app = new Vue({
   el: '#app',
   components: {
@@ -110597,7 +111869,8 @@ var app = new Vue({
     'Challenge': _components_games_Challenge__WEBPACK_IMPORTED_MODULE_1__["default"],
     'TeamQuiz': _components_games_TeamQuiz__WEBPACK_IMPORTED_MODULE_2__["default"],
     'Moderator': _components_games_Moderator__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'Team': _components_games_Team__WEBPACK_IMPORTED_MODULE_4__["default"]
+    'Team': _components_games_Team__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'TeamModerator': _components_games_TeamModerator__WEBPACK_IMPORTED_MODULE_5__["default"]
   } // router
 
 });
@@ -110935,6 +112208,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Team_vue_vue_type_template_id_bbe26fd4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Team_vue_vue_type_template_id_bbe26fd4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamModerator.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/games/TeamModerator.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TeamModerator.vue?vue&type=template&id=1419b53f& */ "./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f&");
+/* harmony import */ var _TeamModerator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TeamModerator.vue?vue&type=script&lang=js& */ "./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TeamModerator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/games/TeamModerator.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamModerator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamModerator.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamModerator.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamModerator_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamModerator.vue?vue&type=template&id=1419b53f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/games/TeamModerator.vue?vue&type=template&id=1419b53f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamModerator_vue_vue_type_template_id_1419b53f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

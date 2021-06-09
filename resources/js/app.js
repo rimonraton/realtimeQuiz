@@ -24,6 +24,7 @@ import Challenge from './components/games/Challenge'
 import TeamQuiz from './components/games/TeamQuiz'
 import Moderator from './components/games/Moderator'
 import Team from './components/games/Team'
+import TeamModerator from './components/games/TeamModerator'
 // import router from './router/Router.js';
 
 /**
@@ -46,6 +47,7 @@ const app = new Vue({
 	    'TeamQuiz': TeamQuiz,
 	    'Moderator': Moderator,
 	    'Team': Team,
+        'TeamModerator':TeamModerator,
 	}
     // router
 });

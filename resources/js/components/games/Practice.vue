@@ -133,7 +133,7 @@ export default {
         checkAnswer: function (q, a, rw) {
             this.right_wrong = rw
             this.gamedata.['id'] = this.qid + 1
-            this.gamedata.['question'] = this.questions[this.qid].question_text
+            this.gamedata.['question'] = this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang)
             this.gamedata.['answer'] = this.getCorrectAnswertext()
             this.gamedata.['selected'] = a
             this.gamedata.['isCorrect'] = rw

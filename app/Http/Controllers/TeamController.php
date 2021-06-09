@@ -45,23 +45,24 @@ class TeamController extends Controller
         $request->validate([
             'name' => 'required',
         ]);
-       $id = Team::create([
+       $id = Team::insert([
             "name" => $request->name,
             'bn_name'=>$request->bn_name,
             'link'=>$random,
             'user_id'=>Auth::id(),
         ]);
 
-//        $members = implode(',',$request->members);
-//        TeamMember::create([
-//            'team_id'=>$id->id,
-//            'user_ids'=>$members
-//        ]);
+        $members = implode(',',$request->members);
+        TeamMember::insert([
+            'team_id'=>$id->id,
+            'user_ids'=>$members
+        ]);
         return redirect('teamlist');
     }
 
     public function updateTeam(Request $request)
     {
+//        return $request->all();
         $request->validate([
             'name' => 'required',
         ]);
@@ -70,7 +71,8 @@ class TeamController extends Controller
             "bn_name"=>$request->bnName,
         ]);
         $members = implode(',',$request->members);
-        TeamMember::where('team_id',$request->id)->update([
+        TeamMember::insert([
+            'team_id'=>$request->id,
             'user_ids'=>$members
         ]);
         return redirect('teamlist');

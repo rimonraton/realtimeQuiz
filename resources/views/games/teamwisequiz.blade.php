@@ -14,16 +14,17 @@
                         </div>
                     @endif
 
-                    <team-quiz :id="{{ $id }}"
+                    <team-moderator :id="{{ $id }}"
                     :uid="{{ $uid }}"
                     :questions="{{ $questions }}"
                     :user="{{ $user }}"
                     :gmsg="{{ $gmsg }}"
-                    :teams="{{$team}}"></team-quiz>
+                    :teams="{{$team}}"></team-moderator>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
 

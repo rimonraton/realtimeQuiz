@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        
         <div class="result-waiting" v-if="screen.resultWaiting">
             <div class="text-center bg-light">
                 <img src="/img/quiz/result-waiting.gif" alt="Waiting for game end.">

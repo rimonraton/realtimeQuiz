@@ -16,7 +16,7 @@
                     <div class="col-lg-3 col-md-6 mt-3">
                         <div class="card bg-light-primary h-100 ">
                             <div class="card-body">
-                                <h5 class="card-title text-center font-20">{{$q->quiz_name}}</h5>
+                                <h5 class="card-title text-center font-20">{{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}</h5>
                                 <div  class="carousel slide">
                                     <!-- Carousel items -->
                                     <div class="carousel-inner">
@@ -25,7 +25,7 @@
 {{--                                            <p class="text-white">25th Jan</p>--}}
                                             <div class="text-white mt-2 text-center">
                                                 @foreach(App\Team::whereIn('id',explode(',',$q->team_ids))->get() as $team)
-                                                <span class="badge badge-secondary">{{$team->name}}</span>
+                                                <span class="badge badge-secondary">{{$lang=='gb'?$team->name:$team->bn_name}}</span>
                                                 @endforeach
                                             </div>
 
