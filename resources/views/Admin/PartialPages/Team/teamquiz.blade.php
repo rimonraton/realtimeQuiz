@@ -1,5 +1,40 @@
 @extends('Admin.Layout.dashboard')
 @php $lang = App::getLocale(); @endphp
+
+@section('css')
+    <style>
+        .iframe-size{
+            width: 90vw;
+            height: 90vh;
+            left: 3vw;
+        }
+        .hide_share{
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .3s linear;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .show_share {
+            position: absolute;
+            left: -17px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .5s linear;
+            opacity: 1;
+            bottom: -25px;
+        }
+        .pointer{
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+    </style>
+@endsection
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -34,7 +69,12 @@
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between">
-                                <a class="btn btn-outline-purple" href=""><i class="fas fa-share-alt"></i> {{ __('msg.share') }}</a>
+                                <div id="shareBtn{{ $q->id }}" class="show_share shareBtnDiv"></div>
+                                <a class="shareBtn pointer small btn btn-outline-purple" data-id="{{ $q->id }}">
+                                    <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
+                                    <div class="loading{{ $q->id }}"></div>
+                                </a>
+{{--                                <a class="btn btn-outline-purple" href=""><i class="fas fa-share-alt"></i> {{ __('msg.share') }}</a>--}}
                                 <a class="btn btn-outline-inverse" href="{{url('Team/'.$q->id.'/'.auth()->user()->id)}}">{{__('msg.start')}}</a>
                             </div>
                         </div>
@@ -91,6 +131,23 @@
 
 @section('js')
 <script>
+    $('.shareBtn').on('click', function(e){
+        e.stopPropagation();
+        let id = $(this).attr('data-id');
+        $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
+
+        let hasShow = $('#shareBtn'+id).hasClass('show_share');
+        let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
+        let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+
+        $('.show_share').empty();
+        $('#shareBtn'+id).append(iframe);
+
+        $('#shareFrame'+id).on('load', function(){
+            $('.loading'+id).removeClass('spinner-grow spinner-grow-sm');
+        });
+
+    });
 
 </script>
 @endsection
