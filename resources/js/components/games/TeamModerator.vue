@@ -2,10 +2,10 @@
     <div class="container mt-n2">
         <div class="progress mb-3" v-if="uid == user.id">
             <div class="progress-bar"
-                v-for="(group, i) in answered_group"
+                v-for="(team, i) in answered_group"
                 :class="[ i % 2 == 0 ? 'bg-danger' : 'bg-success' ]"
                 :style="setProgress">
-              {{ group.group }}
+              {{ team.name }}
             </div>
         </div>
         <div class="winner" v-if="screen.winner">
@@ -30,11 +30,11 @@
                  v-if="screen.waiting">
         </waiting>
         <team-member :teams="teams" :user="user" @joinTeam="joinTeam($event)"
-                     v-if="screen.team == 1">
+                     v-if="screen.team == 1 && user.id != uid">
         </team-member>
         <group-result
             :results='results'
-            :groupName='user.group.name'
+            :groupName='team.name'
             :lastQuestion='(qid + 1) == questions.length'
                 v-if="screen.result">
         </group-result>
@@ -250,6 +250,7 @@
                     team:1,
                 },
                 teamUser:[],
+                team: null
             };
         },
 
@@ -286,11 +287,11 @@
 
         created(){
             Echo.channel(this.channel)
-                .listen('GameStartEvent', (data) => {
-                    console.log('GameStartEvent.............')
+                .listen('GameTeamModeratorStartEvent', (data) => {
+                    console.log('GameTeamModeratorStartEvent.............')
                     this.game_start = 1 // Game Start from Game Owner...
                     this.screen.waiting = 0
-                    this.QuestionTimer() // Set and Start QuestionTimer
+                    // this.QuestionTimer() // Set and Start QuestionTimer
 
                 })
                 .listen('NextQuestionEvent', (data) => {
@@ -317,8 +318,7 @@
                     this.loadingScreen()
                 })
                 .listen('GroupAnsSubEvent', (req) => {
-                    console.log('GroupAnsSubEvent....')
-
+                    console.log(['GroupAnsSubEvent....', req.data])
                         this.answered_user_data.push(req.data)
                         this.getResult()
                     console.log([req.data,  this.user, this.user.id, this.uid])
@@ -327,7 +327,7 @@
                             this.screen.result = 1
                         }
                         if(this.user.id == this.uid){
-                            this.answered_group.push(req.data)
+                            this.answered_group.push(req.data.team)
                         }
 
                 })
@@ -344,7 +344,7 @@
                                 u.gid = data.team;
                             }
                         })
-                        this.teams.find(team => team.id === data.team).users.push({user:data.user});
+                        //this.teams.find(team => team.id === data.team).users.push({user:data.user});
                     });
 
         },
@@ -352,13 +352,10 @@
 
         methods: {
             gameStart: function () {
-                let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
-                console.log(gd);
-                axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
+                axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel}).then(res =>  console.log(res.data))
                 this.game_start = 1
                 this.screen.waiting = 0
-                this.QuestionTimer()
+                //this.QuestionTimer()
             },
             gameReset(){
                 this.questionInit()
@@ -393,6 +390,7 @@
 
             },
             submitAnswer(){
+                console.log(this.qoption);
                 if(this.qoption.selected == null){
                     alert('Please select an option first!')
                     return;
@@ -415,14 +413,16 @@
                 this.gamedata.['isCorrect'] = rw
                 this.gamedata.['user'] = this.user
                 this.gamedata.['channel'] = this.channel
-                this.gamedata.['group'] = this.user.group.name
+                this.gamedata.['team'] = this.team
                 let clone = {...this.gamedata}
+                console.log(clone);
                 this.answered_user_data.push(clone)
                 axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
 
             },
+
             getResult(){
-                this.results = _(this.answered_user_data).groupBy('group')
+                this.results = _(this.answered_user_data).groupBy('team.name')
                                 .map((answers, name) => ({
                                     name: name,
                                     score: _.sumBy(answers, item => Number(item.isCorrect)),
@@ -465,7 +465,7 @@
                 var counts = {};
                 let options = this.questions[this.qid].options
                 this.prediction.forEach(p => {
-                    if(p.user.group_id === this.user.group_id){
+                    if(p.user.gid === this.user.gid){
                         counts[p.ans] = (counts[p.ans] || 0)+1;
                     }
                 });
@@ -543,14 +543,14 @@
             joinTeam(id){
                 let obj = {channel: this.channel, team: id, user:this.user}
                 this.teamUser.push({team: id, users:this.user});
+                this.team = this.teams.find(team => team.id == id);
+                this.user.gid = id;
                 this.users.map(u=> {
                     if(u.id === this.user.id){
                         u.gid = id;
                     }
                 })
                 axios.post(`/api/jointeam`, obj).then(res => this.screen.team = 0)
-
-
             },
 
         },

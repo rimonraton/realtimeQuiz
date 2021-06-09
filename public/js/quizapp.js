@@ -14134,7 +14134,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         winner: 0,
         team: 1
       },
-      teamUser: []
+      teamUser: [],
+      team: null
     };
   },
   mounted: function mounted() {
@@ -14162,14 +14163,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     var _this2 = this;
 
-    Echo.channel(this.channel).listen('GameStartEvent', function (data) {
-      console.log('GameStartEvent.............');
+    Echo.channel(this.channel).listen('GameTeamModeratorStartEvent', function (data) {
+      console.log('GameTeamModeratorStartEvent.............');
       _this2.game_start = 1; // Game Start from Game Owner...
 
-      _this2.screen.waiting = 0;
-
-      _this2.QuestionTimer(); // Set and Start QuestionTimer
-
+      _this2.screen.waiting = 0; // this.QuestionTimer() // Set and Start QuestionTimer
     }).listen('NextQuestionEvent', function (data) {
       console.log('NextQuestionEvent.............');
       _this2.qid = data.qid;
@@ -14198,7 +14196,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       _this2.loadingScreen();
     }).listen('GroupAnsSubEvent', function (req) {
-      console.log('GroupAnsSubEvent....');
+      console.log(['GroupAnsSubEvent....', req.data]);
 
       _this2.answered_user_data.push(req.data);
 
@@ -14211,7 +14209,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (_this2.user.id == _this2.uid) {
-        _this2.answered_group.push(req.data);
+        _this2.answered_group.push(req.data.team);
       }
     }).listen('PageReloadEvent', function (data) {
       console.log('PageReloadEvent.............');
@@ -14228,37 +14226,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (u.id === data.user.id) {
           u.gid = data.team;
         }
-      });
+      }); //this.teams.find(team => team.id === data.team).users.push({user:data.user});
 
-      _this2.teams.find(function (team) {
-        return team.id === data.team;
-      }).users.push({
-        user: data.user
-      });
     });
   },
   methods: {
     gameStart: function gameStart() {
-      var _this3 = this;
-
-      var ids = this.users.map(function (u) {
-        return u.id;
-      });
-      var gd = {
-        channel: this.channel,
-        gameStart: 1,
-        uid: ids,
-        id: this.id.id,
-        users: this.users,
-        host_id: this.uid
-      };
-      console.log(gd);
-      axios.post("/api/gameStart", gd).then(function (res) {
-        return _this3.share = res.data;
+      axios.post("/api/gameTeamModeratorStart", {
+        channel: this.channel
+      }).then(function (res) {
+        return console.log(res.data);
       });
       this.game_start = 1;
-      this.screen.waiting = 0;
-      this.QuestionTimer();
+      this.screen.waiting = 0; //this.QuestionTimer()
     },
     gameReset: function gameReset() {
       this.questionInit();
@@ -14292,6 +14272,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.post("/api/nextQuestion", next);
     },
     submitAnswer: function submitAnswer() {
+      console.log(this.qoption);
+
       if (this.qoption.selected == null) {
         alert('Please select an option first!');
         return;
@@ -14305,7 +14287,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.screen.result = 1;
     },
     checkAnswer: function checkAnswer(q, a, rw) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.gamedata['id'] = this.qid + 1;
       this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text);
@@ -14314,19 +14296,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.gamedata['isCorrect'] = rw;
       this.gamedata['user'] = this.user;
       this.gamedata['channel'] = this.channel;
-      this.gamedata['group'] = this.user.group.name;
+      this.gamedata['team'] = this.team;
 
       var clone = _objectSpread({}, this.gamedata);
 
+      console.log(clone);
       this.answered_user_data.push(clone);
       axios.post("/api/submitAnswerGroup", {
         data: clone
       }).then(function (response) {
-        return _this4.getResult();
+        return _this3.getResult();
       });
     },
     getResult: function getResult() {
-      this.results = _(this.answered_user_data).groupBy('group').map(function (answers, name) {
+      this.results = _(this.answered_user_data).groupBy('team.name').map(function (answers, name) {
         return {
           name: name,
           score: _.sumBy(answers, function (item) {
@@ -14352,31 +14335,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     isPredict: function isPredict() {
-      var _this5 = this;
+      var _this4 = this;
 
       return !this.prediction.find(function (p) {
-        return p.user.id === _this5.user.id;
+        return p.user.id === _this4.user.id;
       });
     },
     groupPredict: function groupPredict() {
-      var _this6 = this;
+      var _this5 = this;
 
       return this.prediction.find(function (p) {
-        return p.user.group_id === _this6.user.group_id;
+        return p.user.group_id === _this5.user.group_id;
       });
     },
     getPredict: function getPredict() {
-      var _this7 = this;
+      var _this6 = this;
 
       var counts = {};
       var options = this.questions[this.qid].options;
       this.prediction.forEach(function (p) {
-        if (p.user.group_id === _this7.user.group_id) {
+        if (p.user.gid === _this6.user.gid) {
           counts[p.ans] = (counts[p.ans] || 0) + 1;
         }
       });
       this.pie_data = options.map(function (o) {
-        var c = counts[_this7.ToText(o.option)];
+        var c = counts[_this6.ToText(o.option)];
 
         if (c === undefined) return 0;
         return c;
@@ -14388,10 +14371,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).option;
     },
     winner: function winner() {
-      var _this8 = this;
+      var _this7 = this;
 
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this8.user.id;
+        return w.id == _this7.user.id;
       });
       this.screen.winner = 1;
 
@@ -14431,11 +14414,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     },
     fillPie: function fillPie() {
-      var _this9 = this;
+      var _this8 = this;
 
       this.datacollection = {
         labels: this.questions[this.qid].options.map(function (o) {
-          return _this9.ToText(o.option);
+          return _this8.ToText(o.option);
         }),
         datasets: [{
           borderWidth: 1,
@@ -14452,7 +14435,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.ans;
     },
     joinTeam: function joinTeam(id) {
-      var _this10 = this;
+      var _this9 = this;
 
       var obj = {
         channel: this.channel,
@@ -14463,13 +14446,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         team: id,
         users: this.user
       });
+      this.team = this.teams.find(function (team) {
+        return team.id == id;
+      });
+      this.user.gid = id;
       this.users.map(function (u) {
-        if (u.id === _this10.user.id) {
+        if (u.id === _this9.user.id) {
           u.gid = id;
         }
       });
       axios.post("/api/jointeam", obj).then(function (res) {
-        return _this10.screen.team = 0;
+        return _this9.screen.team = 0;
       });
     }
   },
@@ -36301,7 +36288,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
 
 // exports
 
@@ -97822,7 +97809,7 @@ var render = function() {
         ? _c(
             "div",
             { staticClass: "progress mb-3" },
-            _vm._l(_vm.answered_group, function(group, i) {
+            _vm._l(_vm.answered_group, function(team, i) {
               return _c(
                 "div",
                 {
@@ -97830,7 +97817,7 @@ var render = function() {
                   class: [i % 2 == 0 ? "bg-danger" : "bg-success"],
                   style: _vm.setProgress
                 },
-                [_vm._v("\n          " + _vm._s(group.group) + "\n        ")]
+                [_vm._v("\n          " + _vm._s(team.name) + "\n        ")]
               )
             }),
             0
@@ -97903,7 +97890,7 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _vm.screen.team == 1
+      _vm.screen.team == 1 && _vm.user.id != _vm.uid
         ? _c("team-member", {
             attrs: { teams: _vm.teams, user: _vm.user },
             on: {
@@ -97918,7 +97905,7 @@ var render = function() {
         ? _c("group-result", {
             attrs: {
               results: _vm.results,
-              groupName: _vm.user.group.name,
+              groupName: _vm.team.name,
               lastQuestion: _vm.qid + 1 == _vm.questions.length
             }
           })
@@ -112974,8 +112961,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
