@@ -173,7 +173,7 @@ class HomeController extends Controller
     {
         $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
         $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
-        $id = $quiz;
+        $id = $quiz->id;
         $questions = Question::with('options')
             ->whereIn('id', explode(",", $quiz->questions))->get();
         $user = Auth::user();

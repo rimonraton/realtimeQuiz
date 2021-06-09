@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('questionClick', [GameController::class, 'questionClick']);
 Route::post('gameStart', [GameController::class, 'gameStart']);
+Route::post('gameTeamModeratorStart', [GameController::class, 'gameTeamModeratorStart']);
 Route::post('gameEndUser', [GameController::class, 'gameEndUser']);
 Route::post('gameReset', [GameController::class, 'gameReset']);
 Route::post('kickUser', [GameController::class, 'kickUser']);

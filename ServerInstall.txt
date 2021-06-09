@@ -78,10 +78,13 @@ php artisan migrate
 Configure NGINX ===>>>
 sudo chgrp -R www-data storage bootstrap/cache
 sudo chmod -R ug+rwx storage bootstrap/cache
+sudo chown -R www-data.www-data /var/www/html/gyankosh/storage
+sudo chown -R www-data.www-data /var/www/html/gyankosh/bootstrap/cache
+
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
 sudo nano /etc/nginx/sites-available/example.com
 
-SymbolicLink 
+SymbolicLink
 sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 sudo systemctl reload nginx
 
@@ -142,7 +145,7 @@ NGINX SITES-AVAILABLE CONFIG ===>>>
         }
     }
 
-    server {
+  server {
 
        listen 443 ssl;
        listen [::]:443 ssl;
@@ -192,7 +195,11 @@ NGINX SITES-AVAILABLE CONFIG ===>>>
        location ~ /\.ht {
            deny all;
        }
-   }
+  }
 sudo certbot certonly --webroot --webroot-path=/var/www/html/gyankosh -d gyankosh.org -d www.gyankosh.org
 
 
+rsync -rP raton@35.232.113.230:/var/bigbluebutton/recording/raw/ /var/bigbluebutton/recording/raw/
+
+tar -czvf archive.tar.gz raw
+tar -xzvf archive.tar.gz

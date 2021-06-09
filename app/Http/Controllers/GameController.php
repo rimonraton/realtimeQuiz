@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
+use App\Events\GameTeamModeratorStartEvent;
 use App\Events\TeamJoin;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
@@ -34,8 +35,8 @@ class GameController extends Controller
     {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
-        return $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
-        return $challenge = Challenge::find($request->id);
+        $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
+        $challenge = Challenge::find($request->id);
         $cs = $challenge->share()->save($share);
         $request->request->add(['share' => $cs]);
 
@@ -43,6 +44,11 @@ class GameController extends Controller
         return $cs;
 
     }
+    public function gameTeamModeratorStart(Request $request)
+    {
+        broadcast(new GameTeamModeratorStartEvent($request))->toOthers();
+    }
+
     public function gameReset(Request $request)
     {
         broadcast(new GameResetEvent($request))->toOthers();
