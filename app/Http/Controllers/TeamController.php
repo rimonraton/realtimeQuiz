@@ -71,10 +71,13 @@ class TeamController extends Controller
             "bn_name"=>$request->bnName,
         ]);
         $members = implode(',',$request->members);
-        TeamMember::insert([
+        TeamMember::updateOrInsert(
+            ['team_id'=>$request->id],
+            [
             'team_id'=>$request->id,
             'user_ids'=>$members
-        ]);
+            ]
+        );
         return redirect('teamlist');
     }
     public function deleteTeam($id)

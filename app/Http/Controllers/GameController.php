@@ -92,6 +92,7 @@ class GameController extends Controller
 
     public function joinTeam(Request $request)
     {
+//        dd($request->all());
         broadcast(new TeamJoin($request))->toOthers();
         return $request->all();
     }

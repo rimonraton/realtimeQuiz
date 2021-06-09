@@ -89,8 +89,8 @@
                                             </td>
                                             <td style="text-align: center; ">
 
-                                                <a class="add text-dark" href="" data-id="{{$team->id}}" title="Add"><i class="fas fa-plus"></i></a>
-                                                <a class="edit" href="" data-id="{{$team->id}}" data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}" data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+{{--                                                <a class="add text-dark" href="" data-id="{{$team->id}}" title="Add"><i class="fas fa-plus"></i></a>--}}
+                                                <a class="edit" href="" data-pid="{{$team->id}}" data-id="{{$team->id}}" data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}" data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="delete text-danger" style="cursor: pointer;" data-id="{{$team->id}}" title="Remove"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
@@ -133,6 +133,8 @@
                 <form class="form-horizontal form-material" method="POST" action="{{url('updateTeam')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" id="uid" name="id">
+                    <input type="hidden" id="id_id" name="id_id">
+
                     <div class="form-group row">
                         <div class="col-md-6 m-b-20">
                             <input type="text" class="form-control" id="editName" name="name">
@@ -240,6 +242,7 @@
                 });
             })
             $('#uid').val($(this).attr('data-id'));
+            $('#id_id').val($(this).attr('data-pid'))
             $('#editName').val($(this).attr('data-name'));
             $('#editbnName').val($(this).attr('data-bnname'));
             $('#edit-category').modal('show');
