@@ -35,6 +35,16 @@ class QuizController extends Controller
         return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType','teams']));
     }
 
+    public function game_quiz_create()
+    {
+        $teams = Team::all();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        // $question_category = QuizCategory::all();
+        $gameType = Game::all();
+        return view('games.game_quiz_cteate', compact(['question_topic', 'gameType','teams']));
+    }
     public function list($tid = '')
     {
         $admin = auth()->user()->admin;
@@ -77,6 +87,17 @@ class QuizController extends Controller
          $this->storeFromCustom($request);
 
         return redirect('quiz/view/list/' . $request->cid);
+    }
+    public function game_quiz_save(Request $request)
+    {
+//          return $request->all();
+        if ($request->quizCreateType == 'qb') {
+            $this->storeFromQB($request);
+            return redirect('team_quiz');
+        }
+        $this->storeFromCustom($request);
+
+        return redirect('team_quiz');
     }
 
     public function storeFromQB($request)

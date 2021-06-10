@@ -80,8 +80,10 @@ Route::get('questionTypedelete/{id}', 'QuestionTypeController@delete');
 // Quiz
 Route::get('quiz/view/list/{tid?}', 'QuizController@list');
 Route::get('quiz/create', 'QuizController@create');
+Route::get('game_quiz_create', 'QuizController@game_quiz_create');
 Route::get('quiz/list/{topic}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
+Route::post('game_quiz_save', 'QuizController@game_quiz_save');
 Route::get('quiz/getlist/{topic}', 'QuizController@getlistbytopic');
 Route::get('quiz/delete/{id}', 'QuizController@deleteQuiz');
 Route::get('quiz/{id}/edit', 'QuizController@quizEdit');

@@ -33,6 +33,9 @@
             cursor: pointer;
             text-decoration: none !important;
         }
+        a:not([href]):hover{
+            color: white !important;
+        }
     </style>
 @endsection
 @section('content')
@@ -40,7 +43,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('quiz/create')}}" >{{__('form.create_quiz')}}</a>
+                <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('game_quiz_create')}}" >{{__('form.create_quiz')}}</a>
                 <h4 class="card-title text-center">{{__('form.quiz')}}</h4>
                 <hr>
 
@@ -70,7 +73,7 @@
                             </div>
                             <div class="card-footer d-flex justify-content-between">
                                 <div id="shareBtn{{ $q->id }}" class="show_share shareBtnDiv"></div>
-                                <a class="shareBtn pointer small btn btn-outline-purple" data-id="{{ $q->id }}">
+                                <a class="shareBtn pointer small btn btn-outline-info" data-id="{{ $q->id }}">
                                     <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
                                     <div class="loading{{ $q->id }}"></div>
                                 </a>
@@ -137,7 +140,8 @@
         $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
         let hasShow = $('#shareBtn'+id).hasClass('show_share');
-        let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
+        let url = "{{ url('/Team') }}/" + id + "/{{ Auth::id() }}/share";
+        {{--let url = "{{ url('/Team') }}/" + id + "/{{ Auth::id() }}";--}}
         let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
 
         $('.show_share').empty();

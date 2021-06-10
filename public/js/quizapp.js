@@ -36288,7 +36288,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
 
 // exports
 
@@ -112961,8 +112961,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
