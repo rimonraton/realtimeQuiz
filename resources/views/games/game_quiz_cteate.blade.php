@@ -69,6 +69,13 @@
 @endsection
 @php $lang = App::getLocale(); @endphp
 @section('content')
+    <a href=
+       "whatsapp://send?text=GFG Example for whatsapp sharing"
+       data-action="share/whatsapp/share"
+       target="_blank">
+        Share to whatsapp
+    </a>
+    <br>
     <div class="selectedQuestionCount text-center">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
     </div>
@@ -118,7 +125,7 @@
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control custom-select" name="game_type" required disabled>
+                                    <select class="form-control custom-select" name="game_type" required>
                                         <option>{{__('form.game_mode_select')}}</option>
                                         @foreach($gameType as $game)
                                             <option value="{{$game->id}}" {{$game->id==3?'selected':''}}>{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>
