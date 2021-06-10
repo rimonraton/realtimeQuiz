@@ -21,6 +21,6 @@ class ChallengeController extends Controller
 //        if (Auth::id() != $uid) {
 //            return redirect($game.'/' . $id . '/' . $uid);
 //        }
-        return view('share_btn_link_challenge', compact('id', 'uid'));
+        return view('share_btn_link_challenge', compact('game','id', 'uid'));
     }
 }
