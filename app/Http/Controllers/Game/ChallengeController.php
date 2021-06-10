@@ -18,9 +18,9 @@ class ChallengeController extends Controller
     public function shareChallengeBtnLink($game,$id, $uid)
     {
 //        return $id;
-//        if (Auth::id() != $uid) {
-//            return redirect($game.'/' . $id . '/' . $uid);
-//        }
+        if (Auth::id() != $uid) {
+            return redirect($game.'/' . $id . '/' . $uid);
+        }
         return view('share_btn_link_challenge', compact('game','id', 'uid'));
     }
 }
