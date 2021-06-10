@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
+    <!-- Sharethis -->
+    <meta property="og:title" content="Gyankosh Quiz" />
+    <meta property="og:image" content="https://gyankosh.org/images/logobe.png" />
+    <meta property="og:description"   content="I'd like to share a link with you" />
+
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logobe.png') }}">
     <title>{{ config('app.name', 'Gyankosh') }}</title>
