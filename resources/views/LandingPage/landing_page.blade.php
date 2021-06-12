@@ -248,7 +248,7 @@
 {{--                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">--}}
 {{--                                        <i class="fas fa-users text-white"></i>--}}
 {{--                                    </a>--}}
-                                    <a href="" class="menu-item menu-purple left-cercle alt_notify">
+                                    <a href="{{url('team_quiz')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
 
@@ -258,7 +258,6 @@
 
                     </div>
                 </div>
-
             </div>
         </section>
         <!-- End About Section -->
