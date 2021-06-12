@@ -106,8 +106,18 @@
                         Participant Group
                       </h3>
                         <ul class="list-group" >
-                            <li class="list-group-item">
 
+<!--                            <li class="list-group-item" v-for="(team,index) in teams" :key="index">-->
+<!--                                <mark>{{team.name}}</mark>-->
+<!--                                <small class="text-white"></small>-->
+<!--                            </li>-->
+                            <li class="list-group-item" v-for="(team,index) in teams" :key="index">
+                                <mark>{{team.name}}</mark>
+                                <br>
+                                <span class="badge badge-primary" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span>
+<!--                                <h4 class="text-white text-right">-->
+<!--                                    <small class="badge badge-info" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</small>-->
+<!--                                </h4>-->
                             </li>
 
                         </ul>
@@ -351,6 +361,13 @@
 
 
         methods: {
+            getTeamUsers(team){
+                let users = this.users.map(u => {
+                    if(u.gid === team) return u;
+                });
+                if(typeof(users !== 'undefined')) return users
+                return [];
+            },
             gameStart: function () {
                 axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel}).then(res =>  console.log(res.data))
                 this.game_start = 1

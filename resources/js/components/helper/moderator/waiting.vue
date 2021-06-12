@@ -5,22 +5,23 @@
 	            <span v-if="user.id != uid" class="ml-1 text-primary">{{user.team_id}} Please wait, the Quiz Host will start the game soon..</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
-	            <ul class="list-group ">
-	                <li class="list-group-item"
-	                    v-for="team in teams" :key="team.id"
-	                    >
-                        {{team.name}}
-                        <ul class="list-group">
-                            <li class="list-group-item"
-                                v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user"
-                            >
-                                {{ user.name }}
-                            </li>
-                        </ul>
+                <h3 class="p-2">
+                    <i class="fa fa-trophy" aria-hidden="true"></i>
+                    Participant Group
+                </h3>
+                <div class="list-group">
+                    <span  class="list-group-item list-group-item-action" aria-current="true" v-for="(team,index) in teams" :key="index">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{team.name}}</h5>
+<!--                            <small>3 days ago</small>-->
+                        </div>
+                        <p class="mb-1"><span class="badge badge-info mr-1 text-white" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
+<!--                        <small>And some small print.</small>-->
+                    </span>
+
+                </div>
 
 
-	                </li>
-	            </ul>
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
                     <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>

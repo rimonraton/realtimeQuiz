@@ -13882,6 +13882,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -14231,6 +14243,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     });
   },
   methods: {
+    getTeamUsers: function getTeamUsers(team) {
+      var users = this.users.map(function (u) {
+        if (u.gid === team) return u;
+      });
+      if (_typeof(users !== 'undefined')) return users;
+      return [];
+    },
     gameStart: function gameStart() {
       axios.post("/api/gameTeamModeratorStart", {
         channel: this.channel
@@ -14512,7 +14531,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -15309,6 +15327,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+//
 //
 //
 //
@@ -97817,7 +97836,11 @@ var render = function() {
                   class: [i % 2 == 0 ? "bg-danger" : "bg-success"],
                   style: _vm.setProgress
                 },
-                [_vm._v("\n          " + _vm._s(team.name) + "\n        ")]
+                [
+                  _vm._v(
+                    "\n              " + _vm._s(team.name) + "\n            "
+                  )
+                ]
               )
             }),
             0
@@ -97996,9 +98019,9 @@ var render = function() {
                                         { staticClass: "mb-0 cursor" },
                                         [
                                           _vm._v(
-                                            "\n                                        " +
+                                            "\n                                            " +
                                               _vm._s(result.name) +
-                                              "\n                                    "
+                                              "\n                                        "
                                           )
                                         ]
                                       ),
@@ -98011,9 +98034,9 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                                        " +
+                                            "\n                                            " +
                                               _vm._s(result.score) +
-                                              "\n                                    "
+                                              "\n                                        "
                                           )
                                         ]
                                       )
@@ -98072,14 +98095,14 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                                    " +
+                                                            "\n                                                        " +
                                                               _vm._s(
                                                                 answer.user
                                                                   .name +
                                                                   " - " +
                                                                   answer.selected
                                                               ) +
-                                                              "\n                                                "
+                                                              "\n                                                    "
                                                           )
                                                         ]
                                                       ),
@@ -98124,7 +98147,46 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _c("div", { staticClass: "leaderboard mt-4" }, [
+                _c("div", { staticClass: " mt-4" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    { staticClass: "list-group" },
+                    _vm._l(_vm.teams, function(team, index) {
+                      return _c(
+                        "li",
+                        { key: index, staticClass: "list-group-item" },
+                        [
+                          _c("mark", [_vm._v(_vm._s(team.name))]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm._l(_vm.getTeamUsers(team.id), function(user) {
+                            return !!user
+                              ? _c(
+                                  "span",
+                                  {
+                                    key: user.id,
+                                    staticClass: "badge badge-primary"
+                                  },
+                                  [_vm._v(_vm._s(user.name))]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    }),
+                    0
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2)
+              ])
             ])
           ])
         : _vm._e(),
@@ -98220,9 +98282,9 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                    " +
+                                      "\n                                        " +
                                         _vm._s(_vm.ToText(option.option)) +
-                                        "\n                                "
+                                        "\n                                    "
                                     )
                                   ]
                                 )
@@ -98249,7 +98311,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                Group Predict\n                            "
+                                  "\n                                    Group Predict\n                                "
                                 )
                               ]
                             ),
@@ -98266,7 +98328,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                Submit\n                            "
+                                  "\n                                    Submit\n                                "
                                 )
                               ]
                             )
@@ -98289,7 +98351,7 @@ var render = function() {
                         "div",
                         { staticClass: "card mb-4" },
                         [
-                          _vm._m(1, true),
+                          _vm._m(3, true),
                           _vm._v(" "),
                           _c("pie-chart", {
                             attrs: { "chart-data": _vm.datacollection }
@@ -98324,9 +98386,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                            " +
+                                    "\n                                " +
                                       _vm._s(member.name) +
-                                      "\n                        "
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -98351,59 +98413,61 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "leaderboard mt-4" }, [
-      _c("div", { staticClass: " mt-4" }, [
-        _c("h3", { staticClass: "text-white p-2" }, [
-          _c("i", {
-            staticClass: "fa fa-trophy",
-            attrs: { "aria-hidden": "true" }
-          }),
-          _vm._v("\n                    Participant Group\n                  ")
-        ]),
+    return _c("h3", { staticClass: "text-white p-2" }, [
+      _c("i", {
+        staticClass: "fa fa-trophy",
+        attrs: { "aria-hidden": "true" }
+      }),
+      _vm._v(
+        "\n                        Participant Group\n                      "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "text-white p-2" }, [
+      _c("i", {
+        staticClass: "fa fa-trophy",
+        attrs: { "aria-hidden": "true" }
+      }),
+      _vm._v("\n                        Leader Board\n                    ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "list-group" }, [
+      _c("li", { staticClass: "list-group-item" }, [
+        _c("mark", [_vm._v("Rasel Mia")]),
         _vm._v(" "),
-        _c("ul", { staticClass: "list-group" }, [
-          _c("li", { staticClass: "list-group-item" })
-        ])
+        _c("small", { staticClass: "text-white" }, [_vm._v("8")])
       ]),
       _vm._v(" "),
-      _c("h3", { staticClass: "text-white p-2" }, [
-        _c("i", {
-          staticClass: "fa fa-trophy",
-          attrs: { "aria-hidden": "true" }
-        }),
-        _vm._v("\n                    Leader Board\n                ")
+      _c("li", { staticClass: "list-group-item" }, [
+        _c("mark", [_vm._v("Motaharul Islam")]),
+        _vm._v(" "),
+        _c("small", { staticClass: "text-white" }, [_vm._v("7")])
       ]),
       _vm._v(" "),
-      _c("ul", { staticClass: "list-group" }, [
-        _c("li", { staticClass: "list-group-item" }, [
-          _c("mark", [_vm._v("Rasel Mia")]),
-          _vm._v(" "),
-          _c("small", { staticClass: "text-white" }, [_vm._v("8")])
-        ]),
+      _c("li", { staticClass: "list-group-item" }, [
+        _c("mark", [_vm._v("Mahmudul Hassan")]),
         _vm._v(" "),
-        _c("li", { staticClass: "list-group-item" }, [
-          _c("mark", [_vm._v("Motaharul Islam")]),
-          _vm._v(" "),
-          _c("small", { staticClass: "text-white" }, [_vm._v("7")])
-        ]),
+        _c("small", { staticClass: "text-white" }, [_vm._v("6")])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "list-group-item" }, [
+        _c("mark", [_vm._v("Abul Bashar")]),
         _vm._v(" "),
-        _c("li", { staticClass: "list-group-item" }, [
-          _c("mark", [_vm._v("Mahmudul Hassan")]),
-          _vm._v(" "),
-          _c("small", { staticClass: "text-white" }, [_vm._v("6")])
-        ]),
+        _c("small", { staticClass: "text-white" }, [_vm._v("5")])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "list-group-item" }, [
+        _c("mark", [_vm._v("Zulfiker Ali")]),
         _vm._v(" "),
-        _c("li", { staticClass: "list-group-item" }, [
-          _c("mark", [_vm._v("Abul Bashar")]),
-          _vm._v(" "),
-          _c("small", { staticClass: "text-white" }, [_vm._v("5")])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "list-group-item" }, [
-          _c("mark", [_vm._v("Zulfiker Ali")]),
-          _vm._v(" "),
-          _c("small", { staticClass: "text-white" }, [_vm._v("1")])
-        ])
+        _c("small", { staticClass: "text-white" }, [_vm._v("1")])
       ])
     ])
   },
@@ -99178,34 +99242,42 @@ var render = function() {
           staticStyle: { "max-height": "90vh", overflow: "auto" }
         },
         [
+          _vm._m(0),
+          _vm._v(" "),
           _c(
-            "ul",
-            { staticClass: "list-group " },
-            _vm._l(_vm.teams, function(team) {
+            "div",
+            { staticClass: "list-group" },
+            _vm._l(_vm.teams, function(team, index) {
               return _c(
-                "li",
-                { key: team.id, staticClass: "list-group-item" },
+                "span",
+                {
+                  key: index,
+                  staticClass: "list-group-item list-group-item-action",
+                  attrs: { "aria-current": "true" }
+                },
                 [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(team.name) +
-                      "\n                        "
-                  ),
                   _c(
-                    "ul",
-                    { staticClass: "list-group" },
+                    "div",
+                    { staticClass: "d-flex w-100 justify-content-between" },
+                    [
+                      _c("h5", { staticClass: "mb-1" }, [
+                        _vm._v(_vm._s(team.name))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "mb-1" },
                     _vm._l(_vm.getTeamUsers(team.id), function(user) {
                       return !!user
                         ? _c(
-                            "li",
-                            { key: user.id, staticClass: "list-group-item" },
-                            [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(user.name) +
-                                  "\n                            "
-                              )
-                            ]
+                            "span",
+                            {
+                              key: user.id,
+                              staticClass: "badge badge-info mr-1 text-white"
+                            },
+                            [_vm._v(_vm._s(user.name))]
                           )
                         : _vm._e()
                     }),
@@ -99239,7 +99311,20 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "p-2" }, [
+      _c("i", {
+        staticClass: "fa fa-trophy",
+        attrs: { "aria-hidden": "true" }
+      }),
+      _vm._v("\n                    Participant Group\n                ")
+    ])
+  }
+]
 render._withStripped = true
 
 

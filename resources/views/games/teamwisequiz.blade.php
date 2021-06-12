@@ -19,7 +19,8 @@
                     :questions="{{ $questions }}"
                     :user="{{ $user }}"
                     :gmsg="{{ $gmsg }}"
-                    :teams="{{$team}}"></team-moderator>
+                    :teams="{{$team}}">
+                    </team-moderator>
                 </div>
             </div>
         </div>
