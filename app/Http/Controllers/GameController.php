@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddQuestionEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Events\GameTeamModeratorStartEvent;
@@ -11,6 +12,7 @@ use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
 use App\Models\Share;
 use App\Progress;
+use App\Question;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
@@ -103,6 +105,15 @@ class GameController extends Controller
         return $request->all();
     }
 
+    public function addQuestion(Request $request)
+    {
+        $cat_id = $request->formdata['topics'];
+        $q_num = $request->formdata['q_number'];
+        $questions = Question::with('options')->where('category_id',$cat_id)->inRandomOrder()->limit($q_num)->get();
+        $request->request->add(['questions' => $questions]);
+        broadcast(new AddQuestionEvent($request))->toOthers();
+        return $questions;
+    }
 
 
 

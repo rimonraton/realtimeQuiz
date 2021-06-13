@@ -171,6 +171,9 @@ class HomeController extends Controller
     }
     public function Team(Quiz $quiz, $uid)
     {
+         $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $topic = Category::whereIn('user_id',$admin_users)->get();
         $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
         $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
         $id = $quiz->id;
@@ -179,7 +182,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $user['lang'] = app()->getLocale();
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
-        return view('games.teamwisequiz', compact(['id', 'user', 'questions', 'uid', 'gmsg','team']));
+        return view('games.teamwisequiz', compact(['id', 'user', 'questions', 'uid', 'gmsg','team','topic']));
 
     }
 

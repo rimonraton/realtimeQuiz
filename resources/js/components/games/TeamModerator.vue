@@ -41,115 +41,67 @@
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
-                <questions :questions="questions" :qid="qid" ></questions>
+                <questions :questions="questions" :qid="qid" :topics="topics" :user="user" @addQuestion="addQuestion($event)"></questions>
             </div>
 
             <div class="col-md-5">
                 <div class="card text-white bg-secondary">
                   <div class="card-header card-title d-flex justify-content-between">
-                    <a @click="reloadPage" class="btn btn-sm btn-warning" >Reset</a>
+                    <a @click="reloadPage" class="btn btn-sm btn-danger" >Reset</a>
                     <!-- <strong>Information</strong> -->
+
                     <a class="btn btn-sm btn-warning" @click="nextQuestion">NEXT QUESTION</a>
                   </div>
                     <div class="card-body">
+                        <h3 class="p-2">
+                            <i class="fa fa-trophy" aria-hidden="true"></i>
+                            Leader Board
+                        </h3>
                         <ul class="list-group text-dark">
-                          <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
-                            <div :id="'accordion' + key" class="w-100">
-                                <div class="card text-white bg-secondary">
-                                    <div class="card-header py-1 bg-secondary d-flex justify-content-between"
-                                        :id="'heading' + key" data-toggle="collapse"
-                                        :data-target="'#collapse' + key" aria-expanded="true"
-                                        :aria-controls="'collapse' + key">
-                                        <small class="mb-0 cursor">
-                                            {{ result.name }}
-                                        </small>
-                                        <span class="badge badge-success badge-pill">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
+                                <div :id="'accordion' + key" class="w-100">
+                                    <div class="card text-white bg-secondary">
+                                        <div class="card-header py-1 bg-secondary d-flex justify-content-between"
+                                             :id="'heading' + key" data-toggle="collapse"
+                                             :data-target="'#collapse' + key" aria-expanded="true"
+                                             :aria-controls="'collapse' + key">
+                                            <small class="mb-0 cursor">
+                                                {{ result.name }}
+                                            </small>
+                                            <span class="badge badge-success badge-pill">
                                             {{ result.score  }}
                                         </span>
-                                    </div>
+                                        </div>
 
-                                    <div :id="'collapse' + key" class="collapse show"
-                                        :aria-labelledby="'heading' + key"
-                                        :data-parent="'#accordion' + key">
-                                      <div class="card-body p-0">
-                                        <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
-                                            <li v-for="(answer, key) in result.answers" :key="key" class="list-group-item d-flex justify-content-between align-items-center p-1">
-                                                <div class="font-weight-light f-13">
-                                                    <!-- <span class="font-weight-bold">
-                                                        {{ answer.question }}
-                                                    </span> -->
-                                                    <span class="font-weight-light font-italic">
+                                        <div :id="'collapse' + key" class="collapse show"
+                                             :aria-labelledby="'heading' + key"
+                                             :data-parent="'#accordion' + key">
+                                            <div class="card-body p-0">
+                                                <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
+                                                    <li v-for="(answer, key) in result.answers" :key="key" class="list-group-item d-flex justify-content-between align-items-center p-1">
+                                                        <div class="font-weight-light f-13">
+                                                            <!-- <span class="font-weight-bold">
+                                                                {{ answer.question }}
+                                                            </span> -->
+                                                            <span class="font-weight-light font-italic">
                                                         {{ answer.user.name + ' - ' + answer.selected }}
                                                     </span>
-                                        <i v-if="answer.isCorrect == 1" class="fa fa-check text-success" aria-hidden="true" ></i>
-                                        <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
+                                                            <i v-if="answer.isCorrect == 1" class="fa fa-check text-success" aria-hidden="true" ></i>
+                                                            <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
 
-                                                </div>
+                                                        </div>
 
-                                            </li>
+                                                    </li>
 
-                                        </ul>
-                                      </div>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
-
-                            </div>
-                          </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="leaderboard mt-4">
-                    <div class=" mt-4">
-                      <h3 class="text-white p-2">
-                        <i class="fa fa-trophy" aria-hidden="true"></i>
-                        Participant Group
-                      </h3>
-                        <ul class="list-group" >
-
-<!--                            <li class="list-group-item" v-for="(team,index) in teams" :key="index">-->
-<!--                                <mark>{{team.name}}</mark>-->
-<!--                                <small class="text-white"></small>-->
-<!--                            </li>-->
-                            <li class="list-group-item" v-for="(team,index) in teams" :key="index">
-                                <mark>{{team.name}}</mark>
-                                <br>
-                                <span class="badge badge-primary" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span>
-<!--                                <h4 class="text-white text-right">-->
-<!--                                    <small class="badge badge-info" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</small>-->
-<!--                                </h4>-->
                             </li>
-
                         </ul>
                     </div>
-
-                    <h3 class="text-white p-2">
-                        <i class="fa fa-trophy" aria-hidden="true"></i>
-                        Leader Board
-                    </h3>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                          <mark>Rasel Mia</mark>
-                          <small class="text-white">8</small>
-                        </li>
-                        <li class="list-group-item">
-                          <mark>Motaharul Islam</mark>
-                          <small class="text-white">7</small>
-                        </li>
-                        <li class="list-group-item">
-                          <mark>Mahmudul Hassan</mark>
-                          <small class="text-white">6</small>
-                        </li>
-                        <li class="list-group-item">
-                          <mark>Abul Bashar</mark>
-                          <small class="text-white">5</small>
-                        </li>
-
-                        <li class="list-group-item">
-                          <mark>Zulfiker Ali</mark>
-                          <small class="text-white">1</small>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -217,6 +169,8 @@
 
             </div>
         </div>
+<!--modal-->
+
     </div>
 </template>
 
@@ -229,7 +183,7 @@
 
 
     export default {
-        props : ['id', 'uid', 'user', 'questions','teams','gmsg'],
+        props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics'],
 
         components: { PieChart, questions, groupResult,waiting,TeamMember },
 
@@ -253,14 +207,17 @@
                 gamedata:{},
                 pie_data: [],
                 screen:{
-                    waiting: 1,
+                    waiting: 0,
                     loading: 0,
                     result: 0,
                     winner: 0,
                     team:1,
                 },
                 teamUser:[],
-                team: null
+                team: null,
+                isModalVisible: false,
+
+
             };
         },
 
@@ -297,6 +254,13 @@
 
         created(){
             Echo.channel(this.channel)
+                .listen('AddQuestionEvent', (data) => {
+                    console.log('AddQuestionEvent..........')
+                    console.log(data);
+                    data.questions.map(q=>this.questions.push(q))
+                    // this.QuestionTimer() // Set and Start QuestionTimer
+
+                })
                 .listen('GameTeamModeratorStartEvent', (data) => {
                     console.log('GameTeamModeratorStartEvent.............')
                     this.game_start = 1 // Game Start from Game Owner...
@@ -361,6 +325,15 @@
 
 
         methods: {
+            addQuestion(formData){
+
+                axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData}).then(res => {
+                    res.data.map(q=>this.questions.push(q))
+                    console.log(res.data)
+                    // this.questions.push(res.data);
+                    // $('#qmodal').modal('hide');
+                })
+            },
             getTeamUsers(team){
                 let users = this.users.map(u => {
                     if(u.gid === team) return u;
@@ -389,8 +362,8 @@
 
             nextQuestion(){
                 console.log('NextQuestion Clicked')
-
-                if(this.qid+1 == this.questions.length){
+                console.log([this.qid,this.questions]);
+                if(this.qid + 1 == this.questions.length){
                     clearInterval(this.timer);
                         this.winner()
                         return
@@ -446,6 +419,7 @@
                                     answers: _.orderBy(answers, ['id'],['desc'])
                                 }))
                                 .sortBy('score')
+                                .reverse()
                                 .value()
                     console.log(JSON.stringify(this.results))
 
