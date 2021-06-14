@@ -14060,6 +14060,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
 
 
 
@@ -14076,6 +14078,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   },
   data: function data() {
     return {
+      qt: {
+        ms: 0,
+        time: 50,
+        timer: null
+      },
+      counter: 2,
       answered_user_data: [],
       answered_group: [],
       users: [],
@@ -14303,6 +14311,50 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return _this4.getResult();
       });
     },
+    QuestionTimer: function QuestionTimer() {
+      var _this5 = this;
+
+      var pdec = 100 / (10 * this.qt.time);
+      console.log('QuestionTimer started');
+      this.qt.timer = setInterval(function () {
+        if (_this5.qt.time == 0) {
+          if (!_this5.answered) {
+            _this5.checkAnswer(_this5.qid, 'Not Answered', 0);
+          }
+
+          _this5.questionInit();
+
+          _this5.resultScreen();
+        } else {
+          _this5.qt.ms++;
+          _this5.progress -= pdec;
+
+          if (_this5.qt.ms == 10) {
+            _this5.qt.time--;
+            _this5.qt.ms = 0;
+          }
+        }
+      }, 100);
+    },
+    countDown: function countDown() {
+      console.log('countDown');
+
+      if (this.counter == 0) {
+        this.questionInit();
+
+        if (this.qid + 1 == this.questions.length) {
+          this.winner();
+          this.counter = 0;
+          return;
+        }
+
+        this.qid++;
+        this.current = this.questions[this.qid].id;
+        this.QuestionTimer();
+      }
+
+      this.counter--;
+    },
     getResult: function getResult() {
       this.results = _(this.answered_user_data).groupBy('team.name').map(function (answers, name) {
         return {
@@ -14330,31 +14382,31 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     },
     isPredict: function isPredict() {
-      var _this5 = this;
+      var _this6 = this;
 
       return !this.prediction.find(function (p) {
-        return p.user.id === _this5.user.id;
+        return p.user.id === _this6.user.id;
       });
     },
     groupPredict: function groupPredict() {
-      var _this6 = this;
+      var _this7 = this;
 
       return this.prediction.find(function (p) {
-        return p.user.group_id === _this6.user.group_id;
+        return p.user.group_id === _this7.user.group_id;
       });
     },
     getPredict: function getPredict() {
-      var _this7 = this;
+      var _this8 = this;
 
       var counts = {};
       var options = this.questions[this.qid].options;
       this.prediction.forEach(function (p) {
-        if (p.user.gid === _this7.user.gid) {
+        if (p.user.gid === _this8.user.gid) {
           counts[p.ans] = (counts[p.ans] || 0) + 1;
         }
       });
       this.pie_data = options.map(function (o) {
-        var c = counts[_this7.ToText(o.option)];
+        var c = counts[_this8.ToText(o.option)];
 
         if (c === undefined) return 0;
         return c;
@@ -14366,10 +14418,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }).option;
     },
     winner: function winner() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this8.user.id;
+        return w.id == _this9.user.id;
       });
       this.screen.winner = 1;
 
@@ -14409,11 +14461,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     },
     fillPie: function fillPie() {
-      var _this9 = this;
+      var _this10 = this;
 
       this.datacollection = {
         labels: this.questions[this.qid].options.map(function (o) {
-          return _this9.ToText(o.option);
+          return _this10.ToText(o.option);
         }),
         datasets: [{
           borderWidth: 1,
@@ -14424,13 +14476,34 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       };
     },
     ToText: function ToText(input) {
-      return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+      if (!!input) {
+        return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi, '').replace(/<[^>]+?>/g, '').replace(/\s+/g, ' ').replace(/ /g, ' ').replace(/>/g, ' ').replace(/&nbsp;/g, '').replace(/&rsquo;/g, '');
+      }
+    },
+    tbe: function tbe(b, e, l) {
+      if (b !== null && e !== null) {
+        console.log('no null question');
+
+        if (l === 'bd') {
+          return b;
+        }
+
+        return e;
+      } else if (b !== null && e === null) {
+        console.log('Bangla not null');
+        return b;
+      } else if (b === null && e !== null) {
+        console.log('English not null');
+        return e;
+      }
+
+      return b;
     },
     answer: function answer() {
       return this.ans;
     },
     joinTeam: function joinTeam(id) {
-      var _this10 = this;
+      var _this11 = this;
 
       var obj = {
         channel: this.channel,
@@ -14446,12 +14519,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       this.user.gid = id;
       this.users.map(function (u) {
-        if (u.id === _this10.user.id) {
+        if (u.id === _this11.user.id) {
           u.gid = id;
         }
       });
       axios.post("/api/jointeam", obj).then(function (res) {
-        return _this10.screen.team = 0;
+        return _this11.screen.team = 0;
       });
     }
   },
@@ -15363,9 +15436,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     tbe: function tbe(b, e, l) {
       if (b !== null && e !== null) {
-        if (l === 'bd') return b;
+        console.log('no null question');
+
+        if (l === 'bd') {
+          return b;
+        }
+
         return e;
-      } else if (b !== null && e === null) return b;else if (b === null && e !== null) return e;
+      } else if (b !== null && e === null) {
+        console.log('Bangla not null');
+        return b;
+      } else if (b === null && e !== null) {
+        console.log('English not null');
+        return e;
+      }
 
       return b;
     },
@@ -36372,7 +36456,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
 
 // exports
 
@@ -98267,8 +98351,15 @@ var render = function() {
                                 { staticClass: "pl-1 element-animation0" },
                                 [
                                   _vm._v(
-                                    " " +
-                                      _vm._s(_vm.ToText(question.question_text))
+                                    "\n                                        " +
+                                      _vm._s(
+                                        _vm.tbe(
+                                          _vm.ToText(question.bd_question_text),
+                                          _vm.ToText(question.question_text),
+                                          _vm.user.lang
+                                        )
+                                      ) +
+                                      "\n                                    "
                                   )
                                 ]
                               )
@@ -98319,7 +98410,13 @@ var render = function() {
                                   [
                                     _vm._v(
                                       "\n                                        " +
-                                        _vm._s(_vm.ToText(option.option)) +
+                                        _vm._s(
+                                          _vm.tbe(
+                                            _vm.ToText(option.bd_option),
+                                            _vm.ToText(option.option),
+                                            _vm.user.lang
+                                          )
+                                        ) +
                                         "\n                                    "
                                     )
                                   ]
@@ -113220,8 +113317,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

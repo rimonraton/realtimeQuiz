@@ -97,11 +97,20 @@
             },
             tbe(b, e, l) {
                 if(b !== null && e !== null){
-                    if(l === 'bd') return b;
+                    console.log('no null question')
+                    if(l === 'bd') {
+                        return b;
+                    }
                     return e;
                 }
-                else if(b !== null && e === null) return b;
-                else if(b === null && e !== null) return e;
+                else if(b !== null && e === null) {
+                    console.log('Bangla not null');
+                    return b;
+                }
+                else if(b === null && e !== null) {
+                    console.log('English not null');
+                    return e;
+                }
                 return b;
             },
             showModal(){

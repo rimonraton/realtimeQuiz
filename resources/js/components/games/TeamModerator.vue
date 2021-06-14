@@ -115,7 +115,9 @@
                                     <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
                                 </div>
                                 <div class="col-xs-11">
-                                    <h6 class="pl-1 element-animation0"> {{ ToText(question.question_text) }}</h6>
+                                    <h6 class="pl-1 element-animation0">
+                                        {{ tbe(ToText(question.bd_question_text), ToText(question.question_text), user.lang) }}
+                                    </h6>
                                 </div>
 
                             </div>
@@ -128,7 +130,7 @@
                                     <li @click="clickSelect(index, option)"
                                         class="list-group-item list-group-item-action cursor my-1"
                                         :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
-                                        {{ ToText(option.option) }}
+                                        {{ tbe(ToText(option.bd_option), ToText(option.option), user.lang) }}
                                     </li>
                                 </ul>
                             </div>
@@ -189,6 +191,12 @@
 
         data() {
             return {
+                qt:{
+                    ms: 0,
+                    time:50,
+                    timer:null
+                },
+                counter: 2,
                 answered_user_data: [],
                 answered_group:[],
                 users: [],
@@ -410,6 +418,50 @@
                 axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
 
             },
+            QuestionTimer(){
+                let pdec = 100 / (10 * this.qt.time);
+                console.log('QuestionTimer started')
+                this.qt.timer =
+                    setInterval(() => {
+                        if(this.qt.time == 0){
+                            if(!this.answered){
+                                this.checkAnswer(this.qid, 'Not Answered', 0);
+                            }
+                            this.questionInit();
+                            this.resultScreen();
+                        }
+                        else{
+                            this.qt.ms ++
+                            this.progress -= pdec
+
+                            if(this.qt.ms == 10){
+                                this.qt.time --
+                                this.qt.ms=0
+                            }
+
+                        }
+
+                    }, 100);
+            },
+            countDown(){
+                console.log('countDown')
+                if(this.counter == 0){
+
+                    this.questionInit()
+
+                    if(this.qid+1 == this.questions.length){
+                        this.winner()
+                        this.counter =0
+                        return
+                    }
+
+                    this.qid ++
+                    this.current = this.questions[this.qid].id
+
+                    this.QuestionTimer()
+                }
+                this.counter --
+            },
 
             getResult(){
                 this.results = _(this.answered_user_data).groupBy('team.name')
@@ -525,7 +577,27 @@
             },
 
             ToText(input){
-              return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
+                if(!!input){
+                    return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
+                }
+            },
+            tbe(b, e, l) {
+                if(b !== null && e !== null){
+                    console.log('no null question')
+                    if(l === 'bd') {
+                        return b;
+                    }
+                    return e;
+                }
+                else if(b !== null && e === null) {
+                    console.log('Bangla not null');
+                    return b;
+                }
+                else if(b === null && e !== null) {
+                    console.log('English not null');
+                    return e;
+                }
+                return b;
             },
 
             answer(){

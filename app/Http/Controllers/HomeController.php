@@ -171,13 +171,13 @@ class HomeController extends Controller
     }
     public function Team(Quiz $quiz, $uid)
     {
-         $admin = auth()->user()->admin;
+        $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $topic = Category::whereIn('user_id',$admin_users)->get();
         $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
         $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
         $id = $quiz->id;
-        $questions = Question::with('options')
+         $questions = Question::with('options')
             ->whereIn('id', explode(",", $quiz->questions))->get();
         $user = Auth::user();
         $user['lang'] = app()->getLocale();

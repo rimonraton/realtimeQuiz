@@ -21,10 +21,10 @@ class AddQuestionEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($channel, $questions)
     {
-        $this->channel = $request->channel;
-        $this->questions = $request->questions;
+        $this->channel = $channel;
+        $this->questions = $questions;
     }
 
     /**
