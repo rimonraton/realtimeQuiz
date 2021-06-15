@@ -14062,6 +14062,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
 
 
 
@@ -14083,6 +14086,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         time: 50,
         timer: null
       },
+      question_time: 0,
       counter: 2,
       answered_user_data: [],
       answered_group: [],
@@ -14102,7 +14106,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       gamedata: {},
       pie_data: [],
       screen: {
-        waiting: 0,
+        waiting: 1,
         loading: 0,
         result: 0,
         winner: 0,
@@ -14150,7 +14154,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       _this2.screen.waiting = 0; // this.QuestionTimer() // Set and Start QuestionTimer
     }).listen('NextQuestionEvent', function (data) {
-      console.log('NextQuestionEvent.............');
+      console.log('NextQuestionEvent.............', data);
       _this2.qid = data.qid;
       _this2.current = _this2.questions[_this2.qid].id; // Next Question from Moderator...
 
@@ -14270,7 +14274,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.answered_group = [];
       var next = {
         channel: this.channel,
-        qid: this.qid
+        qid: this.qid,
+        qtime: this.question_time
       };
       axios.post("/api/nextQuestion", next);
     },
@@ -14282,6 +14287,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
+      console.log('data' + this.qoption.bd_option);
       this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
       this.qoption.selected = null;
       this.qoption.id = null;
@@ -14455,7 +14461,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } else {
         this.qoption.selected = index;
         this.qoption.id = option.question_id;
-        this.qoption.option = option.option;
+        this.qoption.option = this.tbe(option.bd_option, option.option, this.user.lang);
         this.qoption.correct = option.correct;
       } // console.log(this.isPredict())
 
@@ -15324,6 +15330,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -36456,7 +36467,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
 
 // exports
 
@@ -97985,11 +97996,7 @@ var render = function() {
                   class: [i % 2 == 0 ? "bg-danger" : "bg-success"],
                   style: _vm.setProgress
                 },
-                [
-                  _vm._v(
-                    "\n              " + _vm._s(team.name) + "\n            "
-                  )
-                ]
+                [_vm._v("\n            " + _vm._s(team.name) + "\n        ")]
               )
             }),
             0
@@ -98107,6 +98114,33 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-5" }, [
+              _c("div", { staticClass: "form-group mt-1" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.question_time,
+                      expression: "question_time"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    placeholder: "Enter Time in Seconds"
+                  },
+                  domProps: { value: _vm.question_time },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.question_time = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "card text-white bg-secondary" }, [
                 _c(
                   "div",
@@ -98180,9 +98214,9 @@ var render = function() {
                                         { staticClass: "mb-0 cursor" },
                                         [
                                           _vm._v(
-                                            "\n                                                " +
+                                            "\n                                            " +
                                               _vm._s(result.name) +
-                                              "\n                                            "
+                                              "\n                                        "
                                           )
                                         ]
                                       ),
@@ -98195,9 +98229,9 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                                            " +
+                                            "\n                                        " +
                                               _vm._s(result.score) +
-                                              "\n                                        "
+                                              "\n                                    "
                                           )
                                         ]
                                       )
@@ -98256,14 +98290,14 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                                        " +
+                                                            "\n                                                    " +
                                                               _vm._s(
                                                                 answer.user
                                                                   .name +
                                                                   " - " +
                                                                   answer.selected
                                                               ) +
-                                                              "\n                                                    "
+                                                              "\n                                                "
                                                           )
                                                         ]
                                                       ),
@@ -98351,15 +98385,15 @@ var render = function() {
                                 { staticClass: "pl-1 element-animation0" },
                                 [
                                   _vm._v(
-                                    "\n                                        " +
+                                    "\n                                " +
                                       _vm._s(
                                         _vm.tbe(
-                                          _vm.ToText(question.bd_question_text),
-                                          _vm.ToText(question.question_text),
+                                          question.bd_question_text,
+                                          question.question_text,
                                           _vm.user.lang
                                         )
                                       ) +
-                                      "\n                                    "
+                                      "\n                            "
                                   )
                                 ]
                               )
@@ -98409,15 +98443,15 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                        " +
+                                      "\n                                " +
                                         _vm._s(
                                           _vm.tbe(
-                                            _vm.ToText(option.bd_option),
-                                            _vm.ToText(option.option),
+                                            option.bd_option,
+                                            option.option,
                                             _vm.user.lang
                                           )
                                         ) +
-                                        "\n                                    "
+                                        "\n                            "
                                     )
                                   ]
                                 )
@@ -98444,7 +98478,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                    Group Predict\n                                "
+                                  "\n                            Group Predict\n                        "
                                 )
                               ]
                             ),
@@ -98461,7 +98495,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                    Submit\n                                "
+                                  "\n                            Submit\n                        "
                                 )
                               ]
                             )
@@ -98519,9 +98553,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                " +
+                                    "\n                            " +
                                       _vm._s(member.name) +
-                                      "\n                            "
+                                      "\n                        "
                                   )
                                 ]
                               )
@@ -98551,9 +98585,7 @@ var staticRenderFns = [
         staticClass: "fa fa-trophy",
         attrs: { "aria-hidden": "true" }
       }),
-      _vm._v(
-        "\n                            Leader Board\n                        "
-      )
+      _vm._v("\n                        Leader Board\n                    ")
     ])
   },
   function() {
@@ -99304,11 +99336,16 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "btn btn-sm btn-success", on: { click: _vm.showModal } },
-        [_vm._v("ADD QUESTION")]
-      ),
+      _c("div", { staticClass: "text-center" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-sm col-sm-6 btn-success",
+            on: { click: _vm.showModal }
+          },
+          [_vm._v("ADD QUESTION")]
+        )
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -113317,8 +113354,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

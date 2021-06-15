@@ -34,7 +34,12 @@
 		        </div>
 		    </div>
 		</div>
-        <a class="btn btn-sm btn-success" @click="showModal">ADD QUESTION</a>
+        <div class="text-center">
+            <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">ADD QUESTION</a>
+
+        </div>
+
+
         <div class="modal" tabindex="-1" data-backdrop="false" role="dialog" id="qmodal">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">

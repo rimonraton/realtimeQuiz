@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 class NextQuestionEvent implements ShouldBroadcast
 {
-    public $channel, $qid;
+    public $channel, $qid,$qtime;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -25,6 +25,7 @@ class NextQuestionEvent implements ShouldBroadcast
     {
         $this->channel = $request->channel;
         $this->qid = $request->qid;
+        $this->qtime = $request->qtime;
     }
 
     /**
