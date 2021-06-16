@@ -120,4 +120,10 @@ class TeamController extends Controller
         $quizzes = Quiz::where('game_id',3)->where('user_id',Auth::id())->get();
         return view('Admin.PartialPages.Team.teamquiz',compact('quizzes'));
     }
+
+    public function delete_team_quiz($id)
+    {
+        Quiz::find($id)->delete();
+        return 'Success';
+    }
 }

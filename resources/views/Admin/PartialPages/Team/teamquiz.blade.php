@@ -51,8 +51,9 @@
                 <div class="row justify-content-center">
                     <!-- col -->
                     @foreach($quizzes as $q)
-                    <div class="col-lg-3 col-md-6 mt-3">
+                    <div class="col-lg-3 col-md-6 mt-3" id="qcard_{{$q->id}}">
                         <div class="card bg-light-primary h-100 ">
+                            <a style="cursor: pointer" class="text-right m-1 deleteQuiz" data-id="{{$q->id}}"><i class="fas fa-trash-alt text-danger"></i></a>
                             <div class="card-body">
                                 <h5 class="card-title text-center font-20">{{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}</h5>
                                 <div  class="carousel slide">
@@ -152,6 +153,38 @@
         });
 
     });
+    $(document).on('click', ".deleteQuiz", function() {
+        Swal.fire({
+            title: "{{__('form.are_you_sure')}}",
+            text: "{{__('form.no_revert')}}",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText:"{{__('form.cancel')}}",
+            confirmButtonText: '{{__('form.yes_delete_it')}}!'
+        }).then((result) => {
+            if (result.value) {
+                var $this = $(this);
+                var id = $this.attr('data-id');
+                $.ajax({
+                    url: "{{url('delete_team_quiz')}}/" + id,
+                    type: "GET",
+                    success: function(data) {
+                        $('#qcard_' + id).remove();
+                        Swal.fire({
+                            text: '{{__('form.delete_success')}}',
+                            type: 'success',
+                            timer: 1000,
+                            showConfirmButton: false
+                        })
+                    }
+                })
+
+            }
+        })
+    });
+
 
 </script>
 @endsection
