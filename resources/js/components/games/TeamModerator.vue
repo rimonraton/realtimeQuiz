@@ -110,6 +110,13 @@
         </div>
         <div class="row justify-content-center" v-if="user.id != uid">
             <div class="col-md-8">
+                <div class="progress mb-3" v-if="qt.time > 0">
+                    <div class="progress-bar progress-bar-striped"
+                         :style="progressWidth"
+                         :class="progressClass"
+                    > {{ Math.floor(progress_count) }}
+                    </div>
+                </div>
                 <div class="container-fluid px-0">
                     <!-- <div class="modal-dialog"> -->
                     <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
@@ -196,7 +203,7 @@ export default {
         return {
             qt:{
                 ms: 0,
-                time:50,
+                time:0,
                 timer:null
             },
             question_time:0,
@@ -206,6 +213,7 @@ export default {
             users: [],
             datacollection: null,
             progress:{},
+            progress_count:100,
             qoption:{
                 selected: null,
                 id: null,
@@ -289,6 +297,11 @@ export default {
                 this.qoption.selected = null
                 this.screen.result = 0
                 this.fillPie()
+                if(data.qtime > 0){
+                    this.TimerInit()
+                    this.qt.time = data.qtime;
+                    this.QuestionTimer()
+                }
 
             })
             .listen('AnswerPredictEvent', (data) => {
@@ -428,15 +441,11 @@ export default {
             this.qt.timer =
                 setInterval(() => {
                     if(this.qt.time == 0){
-                        if(!this.answered){
-                            this.checkAnswer(this.qid, 'Not Answered', 0);
-                        }
-                        this.questionInit();
-                        this.resultScreen();
+                        this.TimerInit()
                     }
                     else{
                         this.qt.ms ++
-                        this.progress -= pdec
+                        this.progress_count -= pdec
 
                         if(this.qt.ms == 10){
                             this.qt.time --
@@ -446,6 +455,13 @@ export default {
                     }
 
                 }, 100);
+        },
+        TimerInit(){
+            clearInterval(this.timer)
+            clearInterval(this.qt.timer)
+            this.qt.ms = 0
+            this.qt.time = 0
+            this.progress_count = 100
         },
         countDown(){
             console.log('countDown')
@@ -635,6 +651,12 @@ export default {
         setProgress(){
             return {'width': 100 / this.userGroup.length  + '%', }
         },
+        progressClass(){
+            return this.progress_count > 66? 'bg-success': this.progress_count > 33? 'bg-info': 'bg-danger'
+        },
+        progressWidth(){
+            return {'width':this.progress_count + '%', }
+        }
 
     }
 

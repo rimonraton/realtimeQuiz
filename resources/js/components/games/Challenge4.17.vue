@@ -1,475 +1,658 @@
 <template>
-    <div class="container">
-        <div class="loading" v-if="screen.loading">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <h2 class="text-center">Waiting for other user response.</h2>
-                    <div class="progress m-2">
-                        <div class="progress-bar progress-bar-striped"
-                            :style="progressWidth"
-                            :class="progressClass"
-                            > {{ Math.floor(progress) }}
-                        </div>
-                    </div>
-                    <img src="/images/loading/bar.svg" class="m-2">
-                </div>
+    <div class="container mt-n2">
+        <div class="progress mb-3" v-if="uid == user.id">
+            <div class="progress-bar"
+                 v-for="(team, i) in answered_group"
+                 :class="[ i % 2 == 0 ? 'bg-danger' : 'bg-success' ]"
+                 :style="setProgress">
+                {{ team.name }}
             </div>
         </div>
-
-        <transition name="fade">
-            <result :results='results' :lastQuestion='(qid + 1) == questions.length'
-                    v-if="screen.result">
-            </result>
-        </transition>
-
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
-                <h3 class="text-center">{{ pm.perform_message }} </h3>
+                <h1 class="text-center">Congratulation ! </h1>
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
             </div>
             <div v-else-if="user_ranking == 1">
-                <h3 class="text-center">{{ pm.perform_message }}</h3>
+                <h1 class="text-center">Well Played ! </h1>
                 <h3><b>{{ user.name }}</b>, you got second place</h3>
             </div>
             <div v-else>
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
-            <iframe :src="getShareLink('challengeShareResult/'+share.link+'/details')" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        </div>
 
-        <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
-                @kickingUser="kickUser($event)"
-                @gameStart="gameStart"
-                @gameReset="gameReset"
-                v-if="screen.waiting">
+        </div>
+        <waiting :teams="teams" :teamUser="teamUser" :uid='uid' :users='users' :user='user' :time='id.schedule'
+                 @kickingUser="kickUser($event)"
+                 @gameStart="gameStart"
+                 @gameReset="gameReset"
+                 v-if="screen.waiting">
         </waiting>
+        <team-member :teams="teams" :user="user" @joinTeam="joinTeam($event)"
+                     v-if="screen.team == 1 && user.id != uid">
+        </team-member>
+        <group-result
+            :results='results'
+            :groupName='team.name'
+            :lastQuestion='(qid + 1) == questions.length'
+            v-if="screen.result">
+        </group-result>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped"
-                        :style="progressWidth"
-                        :class="progressClass"
-                        > {{ Math.floor(progress) }}
-                    </div>
-                </div>
-
-                <div class="card my-4" v-for="question in questions" v-if="question.id == current">
-                    <div class="card-body">
-                        <span class="q_num text-right text-muted">
-                            {{ qne2b(qid, questions.length, user.lang) }}
-                        </span>
-
-                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
-
-                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>
-
-                        <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, option.option, option.correct)"
-                                class="list-group-item list-group-item-action cursor my-1">
-                                <span v-html="tbe(option.bd_option, option.option, user.lang)"></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="row justify-content-center" v-if="user.id == uid">
+            <div class="col-md-7">
+                <questions :questions="questions" :qid="qid" :topics="topics" :user="user" @addQuestion="addQuestion($event)"></questions>
             </div>
-            <div class="col-md-4">
-                <div class="card my-4">
-                    <div class="card-header">
-                        User List
-                        <a @click="gameReset" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
+
+            <div class="col-md-5">
+                <div class="card text-white bg-secondary">
+                    <div class="card-header card-title d-flex justify-content-between">
+                        <a @click="reloadPage" class="btn btn-sm btn-danger" >Reset</a>
+                        <!-- <strong>Information</strong> -->
+
+                        <a class="btn btn-sm btn-warning" @click="nextQuestion">NEXT QUESTION</a>
                     </div>
                     <div class="card-body">
-                        <ul class="list-group ">
-                            <li class="list-group-item user-list"
-                                v-for="u in users" :key="u.id"
-                                :class="{active : u.id == user.id}"
-                                >
-                                {{ u.name }}
+                        <h3 class="p-2">
+                            <i class="fa fa-trophy" aria-hidden="true"></i>
+                            Leader Board
+                        </h3>
+                        <ul class="list-group text-dark">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
+                                <div :id="'accordion' + key" class="w-100">
+                                    <div class="card text-white bg-secondary">
+                                        <div class="card-header py-1 bg-secondary d-flex justify-content-between"
+                                             :id="'heading' + key" data-toggle="collapse"
+                                             :data-target="'#collapse' + key" aria-expanded="true"
+                                             :aria-controls="'collapse' + key">
+                                            <small class="mb-0 cursor">
+                                                {{ result.name }}
+                                            </small>
+                                            <span class="badge badge-success badge-pill">
+                                            {{ result.score  }}
+                                        </span>
+                                        </div>
+
+                                        <div :id="'collapse' + key" class="collapse show"
+                                             :aria-labelledby="'heading' + key"
+                                             :data-parent="'#accordion' + key">
+                                            <div class="card-body p-0">
+                                                <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
+                                                    <li v-for="(answer, key) in result.answers" :key="key" class="list-group-item d-flex justify-content-between align-items-center p-1">
+                                                        <div class="font-weight-light f-13">
+                                                            <!-- <span class="font-weight-bold">
+                                                                {{ answer.question }}
+                                                            </span> -->
+                                                            <span class="font-weight-light font-italic">
+                                                        {{ answer.user.name + ' - ' + answer.selected }}
+                                                    </span>
+                                                            <i v-if="answer.isCorrect == 1" class="fa fa-check text-success" aria-hidden="true" ></i>
+                                                            <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
+
+                                                        </div>
+
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center" v-if="user.id != uid">
+            <div class="col-md-8">
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-striped"
+                         :style="progressWidth"
+                         :class="progressClass"
+                    > {{ Math.floor(progress_count) }}
+                    </div>
+                </div>
+                <div class="container-fluid px-0">
+                    <!-- <div class="modal-dialog"> -->
+                    <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
+                        <div class="modal-header" style="justify-content:flex-start">
+                            <div class="col-xs-1 my-1 element-animation0">
+                                <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
+                            </div>
+                            <div class="col-xs-11">
+                                <h6 class="pl-1 element-animation0">
+                                    {{ tbe(ToText(question.bd_question_text), ToText(question.question_text), user.lang) }}
+                                </h6>
+                            </div>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
+                                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
+                            </div>
+
+                            <ul class="list-group" v-for="(option, index) in question.options">
+                                <li @click="clickSelect(index, option)"
+                                    class="list-group-item list-group-item-action cursor my-1"
+                                    :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
+                                    {{ tbe(ToText(option.bd_option), ToText(option.option), user.lang) }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer text-muted d-flex justify-content-between">
+                            <button class="btn btn-secondary rounded-pill element-animation5"
+                                    :class="{disabled: !qoption.selected }"
+                                    @click="predictAnswer">
+                                Group Predict
+                            </button>
+                            <button class="btn btn-success float-right rounded-pill element-animation5"
+                                    :class="{disabled:qoption.selected == null}"
+                                    @click="submitAnswer">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="card mb-4" v-for="question in questions" v-if="question.id == current && groupPredict()" >
+                    <span class="text-center"> <strong>Group Prediction</strong></span>
+                    <pie-chart :chart-data="datacollection"></pie-chart>
+                </div>
+
+                <div class="card my-2" v-for="ug in userGroup" v-if="ug.group != 'undefined'">
+                    <div class="card-header py-1 text-primary">{{ ug.group }} group member</div>
+                    <div class="card-body p-0">
+                        <ul class="list-group" v-for="member in ug.members" >
+                            <li class="list-group-item py-1"
+                                :class="{'text-success': member.id == user.id}"
+                            >
+                                {{ member.name }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--modal-->
+
     </div>
 </template>
 
 <script>
+import PieChart from '../helper/PieChart'
+import questions from '../helper/moderator/questions'
+import groupResult from '../helper/groupResult'
+import waiting from '../helper/moderator/waiting'
+import TeamMember from '../helper/TeamMember'
 
-    import waiting from '../helper/waiting'
-    import result from '../helper/result'
 
-    export default {
+export default {
+    props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics'],
 
-        props : ['id', 'uid', 'user', 'questions', 'gmsg'],
+    components: { PieChart, questions, groupResult,waiting,TeamMember },
 
-        components: { waiting, result },
+    data() {
+        return {
+            qt:{
+                ms: 0,
+                time:50,
+                timer:null
+            },
+            counter: 2,
+            answered_user_data: [],
+            answered_group:[],
+            users: [],
+            datacollection: null,
+            progress:{},
+            progress_count:100,
+            qoption:{
+                selected: null,
+                id: null,
+                option: null,
+                correct: null,
+            },
+            prediction: [],
+            current: 0,
+            qid: 0,
+            results: [],
+            gamedata:{},
+            pie_data: [],
+            screen:{
+                waiting: 0,
+                loading: 0,
+                result: 0,
+                winner: 0,
+                team:1,
+            },
+            teamUser:[],
+            team: null,
+            isModalVisible: false,
 
-        data() {
-            return {
-                qt:{
-                    ms: 0,
-                    time:100,
-                    timer:null
-                },
-                users: [],
-                answered:0,
-                answered_user: 0,
-                answered_user_data: [],
-                results: [],
-                counter: 2,
-                timer: null,
-                current: 0,
-                qid: 0,
-                screen:{
-                    waiting: 1,
-                    loading: 0,
-                    result: 0,
-                    winner: 0,
-                },
-                gamedata: {},
-                score: [],
-                user_ranking: null,
-                game_start:0,
-                progress: 100,
-                share:null,
-                pm:'',
-                perform:0
 
-            };
-        },
+        };
+    },
 
-        created(){
-            Echo.channel(this.channel)
-                .listen('GameStartEvent', (data) => {
-                    console.log(['GameStartEvent.............', data])
-                    this.share = data.share
-                    this.game_start = 1 // Game Start from Game Owner...
-                    this.screen.waiting = 0
-                    this.QuestionTimer() // Set and Start QuestionTimer
+    mounted() {
+        // window.onblur = alert('blurd')
 
-                })
-                .listen('QuestionClickedEvent', (data) => {
-                    console.log('QuestionClickedEvent.............')
-                    this.answered_user_data.push(data)
-                    this.answered_user ++
-                    this.loadingScreen()
-                })
-                .listen('KickUserEvent', (data) => {
-                    console.log('KickUserEvent.............')
-                    this.users = this.users.filter( u => u.id !== data.uid )
+        this.current = this.questions[this.qid].id
 
-                    if(this.user.id == data.uid){
-                        window.location.href = "http://quiz.erendevu.net"
-                    }
+        this.fillPie()
 
-                });
 
-        },
-
-        mounted() {
-            Echo.join(`challenge.${this.id.id}.${this.uid}`)
-                .here((users) => {
-                    this.users = users;
-                })
-                .joining((user) => {
+        Echo.join(`team.${this.id}.${this.uid}`)
+            .here((users) => {
+                this.users = users.filter(u => u.id != this.uid)
+            })
+            .joining((user) => {
+                if(user.id != this.uid)
                     this.users.push(user);
-                    if(this.game_start){
-                        this.kickUser(user.id)
-                    }
-                })
-                .leaving((user) => {
-                    this.users = this.users.filter(u => u.id != user.id);
-                    console.log(`${user.name} leaving`);
-                });
+                console.log(`${user.name} join`);
 
-            this.current = this.questions[this.qid].id
+                if(this.game_start)
+                    this.kickUser(user.id)
+            })
+            .leaving((user) => {
+                this.users = this.users.filter(u => u.id != user.id);
+                console.log(`${user.name} leaving`);
+            });
 
-            this.externalJS()
-
-        },
-
-        // beforeMount() {
-        //     window.addEventListener("beforeunload", this.preventNav);
-        //     this.$once("hook:beforeDestroy", () => {
-        //       window.removeEventListener("beforeunload", this.preventNav);
-        //     });
-        //   },
-
-        // beforeRouteLeave(to, from, next) {
-        //     if (this.game_start) {
-        //       if (!window.confirm("Do You Realy Want to Leave This Game?")) {
-        //         return;
-        //       }
-        //     }
-        //     next();
-        // },
+        this.current = this.questions[this.qid].id
 
 
-        methods: {
+    },
 
-            // preventNav(event) {
-            //   if (!this.game_start) return;
-            //   event.preventDefault();
-            //   // Chrome requires returnValue to be set.
-            //   event.returnValue = "";
-            // },
 
-            gameStart: function () {
-                let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users }
+    created(){
+        Echo.channel(this.channel)
+            .listen('AddQuestionEvent', (data) => {
+                console.log('AddQuestionEvent..........')
+                console.log(data);
+                data.questions.map(q=>this.questions.push(q))
+                // this.QuestionTimer() // Set and Start QuestionTimer
 
-                axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
-
-                this.game_start = 1
+            })
+            .listen('GameTeamModeratorStartEvent', (data) => {
+                console.log('GameTeamModeratorStartEvent.............')
+                this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
+                // this.QuestionTimer() // Set and Start QuestionTimer
+
+            })
+            .listen('NextQuestionEvent', (data) => {
+                console.log('NextQuestionEvent.............')
+                this.qid = data.qid
+                this.current = this.questions[this.qid].id // Next Question from Moderator...
+                this.pie_data = []
+                this.prediction = []
+                this.qoption.selected = null
+                this.screen.result = 0
+                this.fillPie()
                 this.QuestionTimer()
 
-            },
-            gameReset(){
-                this.questionInit()
-                this.screen.waiting = 1
-                this.answered_user_data = []
-                this.results = []
-                this.qid = 0
-                this.gamedata = {}
-                this.score = []
-                this.user_ranking = null
-                this.game_start = 0
-                this.current = this.questions[this.qid].id
-
-            },
-            QuestionTimer(){
-                let pdec = 100 / (10 * this.qt.time);
-                console.log('QuestionTimer started')
-                this.qt.timer =
-                    setInterval(() => {
-                        if(this.qt.time == 0){
-                            if(!this.answered){
-                                this.checkAnswer(this.qid, 'Not Answered', 0);
-                            }
-                            this.questionInit();
-                            this.resultScreen();
-                        }
-                        else{
-                            this.qt.ms ++
-                            this.progress -= pdec
-
-                            if(this.qt.ms == 10){
-                                this.qt.time --
-                                this.qt.ms=0
-                            }
-
-                        }
-
-                    }, 100);
-            },
-
-            checkAnswer(q, a, rw){
-                this.answered = 1
-                this.right_wrong = rw
-                this.gamedata.['uid'] = this.user.id
-                this.gamedata.['channel'] = this.channel
-                this.gamedata.['name'] = this.user.name
-                this.gamedata.['question'] = this.questions[this.qid].question_text
-                this.gamedata.['answer'] = this.getCorrectAnswertext()
-                this.gamedata.['selected'] = a
-                this.gamedata.['isCorrect'] = rw == 1? Math.floor(this.progress): 0
-                    axios.post(`/api/questionClick`, this.gamedata)
-                let clone = {...this.gamedata}
-                this.answered_user_data.push(clone)
-                this.screen.loading = true
+            })
+            .listen('AnswerPredictEvent', (data) => {
+                console.log('AnswerPredictEvent.............')
+                this.prediction.push(data)
+                this.getPredict()
+                this.fillPie()
+            })
+            .listen('QuestionClickedEvent', (data) => {
+                console.log('QuestionClickedEvent.............')
+                this.answered_user_data.push(data)
                 this.answered_user ++
                 this.loadingScreen()
-                if(this.qid+1 == this.questions.length) {
-                    let gr = {result: this.results, 'share_id': this.share.id}
-                    axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
-                }
-
-            },
-
-            getCorrectAnswertext(){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
-            },
-
-            loadingScreen(){
-                if(this.users.length == this.answered_user){
-                    this.screen.loading = false;
-                    this.resultScreen();
-                }
-            },
-            resultScreen(){
-                console.log('resultScreen')
+            })
+            .listen('GroupAnsSubEvent', (req) => {
+                console.log(['GroupAnsSubEvent....', req.data])
+                this.answered_user_data.push(req.data)
                 this.getResult()
-                this.screen.result = true
-                this.startTimer()
-            },
-            startTimer(){
-                console.log('startTimer')
-                this.screen.result = 1
-                this.timer = setInterval(() => { this.countDown(); }, 1000);
-            },
-            countDown(){
-                console.log('countDown')
-                if(this.counter == 0){
+                console.log([req.data,  this.user, this.user.id, this.uid])
 
-                    this.questionInit()
+                if(req.data.user.gid == this.user.gid && this.user.id != this.uid){
+                    this.screen.result = 1
+                }
+                if(this.user.id == this.uid){
+                    this.answered_group.push(req.data.team)
+                }
 
-                    if(this.qid+1 == this.questions.length){
-                        this.winner()
-                        this.counter =0
-                        return
+            })
+            .listen('PageReloadEvent', (data) => {
+                console.log('PageReloadEvent.............')
+                window.location.reload()
+
+            })
+            .listen('TeamJoin', (data) => {
+                console.log(['Team Join.............',data])
+                this.teamUser.push({team: data.team, users: data.user});
+                this.users.map(u=> {
+                    if(u.id === data.user.id){
+                        u.gid = data.team;
                     }
-
-                    this.qid ++
-                    this.current = this.questions[this.qid].id
-
-                    this.QuestionTimer()
-                }
-                this.counter --
-            },
-            getResult(){
-                console.log('getResult')
-
-                this.results = []
-                this.users.forEach(user => {
-                    let score = 0;
-                    this.answered_user_data
-                        .filter(f => f.uid === user.id)
-                        .map(u => {
-                            score += u.isCorrect
-                        })
-
-                    this.results.push({id:user.id, name:user.name, score:score})
-
                 })
-                this.results.sort((a, b) => b.score - a.score)
-            },
-            winner(){
-                this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
-                let user_score = this.results[this.user_ranking].score
-                this.perform = Math.round((user_score / ((this.qid +1) * 100)) * 100)
-                this.pm = this.gmsg.filter(gm => gm.perform_status >= this.perform)
-                    .reduce(function (prev, curr) {
-                        return prev.perform_status < curr.perform_status ? prev : curr;
-                    });
-                this.questionInit()
-                this.screen.result = 1
-                this.screen.winner = 1
-                this.game_start = 0
-                if(this.user_ranking == 0 ){
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 200,
-                        spread: 120,
-                        origin: { y: 0.6 }
-                    });
-                }
-                else{
-                    var colors = ['#bb0000', '#ffffff'];
+                //this.teams.find(team => team.id === data.team).users.push({user:data.user});
+            });
 
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 100,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 },
-                        colors: colors
-                    });
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 100,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 },
-                        colors: colors
-                    });
+    },
 
-                }
-            },
 
-            externalJS(){
-                let confetti = document.createElement('script')
-                confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
-                document.head.appendChild(confetti)
-            },
+    methods: {
+        addQuestion(formData){
 
-            kickUser(id){
-                if(id != this.uid){
+            axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData}).then(res => {
+                res.data.map(q=>this.questions.push(q))
+                console.log(res.data)
+                // this.questions.push(res.data);
+                // $('#qmodal').modal('hide');
+            })
+        },
+        getTeamUsers(team){
+            let users = this.users.map(u => {
+                if(u.gid === team) return u;
+            });
+            if(typeof(users !== 'undefined')) return users
+            return [];
+        },
+        gameStart: function () {
+            axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel}).then(res =>  console.log(res.data))
+            this.game_start = 1
+            this.screen.waiting = 0
+            //this.QuestionTimer()
+        },
+        gameReset(){
+            this.questionInit()
+            this.screen.waiting = 1
+            this.answered_user_data = []
+            this.results = []
+            this.qid = 0
+            this.gamedata = {}
+            this.score = []
+            this.user_ranking = null
+            this.game_start = 0
+            this.current = this.questions[this.qid].id
+        },
 
-                    this.users = this.users.filter( u => u.id !== id )
-
-                    let channelUser = { channel: this.channel, uid:id }
-
-                    axios.post(`/api/kickUser`, channelUser)
-
-                }
-
-            },
-            questionInit(){
-                clearInterval(this.timer)
-                clearInterval(this.qt.timer)
-                this.qt.ms = 0
-                this.qt.time = 100
-                this.progress = 100
-                this.answered = 0
-                this.answered_user = 0
-                this.counter = 2
-                this.screen.waiting = 0
-                this.screen.loading = 0
-                this.screen.result = 0
-                this.screen.winner = 0
-            },
-            gameStarted(user){
-                console.log(['user', user])
-            },
-            q2bNumber(numb) {
-                let numbString = numb.toString();
-                let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
-                [...numbString].forEach(n => bn += eb[n])
-                return bn
-            },
-            tbe(b, e, l) {
-                if (l === 'bd' && b !== null)
-                    return b;
-                return e;
-            },
-            qne2b(q, qn, l) {
-
-                if (l === 'gb')
-                    return `Question ${q + 1} of ${qn} `;
-                return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
-            },
-            getUrl (path) {
-                return location.origin +'/'+ path
-            },
-            getShareLink(path){
-                console.log(['urlencode', encodeURI(this.getUrl(path))]);
-                return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
+        nextQuestion(){
+            console.log('NextQuestion Clicked')
+            console.log([this.qid,this.questions]);
+            if(this.qid + 1 == this.questions.length){
+                clearInterval(this.timer);
+                this.winner()
+                return
             }
 
+            this.qid ++
+            this.current = this.questions[this.qid].id
+            this.fillPie()
+            this.answered_group = []
+
+            let next = { channel: this.channel, qid: this.qid }
+
+            axios.post(`/api/nextQuestion`, next)
+
+        },
+        submitAnswer(){
+            console.log(this.qoption);
+            if(this.qoption.selected == null){
+                alert('Please select an option first!')
+                return;
+            }
+
+            this.checkAnswer(this.qoption.id, this.qoption.option, this.qoption.correct);
+            this.qoption.selected = null
+            this.qoption.id = null
+            this.qoption.option = null
+            this.qoption.correct = null
+            this.screen.result = 1
 
         },
 
-        computed: {
-            channel(){
-                return `challenge.${this.id.id}.${this.uid}`
-            },
-            progressClass(){
-                return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
-            },
-            progressWidth(){
-                return {'width':this.progress + '%', }
+        checkAnswer(q, a, rw){
+            this.gamedata.['id'] = this.qid + 1
+            this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
+            this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
+            this.gamedata.['selected'] = this.ToText(a)
+            this.gamedata.['isCorrect'] = rw
+            this.gamedata.['user'] = this.user
+            this.gamedata.['channel'] = this.channel
+            this.gamedata.['team'] = this.team
+            let clone = {...this.gamedata}
+            console.log(clone);
+            this.answered_user_data.push(clone)
+            axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
+
+        },
+        QuestionTimer(){
+            let pdec = 100 / (10 * this.qt.time);
+            console.log('QuestionTimer started')
+            this.qt.timer =
+                setInterval(() => {
+                    if(this.qt.time == 0){
+                        this.TimerInit()
+                    }
+                    else{
+                        this.qt.ms ++
+                        this.progress_count -= pdec
+
+                        if(this.qt.ms == 10){
+                            this.qt.time --
+                            this.qt.ms=0
+                        }
+
+                    }
+
+                }, 100);
+        },
+        TimerInit(){
+            clearInterval(this.timer)
+            clearInterval(this.qt.timer)
+            this.qt.ms = 0
+            this.qt.time = 50
+            this.progress_count = 100
+        },
+        countDown(){
+            console.log('countDown')
+            if(this.counter == 0){
+
+                this.questionInit()
+
+                if(this.qid+1 == this.questions.length){
+                    this.winner()
+                    this.counter =0
+                    return
+                }
+
+                this.qid ++
+                this.current = this.questions[this.qid].id
+
+                this.QuestionTimer()
             }
+            this.counter --
+        },
+
+        getResult(){
+            this.results = _(this.answered_user_data).groupBy('team.name')
+                .map((answers, name) => ({
+                    name: name,
+                    score: _.sumBy(answers, item => Number(item.isCorrect)),
+                    answers: _.orderBy(answers, ['id'],['desc'])
+                }))
+                .sortBy('score')
+                .reverse()
+                .value()
+            console.log(JSON.stringify(this.results))
+
+        },
+
+        predictAnswer(){
+
+            let pre = {
+                ans: this.ToText(this.qoption.option),
+                user:this.user,
+                channel: this.channel,
+            }
+
+            if (this.isPredict()){
+
+                this.prediction.push(pre)
+
+                axios.post(`/api/answerPredict`, pre)
+
+                this.getPredict()
+
+                this.fillPie()
+            }
+
+        },
+        isPredict(){
+            return !this.prediction.find(p => p.user.id === this.user.id)
+        },
+        groupPredict(){
+            return this.prediction.find(p => p.user.group_id === this.user.group_id)
+        },
+
+        getPredict(){
+            var counts = {};
+            let options = this.questions[this.qid].options
+            this.prediction.forEach(p => {
+                if(p.user.gid === this.user.gid){
+                    counts[p.ans] = (counts[p.ans] || 0)+1;
+                }
+            });
+
+            this.pie_data = options.map(o => {
+                var c = counts[this.ToText(o.option)]
+                if(c === undefined)
+                    return 0
+                return c
+            })
+
+        },
+
+        getCorrectAnswertext(){
+            return this.questions[this.qid].options.find(o => o.correct == 1).option
+        },
+
+        winner(){
+            this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+            this.screen.winner = 1
+            if(this.wrong == 0 ){
+                confetti({
+                    zIndex:999999,
+                    particleCount: 200,
+                    spread: 120,
+                    origin: { y: 0.6 }
+                });
+            }
+        },
+
+        reloadPage(){
+            axios.post(`/api/pageReload`, {channel: this.channel})
+                .then((response) =>{
+                    console.log(['page reload event log ', response])
+                    window.location.reload()
+                })
+        },
+        clickSelect(index, option){
+            console.log([index, option])
+            if(this.qoption.selected == index){
+                this.qoption.selected = null
+                this.qoption.id = option.question_id
+                this.qoption.option= null
+                this.qoption.correct= null
+            }else{
+                this.qoption.selected = index
+                this.qoption.id = option.question_id
+                this.qoption.option= option.option
+                this.qoption.correct= option.correct
+            }
+            // console.log(this.isPredict())
+
+        },
+
+
+        fillPie() {
+            this.datacollection = {
+                labels: this.questions[this.qid].options.map(o => { return this.ToText(o.option) }),
+                datasets: [{
+                    borderWidth: 1,
+                    borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
+                    backgroundColor: [ '#7fdbda', '#ade498', '#ede682', '#febf63'],
+                    data: this.pie_data,
+                }]
+            }
+        },
+
+        ToText(input){
+            if(!!input){
+                return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
+            }
+        },
+        tbe(b, e, l) {
+            if(b !== null && e !== null){
+                console.log('no null question')
+                if(l === 'bd') {
+                    return b;
+                }
+                return e;
+            }
+            else if(b !== null && e === null) {
+                console.log('Bangla not null');
+                return b;
+            }
+            else if(b === null && e !== null) {
+                console.log('English not null');
+                return e;
+            }
+            return b;
+        },
+
+        answer(){
+            return this.ans;
+        },
+        joinTeam(id){
+            let obj = {channel: this.channel, team: id, user:this.user}
+            this.teamUser.push({team: id, users:this.user});
+            this.team = this.teams.find(team => team.id == id);
+            this.user.gid = id;
+            this.users.map(u=> {
+                if(u.id === this.user.id){
+                    u.gid = id;
+                }
+            })
+            axios.post(`/api/jointeam`, obj).then(res => this.screen.team = 0)
+        },
+
+    },
+
+    computed: {
+        channel(){
+            return `team.${this.id}.${this.uid}`
+        },
+        userGroup(){
+            return _(this.users)
+                .groupBy('group.name')
+                .map((value, key) => ({ group: key, members: value }))
+                .value()
+        },
+        setProgress(){
+            return {'width': 100 / this.userGroup.length  + '%', }
+        },
+        progressClass(){
+            return this.progress_count > 66? 'bg-success': this.progress_count > 33? 'bg-info': 'bg-danger'
+        },
+        progressWidth(){
+            return {'width':this.progress_count + '%', }
         }
 
+    }
 
 
+};
 
-
-    };
 </script>

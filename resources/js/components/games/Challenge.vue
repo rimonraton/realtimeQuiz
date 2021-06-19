@@ -469,9 +469,6 @@
                 return 'waiting-result';
             }
 
-
-
-
         },
 
         computed: {
@@ -485,10 +482,6 @@
                 return {'width':this.progress + '%', }
             }
         }
-
-
-
-
 
     };
 </script>

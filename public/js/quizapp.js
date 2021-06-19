@@ -14065,6 +14065,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -14083,7 +14090,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return {
       qt: {
         ms: 0,
-        time: 50,
+        time: 0,
         timer: null
       },
       question_time: 0,
@@ -14093,6 +14100,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       users: [],
       datacollection: null,
       progress: {},
+      progress_count: 100,
       qoption: {
         selected: null,
         id: null,
@@ -14164,6 +14172,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       _this2.screen.result = 0;
 
       _this2.fillPie();
+
+      if (data.qtime > 0) {
+        _this2.TimerInit();
+
+        _this2.qt.time = data.qtime;
+
+        _this2.QuestionTimer();
+      }
     }).listen('AnswerPredictEvent', function (data) {
       console.log('AnswerPredictEvent.............');
 
@@ -14324,16 +14340,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       console.log('QuestionTimer started');
       this.qt.timer = setInterval(function () {
         if (_this5.qt.time == 0) {
-          if (!_this5.answered) {
-            _this5.checkAnswer(_this5.qid, 'Not Answered', 0);
-          }
-
-          _this5.questionInit();
-
-          _this5.resultScreen();
+          _this5.TimerInit();
         } else {
           _this5.qt.ms++;
-          _this5.progress -= pdec;
+          _this5.progress_count -= pdec;
 
           if (_this5.qt.ms == 10) {
             _this5.qt.time--;
@@ -14341,6 +14351,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       }, 100);
+    },
+    TimerInit: function TimerInit() {
+      clearInterval(this.timer);
+      clearInterval(this.qt.timer);
+      this.qt.ms = 0;
+      this.qt.time = 0;
+      this.progress_count = 100;
     },
     countDown: function countDown() {
       console.log('countDown');
@@ -14549,6 +14566,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     setProgress: function setProgress() {
       return {
         'width': 100 / this.userGroup.length + '%'
+      };
+    },
+    progressClass: function progressClass() {
+      return this.progress_count > 66 ? 'bg-success' : this.progress_count > 33 ? 'bg-info' : 'bg-danger';
+    },
+    progressWidth: function progressWidth() {
+      return {
+        'width': this.progress_count + '%'
       };
     }
   }
@@ -36467,7 +36492,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
 
 // exports
 
@@ -98348,6 +98373,26 @@ var render = function() {
       _vm.user.id != _vm.uid
         ? _c("div", { staticClass: "row justify-content-center" }, [
             _c("div", { staticClass: "col-md-8" }, [
+              _vm.qt.time > 0
+                ? _c("div", { staticClass: "progress mb-3" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "progress-bar progress-bar-striped",
+                        class: _vm.progressClass,
+                        style: _vm.progressWidth
+                      },
+                      [
+                        _vm._v(
+                          " " +
+                            _vm._s(Math.floor(_vm.progress_count)) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "container-fluid px-0" },
@@ -113354,8 +113399,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
