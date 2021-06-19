@@ -204,4 +204,5 @@ return [
     'create'=>'Create',
     'teams'=>'Teams',
     'quiz'=>'Quiz List',
+    'edit_quiz'=>'Edit Quiz',
 ];
