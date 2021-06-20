@@ -1,6 +1,6 @@
 <template>
 	<div class="waiting bg-team">
-        <h2>Please Select Your Team</h2>
+        <h2>{{ tbe('দয়া করে আপনার দল নির্বাচন করুন','Please Select Your Team',user.lang) }}</h2>
 	    <div class="card mb-2 pointer" @click="$emit('joinTeam',team.id)" style="width: 24rem; " v-for="(team,index) in teams" :key="team.id">
 	        <div :class="cardColor(index)" class="card-body " style="max-height:90vh; overflow:auto">
                     <h1 class="text-center text-white">
@@ -23,6 +23,24 @@ export default{
     methods:{
         cardColor: function (index) {
             return this.colors[index];
+        },
+        tbe(b, e, l) {
+            if(b !== null && e !== null){
+                console.log('no null question')
+                if(l === 'bd') {
+                    return b;
+                }
+                return e;
+            }
+            else if(b !== null && e === null) {
+                console.log('Bangla not null');
+                return b;
+            }
+            else if(b === null && e !== null) {
+                console.log('English not null');
+                return e;
+            }
+            return b;
         },
 
     }

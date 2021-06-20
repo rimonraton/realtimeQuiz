@@ -35,7 +35,7 @@
 		    </div>
 		</div>
         <div class="text-center">
-            <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">ADD QUESTION</a>
+            <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</a>
 
         </div>
 
@@ -44,7 +44,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Question</h5>
+                        <h5 class="modal-title">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -53,19 +53,19 @@
                         <div class="row">
                             <div class="form-group col-md-8 col-sm-6">
                                 <select class="custom-select" required v-model="formData.topics">
-                                    <option value="0">Please Select Topic</option>
+                                    <option value="0">{{ tbe('দয়া করে বিষয় নির্বাচন করুন','Please Select Topic',user.lang) }}</option>
                                     <option :value="topic.id" v-for="(topic,index) in topics" :key="index">{{topic.name}}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-sm-6">
-                                <input type="number" class="form-control" min="1" max="10"  placeholder="Enter Question Number" v-model="formData.q_number">
+                                <input type="number" class="form-control" min="1" max="10"  :placeholder=" tbe('প্রশ্নের সংখ্যা','Number of Questions',user.lang) " v-model="formData.q_number">
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="onnoFunc">Add Question</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="onnoFunc">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ tbe('বাতিল করুন','Cancel',user.lang) }}</button>
                     </div>
                 </div>
             </div>
@@ -132,3 +132,8 @@
 
 	};
 </script>
+<style>
+#qmodal {
+    background: linear-gradient(to right, #0083B0, #00B4DB);
+}
+</style>

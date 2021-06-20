@@ -13876,6 +13876,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/groupResult */ "./resources/js/components/helper/groupResult.vue");
 /* harmony import */ var _helper_moderator_waiting__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/moderator/waiting */ "./resources/js/components/helper/moderator/waiting.vue");
 /* harmony import */ var _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helper/TeamMember */ "./resources/js/components/helper/TeamMember.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -13884,8 +13896,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-//
-//
 //
 //
 //
@@ -14182,12 +14192,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     }).listen('AnswerPredictEvent', function (data) {
       console.log('AnswerPredictEvent.............');
+      console.log(data);
 
-      _this2.prediction.push(data);
+      if (data.user.gid == _this2.user.gid) {
+        _this2.prediction.push(data);
 
-      _this2.getPredict();
+        _this2.getPredict();
 
-      _this2.fillPie();
+        _this2.fillPie();
+      }
     }).listen('QuestionClickedEvent', function (data) {
       console.log('QuestionClickedEvent.............');
 
@@ -14212,6 +14225,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       if (_this2.user.id == _this2.uid) {
         _this2.answered_group.push(req.data.team);
       }
+
+      _this2.TimerInit();
     }).listen('PageReloadEvent', function (data) {
       console.log('PageReloadEvent.............');
       window.location.reload();
@@ -14293,7 +14308,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         qid: this.qid,
         qtime: this.question_time
       };
-      axios.post("/api/nextQuestion", next);
+      axios.post("/api/nextQuestion", next).then(this.question_time = 0);
     },
     submitAnswer: function submitAnswer() {
       console.log(this.qoption);
@@ -14310,6 +14325,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.qoption.option = null;
       this.qoption.correct = null;
       this.screen.result = 1;
+      this.TimerInit();
     },
     checkAnswer: function checkAnswer(q, a, rw) {
       var _this4 = this;
@@ -14340,6 +14356,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       console.log('QuestionTimer started');
       this.qt.timer = setInterval(function () {
         if (_this5.qt.time == 0) {
+          _this5.qoption.selected = -1;
+          _this5.qoption.option = 'Not Answered';
+          _this5.qoption.correct = 0;
+
+          _this5.submitAnswer();
+
+          _this5.qoption.selected = null;
+          console.log('time ses');
+
           _this5.TimerInit();
         } else {
           _this5.qt.ms++;
@@ -14390,6 +14415,28 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }).sortBy('score').reverse().value();
       console.log(JSON.stringify(this.results));
     },
+    q2bNumber: function q2bNumber(numb) {
+      var numbString = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+
+      _toConsumableArray(numbString).forEach(function (n) {
+        return bn += eb[n];
+      });
+
+      return bn;
+    },
     predictAnswer: function predictAnswer() {
       var pre = {
         ans: this.ToText(this.qoption.option),
@@ -14429,7 +14476,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       });
       this.pie_data = options.map(function (o) {
-        var c = counts[_this8.ToText(o.option)];
+        var c = counts[_this8.ToText(_this8.tbe(o.bd_option, o.option, _this8.user.lang))];
 
         if (c === undefined) return 0;
         return c;
@@ -14488,7 +14535,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       this.datacollection = {
         labels: this.questions[this.qid].options.map(function (o) {
-          return _this10.ToText(o.option);
+          return _this10.ToText(_this10.tbe(o.bd_option, o.option, _this10.user.lang));
         }),
         datasets: [{
           borderWidth: 1,
@@ -14505,18 +14552,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
     tbe: function tbe(b, e, l) {
       if (b !== null && e !== null) {
-        console.log('no null question');
-
         if (l === 'bd') {
           return b;
         }
 
         return e;
       } else if (b !== null && e === null) {
-        console.log('Bangla not null');
         return b;
       } else if (b === null && e !== null) {
-        console.log('English not null');
         return e;
       }
 
@@ -15251,6 +15294,25 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     cardColor: function cardColor(index) {
       return this.colors[index];
+    },
+    tbe: function tbe(b, e, l) {
+      if (b !== null && e !== null) {
+        console.log('no null question');
+
+        if (l === 'bd') {
+          return b;
+        }
+
+        return e;
+      } else if (b !== null && e === null) {
+        console.log('Bangla not null');
+        return b;
+      } else if (b === null && e !== null) {
+        console.log('English not null');
+        return e;
+      }
+
+      return b;
     }
   }
 });
@@ -15612,6 +15674,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           _this.schedule = '<i class="fas fa-check"></i>';
         }
       }, 1000);
+    },
+    tbe: function tbe(b, e, l) {
+      if (b !== null && e !== null) {
+        console.log('no null question');
+
+        if (l === 'bd') {
+          return b;
+        }
+
+        return e;
+      } else if (b !== null && e === null) {
+        console.log('Bangla not null');
+        return b;
+      } else if (b === null && e !== null) {
+        console.log('English not null');
+        return e;
+      }
+
+      return b;
     }
   },
   created: function created() {
@@ -36492,7 +36573,26 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n", ""]);
 
 // exports
 
@@ -95433,6 +95533,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/waiting.vue?vue&type=style&index=0&lang=css&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/moderator/waiting.vue?vue&type=style&index=0&lang=css& ***!
@@ -98180,7 +98310,7 @@ var render = function() {
                         staticClass: "btn btn-sm btn-danger",
                         on: { click: _vm.reloadPage }
                       },
-                      [_vm._v("Reset")]
+                      [_vm._v(_vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)))]
                     ),
                     _vm._v(" "),
                     _c(
@@ -98189,13 +98319,35 @@ var render = function() {
                         staticClass: "btn btn-sm btn-warning",
                         on: { click: _vm.nextQuestion }
                       },
-                      [_vm._v("NEXT QUESTION")]
+                      [
+                        _vm._v(
+                          _vm._s(
+                            _vm.tbe(
+                              "পরবর্তী প্রশ্ন",
+                              "NEXT QUESTION",
+                              _vm.user.lang
+                            )
+                          )
+                        )
+                      ]
                     )
                   ]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
-                  _vm._m(0),
+                  _c("h3", { staticClass: "p-2" }, [
+                    _c("i", {
+                      staticClass: "fa fa-trophy",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(
+                          _vm.tbe("লিডার বোর্ড", "Leader Board", _vm.user.lang)
+                        ) +
+                        "\n                    "
+                    )
+                  ]),
                   _vm._v(" "),
                   _c(
                     "ul",
@@ -98419,7 +98571,7 @@ var render = function() {
                                       "bg-success text-white rounded-circle",
                                     attrs: { id: "qid" }
                                   },
-                                  [_vm._v(_vm._s(_vm.qid + 1))]
+                                  [_vm._v(_vm._s(_vm.q2bNumber(_vm.qid + 1)))]
                                 )
                               ]
                             ),
@@ -98523,7 +98675,15 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            Group Predict\n                        "
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm.tbe(
+                                        "ভবিষ্যদ্বাণী দিন",
+                                        "Predict",
+                                        _vm.user.lang
+                                      )
+                                    ) +
+                                    "\n                        "
                                 )
                               ]
                             ),
@@ -98540,7 +98700,15 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            Submit\n                        "
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm.tbe(
+                                        "সাবমিট করুন",
+                                        "Submit",
+                                        _vm.user.lang
+                                      )
+                                    ) +
+                                    "\n                        "
                                 )
                               ]
                             )
@@ -98563,7 +98731,19 @@ var render = function() {
                         "div",
                         { staticClass: "card mb-4" },
                         [
-                          _vm._m(1, true),
+                          _c("span", { staticClass: "text-center" }, [
+                            _c("strong", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.tbe(
+                                    "দলের ভবিষ্যদ্বাণী",
+                                    "Team Prediction",
+                                    _vm.user.lang
+                                  )
+                                )
+                              )
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c("pie-chart", {
                             attrs: { "chart-data": _vm.datacollection }
@@ -98620,28 +98800,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "p-2" }, [
-      _c("i", {
-        staticClass: "fa fa-trophy",
-        attrs: { "aria-hidden": "true" }
-      }),
-      _vm._v("\n                        Leader Board\n                    ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "text-center" }, [
-      _c("strong", [_vm._v("Group Prediction")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -99015,7 +99174,17 @@ var render = function() {
     "div",
     { staticClass: "waiting bg-team" },
     [
-      _c("h2", [_vm._v("Please Select Your Team")]),
+      _c("h2", [
+        _vm._v(
+          _vm._s(
+            _vm.tbe(
+              "দয়া করে আপনার দল নির্বাচন করুন",
+              "Please Select Your Team",
+              _vm.user.lang
+            )
+          )
+        )
+      ]),
       _vm._v(" "),
       _vm._l(_vm.teams, function(team, index) {
         return _c(
@@ -99388,7 +99557,13 @@ var render = function() {
             staticClass: "btn btn-sm col-sm-6 btn-success",
             on: { click: _vm.showModal }
           },
-          [_vm._v("ADD QUESTION")]
+          [
+            _vm._v(
+              _vm._s(
+                _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
+              )
+            )
+          ]
         )
       ]),
       _vm._v(" "),
@@ -99412,7 +99587,21 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(0),
+                _c("div", { staticClass: "modal-header" }, [
+                  _c("h5", { staticClass: "modal-title" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.tbe(
+                          "প্রশ্ন যুক্ত করুন",
+                          "ADD QUESTION",
+                          _vm.user.lang
+                        )
+                      )
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { staticClass: "row" }, [
@@ -99452,7 +99641,15 @@ var render = function() {
                         },
                         [
                           _c("option", { attrs: { value: "0" } }, [
-                            _vm._v("Please Select Topic")
+                            _vm._v(
+                              _vm._s(
+                                _vm.tbe(
+                                  "দয়া করে বিষয় নির্বাচন করুন",
+                                  "Please Select Topic",
+                                  _vm.user.lang
+                                )
+                              )
+                            )
                           ]),
                           _vm._v(" "),
                           _vm._l(_vm.topics, function(topic, index) {
@@ -99482,7 +99679,11 @@ var render = function() {
                           type: "number",
                           min: "1",
                           max: "10",
-                          placeholder: "Enter Question Number"
+                          placeholder: _vm.tbe(
+                            "প্রশ্নের সংখ্যা",
+                            "Number of Questions",
+                            _vm.user.lang
+                          )
                         },
                         domProps: { value: _vm.formData.q_number },
                         on: {
@@ -99510,7 +99711,17 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.onnoFunc }
                     },
-                    [_vm._v("Add Question")]
+                    [
+                      _vm._v(
+                        _vm._s(
+                          _vm.tbe(
+                            "প্রশ্ন যুক্ত করুন",
+                            "ADD QUESTION",
+                            _vm.user.lang
+                          )
+                        )
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
@@ -99519,7 +99730,11 @@ var render = function() {
                       staticClass: "btn btn-danger",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("Close")]
+                    [
+                      _vm._v(
+                        _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang))
+                      )
+                    ]
                   )
                 ])
               ])
@@ -99536,22 +99751,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Add Question")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -99581,8 +99792,13 @@ var render = function() {
         _vm.user.id != _vm.uid
           ? _c("span", { staticClass: "ml-1 text-primary" }, [
               _vm._v(
-                _vm._s(_vm.user.team_id) +
-                  " Please wait, the Quiz Host will start the game soon.."
+                _vm._s(
+                  _vm.tbe(
+                    "দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..",
+                    "Please wait, the Quiz Master will start the game soon..",
+                    _vm.user.lang
+                  )
+                )
               )
             ])
           : _vm._e()
@@ -99595,7 +99811,19 @@ var render = function() {
           staticStyle: { "max-height": "90vh", overflow: "auto" }
         },
         [
-          _vm._m(0),
+          _c("h3", { staticClass: "p-2" }, [
+            _c("i", {
+              staticClass: "fa fa-trophy",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(
+              "\n                    " +
+                _vm._s(
+                  _vm.tbe("অংশগ্রহণকারী দল", "Participant Group", _vm.user.lang)
+                ) +
+                "\n                "
+            )
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -99655,7 +99883,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("START")]
+                  [_vm._v(_vm._s(_vm.tbe("শুরু করুন", "START", _vm.user.lang)))]
                 )
               : _vm._e()
           ])
@@ -99664,20 +99892,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "p-2" }, [
-      _c("i", {
-        staticClass: "fa fa-trophy",
-        attrs: { "aria-hidden": "true" }
-      }),
-      _vm._v("\n                    Participant Group\n                ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -112993,7 +113208,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./questions.vue?vue&type=template&id=46cbeb26& */ "./resources/js/components/helper/moderator/questions.vue?vue&type=template&id=46cbeb26&");
 /* harmony import */ var _questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./questions.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./questions.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -113001,7 +113218,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["render"],
   _questions_vue_vue_type_template_id_46cbeb26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -113030,6 +113247,22 @@ component.options.__file = "resources/js/components/helper/moderator/questions.v
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./questions.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/moderator/questions.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_questions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 
@@ -113399,8 +113632,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\quiz\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\quiz\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\realtimeQuiz\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

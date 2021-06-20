@@ -50,15 +50,15 @@
                 </div>
                 <div class="card text-white bg-secondary">
                     <div class="card-header card-title d-flex justify-content-between">
-                        <a @click="reloadPage" class="btn btn-sm btn-danger" >Reset</a>
+                        <a @click="reloadPage" class="btn btn-sm btn-danger" >{{tbe('রিসেট','Reset',user.lang)}}</a>
                         <!-- <strong>Information</strong> -->
 
-                        <a class="btn btn-sm btn-warning" @click="nextQuestion">NEXT QUESTION</a>
+                        <a class="btn btn-sm btn-warning" @click="nextQuestion">{{ tbe('পরবর্তী প্রশ্ন','NEXT QUESTION',user.lang) }}</a>
                     </div>
                     <div class="card-body">
                         <h3 class="p-2">
                             <i class="fa fa-trophy" aria-hidden="true"></i>
-                            Leader Board
+                            {{ tbe('লিডার বোর্ড','Leader Board',user.lang) }}
                         </h3>
                         <ul class="list-group text-dark">
                             <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
@@ -122,20 +122,18 @@
                     <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
                         <div class="modal-header" style="justify-content:flex-start">
                             <div class="col-xs-1 my-1 element-animation0">
-                                <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
+                                <span class="bg-success text-white rounded-circle" id="qid">{{ q2bNumber(qid + 1) }}</span>
                             </div>
                             <div class="col-xs-11">
                                 <h6 class="pl-1 element-animation0">
                                     {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
                                 </h6>
                             </div>
-
                         </div>
                         <div class="modal-body">
                             <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
                                 <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
                             </div>
-
                             <ul class="list-group" v-for="(option, index) in question.options">
                                 <li @click="clickSelect(index, option)"
                                     class="list-group-item list-group-item-action cursor my-1"
@@ -148,12 +146,12 @@
                             <button class="btn btn-secondary rounded-pill element-animation5"
                                     :class="{disabled: !qoption.selected }"
                                     @click="predictAnswer">
-                                Group Predict
+                                {{tbe('ভবিষ্যদ্বাণী দিন','Predict',user.lang)}}
                             </button>
                             <button class="btn btn-success float-right rounded-pill element-animation5"
                                     :class="{disabled:qoption.selected == null}"
                                     @click="submitAnswer">
-                                Submit
+                                {{ tbe('সাবমিট করুন','Submit',user.lang) }}
                             </button>
                         </div>
                     </div>
@@ -162,7 +160,7 @@
             </div>
             <div class="col-md-4" >
                 <div class="card mb-4" v-for="question in questions" v-if="question.id == current && groupPredict()" >
-                    <span class="text-center"> <strong>Group Prediction</strong></span>
+                    <span class="text-center"> <strong>{{tbe('দলের ভবিষ্যদ্বাণী','Team Prediction',user.lang)}}</strong></span>
                     <pie-chart :chart-data="datacollection"></pie-chart>
                 </div>
 
@@ -306,9 +304,12 @@ export default {
             })
             .listen('AnswerPredictEvent', (data) => {
                 console.log('AnswerPredictEvent.............')
-                this.prediction.push(data)
-                this.getPredict()
-                this.fillPie()
+                console.log(data)
+                if(data.user.gid == this.user.gid){
+                    this.prediction.push(data)
+                    this.getPredict()
+                    this.fillPie()
+                }
             })
             .listen('QuestionClickedEvent', (data) => {
                 console.log('QuestionClickedEvent.............')
@@ -328,6 +329,7 @@ export default {
                 if(this.user.id == this.uid){
                     this.answered_group.push(req.data.team)
                 }
+                this.TimerInit();
 
             })
             .listen('PageReloadEvent', (data) => {
@@ -401,7 +403,8 @@ export default {
 
             let next = { channel: this.channel, qid: this.qid,qtime:this.question_time }
 
-            axios.post(`/api/nextQuestion`, next)
+            axios.post(`/api/nextQuestion`, next).then( this.question_time = 0)
+
 
         },
         submitAnswer(){
@@ -417,7 +420,7 @@ export default {
             this.qoption.option = null
             this.qoption.correct = null
             this.screen.result = 1
-
+            this.TimerInit()
         },
 
         checkAnswer(q, a, rw){
@@ -435,12 +438,19 @@ export default {
             axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
 
         },
+
         QuestionTimer(){
             let pdec = 100 / (10 * this.qt.time);
             console.log('QuestionTimer started')
             this.qt.timer =
                 setInterval(() => {
                     if(this.qt.time == 0){
+                        this.qoption.selected = -1;
+                        this.qoption.option ='Not Answered';
+                        this.qoption.correct = 0;
+                        this.submitAnswer()
+                        this.qoption.selected = null
+                        console.log('time ses');
                         this.TimerInit()
                     }
                     else{
@@ -462,6 +472,7 @@ export default {
             this.qt.ms = 0
             this.qt.time = 0
             this.progress_count = 100
+
         },
         countDown(){
             console.log('countDown')
@@ -496,6 +507,13 @@ export default {
             console.log(JSON.stringify(this.results))
 
         },
+        q2bNumber(numb) {
+            let numbString = numb.toString();
+            let bn = ''
+            let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+            [...numbString].forEach(n => bn += eb[n])
+            return bn
+        },
 
         predictAnswer(){
 
@@ -523,7 +541,6 @@ export default {
         groupPredict(){
             return this.prediction.find(p => p.user.group_id === this.user.group_id)
         },
-
         getPredict(){
             var counts = {};
             let options = this.questions[this.qid].options
@@ -534,7 +551,7 @@ export default {
             });
 
             this.pie_data = options.map(o => {
-                var c = counts[this.ToText(o.option)]
+                var c = counts[this.ToText(this.tbe(o.bd_option,o.option,this.user.lang))]
                 if(c === undefined)
                     return 0
                 return c
@@ -586,7 +603,7 @@ export default {
 
         fillPie() {
             this.datacollection = {
-                labels: this.questions[this.qid].options.map(o => { return this.ToText(o.option) }),
+                labels: this.questions[this.qid].options.map(o => { return this.ToText(this.tbe(o.bd_option,o.option,this.user.lang)) }),
                 datasets: [{
                     borderWidth: 1,
                     borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
@@ -603,18 +620,15 @@ export default {
         },
         tbe(b, e, l) {
             if(b !== null && e !== null){
-                console.log('no null question')
                 if(l === 'bd') {
                     return b;
                 }
                 return e;
             }
             else if(b !== null && e === null) {
-                console.log('Bangla not null');
                 return b;
             }
             else if(b === null && e !== null) {
-                console.log('English not null');
                 return e;
             }
             return b;

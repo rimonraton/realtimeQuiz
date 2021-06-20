@@ -2,12 +2,12 @@
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
 	        <div class="card-header">
-	            <span v-if="user.id != uid" class="ml-1 text-primary">{{user.team_id}} Please wait, the Quiz Host will start the game soon..</span>
+	            <span v-if="user.id != uid" class="ml-1 text-primary">{{tbe('দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..','Please wait, the Quiz Master will start the game soon..',user.lang)}}</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
                 <h3 class="p-2">
                     <i class="fa fa-trophy" aria-hidden="true"></i>
-                    Participant Group
+                    {{ tbe('অংশগ্রহণকারী দল','Participant Group',user.lang) }}
                 </h3>
                 <div class="list-group">
                     <span  class="list-group-item list-group-item-action" aria-current="true" v-for="(team,index) in teams" :key="index">
@@ -24,7 +24,7 @@
 
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
-                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
+                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">{{ tbe('শুরু করুন','START',user.lang) }}</a>
 <!--                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">-->
 <!--                    </a>-->
 
@@ -100,7 +100,25 @@ export default{
                 }
 
             }, 1000);
-        }
+        },
+        tbe(b, e, l) {
+            if(b !== null && e !== null){
+                console.log('no null question')
+                if(l === 'bd') {
+                    return b;
+                }
+                return e;
+            }
+            else if(b !== null && e === null) {
+                console.log('Bangla not null');
+                return b;
+            }
+            else if(b === null && e !== null) {
+                console.log('English not null');
+                return e;
+            }
+            return b;
+        },
     },
     created: function(){
         this.scheduledTimer()
