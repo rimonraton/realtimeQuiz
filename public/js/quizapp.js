@@ -14226,7 +14226,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         _this2.answered_group.push(req.data.team);
       }
 
-      _this2.TimerInit();
+      if (req.data.user.gid == _this2.user.gid) {
+        _this2.TimerInit();
+      }
     }).listen('PageReloadEvent', function (data) {
       console.log('PageReloadEvent.............');
       window.location.reload();

@@ -329,7 +329,9 @@ export default {
                 if(this.user.id == this.uid){
                     this.answered_group.push(req.data.team)
                 }
-                this.TimerInit();
+                if(req.data.user.gid == this.user.gid) {
+                    this.TimerInit();
+                }
 
             })
             .listen('PageReloadEvent', (data) => {
