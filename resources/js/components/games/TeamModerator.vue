@@ -234,6 +234,7 @@ export default {
             teamUser:[],
             team: null,
             isModalVisible: false,
+            existing_qid:[]
 
 
         };
@@ -241,6 +242,7 @@ export default {
 
     mounted() {
         // window.onblur = alert('blurd')
+
 
         this.current = this.questions[this.qid].id
 
@@ -355,9 +357,12 @@ export default {
 
     methods: {
         addQuestion(formData){
-
-            axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData}).then(res => {
+           let ext_qids = this.questions.map(q=> {
+               return q.id
+           });
+            axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData,existing_qids:ext_qids}).then(res => {
                 res.data.map(q=>this.questions.push(q))
+                // this.questions.map(q=>this.existing_qid.push(q.id))
                 console.log(res.data)
                 // this.questions.push(res.data);
                 // $('#qmodal').modal('hide');

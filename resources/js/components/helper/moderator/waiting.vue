@@ -9,18 +9,30 @@
                     <i class="fa fa-trophy" aria-hidden="true"></i>
                     {{ tbe('অংশগ্রহণকারী দল','Participant Group',user.lang) }}
                 </h3>
-                <div class="list-group">
-                    <span  class="list-group-item list-group-item-action" aria-current="true" v-for="(team,index) in teams" :key="index">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{team.name}}</h5>
-<!--                            <small>3 days ago</small>-->
+<!--                <div class="list-group">-->
+<!--                    <span  class="list-group-item list-group-item-action" aria-current="true" v-for="(team,index) in teams" :key="index">-->
+<!--                        <div class="d-flex w-100 justify-content-between">-->
+<!--                            <h5 class="mb-1">{{team.name}}</h5>-->
+<!--&lt;!&ndash;                            <small>3 days ago</small>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <p class="mb-1"><span class="badge badge-info mr-1 text-white" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>-->
+<!--&lt;!&ndash;                        <small>And some small print.</small>&ndash;&gt;-->
+<!--                    </span>-->
+
+<!--                </div>-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mt-2" :class="cardColor(index)" v-for="(team,index) in teams" :key="index">
+<!--                            <img class="img-fluid" src="http://grafreez.com/wp-content/temp_demos/river/img/politics.jpg" alt="">-->
+                            <div class="card-body">
+                                <div class="news-title">
+                                    <h2 class=" title-small">{{team.name}}</h2>
+                                </div>
+                                <p class="card-text"><span class="badge badge-info" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
+                            </div>
                         </div>
-                        <p class="mb-1"><span class="badge badge-info mr-1 text-white" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
-<!--                        <small>And some small print.</small>-->
-                    </span>
-
+                    </div>
                 </div>
-
 
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
@@ -50,11 +62,14 @@ export default{
             seconds: '',
             schedule: '',
             timer: null,
-            teamUsers: this.team_users
-
+            teamUsers: this.team_users,
+            colors:['border-primary','border-secondary','border-success','border-danger','border-warning','border-info','border-light','border-dark','border-white']
         };
     },
     methods:{
+        cardColor: function (index) {
+            return this.colors[index];
+        },
         getTeamUsers(team){
             let users = this.users.map(u => {
                 if(u.gid === team) return u;
@@ -154,4 +169,7 @@ export default{
     	right: 0px;
     	color: red;
     }
+    .ds-btn li{ list-style:none; padding:10px; }
+
+
 </style>

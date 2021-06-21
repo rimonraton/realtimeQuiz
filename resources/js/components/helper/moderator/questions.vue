@@ -82,7 +82,7 @@
 		    return{
                 formData:{
                     topics:0,
-                    q_number:null
+                    q_number:null,
                 },
                 questiondata:this.questions,
             }
@@ -92,6 +92,13 @@
 		    onnoFunc(){
 		        $('#qmodal').modal('hide');
                 this.$emit('addQuestion',this.formData)
+                this.clear()
+            },
+            clear(){
+		        this.formData ={
+                    topics:0,
+                    q_number:null,
+                }
             },
             q2bNumber(numb) {
                 let numbString = numb.toString();

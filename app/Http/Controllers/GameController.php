@@ -110,8 +110,9 @@ class GameController extends Controller
         $channel = $request->channel;
         $cat_id = $request->formdata['topics'];
         $q_num = $request->formdata['q_number'];
+        $ext_qids = $request->existing_qids;
         $questions = Question::with('options')
-            ->where('category_id',$cat_id)->inRandomOrder()->limit($q_num)->get()->toArray();
+            ->where('category_id',$cat_id)->whereNotIn('id',$ext_qids)->inRandomOrder()->limit($q_num)->get()->toArray();
         //$request->request->add(['questions' => $questions]);
         broadcast(new AddQuestionEvent($channel, $questions))->toOthers();
         return $questions;
