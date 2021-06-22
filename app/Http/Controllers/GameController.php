@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddQuestionEvent;
+use App\Events\AddTeamEvent;
+use App\Events\DeleteTeamEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Events\GameTeamModeratorStartEvent;
@@ -13,6 +15,8 @@ use App\Events\PageReloadEvent;
 use App\Models\Share;
 use App\Progress;
 use App\Question;
+use App\Quiz;
+use App\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
@@ -118,6 +122,34 @@ class GameController extends Controller
         return $questions;
     }
 
+    public function addTeam(Request $request)
+    {
+//        return $request->all();
+        $channel = $request->channel;
+       $team = Team::create([
+            'name'=>$request->teamData['team_english'],
+            'bn_name'=>$request->teamData['team_bangla'],
+           'user_id'=>$request->user_id,
+        ]);
 
+       $team_quiz = Quiz::find($request->qid);
+
+        $team_quiz->update([
+           'team_ids'=>$team_quiz->team_ids.','.$team->id
+       ]);
+        $newTeam = Team::find($team->id);
+        broadcast(new AddTeamEvent($channel,$newTeam))->toOthers();
+        return $newTeam;
+//        return $team_quiz->team_ids.','.$team->id;
+
+    }
+
+    public function deleteTeam(Request $request)
+    {
+        $channel = $request->channel;
+        Team::find($request->id)->delete();
+        broadcast(new DeleteTeamEvent($channel,$request->id))->toOthers();
+        return $request->id;
+    }
 
 }

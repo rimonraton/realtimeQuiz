@@ -2,7 +2,7 @@
 	<div class="waiting bg-team">
         <h2>{{ tbe('দয়া করে আপনার দল নির্বাচন করুন','Please Select Your Team',user.lang) }}</h2>
 	    <div class="card mb-2 pointer" @click="$emit('joinTeam',team.id)" style="width: 24rem; " v-for="(team,index) in teams" :key="team.id">
-	        <div :class="cardColor(index)" class="card-body " style="max-height:90vh; overflow:auto">
+	        <div :class="cardColor()" class="card-body " style="max-height:90vh; overflow:auto">
                     <h1 class="text-center text-white">
                         {{team.name}}
                     </h1>
@@ -17,12 +17,14 @@ export default{
 	props:['teams','user'],
     data() {
         return {
-            colors:['bg-info','bg-danger','bg-success','bg-dark','bg-primary']
+            colors:['bg-info','bg-danger','bg-success','bg-dark','bg-primary','bg-secondary','bg-warning']
+
         };
     },
     methods:{
-        cardColor: function (index) {
-            return this.colors[index];
+        cardColor: function () {
+            return this.colors[Math.floor(Math.random() * this.colors.length)];
+            // colors[Math.floor(Math.random() * colors.length)];
         },
         tbe(b, e, l) {
             if(b !== null && e !== null){

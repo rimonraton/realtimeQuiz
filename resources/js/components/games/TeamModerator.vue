@@ -27,7 +27,9 @@
                  @kickingUser="kickUser($event)"
                  @gameStart="gameStart"
                  @gameReset="gameReset"
-                 v-if="screen.waiting">
+                 v-if="screen.waiting"
+                 @addTeam="addTeam($event)"
+                 @deleteTeam="deleteTeam($event)">
         </waiting>
         <team-member :teams="teams" :user="user" @joinTeam="joinTeam($event)"
                      v-if="screen.team == 1 && user.id != uid">
@@ -274,6 +276,27 @@ export default {
 
     created(){
         Echo.channel(this.channel)
+            .listen('DeleteTeamEvent', (data) => {
+                console.log('DeleteTeamEvent..........')
+                console.log(data);
+                const index = this.teams.findIndex(e => {
+                    return data.id === e.id;
+                });
+                this.teams.splice(index,1);
+
+                // data.questions.map(q=>this.questions.push(q))
+                // this.QuestionTimer() // Set and Start QuestionTimer
+
+            })
+            .listen('AddTeamEvent', (data) => {
+                console.log('AddTeamEvent..........')
+                console.log(data);
+                this.teams.push(data.newTeam);
+
+                // data.questions.map(q=>this.questions.push(q))
+                // this.QuestionTimer() // Set and Start QuestionTimer
+
+            })
             .listen('AddQuestionEvent', (data) => {
                 console.log('AddQuestionEvent..........')
                 console.log(data);
@@ -356,6 +379,26 @@ export default {
 
 
     methods: {
+
+        deleteTeam(id){
+
+            console.log(id);
+
+            const index = this.teams.findIndex(e => {
+                return id === e.id;
+            });
+            console.log('deleted');
+            axios.post(`/api/deleteTeam`, {channel: this.channel,id: id}).then(res => {
+                console.log(res.data);
+                this.teams.splice(index,1);
+            })
+
+        },
+        addTeam(teamData){
+            axios.post(`/api/addTeam`, {channel: this.channel,teamData: teamData,qid:this.id,user_id:this.uid}).then(res => {
+                this.teams.push(res.data);
+            })
+        },
         addQuestion(formData){
            let ext_qids = this.questions.map(q=> {
                return q.id

@@ -46,7 +46,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true" id="btn_cls_q">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -142,5 +142,16 @@
 <style>
 #qmodal {
     background: linear-gradient(to right, #0083B0, #00B4DB);
+}
+#btn_cls_q {
+    font-size: 30px;
+    position: absolute;
+    right: -7px;
+    top: -3px;
+    background: white;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 35px;
+    /* z-index: 999999; */
 }
 </style>

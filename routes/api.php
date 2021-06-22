@@ -39,6 +39,8 @@ Route::post('savePractice', [GameController::class, 'savePractice']);
 Route::post('challengeResult', [\App\Http\Controllers\ShareController::class, 'challengeResult']);
 Route::post('jointeam',[GameController::class,'joinTeam']);
 Route::post('addQuestion',[GameController::class,'addQuestion']);
+Route::post('addTeam',[GameController::class,'addTeam']);
+Route::post('deleteTeam',[GameController::class,'deleteTeam']);
 
 
 

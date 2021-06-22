@@ -5,6 +5,8 @@
 	            <span v-if="user.id != uid" class="ml-1 text-primary">{{tbe('দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..','Please wait, the Quiz Master will start the game soon..',user.lang)}}</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
+<!--                <h1 class="animate__animated animate__bounce">An animated element</h1>-->
+
                 <h3 class="p-2">
                     <i class="fa fa-trophy" aria-hidden="true"></i>
                     {{ tbe('অংশগ্রহণকারী দল','Participant Group',user.lang) }}
@@ -22,11 +24,11 @@
 <!--                </div>-->
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card mt-2" :class="cardColor(index)" v-for="(team,index) in teams" :key="index">
+                        <div class="card mt-2" :class="cardColor()" v-for="(team,index) in teamsNewdata" :key="index">
 <!--                            <img class="img-fluid" src="http://grafreez.com/wp-content/temp_demos/river/img/politics.jpg" alt="">-->
                             <div class="card-body">
                                 <div class="news-title">
-                                    <h2 class=" title-small">{{team.name}}</h2>
+                                    <h2 class=" title-small">{{team.name}} <span class="text-danger float-right" style="cursor:pointer" @click="deleteTeam(team.id)" v-if="user.id == uid">X</span></h2>
                                 </div>
                                 <p class="card-text"><span class="badge badge-info" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
                             </div>
@@ -37,6 +39,7 @@
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
                     <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">{{ tbe('শুরু করুন','START',user.lang) }}</a>
+                    <a @click="open_team_modal" v-if="user.id == uid" class="btn btn-sm btn-outline-info mt-4 pull-right">{{ tbe('দল যুক্ত করুন','Add Team',user.lang) }}</a>
 <!--                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">-->
 <!--                    </a>-->
 
@@ -46,6 +49,54 @@
 	            <div v-if="user.id == uid" class="sharethis-inline-share-buttons"></div>
 	        </div> -->
 	    </div>
+
+<!--        modal-->
+
+        <div class="modal animate__animated animate__backInUp" tabindex="-1" data-backdrop="false" role="dialog" id="team_modal">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ tbe('দল যুক্ত করুন','ADD TEAM',user.lang) }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span id="btn_cls" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <input type="text" class="form-control" min="1" max="10" v-model="teamData.team_english" :placeholder=" tbe('ইংরেজিতে লিখুন','Type in English',user.lang) " >
+                            </div>
+                            <div class="form-group col-md-6 col-sm-6">
+                                <input type="text" class="form-control" min="1" max="10" v-model="teamData.team_bangla"  :placeholder=" tbe('বাংলায় লিখুন','Type in Bangla',user.lang) " >
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="addemitTeam" >{{ tbe('দল যুক্ত করুন','ADD TEAM',user.lang) }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ tbe('বাতিল করুন','Cancel',user.lang) }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal animate__animated animate__backInLeft" tabindex="-1" data-backdrop="false" role="dialog" id="deleteModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ tbe('দল ডিলিট করুন','DELETE TEAM',user.lang) }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{tbe('তুমি কি নিশ্চিত? আপনি এটিকে ফিরিয়ে দিতে পারবেন না !',"Are you sure? You won't be able to revert this!",user.lang)}}</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteSubmit" >{{ tbe('দল ডিলিট করুন','DELETE TEAM',user.lang) }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ tbe('বাতিল করুন','CANCEL',user.lang) }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 	</div>
 
@@ -63,12 +114,41 @@ export default{
             schedule: '',
             timer: null,
             teamUsers: this.team_users,
-            colors:['border-primary','border-secondary','border-success','border-danger','border-warning','border-info','border-light','border-dark','border-white']
+            colors:['border-primary','border-secondary','border-success','border-danger','border-warning','border-info','border-dark'],
+            teamData:{
+                team_english:'',
+                team_bangla:'',
+            },
+            teamsNewdata:this.teams,
+            showDelete:true,
+            teamId:null,
         };
     },
     methods:{
+
+        open_team_modal(){
+
+            $('#team_modal').modal('show');
+        },
+        addemitTeam(){
+            $('#team_modal').modal('hide');
+            this.$emit('addTeam',this.teamData);
+
+                this.teamData.team_english='';
+                this.teamData.team_bangla='';
+        },
+        // animate:
+        deleteTeam(id){
+            this.teamId = id,
+            $('#deleteModal').modal('show');
+        },
+        deleteSubmit(){
+            $('#deleteModal').modal('hide');
+            this.$emit('deleteTeam',this.teamId);
+            this.teamId = null
+        },
         cardColor: function (index) {
-            return this.colors[index];
+            return this.colors[Math.floor(Math.random() * this.colors.length)];
         },
         getTeamUsers(team){
             let users = this.users.map(u => {
@@ -136,6 +216,7 @@ export default{
         },
     },
     created: function(){
+	    // this.swa()
         this.scheduledTimer()
         console.log('scheduledTimer started')
     },
@@ -170,6 +251,20 @@ export default{
     	color: red;
     }
     .ds-btn li{ list-style:none; padding:10px; }
+    #team_modal {
+        background: linear-gradient(to right, #0083B0, #00B4DB);
+    }
 
+    #btn_cls {
+        font-size: 30px;
+        position: absolute;
+        right: -7px;
+        top: -3px;
+        background: white;
+        border: 1px solid;
+        border-radius: 50%;
+        width: 35px;
+        /* z-index: 999999; */
+    }
 
 </style>
