@@ -25,7 +25,7 @@
 <!--                    </li>-->
 <!--                </ul>-->
             </div>
-            <div class="card-footer" v-if="lastQuestion">
+            <div class="card-footer">
                 <button @click="back" class="btn btn-sm btn-success">Dashboard</button>
 <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>

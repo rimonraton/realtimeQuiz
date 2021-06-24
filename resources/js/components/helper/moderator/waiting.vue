@@ -30,7 +30,7 @@
                                 <div class="news-title">
                                     <h2 class=" title-small">{{team.name}} <span class="text-danger float-right" style="cursor:pointer" @click="deleteTeam(team.id)" v-if="user.id == uid">X</span></h2>
                                 </div>
-                                <p class="card-text"><span class="badge badge-info" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
+                                <p class="card-text"><span class="badge badge-info mr-1" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
                             </div>
                         </div>
                     </div>

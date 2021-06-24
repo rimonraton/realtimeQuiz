@@ -282,6 +282,22 @@ export default {
 
     created(){
         Echo.channel(this.channel)
+
+            .listen('TeamResult', (data) => {
+                console.log('TeamResult..........')
+                this.screen.teamresult = 1;
+                if (this.resultPosition() == 0){
+                    confetti({
+                        zIndex:999999,
+                        particleCount: 200,
+                        spread: 120,
+                        origin: { y: 0.6 }
+                    });
+                }
+                // data.questions.map(q=>this.questions.push(q))
+                // this.QuestionTimer() // Set and Start QuestionTimer
+
+            })
             .listen('DeleteTeamEvent', (data) => {
                 console.log('DeleteTeamEvent..........')
                 console.log(data);
@@ -386,19 +402,21 @@ export default {
 
 
     methods: {
+        resultPosition(){
+            let position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
+            return position;
+        },
+        getUserTeam(){
+            let team = this.teams.find(t=>t.id == this.user.gid)
+            return team.name;
+        },
         teamResult(){
             let ids = this.users.map(u => u.id)
-            axios.post(`/api/teamResult`,{qid:this.id,host:this.uid,users:ids,results:this.results}).then(res => {
-                    console.log(res.data);
-                        confetti({
-                            zIndex:999999,
-                            particleCount: 200,
-                            spread: 120,
-                            origin: { y: 0.6 }
-                        });
-                    // this.screen.teamresult = 1;
+            axios.post(`/api/teamResult`,{channel:this.channel,qid:this.id,host:this.uid,users:ids,results:this.results}).then(res => {
+                    this.screen.teamresult = 1;
             })
         },
+
         deleteTeam(id){
 
             console.log(id);
@@ -459,7 +477,6 @@ export default {
 
         nextQuestion(){
             console.log('NextQuestion Clicked')
-            console.log([this.qid,this.questions]);
             if(this.qid + 1 == this.questions.length){
                 clearInterval(this.timer);
                 this.winner()
@@ -628,6 +645,7 @@ export default {
             })
 
         },
+
 
         getCorrectAnswertext(){
             return this.questions[this.qid].options.find(o => o.correct == 1).option

@@ -160,6 +160,7 @@ class GameController extends Controller
         $link = Str::random(50);
         $team_result = new TeamResult(array('qid' => $request->qid, 'host_id' => $request->host, 'link' => $link,'users_id'=>$uid,'results'=>json_encode($request->results)));
         $team_result->save();
+        broadcast(new \App\Events\TeamResult($request))->toOthers();
         return $team_result;
     }
 
