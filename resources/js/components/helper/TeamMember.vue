@@ -2,7 +2,7 @@
 	<div class="waiting bg-team">
         <h2>{{ tbe('দয়া করে আপনার দল নির্বাচন করুন','Please Select Your Team',user.lang) }}</h2>
 	    <div class="card mb-2 pointer" @click="$emit('joinTeam',team.id)" style="width: 24rem; " v-for="(team,index) in teams" :key="team.id">
-	        <div :class="cardColor()" class="card-body " style="max-height:90vh; overflow:auto">
+	        <div class="card-body bg-secondary" style="max-height:90vh; overflow:auto">
                     <h1 class="text-center text-white">
                         {{team.name}}
                     </h1>

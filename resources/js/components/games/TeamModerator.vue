@@ -40,6 +40,7 @@
             :lastQuestion='(qid + 1) == questions.length'
             v-if="screen.result">
         </group-result>
+        <team-result :results="results" v-if="screen.teamresult"></team-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -54,10 +55,11 @@
                     <div class="card-header card-title d-flex justify-content-between">
                         <a @click="reloadPage" class="btn btn-sm btn-danger" >{{tbe('রিসেট','Reset',user.lang)}}</a>
                         <!-- <strong>Information</strong> -->
+                        <a class="btn btn-sm btn-warning" v-if="!isLastQuestion" @click="teamResult">{{ tbe('খেলা শেষ করুন','Game Finish',user.lang) }}</a>
 
-                        <a class="btn btn-sm btn-warning" @click="nextQuestion">{{ tbe('পরবর্তী প্রশ্ন','NEXT QUESTION',user.lang) }}</a>
+                        <a class="btn btn-sm btn-warning" v-if="isLastQuestion" @click="nextQuestion">{{ tbe('পরবর্তী প্রশ্ন','NEXT QUESTION',user.lang) }}</a>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" v-if="results.length > 0">
                         <h3 class="p-2">
                             <i class="fa fa-trophy" aria-hidden="true"></i>
                             {{ tbe('লিডার বোর্ড','Leader Board',user.lang) }}
@@ -124,7 +126,7 @@
                     <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
                         <div class="modal-header" style="justify-content:flex-start">
                             <div class="col-xs-1 my-1 element-animation0">
-                                <span class="bg-success text-white rounded-circle" id="qid">{{ q2bNumber(qid + 1) }}</span>
+                                <span class="bg-success text-white rounded-circle" id="qid">{{ user.lang=='gb'?qid + 1:q2bNumber(qid + 1) }}</span>
                             </div>
                             <div class="col-xs-11">
                                 <h6 class="pl-1 element-animation0">
@@ -192,12 +194,13 @@ import questions from '../helper/moderator/questions'
 import groupResult from '../helper/groupResult'
 import waiting from '../helper/moderator/waiting'
 import TeamMember from '../helper/TeamMember'
+import TeamResult from '../helper/TeamResult'
 
 
 export default {
     props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics'],
 
-    components: { PieChart, questions, groupResult,waiting,TeamMember },
+    components: { PieChart, questions, groupResult,waiting,TeamMember,TeamResult },
 
     data() {
         return {
@@ -232,19 +235,22 @@ export default {
                 result: 0,
                 winner: 0,
                 team:1,
+                teamresult:0,
             },
             teamUser:[],
             team: null,
             isModalVisible: false,
-            existing_qid:[]
-
-
+            existing_qid:[],
+            q_lenght:this.questions.length,
         };
     },
 
     mounted() {
         // window.onblur = alert('blurd')
 
+        let confetti = document.createElement('script')
+        confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
+        document.head.appendChild(confetti)
 
         this.current = this.questions[this.qid].id
 
@@ -308,6 +314,7 @@ export default {
                 console.log('GameTeamModeratorStartEvent.............')
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
+                this.user.lang = data.lang
                 // this.QuestionTimer() // Set and Start QuestionTimer
 
             })
@@ -379,7 +386,19 @@ export default {
 
 
     methods: {
-
+        teamResult(){
+            let ids = this.users.map(u => u.id)
+            axios.post(`/api/teamResult`,{qid:this.id,host:this.uid,users:ids,results:this.results}).then(res => {
+                    console.log(res.data);
+                        confetti({
+                            zIndex:999999,
+                            particleCount: 200,
+                            spread: 120,
+                            origin: { y: 0.6 }
+                        });
+                    // this.screen.teamresult = 1;
+            })
+        },
         deleteTeam(id){
 
             console.log(id);
@@ -407,6 +426,7 @@ export default {
                 res.data.map(q=>this.questions.push(q))
                 // this.questions.map(q=>this.existing_qid.push(q.id))
                 console.log(res.data)
+                this.q_lenght = this.questions.length;
                 // this.questions.push(res.data);
                 // $('#qmodal').modal('hide');
             })
@@ -419,7 +439,7 @@ export default {
             return [];
         },
         gameStart: function () {
-            axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel}).then(res =>  console.log(res.data))
+            axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel,lang:this.user.lang}).then(res =>  console.log(res.data))
             this.game_start = 1
             this.screen.waiting = 0
             //this.QuestionTimer()
@@ -614,7 +634,7 @@ export default {
         },
 
         winner(){
-            this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+            this.user_ranking = this.results.findIndex(w => w.name == this.user.id)
             this.screen.winner = 1
             if(this.wrong == 0 ){
                 confetti({
@@ -703,6 +723,9 @@ export default {
     },
 
     computed: {
+        isLastQuestion(){
+           return  this.q_lenght > this.qid + 1;
+        },
         channel(){
             return `team.${this.id}.${this.uid}`
         },

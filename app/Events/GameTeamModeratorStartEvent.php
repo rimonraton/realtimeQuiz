@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 class GameTeamModeratorStartEvent implements ShouldBroadcast
 {
-    public $channel;
+    public $channel,$lang;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -24,7 +24,7 @@ class GameTeamModeratorStartEvent implements ShouldBroadcast
     public function __construct($request)
     {
         $this->channel = $request->channel;
-
+        $this->lang = $request->lang;
     }
 
     /**

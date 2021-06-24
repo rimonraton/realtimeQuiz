@@ -41,6 +41,7 @@ Route::post('jointeam',[GameController::class,'joinTeam']);
 Route::post('addQuestion',[GameController::class,'addQuestion']);
 Route::post('addTeam',[GameController::class,'addTeam']);
 Route::post('deleteTeam',[GameController::class,'deleteTeam']);
+Route::post('teamResult',[GameController::class,'teamResult']);
 
 
 

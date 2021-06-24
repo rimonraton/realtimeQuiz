@@ -17,6 +17,7 @@ use App\Progress;
 use App\Question;
 use App\Quiz;
 use App\Team;
+use App\TeamResult;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
@@ -150,6 +151,16 @@ class GameController extends Controller
         Team::find($request->id)->delete();
         broadcast(new DeleteTeamEvent($channel,$request->id))->toOthers();
         return $request->id;
+    }
+
+    public function teamResult(Request $request)
+    {
+//        return $request->all();
+        $uid = implode(',', $request->users);
+        $link = Str::random(50);
+        $team_result = new TeamResult(array('qid' => $request->qid, 'host_id' => $request->host, 'link' => $link,'users_id'=>$uid,'results'=>json_encode($request->results)));
+        $team_result->save();
+        return $team_result;
     }
 
 }

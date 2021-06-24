@@ -13876,6 +13876,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/groupResult */ "./resources/js/components/helper/groupResult.vue");
 /* harmony import */ var _helper_moderator_waiting__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/moderator/waiting */ "./resources/js/components/helper/moderator/waiting.vue");
 /* harmony import */ var _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helper/TeamMember */ "./resources/js/components/helper/TeamMember.vue");
+/* harmony import */ var _helper_TeamResult__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../helper/TeamResult */ "./resources/js/components/helper/TeamResult.vue");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -14084,6 +14085,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+
 
 
 
@@ -14096,7 +14100,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     questions: _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__["default"],
     groupResult: _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__["default"],
     waiting: _helper_moderator_waiting__WEBPACK_IMPORTED_MODULE_3__["default"],
-    TeamMember: _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__["default"]
+    TeamMember: _helper_TeamMember__WEBPACK_IMPORTED_MODULE_4__["default"],
+    TeamResult: _helper_TeamResult__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   data: function data() {
     return {
@@ -14130,18 +14135,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         loading: 0,
         result: 0,
         winner: 0,
-        team: 1
+        team: 1,
+        teamresult: 0
       },
       teamUser: [],
       team: null,
       isModalVisible: false,
-      existing_qid: []
+      existing_qid: [],
+      q_lenght: this.questions.length
     };
   },
   mounted: function mounted() {
     var _this = this;
 
     // window.onblur = alert('blurd')
+    var confetti = document.createElement('script');
+    confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js');
+    document.head.appendChild(confetti);
     this.current = this.questions[this.qid].id;
     this.fillPie();
     Echo.join("team.".concat(this.id, ".").concat(this.uid)).here(function (users) {
@@ -14191,7 +14201,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       console.log('GameTeamModeratorStartEvent.............');
       _this2.game_start = 1; // Game Start from Game Owner...
 
-      _this2.screen.waiting = 0; // this.QuestionTimer() // Set and Start QuestionTimer
+      _this2.screen.waiting = 0;
+      _this2.user.lang = data.lang; // this.QuestionTimer() // Set and Start QuestionTimer
     }).listen('NextQuestionEvent', function (data) {
       console.log('NextQuestionEvent.............', data);
       _this2.qid = data.qid;
@@ -14270,6 +14281,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     });
   },
   methods: {
+    teamResult: function teamResult() {
+      var ids = this.users.map(function (u) {
+        return u.id;
+      });
+      axios.post("/api/teamResult", {
+        qid: this.id,
+        host: this.uid,
+        users: ids,
+        results: this.results
+      }).then(function (res) {
+        console.log(res.data);
+        confetti({
+          zIndex: 999999,
+          particleCount: 200,
+          spread: 120,
+          origin: {
+            y: 0.6
+          }
+        }); // this.screen.teamresult = 1;
+      });
+    },
     deleteTeam: function deleteTeam(id) {
       var _this3 = this;
 
@@ -14314,7 +14346,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           return _this5.questions.push(q);
         }); // this.questions.map(q=>this.existing_qid.push(q.id))
 
-        console.log(res.data); // this.questions.push(res.data);
+        console.log(res.data);
+        _this5.q_lenght = _this5.questions.length; // this.questions.push(res.data);
         // $('#qmodal').modal('hide');
       });
     },
@@ -14327,7 +14360,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
     gameStart: function gameStart() {
       axios.post("/api/gameTeamModeratorStart", {
-        channel: this.channel
+        channel: this.channel,
+        lang: this.user.lang
       }).then(function (res) {
         return console.log(res.data);
       });
@@ -14548,7 +14582,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var _this11 = this;
 
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this11.user.id;
+        return w.name == _this11.user.id;
       });
       this.screen.winner = 1;
 
@@ -14652,6 +14686,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   },
   computed: {
+    isLastQuestion: function isLastQuestion() {
+      return this.q_lenght > this.qid + 1;
+    },
     channel: function channel() {
       return "team.".concat(this.id, ".").concat(this.uid);
     },
@@ -15370,6 +15407,69 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return b;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['results'],
+  methods: {
+    back: function back() {
+      // window.history.back()
+      window.location = '/team_quiz';
+    },
+    getMedel: function getMedel(index) {
+      if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';
+      if (index == 1) return '<span class="badge badge-primary m-1">2<sup>nd</sup></span><i class="fas fa-award ml-1" style="color: silver"></i>';
+      if (index == 2) return '<span class="badge badge-info m-1">3<sup>rd</sup></span><i class="fas fa-award fa-sm ml-1" style="color: #CD7F32"></i>';
+      if (index > 2) return "<span class=\"badge badge-secondary m-1\">".concat(index + 1, "</span>");
     }
   }
 });
@@ -98408,6 +98508,10 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
+      _vm.screen.teamresult
+        ? _c("team-result", { attrs: { results: _vm.results } })
+        : _vm._e(),
+      _vm._v(" "),
       _vm.user.id == _vm.uid
         ? _c("div", { staticClass: "row justify-content-center" }, [
             _c(
@@ -98476,195 +98580,228 @@ var render = function() {
                       [_vm._v(_vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)))]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn btn-sm btn-warning",
-                        on: { click: _vm.nextQuestion }
-                      },
-                      [
-                        _vm._v(
-                          _vm._s(
-                            _vm.tbe(
-                              "পরবর্তী প্রশ্ন",
-                              "NEXT QUESTION",
-                              _vm.user.lang
+                    !_vm.isLastQuestion
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-sm btn-warning",
+                            on: { click: _vm.teamResult }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.tbe(
+                                  "খেলা শেষ করুন",
+                                  "Game Finish",
+                                  _vm.user.lang
+                                )
+                              )
                             )
-                          )
+                          ]
                         )
-                      ]
-                    )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isLastQuestion
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-sm btn-warning",
+                            on: { click: _vm.nextQuestion }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.tbe(
+                                  "পরবর্তী প্রশ্ন",
+                                  "NEXT QUESTION",
+                                  _vm.user.lang
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h3", { staticClass: "p-2" }, [
-                    _c("i", {
-                      staticClass: "fa fa-trophy",
-                      attrs: { "aria-hidden": "true" }
-                    }),
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(
-                          _vm.tbe("লিডার বোর্ড", "Leader Board", _vm.user.lang)
-                        ) +
-                        "\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "ul",
-                    { staticClass: "list-group text-dark" },
-                    _vm._l(_vm.results, function(result, key) {
-                      return _c(
-                        "li",
-                        {
-                          key: key,
-                          staticClass:
-                            "list-group-item d-flex justify-content-between align-items-center p-0"
-                        },
-                        [
-                          _c(
-                            "div",
+                _vm.results.length > 0
+                  ? _c("div", { staticClass: "card-body" }, [
+                      _c("h3", { staticClass: "p-2" }, [
+                        _c("i", {
+                          staticClass: "fa fa-trophy",
+                          attrs: { "aria-hidden": "true" }
+                        }),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm.tbe(
+                                "লিডার বোর্ড",
+                                "Leader Board",
+                                _vm.user.lang
+                              )
+                            ) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        { staticClass: "list-group text-dark" },
+                        _vm._l(_vm.results, function(result, key) {
+                          return _c(
+                            "li",
                             {
-                              staticClass: "w-100",
-                              attrs: { id: "accordion" + key }
+                              key: key,
+                              staticClass:
+                                "list-group-item d-flex justify-content-between align-items-center p-0"
                             },
                             [
                               _c(
                                 "div",
-                                { staticClass: "card text-white bg-secondary" },
+                                {
+                                  staticClass: "w-100",
+                                  attrs: { id: "accordion" + key }
+                                },
                                 [
                                   _c(
                                     "div",
                                     {
                                       staticClass:
-                                        "card-header py-1 bg-secondary d-flex justify-content-between",
-                                      attrs: {
-                                        id: "heading" + key,
-                                        "data-toggle": "collapse",
-                                        "data-target": "#collapse" + key,
-                                        "aria-expanded": "true",
-                                        "aria-controls": "collapse" + key
-                                      }
+                                        "card text-white bg-secondary"
                                     },
                                     [
                                       _c(
-                                        "small",
-                                        { staticClass: "mb-0 cursor" },
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "card-header py-1 bg-secondary d-flex justify-content-between",
+                                          attrs: {
+                                            id: "heading" + key,
+                                            "data-toggle": "collapse",
+                                            "data-target": "#collapse" + key,
+                                            "aria-expanded": "true",
+                                            "aria-controls": "collapse" + key
+                                          }
+                                        },
                                         [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(result.name) +
-                                              "\n                                        "
+                                          _c(
+                                            "small",
+                                            { staticClass: "mb-0 cursor" },
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(result.name) +
+                                                  "\n                                        "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "badge badge-success badge-pill"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                        " +
+                                                  _vm._s(result.score) +
+                                                  "\n                                    "
+                                              )
+                                            ]
                                           )
                                         ]
                                       ),
                                       _vm._v(" "),
                                       _c(
-                                        "span",
+                                        "div",
                                         {
-                                          staticClass:
-                                            "badge badge-success badge-pill"
+                                          staticClass: "collapse show",
+                                          attrs: {
+                                            id: "collapse" + key,
+                                            "aria-labelledby": "heading" + key,
+                                            "data-parent": "#accordion" + key
+                                          }
                                         },
                                         [
-                                          _vm._v(
-                                            "\n                                        " +
-                                              _vm._s(result.score) +
-                                              "\n                                    "
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "collapse show",
-                                      attrs: {
-                                        id: "collapse" + key,
-                                        "aria-labelledby": "heading" + key,
-                                        "data-parent": "#accordion" + key
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        { staticClass: "card-body p-0" },
-                                        [
                                           _c(
-                                            "ul",
-                                            {
-                                              staticClass:
-                                                "list-group text-dark",
-                                              staticStyle: {
-                                                "max-height": "380px",
-                                                overflow: "auto"
-                                              }
-                                            },
-                                            _vm._l(result.answers, function(
-                                              answer,
-                                              key
-                                            ) {
-                                              return _c(
-                                                "li",
+                                            "div",
+                                            { staticClass: "card-body p-0" },
+                                            [
+                                              _c(
+                                                "ul",
                                                 {
-                                                  key: key,
                                                   staticClass:
-                                                    "list-group-item d-flex justify-content-between align-items-center p-1"
+                                                    "list-group text-dark",
+                                                  staticStyle: {
+                                                    "max-height": "380px",
+                                                    overflow: "auto"
+                                                  }
                                                 },
-                                                [
-                                                  _c(
-                                                    "div",
+                                                _vm._l(result.answers, function(
+                                                  answer,
+                                                  key
+                                                ) {
+                                                  return _c(
+                                                    "li",
                                                     {
+                                                      key: key,
                                                       staticClass:
-                                                        "font-weight-light f-13"
+                                                        "list-group-item d-flex justify-content-between align-items-center p-1"
                                                     },
                                                     [
                                                       _c(
-                                                        "span",
+                                                        "div",
                                                         {
                                                           staticClass:
-                                                            "font-weight-light font-italic"
+                                                            "font-weight-light f-13"
                                                         },
                                                         [
-                                                          _vm._v(
-                                                            "\n                                                    " +
-                                                              _vm._s(
-                                                                answer.user
-                                                                  .name +
-                                                                  " - " +
-                                                                  answer.selected
-                                                              ) +
-                                                              "\n                                                "
-                                                          )
+                                                          _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "font-weight-light font-italic"
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                    " +
+                                                                  _vm._s(
+                                                                    answer.user
+                                                                      .name +
+                                                                      " - " +
+                                                                      answer.selected
+                                                                  ) +
+                                                                  "\n                                                "
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          answer.isCorrect == 1
+                                                            ? _c("i", {
+                                                                staticClass:
+                                                                  "fa fa-check text-success",
+                                                                attrs: {
+                                                                  "aria-hidden":
+                                                                    "true"
+                                                                }
+                                                              })
+                                                            : _c("i", {
+                                                                staticClass:
+                                                                  "fa fa-times text-danger",
+                                                                attrs: {
+                                                                  "aria-hidden":
+                                                                    "true"
+                                                                }
+                                                              })
                                                         ]
-                                                      ),
-                                                      _vm._v(" "),
-                                                      answer.isCorrect == 1
-                                                        ? _c("i", {
-                                                            staticClass:
-                                                              "fa fa-check text-success",
-                                                            attrs: {
-                                                              "aria-hidden":
-                                                                "true"
-                                                            }
-                                                          })
-                                                        : _c("i", {
-                                                            staticClass:
-                                                              "fa fa-times text-danger",
-                                                            attrs: {
-                                                              "aria-hidden":
-                                                                "true"
-                                                            }
-                                                          })
+                                                      )
                                                     ]
                                                   )
-                                                ]
+                                                }),
+                                                0
                                               )
-                                            }),
-                                            0
+                                            ]
                                           )
                                         ]
                                       )
@@ -98674,12 +98811,11 @@ var render = function() {
                               )
                             ]
                           )
-                        ]
+                        }),
+                        0
                       )
-                    }),
-                    0
-                  )
-                ])
+                    ])
+                  : _vm._e()
               ])
             ])
           ])
@@ -98734,7 +98870,15 @@ var render = function() {
                                       "bg-success text-white rounded-circle",
                                     attrs: { id: "qid" }
                                   },
-                                  [_vm._v(_vm._s(_vm.q2bNumber(_vm.qid + 1)))]
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.user.lang == "gb"
+                                          ? _vm.qid + 1
+                                          : _vm.q2bNumber(_vm.qid + 1)
+                                      )
+                                    )
+                                  ]
                                 )
                               ]
                             ),
@@ -99366,8 +99510,7 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "card-body ",
-                class: _vm.cardColor(),
+                staticClass: "card-body bg-secondary",
                 staticStyle: { "max-height": "90vh", overflow: "auto" }
               },
               [
@@ -99386,6 +99529,68 @@ var render = function() {
     ],
     2
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "result" }, [
+    _c("div", { staticClass: "card mt-1", staticStyle: { width: "24rem" } }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "ul",
+          { staticClass: "list-group" },
+          _vm._l(_vm.results, function(v, i) {
+            return _c("li", { key: i, staticClass: "list-group-item" }, [
+              _c("span", { domProps: { innerHTML: _vm._s(_vm.getMedel(i)) } }),
+              _vm._v("\n                        " + _vm._s(v.name)),
+              _c(
+                "span",
+                {
+                  staticClass: "badge badge-primary float-right mt-1 text-white"
+                },
+                [_vm._v(_vm._s(v.score))]
+              )
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _vm.lastQuestion
+        ? _c("div", { staticClass: "card-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-success",
+                on: { click: _vm.back }
+              },
+              [_vm._v("Dashboard")]
+            )
+          ])
+        : _vm._e()
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99955,9 +100160,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "waiting" }, [
     _c("div", { staticClass: "card", staticStyle: { width: "24rem" } }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm.user.id != _vm.uid
-          ? _c("span", { staticClass: "ml-1 text-primary" }, [
+      _vm.user.id != _vm.uid
+        ? _c("div", { staticClass: "card-header" }, [
+            _c("span", { staticClass: "ml-1 text-primary" }, [
               _vm._v(
                 _vm._s(
                   _vm.tbe(
@@ -99968,8 +100173,8 @@ var render = function() {
                 )
               )
             ])
-          : _vm._e()
-      ]),
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -113568,6 +113773,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamMember_vue_vue_type_template_id_2d9fe5bd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamResult.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/helper/TeamResult.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TeamResult.vue?vue&type=template&id=5b7aa9c0& */ "./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0&");
+/* harmony import */ var _TeamResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TeamResult.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TeamResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/TeamResult.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamResult.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamResult.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TeamResult.vue?vue&type=template&id=5b7aa9c0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/helper/TeamResult.vue?vue&type=template&id=5b7aa9c0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TeamResult_vue_vue_type_template_id_5b7aa9c0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

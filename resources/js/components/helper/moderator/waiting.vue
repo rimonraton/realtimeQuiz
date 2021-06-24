@@ -1,8 +1,8 @@
 <template>
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
-	        <div class="card-header">
-	            <span v-if="user.id != uid" class="ml-1 text-primary">{{tbe('দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..','Please wait, the Quiz Master will start the game soon..',user.lang)}}</span>
+	        <div class="card-header" v-if="user.id != uid">
+	            <span  class="ml-1 text-primary">{{tbe('দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..','Please wait, the Quiz Master will start the game soon..',user.lang)}}</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
 <!--                <h1 class="animate__animated animate__bounce">An animated element</h1>-->
