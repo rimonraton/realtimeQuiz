@@ -87,7 +87,7 @@
                         <h5 class="modal-title">{{ tbe('দল ডিলিট করুন','DELETE TEAM',user.lang) }}</h5>
                     </div>
                     <div class="modal-body">
-                        <p>{{tbe('তুমি কি নিশ্চিত? আপনি এটিকে ফিরিয়ে দিতে পারবেন না !',"Are you sure? You won't be able to revert this!",user.lang)}}</p>
+                        <p>{{tbe('আপনি কি এই দলটিকে মুছে ফেলার বিষয়ে নিশ্চিত?',"Are you sure to delete this team?",user.lang)}}</p>
 
                     </div>
                     <div class="modal-footer">

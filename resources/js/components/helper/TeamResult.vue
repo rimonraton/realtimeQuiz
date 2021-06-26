@@ -4,7 +4,7 @@
 <!--          <img class="card-img" :src="addImage()">-->
 <!--        </div>-->
         <div class="card mt-1" style="width: 24rem;">
-            <div class="card-header">Results</div>
+            <div class="card-header">{{ tbe('ফলাফল','Results',user.lang) }}</div>
             <div class="card-body">
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
@@ -25,8 +25,9 @@
 <!--                    </li>-->
 <!--                </ul>-->
             </div>
-            <div class="card-footer">
-                <button @click="back" class="btn btn-sm btn-success">Dashboard</button>
+            <div class="card-footer" >
+                <button @click="back" class="btn btn-sm btn-success" v-if="uid==user.id">Dashboard</button>
+                <button @click="home" class="btn btn-sm btn-success" v-if="uid!=user.id">Close</button>
 <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>
         </div>
@@ -36,13 +37,31 @@
 
 <script>
 export default{
-	props:['results'],
+	props:['results','uid','user'],
 
     methods:{
-
+        tbe(b, e, l) {
+            if(b !== null && e !== null){
+                if(l === 'bd') {
+                    return b;
+                }
+                return e;
+            }
+            else if(b !== null && e === null) {
+                return b;
+            }
+            else if(b === null && e !== null) {
+                return e;
+            }
+            return b;
+        },
         back(){
             // window.history.back()
             window.location = '/team_quiz';
+        },
+        home(){
+            // window.history.back()
+            window.location = '/';
         },
         getMedel(index){
             if(index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>'

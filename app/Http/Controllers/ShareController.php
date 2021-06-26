@@ -6,6 +6,7 @@ use App\Category;
 use App\Game;
 use App\Models\Challenge;
 use App\Models\Share;
+use App\TeamResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -201,5 +202,13 @@ class ShareController extends Controller
     {
         Share::where('id',$id)->delete();
         return 'success';
+    }
+
+    public function teamResultList()
+    {
+        $uid = Auth::id();
+        $results = TeamResult::orderBy('id','DESC')->get();
+//       return collect(json_decode($results->results));
+        return view('Admin.Games.teamresultList', compact('results'));
     }
 }

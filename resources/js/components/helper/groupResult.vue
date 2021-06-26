@@ -2,7 +2,7 @@
     <div class="result">
         <div class="card w-50 m-auto">
           <div class="card-body">
-            <h5 class="card-title text-center">Result</h5>
+            <h5 class="card-title text-center">{{ tbe('ফলাফল','Results',user.lang) }}</h5>
             <ul class="list-group text-dark">
               <li class="list-group-item d-flex justify-content-between align-items-center p-0" v-for="(result, key) in results" :key="key">
                 <div :id="'accordion' + key" class="w-100">
@@ -56,9 +56,24 @@
 
 <script>
 export default{
-	props:['results', 'lastQuestion', 'groupName'],
+	props:['results', 'lastQuestion', 'groupName','user'],
 
     methods:{
+        tbe(b, e, l) {
+            if(b !== null && e !== null){
+                if(l === 'bd') {
+                    return b;
+                }
+                return e;
+            }
+            else if(b !== null && e === null) {
+                return b;
+            }
+            else if(b === null && e !== null) {
+                return e;
+            }
+            return b;
+        },
     	addImage(){
             let random = Math.floor(Math.random() * 4)+1;
             return `/images/gp/${random}.jpg`;

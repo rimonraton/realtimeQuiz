@@ -38,9 +38,10 @@
             :results='results'
             :groupName='team.name'
             :lastQuestion='(qid + 1) == questions.length'
+            :user="user"
             v-if="screen.result">
         </group-result>
-        <team-result :results="results" v-if="screen.teamresult"></team-result>
+        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult"></team-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -206,10 +207,10 @@ export default {
         return {
             qt:{
                 ms: 0,
-                time:0,
+                time:60,
                 timer:null
             },
-            question_time:0,
+            question_time:60,
             counter: 2,
             answered_user_data: [],
             answered_group:[],
@@ -331,7 +332,7 @@ export default {
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.user.lang = data.lang
-                // this.QuestionTimer() // Set and Start QuestionTimer
+                this.QuestionTimer() // Set and Start QuestionTimer
 
             })
             .listen('NextQuestionEvent', (data) => {
@@ -402,6 +403,7 @@ export default {
 
 
     methods: {
+
         resultPosition(){
             let position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
             return position;
@@ -460,6 +462,10 @@ export default {
             axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel,lang:this.user.lang}).then(res =>  console.log(res.data))
             this.game_start = 1
             this.screen.waiting = 0
+            // if(this.qt.time > 0){
+            //     this.TimerInit()
+            //     this.QuestionTimer()
+            // }
             //this.QuestionTimer()
         },
         gameReset(){
@@ -490,7 +496,7 @@ export default {
 
             let next = { channel: this.channel, qid: this.qid,qtime:this.question_time }
 
-            axios.post(`/api/nextQuestion`, next).then( this.question_time = 0)
+            axios.post(`/api/nextQuestion`, next)
 
 
         },
@@ -741,6 +747,7 @@ export default {
     },
 
     computed: {
+
         isLastQuestion(){
            return  this.q_lenght > this.qid + 1;
         },
