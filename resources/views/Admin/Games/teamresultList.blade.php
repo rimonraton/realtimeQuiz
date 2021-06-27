@@ -42,14 +42,14 @@
                             <tbody>
 
                             @foreach($results as $result)
-                                @php $users = collect(json_decode($result->results)); @endphp
+                                @php $teams = collect(json_decode($result->results)); @endphp
                                 <tr>
                                     <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                    <td>Name</td>
+                                    <td id="quiz_{{$result->id}}">{{$result->quizname->quiz_name}}</td>
                                     <td>
-                                        @foreach($users as $user)
+                                        @foreach($teams as $team)
 {{--                                            {{ $user->name . ( $loop->last? '': ',' ) }}--}}
-                                            <span class="badge badge-primary">{{$user->name}}</span>
+                                            <a class="teamans" data-id="{{$result->id}}" data-team="{{$team->name}}" style="cursor: pointer"> <span class="badge badge-primary">{{$team->name}}</span></a>
                                         @endforeach
                                     </td>
                                     <td><span class="badge badge-info">{{$result->created_at->diffForHumans()}}</span> </td>
@@ -85,9 +85,44 @@
         </div>
     </div>
 
+    //Modal
+    <div class="modal fade" id="answerModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teamHeader"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="card-title text-center" id="quizname"></h4>
+                    <div id="loaddata"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('js')
 <script>
+    $('.teamans').on('click',function (){
+        $('#answerModal').modal('show');
+        var id = $(this).attr('data-id');
+        var team = $(this).attr('data-team');
+        $('#teamHeader').html(`<b style="font-weight: bold">${team}</b> answers`);
+        $('#quizname').html(`Quiz Name: ` + $('#quiz_'+id).text());
+        $.ajax({
+            url:"{{url('team/answer')}}/" + id + '/' + team,
+            type:'get',
+            success:function (data){
+                $('#loaddata').html(data);
+            }
+        })
+    });
 $('.dlt_result').on('click',function (){
     var id = $(this).data('id');
     console.log(id);

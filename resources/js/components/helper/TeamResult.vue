@@ -6,6 +6,20 @@
         <div class="card mt-1" style="width: 24rem;">
             <div class="card-header">{{ tbe('ফলাফল','Results',user.lang) }}</div>
             <div class="card-body">
+                <div v-if="uid != user.id">
+                    <div v-if="teamPosition == 0">
+                        <h1 class="text-center">Congratulation ! </h1>
+                        <h3><b>{{ userTeam }}</b> won this game.</h3>
+                    </div>
+                    <div v-else-if="teamPosition == 1">
+                        <h1 class="text-center">Well Played ! </h1>
+                        <h3><b>{{ userTeam }}</b> got second place</h3>
+                    </div>
+                    <div v-else>
+                        <h3 class="text-center"><b>{{ userTeam }}</b> need more concentration </h3>
+                    </div>
+                </div>
+
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
                     <li class="list-group-item" v-for="(v, i) in results" :key="i">
@@ -37,9 +51,10 @@
 
 <script>
 export default{
-	props:['results','uid','user'],
+	props:['results','uid','user','teamPosition','userTeam'],
 
     methods:{
+
         tbe(b, e, l) {
             if(b !== null && e !== null){
                 if(l === 'bd') {
@@ -69,6 +84,9 @@ export default{
             if(index == 2) return '<span class="badge badge-info m-1">3<sup>rd</sup></span><i class="fas fa-award fa-sm ml-1" style="color: #CD7F32"></i>'
             if (index > 2) return `<span class="badge badge-secondary m-1">${index + 1}</span>`;
         }
+    },
+    mounted() {
+	    // console.log('Hello..')
     }
 
 };

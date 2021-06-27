@@ -208,7 +208,22 @@ class ShareController extends Controller
     {
         $uid = Auth::id();
         $results = TeamResult::orderBy('id','DESC')->get();
+//         collect(json_decode($results->results));
 //       return collect(json_decode($results->results));
         return view('Admin.Games.teamresultList', compact('results'));
+    }
+
+    public function teamAnswertList($id,$team)
+    {
+        $all_answers='';
+        $teamresults = TeamResult::find($id);
+       $results = collect(json_decode($teamresults->results));
+       foreach ($results as $result){
+           if($result->name == $team){
+               $all_answers = $result->answers;
+           }
+       }
+       return view('Admin.Games.answer',compact('all_answers'));
+
     }
 }

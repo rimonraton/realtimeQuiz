@@ -175,7 +175,7 @@ class HomeController extends Controller
         $admin_users = $admin->users()->pluck('id');
         $topic = Category::whereIn('user_id',$admin_users)->get();
         $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
-        $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
+        $gmsg = \DB::table('perform_messages')->where('game_id', 3)->get();
         $id = $quiz->id;
          $questions = Question::with('options')
             ->whereIn('id', explode(",", $quiz->questions))->get();

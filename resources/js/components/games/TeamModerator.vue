@@ -8,21 +8,21 @@
                 {{ team.name }}
             </div>
         </div>
-        <div class="winner" v-if="screen.winner">
-            <div v-if="user_ranking == 0">
-                <h1 class="text-center">Congratulation ! </h1>
-                <h3><b>{{ user.name }}</b>, you won this game.</h3>
-            </div>
-            <div v-else-if="user_ranking == 1">
-                <h1 class="text-center">Well Played ! </h1>
-                <h3><b>{{ user.name }}</b>, you got second place</h3>
-            </div>
-            <div v-else>
-                <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
-            </div>
-            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
+<!--        <div class="winner" v-if="screen.winner">-->
+<!--            <div v-if="resultPosition() == 0">-->
+<!--                <h1 class="text-center">Congratulation ! </h1>-->
+<!--                <h3><b>{{ user.name }}</b> won this game.</h3>-->
+<!--            </div>-->
+<!--            <div v-else-if="resultPosition() == 1">-->
+<!--                <h1 class="text-center">Well Played ! </h1>-->
+<!--                <h3><b>{{ user.name }}</b> got second place</h3>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--                <h3 class="text-center"><b>{{ user.name }}</b> need more concentration </h3>-->
+<!--            </div>-->
+<!--            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>-->
 
-        </div>
+<!--        </div>-->
         <waiting :teams="teams" :teamUser="teamUser" :uid='uid' :users='users' :user='user' :time='id.schedule'
                  @kickingUser="kickUser($event)"
                  @gameStart="gameStart"
@@ -41,7 +41,7 @@
             :user="user"
             v-if="screen.result">
         </group-result>
-        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult"></team-result>
+        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult" :teamPosition="position" :userTeam="getUserTeam()"></team-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -232,7 +232,7 @@ export default {
             pie_data: [],
             screen:{
                 waiting: 1,
-                loading: 0,
+                loading: 1,
                 result: 0,
                 winner: 0,
                 team:1,
@@ -243,10 +243,14 @@ export default {
             isModalVisible: false,
             existing_qid:[],
             q_lenght:this.questions.length,
+            team_ranking:null,
+            perform:null,
+            position:null,
         };
     },
 
     mounted() {
+       // console.log('Hello' + this.resultPosition());
         // window.onblur = alert('blurd')
 
         let confetti = document.createElement('script')
@@ -288,6 +292,7 @@ export default {
                 console.log('TeamResult..........')
                 this.screen.teamresult = 1;
                 if (this.resultPosition() == 0){
+                    // this.team_ranking = 0;
                     confetti({
                         zIndex:999999,
                         particleCount: 200,
@@ -295,6 +300,7 @@ export default {
                         origin: { y: 0.6 }
                     });
                 }
+
                 // data.questions.map(q=>this.questions.push(q))
                 // this.QuestionTimer() // Set and Start QuestionTimer
 
@@ -403,10 +409,19 @@ export default {
 
 
     methods: {
+        // winner_msg(){
+        //     this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+        //     let user_score = this.results[this.user_ranking].score
+        //     this.perform = Math.round((user_score / ((this.qid +1) * 100)) * 100)
+        //     this.pm = this.gmsg.filter(gm => gm.perform_status >= this.perform)
+        //         .reduce(function (prev, curr) {
+        //             return prev.perform_status < curr.perform_status ? prev : curr;
+        //         });
+        // },
 
         resultPosition(){
-            let position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
-            return position;
+             this.position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
+            return this.position;
         },
         getUserTeam(){
             let team = this.teams.find(t=>t.id == this.user.gid)
@@ -518,7 +533,7 @@ export default {
 
         checkAnswer(q, a, rw){
             this.gamedata.['id'] = this.qid + 1
-            this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
+            this.gamedata.['question'] = this.ToText(this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang))
             this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
             this.gamedata.['selected'] = this.ToText(a)
             this.gamedata.['isCorrect'] = rw
@@ -654,7 +669,11 @@ export default {
 
 
         getCorrectAnswertext(){
-            return this.questions[this.qid].options.find(o => o.correct == 1).option
+            if (this.user.lang=='gb'){
+                return this.questions[this.qid].options.find(o => o.correct == 1).option
+            }
+            return this.questions[this.qid].options.find(o => o.correct == 1).bd_option
+
         },
 
         winner(){
