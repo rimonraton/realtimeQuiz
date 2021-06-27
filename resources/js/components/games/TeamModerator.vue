@@ -8,21 +8,21 @@
                 {{ team.name }}
             </div>
         </div>
-<!--        <div class="winner" v-if="screen.winner">-->
-<!--            <div v-if="resultPosition() == 0">-->
-<!--                <h1 class="text-center">Congratulation ! </h1>-->
-<!--                <h3><b>{{ user.name }}</b> won this game.</h3>-->
-<!--            </div>-->
-<!--            <div v-else-if="resultPosition() == 1">-->
-<!--                <h1 class="text-center">Well Played ! </h1>-->
-<!--                <h3><b>{{ user.name }}</b> got second place</h3>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--                <h3 class="text-center"><b>{{ user.name }}</b> need more concentration </h3>-->
-<!--            </div>-->
-<!--            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>-->
+        <div class="winner" v-if="screen.winner">
+            <div v-if="resultPosition() == 0">
+                <h1 class="text-center">Congratulation ! </h1>
+                <h3><b>{{ user.name }}</b> won this game.</h3>
+            </div>
+            <div v-else-if="resultPosition() == 1">
+                <h1 class="text-center">Well Played ! </h1>
+                <h3><b>{{ user.name }}</b> got second place</h3>
+            </div>
+            <div v-else>
+                <h3 class="text-center"><b>{{ user.name }}</b> need more concentration </h3>
+            </div>
+            <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
 
-<!--        </div>-->
+        </div>
         <waiting :teams="teams" :teamUser="teamUser" :uid='uid' :users='users' :user='user' :time='id.schedule'
                  @kickingUser="kickUser($event)"
                  @gameStart="gameStart"
@@ -41,7 +41,7 @@
             :user="user"
             v-if="screen.result">
         </group-result>
-        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult" :teamPosition="position" :userTeam="getUserTeam()"></team-result>
+        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult" :teamPosition="position" ></team-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -292,7 +292,6 @@ export default {
                 console.log('TeamResult..........')
                 this.screen.teamresult = 1;
                 if (this.resultPosition() == 0){
-                    // this.team_ranking = 0;
                     confetti({
                         zIndex:999999,
                         particleCount: 200,
@@ -421,17 +420,17 @@ export default {
 
         resultPosition(){
              this.position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
-            return this.position;
+             return this.position;
         },
         getUserTeam(){
             let team = this.teams.find(t=>t.id == this.user.gid)
+            console.log('team..' +team);
             return team.name;
         },
         teamResult(){
             let ids = this.users.map(u => u.id)
-            axios.post(`/api/teamResult`,{channel:this.channel,qid:this.id,host:this.uid,users:ids,results:this.results}).then(res => {
-                    this.screen.teamresult = 1;
-            })
+            console.log(ids);
+            axios.post(`/api/teamResult`,{channel:this.channel,qid:this.id,host:this.uid,users:ids,results:this.results}).then(this.screen.teamresult = 1)
         },
 
         deleteTeam(id){

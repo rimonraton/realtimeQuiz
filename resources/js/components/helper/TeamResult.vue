@@ -9,14 +9,14 @@
                 <div v-if="uid != user.id">
                     <div v-if="teamPosition == 0">
                         <h1 class="text-center">Congratulation ! </h1>
-                        <h3><b>{{ userTeam }}</b> won this game.</h3>
+                        <h3> Won this game.</h3>
                     </div>
                     <div v-else-if="teamPosition == 1">
                         <h1 class="text-center">Well Played ! </h1>
-                        <h3><b>{{ userTeam }}</b> got second place</h3>
+                        <h3> Got second place</h3>
                     </div>
                     <div v-else>
-                        <h3 class="text-center"><b>{{ userTeam }}</b> need more concentration </h3>
+                        <h3 class="text-center"> Need more concentration </h3>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
 
 <script>
 export default{
-	props:['results','uid','user','teamPosition','userTeam'],
+	props:['results','uid','user','teamPosition'],
 
     methods:{
 
