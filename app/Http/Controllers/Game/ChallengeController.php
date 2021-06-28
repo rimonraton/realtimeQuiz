@@ -15,11 +15,12 @@ class ChallengeController extends Controller
         $user = \Auth::user();
         return view('games.mode.practice', compact('quiz', 'user'));
     }
-    public function shareChallengeBtnLink($id, $uid)
+    public function shareChallengeBtnLink($game,$id, $uid)
     {
+//        return $id;
         if (Auth::id() != $uid) {
-            return redirect('Challenge/' . $id . '/' . $uid);
+            return redirect($game.'/' . $id . '/' . $uid);
         }
-        return view('share_btn_link_challenge', compact('id', 'uid'));
+        return view('share_btn_link_challenge', compact('game','id', 'uid'));
     }
 }

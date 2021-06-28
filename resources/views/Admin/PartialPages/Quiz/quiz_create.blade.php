@@ -1,6 +1,8 @@
 @extends('Admin.Layout.dashboard')
 @php $lang = App::getLocale(); @endphp
 @section('css')
+    <link rel="stylesheet" type="text/css" href="{{asset('Admin/assets/libs/select2/dist/css/select2.min.css')}}">
+    <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
 <style>
     .custom-select {
         display: inline-block;
@@ -133,6 +135,47 @@
                                 </select>
                             </div>
                         </div>
+                        @can('QM',\App\Question::class)
+{{--                            {{auth()->user()->roleuser->role_id}}--}}
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-8">
+                                <div class="row justify-content-center" id="team_load">
+                                    @foreach($teams as $team)
+                                            <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">
+                                                <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">
+                                                <label for="chce_{{$team->id}}">
+                                                    @if($lang == 'gb')
+                                                        @if($team->name == null)
+                                                            {{$team->bn_name}}
+                                                        @else
+                                                            {{$team->name}}
+                                                        @endif
+                                                        @else
+                                                        @if($team->bn_name == null)
+                                                            {{$team->name}}
+                                                        @else
+                                                            {{$team->bn_name}}
+                                                        @endif
+                                                        @endif
+                                                </label>
+                                                <a type="button" class="text-danger text-right dlt" data-id="{{$team->id}}" style="position:absolute;right: 5px;font-size: 20px;">×</a>
+                                            </div>
+
+                                    @endforeach
+                                </div>
+{{--                                <select class="select2 form-control" multiple="multiple" style="height: 36px;width: 100%;">--}}
+{{--                                    @foreach($teams as $team)--}}
+{{--                                    <option value="{{$team->id}}">{{$team->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+                            </div>
+                            <div class="col-sm-1">
+                                <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>
+                            </div>
+
+                        </div>
+                        @endcan
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-6">
@@ -162,6 +205,7 @@
                             </div>
                             @endcan
                         </div>
+
                         <input type="hidden" name="selected" id="selectedQ">
                         <input type="hidden" name="selectedindex" id="selectedindex" value="0">
                         <div id="viewData" class="justify-content-center" style="display: none">
@@ -169,7 +213,7 @@
                         </div>
                         <div id="CustomQ" style="display: none;">
                             <div class="form-group row">
-                                <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
+                                <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} : </label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control questiontxt" id="question" placeholder="{{__('form.question_placeholder')}}" name="question[]"></textarea>
                                 </div>
@@ -291,10 +335,74 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+    <div id="add-team" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('form.add_team_header')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+{{--                    <form class="form-horizontal form-material"  autocomplete="off">--}}
+                        <div class="form-group row">
+                            <div class="col-md-6 m-b-20">
+                                <input type="text" class="form-control" autocomplete="off" name="name" id="team_eng" placeholder="{{__('form.add_team_placholder')}}" >
+                            </div>
+                            <div class="col-md-6 m-b-20">
+                                <input type="text" class="form-control" autocomplete="off" name="bn_name" id="team_bng" placeholder="{{__('form.add_bn_team_placholder')}}" >
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info waves-effect" id="smt_btn">{{__('form.save')}}</button>
+                            <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+{{--                    </form>--}}
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 @section('js')
 <script>
     $(function() {
+        $(document).on('click','.dlt',function (e){
+            // e.preventDefault();
+            Swal.fire({
+                title: '{{__('form.are_you_sure')}}',
+                text: "{{__('form.no_revert')}}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText:"{{__('form.cancel')}}",
+                confirmButtonText: '{{__('form.yes_delete_it')}}!'
+            }).then((result) => {
+                if (result.value) {
+                    var $this = $(this);
+                    var id = $this.attr('data-id');
+                    $.ajax({
+                        url: "{{url('delete-team')}}/" + id,
+                        type: "GET",
+                        success: function(data) {
+                            // $(this).parent().parent().remove();
+                            // alert($this.parent().parent());
+                            $('#team_' + id).remove();
+                            Swal.fire({
+                                text: '{{__('form.delete_success')}}',
+                                type: 'success',
+                                timer: 1000,
+                                showConfirmButton: false
+                            })
+                        }
+                    })
+
+                }
+            })
+        });
         var lang ='{{$lang}}';
         var chkquestions = [];
         var arrayindex = [0]
@@ -626,6 +734,52 @@
             }
 
         })
+        $(document).on('click','#addteam',function (){
+            $('#add-team').modal('show');
+        });
+
+        $(document).on('click','#smt_btn',function (){
+            $.ajax({
+                url:"{{url('save_team')}}",
+                type:"POST",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    'team_name':$('#team_eng').val(),
+                    'team_name_bang':$('#team_bng').val(),
+
+                },
+                success:function(data){
+                    $('#add-team').modal('hide');
+                    var lan = "{{$lang}}";
+                    var name = '';
+                    console.log(lan);
+                    if(lan == 'gb'){
+                        if(data.name == null){
+                            name = data.bn_name;
+                        }
+                        else{
+                            name = data.name;
+                        }
+
+                    }
+                    else{
+                        if(data.bn_name == null){
+                            name = data.name;
+                        }
+                        else{
+                            name = data.bn_name;
+                        }
+                    }
+                    $('#team_load').append(`<div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_${data.id}">
+                                                <input type="checkbox" name="teams[]" value="${data.id}" id="chce_${data.id}" class="material-inputs chk child">
+                                                <label for="chce_${data.id}">${name}</label>
+                                                <a type="button" class="text-danger text-right dlt" data-id="${data.id}" style="position:absolute;right: 5px;font-size: 20px;">×</a>
+                                            </div>`)
+                    console.log(data);
+                }
+            })
+        })
+
 
         function questions(id) {
             $.ajax({
@@ -681,6 +835,10 @@
         // });
 
 
+
     })
 </script>
+<script src="{{asset('Admin/assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
+<script src="{{asset('Admin/assets/libs/select2/dist/js/select2.min.js')}}"></script>
+<script src="{{asset('Admin/dist/js/pages/forms/select2/select2.init.js')}}"></script>
 @endsection

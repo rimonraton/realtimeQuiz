@@ -27,7 +27,7 @@
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
             <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
-            <iframe :src="getShareLink('challengeShareResult/'+share.link+'/details')" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
         <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
@@ -99,7 +99,7 @@
 
     export default {
 
-        props : ['id', 'uid', 'user', 'questions', 'gmsg'],
+        props : ['id', 'uid', 'user', 'questions', 'gmsg','teams'],
 
         components: { waiting, result },
 
@@ -226,7 +226,8 @@
 
             gameStart: function () {
                 let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users }
+                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
+                console.log(gd);
                 axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
                 this.game_start = 1
                 this.screen.waiting = 0
@@ -468,9 +469,6 @@
                 return 'waiting-result';
             }
 
-
-
-
         },
 
         computed: {
@@ -484,10 +482,6 @@
                 return {'width':this.progress + '%', }
             }
         }
-
-
-
-
 
     };
 </script>

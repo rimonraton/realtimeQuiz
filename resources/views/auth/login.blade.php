@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
+    <!-- Sharethis -->
+    <meta property="og:title" content="Gyankosh Quiz" />
+    <meta property="og:image" content="https://gyankosh.org/images/logobe.png" />
+    <meta property="og:description"   content="I'd like to share a link with you" />
+
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logobe.png') }}">
     <title>{{ config('app.name', 'Gyankosh') }}</title>
@@ -31,24 +37,39 @@
         .align-items-center {
             align-items: center !important;
         }
-        .show {
-            position: absolute;
-            right: 21px;
-            top: 74px;
-        }
+
 
     </style>
 </head>
-
 <body>
-
 <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url({{asset('Landing/assets/img/cta-bg.jpg')}}) no-repeat center center; background-size: cover;">
     <div class="auth-box p-4 bg-white rounded">
-        <div class="form-group mb-0">
-            <div class="col-sm-12 text-center ">
-                <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
+        <div class="d-flex justify-content-between">
+
+            <div class="dropdown show">
+                <a class="btn btn-default dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a href="{{ url('setLanguage/gb') }}" class="language p-3 ">
+                        <img src="https://flagcdn.com/40x30/gb.png">
+                        {{ __('msg.english') }}
+                    </a><br>
+                    <a href="{{ url('setLanguage/bd') }}" class="language p-3 ">
+                        <img src="https://flagcdn.com/40x30/bd.png">
+                        {{ __('msg.bangla') }}
+                    </a>
+                </div>
             </div>
+            <div class="form-group mb-0">
+                <div class="col-sm-12 text-center ">
+                    <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
+                </div>
+            </div>
+
         </div>
+
         <div id="loginform">
             <div class="logo">
                 <h3 class="box-title mb-3">{{__('auth.login')}}</h3>
@@ -56,11 +77,13 @@
             <!-- Form -->
             <div class="row">
                 <div class="col-12">
-                    <form class="form-horizontal mt-3 form-material" method="POST" action="{{ route('login') }}" autocomplete="off">
+                    <form class="form-horizontal mt-3 form-material" method="POST" action="{{ route('login') }}" id="lngform" autocomplete="off">
                         @csrf
                         <div class="form-group mb-3">
                             <div class="">
-                                <input id="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <input id="emailormobile" class="form-control" type="text"  required  autofocus placeholder="{{__('auth.emailOrMobile')}}">
+                                <input id="email" class="form-control @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <span id="show_msg" class="text-danger"></span>
                             </div>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -97,8 +120,7 @@
                                             <i class="fa fa-lock mr-1"></i> {{__('auth.forgot_pwd')}}
                                         </a>
                                     @endif
-                                        <button class="btn btn-info btn-sm show" id="show" ><i class="fas fa-eye-slash"></i></button>
-                                        <button class="btn btn-info btn-sm show d-none" id="hide" ><i class="fas fa-eye"></i></button>
+
                                 </div>
                             </div>
                         </div>
@@ -123,6 +145,9 @@
                             </div>
                         </div>
                     </form>
+{{--                    @if(Session::has('status'))--}}
+{{--                        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('status') }}</p>--}}
+{{--                    @endif--}}
                     <div class="form-group mb-0 mt-4">
                         <div class="col-sm-12 justify-content-center d-flex">
                             <a href="{{ url('/') }}" class="text-white font-weight-normal ml-1 btn btn-info">{{__('auth.go_to_home')}}</a>
@@ -134,9 +159,27 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <script>
     $(function (){
+
+        $("#lngform").on("submit", function(){
+           if ($('#email').val() == ''){
+               if(is_numeric($('#emailormobile').val())){
+                   var email = $('#emailormobile').val()+'@gyankosh.org';
+                   $('#email').val(email);
+               }else{
+                   $('#email').val($('#emailormobile').val());
+               }
+
+           }
+           else{
+
+           }
+        })
+
         $('#show').on('click',function (e){
             e.preventDefault();
             $('#hide').removeClass('d-none');
@@ -167,6 +210,66 @@
                 $(did).attr('type', 'password');
             }
         })
+        {{--$(document).on('focusout','#emailormobile',function (){--}}
+        {{--    var emailaddress = $(this).val();--}}
+        {{--    if (emailaddress != ''){--}}
+        {{--        if( validateEmail(emailaddress)) {--}}
+        {{--            UserCedential(emailaddress);--}}
+        {{--        }--}}
+        {{--        else{--}}
+        {{--            if(is_numeric(emailaddress))  {--}}
+        {{--                if(!emailaddress.match('[0-9]{11}')){--}}
+        {{--                    $('#show_msg').removeClass('d-none');--}}
+        {{--                    $('#show_msg').html('{{__('auth.mobile_11_no')}}');--}}
+        {{--                }--}}
+        {{--                else{--}}
+        {{--                    if(emailaddress.length > 11){--}}
+        {{--                        $('#show_msg').removeClass('d-none');--}}
+        {{--                        $('#show_msg').html('{{__('auth.mobile_11_no')}}');--}}
+        {{--                    }--}}
+        {{--                    else{--}}
+        {{--                        UserCedential(emailaddress);--}}
+        {{--                    }--}}
+        {{--                }--}}
+        {{--                // alert("Please put 10 digit mobile number");--}}
+        {{--                // return;--}}
+        {{--            }--}}
+        {{--            else{--}}
+        {{--                $('#show_msg').removeClass('d-none');--}}
+        {{--                $('#show_msg').html('{{__('auth.valid_email')}}');--}}
+        {{--            }--}}
+        {{--        }--}}
+        {{--    }--}}
+
+        {{--});--}}
+
+        function validateEmail($email) {
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            return emailReg.test( $email );
+        }
+        function is_numeric(value){
+            return /^\d*$/.test(value);
+        }
+        $('#emailormobile').keyup(function (){
+            $('#show_msg').addClass('d-none');
+        })
+        function UserCedential(value){
+            $.ajax({
+                url:"{{url('user_cedential')}}/" + value,
+                type:"GET",
+                success:function (data){
+
+                    if (data == '0'){
+                        $('#show_msg').removeClass('d-none');
+                        $('#show_msg').html('{{__('auth.not_registered_user')}}');
+                    }
+                    else {
+                        $('#email').val(data);
+
+                    }
+                }
+            })
+        }
     })
 </script>
 </body>

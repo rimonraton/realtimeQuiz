@@ -6,7 +6,9 @@ use App\Category;
 use App\Game;
 use App\Models\Challenge;
 use App\Models\Share;
+use App\TeamResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ShareController extends Controller
@@ -31,12 +33,12 @@ class ShareController extends Controller
         $challenge = Challenge::findOrFail($share->challenge_id);
 
         $categories = Category::whereIn('id', explode(",", $challenge->cat_id))->get();
-        $sr = collect(json_decode($share->results));
-        $sr = $sr->keyBy('id')->sortByDesc('score');
+        $results = collect(json_decode($share->results));
+        //$sr = $sr->keyBy('id')->sortByDesc('score');
         $features = Game::with('features')->get();
         $category = Category::where('sub_topic_id', 0)->get();
-        return view('result_share', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
-        return view('result_share_details', compact('sr','link', 'challenge', 'categories', 'features', 'category'));
+        return view('result_share', compact('results','link', 'challenge', 'categories', 'features', 'category'));
+        return view('result_share_details', compact('results','link', 'challenge', 'categories', 'features', 'category'));
     }
     public function challengeShareResult($link)
     {
@@ -53,11 +55,14 @@ class ShareController extends Controller
         $resultFont = public_path('/fonts/result.ttf');
         $rt = '/'. $share->challenge->quantity * 100;
         $otheruser = 2;
-
+//        return $users;
         foreach ($users as $key => $user){
             $s = $key >1 ? 50 : 90;
             if($key >2){break;}
-            $avatar = $user->avatar != '' ? $user->avatar : $pp.'avatar.png';
+            $avatar = $user->avatar != ''|| $user->avatar != null ? $user->avatar : $pp.'avatar.png';
+//            if ($key==1){
+//                return $avatar;
+//            }
             $temp = $this->rounded($avatar, $link, $s);
             $user_image = \Image::make($temp);
             $flag = \Image::make('https://flagcdn.com/40x30/'.$user->country.'.png');
@@ -134,6 +139,7 @@ class ShareController extends Controller
 
     public function rounded($file, $name, $s = 90)
     {
+//        return $file;
         $image_s = imagecreatefromstring(file_get_contents($file));
         $width = imagesx($image_s);
         $height = imagesy($image_s);
@@ -182,5 +188,42 @@ class ShareController extends Controller
 //        $img_canvas->insert($al, 'right');
         header('Content-Type: image/png');
         return $img_canvas->response('png');
+    }
+
+    public function challengeUserResultList()
+    {
+        $uid = Auth::id();
+        $results = Share::where(function($q) use ($uid) { $q->whereRaw("FIND_IN_SET($uid,users_id)"); })->orderBy('id','DESC')->paginate(10);
+//        return $users = collect(json_decode($results[0]->users));
+        return view('Admin.Games.resultList', compact('results'));
+    }
+
+    public function deleteResult($id)
+    {
+        Share::where('id',$id)->delete();
+        return 'success';
+    }
+
+    public function teamResultList()
+    {
+        $uid = Auth::id();
+        $results = TeamResult::orderBy('id','DESC')->get();
+//         collect(json_decode($results->results));
+//       return collect(json_decode($results->results));
+        return view('Admin.Games.teamresultList', compact('results'));
+    }
+
+    public function teamAnswertList($id,$team)
+    {
+        $all_answers='';
+        $teamresults = TeamResult::find($id);
+       $results = collect(json_decode($teamresults->results));
+       foreach ($results as $result){
+           if($result->name == $team){
+               $all_answers = $result->answers;
+           }
+       }
+       return view('Admin.Games.answer',compact('all_answers'));
+
     }
 }

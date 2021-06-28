@@ -50,7 +50,11 @@ class HomeController extends Controller
 
     public function Game($type, Quiz $quiz, $uid)
     {
+        if($type == 'Moderator') {
+            $type = 'Quiz Master';
+        }
         $game = \DB::table('games')->where('gb_game_name', $type)->first();
+//        dd($game);
         $gmsg = \DB::table('perform_messages')->where('game_id', $game->id)->get();
         $id = $quiz->id;
         $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
@@ -60,7 +64,7 @@ class HomeController extends Controller
         $user['lang'] = app()->getLocale();
         $user['group'] = Auth::user()->group;
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
-        return view('games.' . strtolower($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
+        return view('games.' . Str::slug($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
     }
 
 
@@ -165,24 +169,37 @@ class HomeController extends Controller
         return view('games.challenge', compact(['id', 'user', 'questions', 'uid', 'gmsg']));
 
     }
+    public function Team(Quiz $quiz, $uid)
+    {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $topic = Category::whereIn('user_id',$admin_users)->get();
+        $team = \App\Team::whereIn('id',explode(',',$quiz->team_ids))->get();
+        $gmsg = \DB::table('perform_messages')->where('game_id', 3)->get();
+        $id = $quiz->id;
+         $questions = Question::with('options')
+            ->whereIn('id', explode(",", $quiz->questions))->get();
+        $user = Auth::user();
+        $user['lang'] = app()->getLocale();
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('games.teamwisequiz', compact(['id', 'user', 'questions', 'uid', 'gmsg','team','topic']));
+
+    }
 
     public function challenge_setup()
     {
+
         $admin_users = auth()->user()->admin->users()->pluck('id');
         $role_id = Auth::user()->roleuser->role_id;
         $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
-//         $challange_testing = Role::with(['users.challange'=>function($q) use ($admin_users){
-//            $q->whereIn('user_id',$admin_users);
-//    }])->get();
        if($role_id < 3){
            $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
        }
        else{
            $challange =  Auth::user()->challange()->latest()->paginate(10);
-
        }
 
-        return view('Admin.Games.challenge_setup',compact('challange'));
+        return view('Admin.Games.challenge_setup',compact('challange',));
     }
 
     public function challenge_publish(Request $req)
@@ -200,4 +217,26 @@ class HomeController extends Controller
         return 'Deleted Successfully';
     }
 
+    public function challange_search($keyword)
+    {
+        $role_id = Auth::user()->roleuser->role_id;
+        $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
+        if ($keyword == 'all'){
+            if($role_id < 3){
+                $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
+            }
+            else{
+                $challange =  Auth::user()->challange()->latest()->paginate(10);
+            }
+            return view('Admin.Games.partials._challange_search',compact('challange'));
+        }
+        if($role_id < 3){
+            $challange = Challenge::whereIn('user_id',$role_user)->where('name', 'like', '%' . $keyword . '%')->paginate(10);
+        }
+        else{
+            $challange =  Challenge::where('user_id',Auth::user()->id)->where('name', 'like', '%' . $keyword . '%')->paginate(10);
+        }
+
+        return view('Admin.Games.partials._challange_search',compact('challange'));
+    }
 }

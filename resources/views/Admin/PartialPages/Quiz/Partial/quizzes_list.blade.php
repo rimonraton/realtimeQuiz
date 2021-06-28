@@ -1,9 +1,9 @@
 @php $lang = App::getLocale(); @endphp
-<div class="col-sm-6 offset-sm-3">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="quiz_search">
-    </div>
-</div>
+{{--<div class="col-sm-6 offset-sm-3">--}}
+{{--    <div class="form-group">--}}
+{{--        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="quiz_search">--}}
+{{--    </div>--}}
+{{--</div>--}}
 <div class="card">
     <div class="card-body" id="quiz_view">
     @include('Admin.PartialPages.Quiz.Partial._quiz_search')

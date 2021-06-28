@@ -1,9 +1,11 @@
 @extends('Admin.Layout.dashboard')
+@php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
+                <h3 class="text-center mb-2">{{__('form.edit_quiz')}}  <a class="btn btn-sm btn-info float-right" href="{{url('quiz/view/list').'/'.$quiz->category_id}}">{{__('form.back')}}</a></h3>
                 <form method="POST" action="{{url('quiz/update')}}" autocomplete="off">
                     @csrf
                     <input type="hidden" value="{{$quiz->id}}" name="quiz_id" id="">
@@ -25,16 +27,48 @@
                         @foreach($Questions as $q)
                         <div class="col-md-4 col-sm-4 p-3" id="q_{{$q->id}}">
                             <div class="list-group">
-                                <p class="list-group-item active text-white">{{$q->question_text?$q->question_text:$q->bd_question_text}} <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
+                                <p class="list-group-item active text-white">
+                                    @if($lang=='gb')
+                                        @if($q->question_text)
+                                            {{$q->question_text}}
+                                        @else
+                                            {{$q->bd_question_text}}
+                                        @endif
+                                    @else
+                                        @if($q->bd_question_text)
+                                            {{$q->bd_question_text}}
+                                        @else
+                                            {{$q->question_text}}
+                                        @endif
+                                    @endif
+
+                                    <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
                                 @foreach($q->options as $qo)
-                                <a class="list-group-item">{{$qo->option?$qo->option:$qo->bd_option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
+                                <a class="list-group-item">
+                                    @if($lang=='gb')
+                                        @if($qo->option)
+                                            {{$qo->option}}
+                                        @else
+                                            {{$qo->bd_option}}
+                                        @endif
+                                    @else
+                                        @if($qo->bd_option)
+                                            {{$qo->bd_option}}
+                                        @else
+                                            {{$qo->option}}
+                                        @endif
+                                    @endif
+                                    <span class="badge float-right text-primary">
+                                        {{$qo->correct ==1?'✓':''}}
+                                    </span>
+                                </a>
                                 @endforeach
                             </div>
                         </div>
                         @endforeach
                     </div>
                     <div id="newQuestion">
-                        
+
                     </div>
                     <div class="form-group text-center">
                     <a class="addNew" style="color: #009efb;cursor:pointer;">{{__('form.new_ques')}}</a>
@@ -42,7 +76,7 @@
                     <div class="modal-footer">
                         <!-- <button type="button" class="btn btn-info addNew">New Question</button> -->
                         <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
-                        <a href="{{url('quiz/view/list').'/'.$quiz->category_id}}">{{__('form.back')}}</a>
+{{--                        <a href="{{url('quiz/view/list').'/'.$quiz->category_id}}">{{__('form.back')}}</a>--}}
                         <!-- <a type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</a> -->
                     </div>
                 </form>
@@ -247,7 +281,7 @@
                             <input type="checkbox" class="filled-in chk-col-indigo material-inputs explenation" id="explenation${eid}">
                             <label style="font-size: .9rem;" for="explenation${eid}">{{__('form.ans_explenation')}}</label>
                         </label>
-                        
+
                     </div>
                 </div>
                 <div class="form-group row" style="display: none;" id="explenation${eid}-show">

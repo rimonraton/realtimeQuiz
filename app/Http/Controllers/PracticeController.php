@@ -28,4 +28,6 @@ class PracticeController extends Controller
         return view('games.practice', compact(['id', 'user', 'questions', 'gmsg']));
     }
 
+
+
 }

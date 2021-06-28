@@ -7,6 +7,22 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                        <i class="fas fa-arrows-alt-v"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light">
+                            <a href="{{url('challenge/resultList')}}">{{__('msg.result')}}</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
                     <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-info">
                         <i class="fas fa-address-card"></i>
                     </div>
@@ -37,21 +53,21 @@
     </div>
     <!-- Column -->
     <!-- Column -->
-    <div class="col-lg-3 col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex flex-row">
-                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Group')}}">{{__('msg.team')}}</a></h3>
-                        <!-- <h5 class="text-muted mb-0">Participants</h5> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div class="col-lg-3 col-md-6">--}}
+{{--        <div class="card">--}}
+{{--            <div class="card-body">--}}
+{{--                <div class="d-flex flex-row">--}}
+{{--                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-primary">--}}
+{{--                        <i class="fas fa-users"></i>--}}
+{{--                    </div>--}}
+{{--                    <div class="ml-2 align-self-center">--}}
+{{--                        <h3 class="mb-0 font-weight-light"><a class="disabled" href="{{url('Mode/Group')}}">{{__('msg.team')}}</a></h3>--}}
+{{--                        <!-- <h5 class="text-muted mb-0">Participants</h5> -->--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <!-- Column -->
     <!-- Column -->
 {{--    <div class="col-lg-3 col-md-6">--}}

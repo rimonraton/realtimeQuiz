@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddQuestionEvent;
+use App\Events\AddTeamEvent;
+use App\Events\DeleteTeamEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
+use App\Events\GameTeamModeratorStartEvent;
+use App\Events\TeamJoin;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
 use App\Models\Share;
 use App\Progress;
+use App\Question;
+use App\Quiz;
+use App\Team;
+use App\TeamResult;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
@@ -33,7 +42,7 @@ class GameController extends Controller
     {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
-        $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users)));
+        $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
         $challenge = Challenge::find($request->id);
         $cs = $challenge->share()->save($share);
         $request->request->add(['share' => $cs]);
@@ -42,6 +51,11 @@ class GameController extends Controller
         return $cs;
 
     }
+    public function gameTeamModeratorStart(Request $request)
+    {
+        broadcast(new GameTeamModeratorStartEvent($request))->toOthers();
+    }
+
     public function gameReset(Request $request)
     {
         broadcast(new GameResetEvent($request))->toOthers();
@@ -89,7 +103,65 @@ class GameController extends Controller
 
     }
 
+    public function joinTeam(Request $request)
+    {
+//        dd($request->all());
+        broadcast(new TeamJoin($request))->toOthers();
+        return $request->all();
+    }
 
+    public function addQuestion(Request $request)
+    {
+        $channel = $request->channel;
+        $cat_id = $request->formdata['topics'];
+        $q_num = $request->formdata['q_number'];
+        $ext_qids = $request->existing_qids;
+        $questions = Question::with('options')
+            ->where('category_id',$cat_id)->whereNotIn('id',$ext_qids)->inRandomOrder()->limit($q_num)->get()->toArray();
+        //$request->request->add(['questions' => $questions]);
+        broadcast(new AddQuestionEvent($channel, $questions))->toOthers();
+        return $questions;
+    }
 
+    public function addTeam(Request $request)
+    {
+//        return $request->all();
+        $channel = $request->channel;
+       $team = Team::create([
+            'name'=>$request->teamData['team_english'],
+            'bn_name'=>$request->teamData['team_bangla'],
+           'user_id'=>$request->user_id,
+        ]);
+
+       $team_quiz = Quiz::find($request->qid);
+
+        $team_quiz->update([
+           'team_ids'=>$team_quiz->team_ids.','.$team->id
+       ]);
+        $newTeam = Team::find($team->id);
+        broadcast(new AddTeamEvent($channel,$newTeam))->toOthers();
+        return $newTeam;
+//        return $team_quiz->team_ids.','.$team->id;
+
+    }
+
+    public function deleteTeam(Request $request)
+    {
+        $channel = $request->channel;
+        Team::find($request->id)->delete();
+        broadcast(new DeleteTeamEvent($channel,$request->id))->toOthers();
+        return $request->id;
+    }
+
+    public function teamResult(Request $request)
+    {
+//        return $request->all();
+        $uid = implode(',', $request->users);
+        $link = Str::random(50);
+        $team_result = new TeamResult(array('qid' => $request->qid, 'host_id' => $request->host, 'link' => $link,'users_id'=>$uid,'results'=>json_encode($request->results)));
+        $team_result->save();
+        broadcast(new \App\Events\TeamResult($request))->toOthers();
+        return $team_result;
+    }
 
 }

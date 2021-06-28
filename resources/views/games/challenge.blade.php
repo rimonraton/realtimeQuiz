@@ -18,7 +18,8 @@
                     :uid="{{ $uid }}"
                     :questions="{{ $questions }}"
                     :user="{{ $user }}"
-                    :gmsg="{{ $gmsg }}" ></challenge>
+                    :gmsg="{{ $gmsg }}"
+                    ></challenge>
                 </div>
             </div>
         </div>

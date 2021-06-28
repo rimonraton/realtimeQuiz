@@ -32,4 +32,9 @@ return [
     'retry_password'=>'Retry Password Reset',
     'reset_password'=>'Reset Password',
     'new_password'=>'New password',
-];
+    'emailOrMobile'=>'Email Or Mobile',
+    'already_registered'=>'You are already Registered',
+    'mobile_11_no'=>'Please put 11 digit mobile number',
+    'valid_email'=>'Please put valid email address',
+    'not_registered_user'=>'You are not registered user',
+    ];

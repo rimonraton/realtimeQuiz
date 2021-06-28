@@ -25,11 +25,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('testemail', function () {
+ Route::get('testregistration', function () {
 //    $user = \App\User::find(9);
 //     Mail::to($user->email)->send(new WelcomeMail($user));
 //     return 'Success';
-// });
+
+//     return \App\UserInfo::where('mobile','01723144904')->first()->user;
+     return view('auth.registertoday');
+ });
 
 Route::get('/', 'LandingPageController@index');
 // Route::get('landing/page', 'LandingPageController@index');
@@ -63,12 +66,11 @@ Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::cl
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
-
-
 //testlogin
 //Route::get('t_reset',function (){
 //    return view('LandingPage.reset');
 //});
+
 // Questions Type
 Route::get('questionTypelist', [\App\Http\Controllers\QuestionTypeController::class,'index']);
 Route::post('questionTypesave', 'QuestionTypeController@store');
@@ -78,8 +80,10 @@ Route::get('questionTypedelete/{id}', 'QuestionTypeController@delete');
 // Quiz
 Route::get('quiz/view/list/{tid?}', 'QuizController@list');
 Route::get('quiz/create', 'QuizController@create');
+Route::get('game_quiz_create', 'QuizController@game_quiz_create');
 Route::get('quiz/list/{topic}', 'QuizController@getQuestionsByTopic');
 Route::post('quiz/save', 'QuizController@store');
+Route::post('game_quiz_save', 'QuizController@game_quiz_save');
 Route::get('quiz/getlist/{topic}', 'QuizController@getlistbytopic');
 Route::get('quiz/delete/{id}', 'QuizController@deleteQuiz');
 Route::get('quiz/{id}/edit', 'QuizController@quizEdit');
@@ -92,7 +96,7 @@ Route::get('quiz/quiz/{id}', 'QuizController@quiz');
 Route::get('quiz/quiz/list/{id}', [\App\Http\Controllers\QuizController::class,'quizList']);
 
 // profile
-Route::get('profile', 'ProfileController@index');
+Route::get('profile', [\App\Http\Controllers\ProfileController::class,'index']);
 Route::post('profile/update', 'ProfileController@update');
 
 // Game
@@ -178,13 +182,14 @@ Route::get('setLanguage/{locale}', function ($locale) {
 	return redirect()->back();
 });
 
-Route::post('contact', 'ContractController@sendMessage');
+Route::post('contact', [\App\Http\Controllers\ContractController::class ,'sendMessage']);
 
 Route::get('getProgress/{id}', [HomeController::class, 'getProgress']);
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
 Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge']);
+Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team']);
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
@@ -215,3 +220,25 @@ Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::clas
 Route::get('challenge_setup',[HomeController::class,'challenge_setup']);
 Route::post('challange-Published',[HomeController::class,'challenge_publish']);
 Route::get('delete_challange/{id}',[HomeController::class,'delete_challange']);
+Route::get('challange_search/{keyword}',[HomeController::class,'challange_search']);
+
+//login User Cedentials
+Route::get('user_cedential/{value}',[\App\Http\Controllers\Auth\LoginController::class,'user_cedential']);
+Route::post('category-Published',[QuestionController::class,'published_category']);
+Route::post('question-update',[QuestionController::class,'question_update']);
+
+//delete Result
+Route::get('deleteresult/{id}',[\App\Http\Controllers\ShareController::class,'deleteResult']);
+
+//Team Member
+Route::post('team-members',[\App\Http\Controllers\TeamController::class,'teamMember']);
+Route::get('delete-team/{id}',[\App\Http\Controllers\TeamController::class,'teamDelete']);
+Route::post('save_team',[\App\Http\Controllers\TeamController::class,'save_team']);
+
+//Team Quiz
+Route::get('team_quiz',[\App\Http\Controllers\TeamController::class,'team_quiz']);
+Route::get('delete_team_quiz/{id}',[\App\Http\Controllers\TeamController::class,'delete_team_quiz']);
+
+//role user search
+Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::class,'searchRoleUser']);
+

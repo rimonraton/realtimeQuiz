@@ -166,7 +166,7 @@
                                     <div class="u-img"><img src="{{asset(auth()->user()->avatar?auth()->user()->avatar:'Admin/assets/images/users/1.png')}}" alt="user" class="rounded" width="80"></div>
                                     <div class="u-text ml-2">
                                         <h4 class="mb-0">{{auth()->user()->name}}</h4>
-                                        <p class="text-muted mb-1 font-14">{{auth()->user()->email}}</p>
+{{--                                        <p class="text-muted mb-1 font-14">{{auth()->user()->email}}</p>--}}
                                         <a href="{{url('profile')}}" class="btn btn-rounded btn-danger btn-sm text-white d-inline-block">
                                             {{__('msg.showProfile')}}
                                         </a>

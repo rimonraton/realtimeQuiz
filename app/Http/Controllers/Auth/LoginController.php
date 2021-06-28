@@ -11,6 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use function React\Promise\Stream\first;
 
 class LoginController extends Controller
 {
@@ -58,5 +59,24 @@ class LoginController extends Controller
         return redirect()->intended();
     }
 
+    public function user_cedential($value)
+    {
+        if(is_numeric($value)){
+            if (User::where('email',$value.'@gyankosh.org')->count()){
+                return User::where('email',$value.'@gyankosh.org')->first()->email;
+            }
+            else{
+                return '0';
+            }
+        }
+        else{
+            if (User::where('email',$value)->count()){
+                return User::where('email',$value)->first()->email;
+            }
+            else{
+                return '0';
+            }
+        }
+    }
 
 }

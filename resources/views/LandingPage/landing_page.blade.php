@@ -237,12 +237,18 @@
                                     <a href="{{url('game/mode/challenge')}}" class="menu-item menu-green right-cercle">
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
-
-                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">
+{{--                                    exampleModal--}}
+{{--                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">--}}
+{{--                                        <i class="fas fa-user text-white"></i>--}}
+{{--                                    </a>--}}
+                                    <a href="" class="menu-item menu-blue bottom-cercle alt_notify">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
 
-                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">
+{{--                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">--}}
+{{--                                        <i class="fas fa-users text-white"></i>--}}
+{{--                                    </a>--}}
+                                    <a href="{{url('team_quiz')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
 
@@ -252,7 +258,6 @@
 
                     </div>
                 </div>
-
             </div>
         </section>
         <!-- End About Section -->
@@ -312,6 +317,7 @@
 
                     <div class="row justify-content-center ml-0 mb-5">
                         @foreach($category as $cat)
+{{--                            @if( App\User::where('id',$cat->user_id)->first()->admin_id == 1)--}}
                         <div class="col-md-4 col-sm-12 text-center">
                             <div class="wrap my-3">
                                 <div class="task">
@@ -328,7 +334,7 @@
                                     <div class="details" id="sub__{{$cat->id}}">
                                         <div class="details__inner">
                                             <div id="list-example" class="list-group">
-                                                @foreach($cat->childs as $cc)
+                                                @foreach($cat->childs->where('is_published',1) as $cc)
                                                 <!-- <i class="fas fa-angle-right"></i> -->
                                                 <a class="list-group-item list-group-item-action gb">
                                                     <i class="fas fa-check text-success"></i>
@@ -342,6 +348,7 @@
                                 </div>
                             </div>
                         </div>
+{{--                            @endif--}}
                         @endforeach
 
                     </div>
@@ -349,7 +356,8 @@
 
 
             </div>
-        </section><!-- End Topics Section -->
+        </section>
+        <!-- End Topics Section -->
 
         <!-- ======= Counts Section ======= -->
 {{--        <section id="counts" class="counts">--}}
@@ -440,7 +448,7 @@
                             <div class="email">
                                 <i class="fas fa-envelope"></i>
                                 <h4>{{__('msg.email')}}:</h4>
-                                <p>info@maharah.online</p>
+                                <p>info@gyankosh.info</p>
                             </div>
 
                             <div class="phone">
@@ -455,7 +463,7 @@
 
                     <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-                        <form action="{{url('contact')}}" method="post" role="form" class="php-email-form">
+                        <form action="{{url('contact')}}" method="POST" role="form" class="php-email-form">
                             @csrf
                             <div class="form-row">
                                 <div class="col-md-6 form-group">
@@ -476,9 +484,9 @@
                                 <div class="validate"></div>
                             </div>
                             <div class="mb-3">
-                                <div class="loading">Loading</div>
+                                <div class="loading">{{__('msg.loading')}}</div>
                                 <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                                <div class="sent-message">{{__('msg.send_msg')}}</div>
                             </div>
                             <div class="text-center"><button type="submit">{{__('msg.sendmessage')}}</button></div>
                         </form>
@@ -500,7 +508,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <h3>{{__('msg.companyName')}}</h3>
+                            <h4>{{__('msg.companyName')}}</h4>
                             <p>
                                 @if($lang == 'gb')
                                 House: 1150, Road: 9/A, Avenue: 11 <br>
@@ -511,7 +519,7 @@
                                 @endif
                                     <br><br>
                                 <strong>{{__('msg.call')}}: </strong> {{$lang == 'gb'?'+880 9617171125':'+৮৮০ ৯৬১৭১৭১১২৫'}}<br>
-                                <strong>{{__('msg.email')}}:</strong> info@maharah.online<br>
+                                <strong>{{__('msg.email')}}:</strong> info@gyankosh.info<br>
                             </p>
                         </div>
                     </div>
@@ -559,6 +567,30 @@
     <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('msg.notify')}}</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if($lang=='gb')
+                        Coming very soon. Please try <a href="{{url('Mode/Practice')}}">Practice</a> Or <a href="{{url('game/mode/challenge')}}">Challenge.</a>
+                    @else
+                        খুব শীঘ্রই আসছে. দয়া করে <a href="{{url('Mode/Practice')}}">অনুশীলন</a> অথবা <a href="{{url('game/mode/challenge')}}">প্রতিযোগিতা</a> চেষ্টা করুন।
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">{{__('form.cancel')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{asset('js/theme-site.js')}}"></script>
     <script>
         $(function() {
@@ -596,6 +628,10 @@
             //     })
             //     }
             // })
+            $('.alt_notify').on('click',function (e){
+                e.preventDefault();
+                $('#exampleModal').modal('show');
+            })
             $('.yt').on('click', function(event) {
                 event.preventDefault();
                 var idVideo = $(this).data('url');

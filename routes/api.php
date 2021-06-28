@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('questionClick', [GameController::class, 'questionClick']);
 Route::post('gameStart', [GameController::class, 'gameStart']);
+Route::post('gameTeamModeratorStart', [GameController::class, 'gameTeamModeratorStart']);
 Route::post('gameEndUser', [GameController::class, 'gameEndUser']);
 Route::post('gameReset', [GameController::class, 'gameReset']);
 Route::post('kickUser', [GameController::class, 'kickUser']);
@@ -36,6 +37,11 @@ Route::post('savePractice', [GameController::class, 'savePractice']);
 
 //Challenge
 Route::post('challengeResult', [\App\Http\Controllers\ShareController::class, 'challengeResult']);
+Route::post('jointeam',[GameController::class,'joinTeam']);
+Route::post('addQuestion',[GameController::class,'addQuestion']);
+Route::post('addTeam',[GameController::class,'addTeam']);
+Route::post('deleteTeam',[GameController::class,'deleteTeam']);
+Route::post('teamResult',[GameController::class,'teamResult']);
 
 
 

@@ -86,6 +86,7 @@ class QuestionController extends Controller
     // Questions
     public function list($id = '')
     {
+//        return Question::with('options')->where('id',1)->first();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $catName = '';
@@ -211,7 +212,7 @@ class QuestionController extends Controller
 //                'bd_option' => $request->bdoption[$k],
 //                'correct' => $request->ans[$k]
 //            ]);
-            $flight = QuestionsOption::updateOrCreate(
+             QuestionsOption::updateOrCreate(
                 ['id' => $oid],
                 [
                     'bd_option' => $request->bdoption[$k],
@@ -255,5 +256,46 @@ class QuestionController extends Controller
     {
         QuestionsOption::where('id',$id)->delete();
         return 'Delete Successfully';
+    }
+
+    //category published
+    public function published_category(Request $request)
+    {
+//        return $request->all();
+        Category::where('id',$request->id)->update([
+            'is_published'=>$request->value
+        ]);
+
+        return 'success';
+    }
+
+    public function question_update(Request $request)
+    {
+//        return $request->all();
+        $max_id =  QuestionsOption::max('id') + 1;
+        // return $request->cid;
+        Question::where('id', $request->qid)->update([
+            'question_text' => $request->question,
+            'bd_question_text' => $request->bdquestion,
+        ]);
+        foreach ($request->option as  $k => $o) {
+            $oid =$request->oid[$k];
+            if ($request->oid[$k]=='new'){
+                $oid =$max_id;
+                $max_id++;
+            }
+             QuestionsOption::updateOrCreate(
+                ['id' => $oid],
+                [
+                    'bd_option' => $request->bdoption[$k],
+                    'option' => $o,
+                    'correct' => $request->ans[$k],
+                    'question_id'=>$request->qid,
+                    'dami'=>'english'
+                ]
+            );
+        }
+       return $question = Question::with('options')->where('id',$request->qid)->first();;
+        return 'Success';
     }
 }

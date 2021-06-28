@@ -117,14 +117,14 @@
                                 <br>
                                 <p class="text-muted">01737538343</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>{{__('form.email')}}</strong>
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>{{__('form.email')}}</strong>
                                 <br>
                                 <p class="text-muted">{{$userInfo->email}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6"> <strong>{{__('form.location')}}</strong>
+                            <div class="col-md-2 col-xs-6"> <strong>{{__('form.location')}}</strong>
                                 <br>
                                 <p class="text-muted">
-                                    <img src="https://flagcdn.com/40x30/{{ $geoip->getCountryCode() }}.png">
+                                    <img src="https://flagcdn.com/40x30/{{ \Str::lower($geoip->getCountryCode()) }}.png">
                                     {{$geoip->getCountry()}}
                                 </p>
                             </div>

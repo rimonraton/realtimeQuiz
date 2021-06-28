@@ -9,7 +9,12 @@
             <div class="card-body">
                 <h4 class="card-title text-center">{{__('form.role_user')}}</h4>
                 <hr>
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.assign_role')}}</button>
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="role_search">
+                    </div>
+                </div>
+{{--                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.assign_role')}}</button>--}}
                 <!-- Add Contact Popup Model -->
                 <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -55,61 +60,7 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
-                <div class="table-responsive" style="overflow-x: hidden">
-
-                    <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @if($user_role->count() > 0)
-                                <table class="table table-striped table-bordered" >
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 10%;">{{__('form.sl')}}</th>
-                                            <th style="width: 20%;">{{__('form.user_name')}}</th>
-                                            <th style="width: 30%;">{{__('form.email')}}</th>
-                                            <th style="width: 20%;">{{__('form.role')}}</th>
-                                            <th style="width: 20%;">{{__('form.action')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($user_role as $ur)
-                                        @if($ur->roleuser && $ur->roleuser->role->id != 1)
-                                        <tr>
-                                            <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                            <td>{{$ur->name}}</td>
-                                            <td>{{$ur->email}}</td>
-                                            <td>{{$ur->roleuser->role->role_name}}</td>
-                                            <td style="text-align: center; ">
-                                                <a class="edit" href="" data-id="{{$ur->roleuser->id}}" data-role="{{$ur->roleuser->role->id}}" data-user="{{$ur->id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$ur->roleuser->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>{{__('form.sl')}}</th>
-                                            <th>{{__('form.user_name')}}</th>
-                                            <th>{{__('form.email')}}</th>
-                                            <th>{{__('form.role')}}</th>
-                                            <th>{{__('form.action')}}</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                    {{$user_role->links()}}
-                                @else
-                                <div class="text-center">
-                                    <p>
-                                        {{__('form.no_data_found')}}
-                                    </p>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <div id="viewroleuser"></div>
             </div>
         </div>
     </div>
@@ -140,10 +91,10 @@
                     <div class="form-group row">
                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.user')}}</label>
                         <div class="col-sm-9" id="options">
-                            <select class="form-control  arcategory" name="upuser_id" id="upuser">
+                            <select class="form-control  arcategory" name="upuser_id" id="upuser" disabled>
                                 <option value="">{{__('form.user_select')}}</option>
-                                @foreach($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                @foreach($user_role as $user)
+                                <option value="{{$user->id}}">{{$user->email}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -166,6 +117,43 @@
 @section('js')
 <script>
     $(function() {
+        SearchUser('all');
+        $('body').on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function() {
+                    // $('.loading').show();
+                    // $('#msg').hide();
+                    // $('#viewData').hide();
+                    console.log('BEFORE');
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data != '') {
+                        $('#viewroleuser').html(data);
+                    } else {
+
+                        $('#viewroleuser').html(
+                            `<div class="text-center">
+                            <p>Questions not available.</p>
+                            </div>`
+                        );
+
+                    }
+                    console.log(data);
+                },
+                complete: function() {
+                    // $('.loading').hide();
+                    $('#viewroleuser').show();
+                    console.log('COMPLETE');
+
+                }
+            })
+            // window.history.pushState("", "", url);
+        });
         $(document).on('click', '.edit', function(e) {
             e.preventDefault();
             $('#uid').val($(this).attr('data-id'));
@@ -207,6 +195,36 @@
                 }
             })
         });
+        $('#role_search').on('keyup',function (){
+            var value = $(this).val();
+            if (value == ''){
+                SearchUser('all');
+            }
+            else{
+                SearchUser(value);
+                console.log('Not Empty');
+            }
+
+        });
+
+        function SearchUser(keyword){
+            $.ajax({
+                url:"{{url('rolo-user-search')}}/" + keyword,
+                type:"GET",
+                success:function (data){
+                    $('#viewroleuser').html(data);
+                    // addSerialNumber();
+                    console.log(data);
+                }
+            })
+        }
+        function addSerialNumber () {
+            $('table tr').each(function(index) {
+                $(this).find('td:nth-child(1)').html(index);
+            });
+        };
+
+
     })
 </script>
 @endsection

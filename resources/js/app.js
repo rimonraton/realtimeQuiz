@@ -3,7 +3,6 @@ require('./bootstrap');
 window.Vue = require('vue');
 Vue.prototype.__ = str => _.get(window.i18n, str)
 
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,8 +20,10 @@ Vue.prototype.__ = str => _.get(window.i18n, str)
 
 import Practice from './components/games/Practice'
 import Challenge from './components/games/Challenge'
-// import Moderator from './components/games/Moderator'
-// import Team from './components/games/Team'
+import TeamQuiz from './components/games/TeamQuiz'
+import Moderator from './components/games/Moderator'
+import Team from './components/games/Team'
+import TeamModerator from './components/games/TeamModerator'
 // import router from './router/Router.js';
 
 /**
@@ -42,8 +43,10 @@ const app = new Vue({
     components: {
 	    'Practice': Practice,
 	    'Challenge': Challenge,
-	    // 'Moderator': Moderator,
-	    // 'Team': Team,
+	    'TeamQuiz': TeamQuiz,
+	    'Moderator': Moderator,
+	    'Team': Team,
+        'TeamModerator':TeamModerator,
 	}
     // router
 });

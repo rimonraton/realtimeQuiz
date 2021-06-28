@@ -17,4 +17,7 @@ class Game extends Model
     {
         return $this->hasMany(Feature::class);
     }
+    public function quiz(){
+        return $this->hasMany(Quiz::class);
+    }
 }

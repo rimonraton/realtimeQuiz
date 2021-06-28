@@ -11,7 +11,7 @@
                     <li class="list-group-item" v-for="(v, i) in results" :key="i">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
-                        {{v.name}}<span class="badge badge-info float-right mt-1">{{ v.score}}</span>
+                        {{v.name}}<span class="badge badge-primary float-right mt-1 text-white">{{ v.score}}</span>
 
                     </li>
                 </ul>

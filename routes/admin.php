@@ -6,13 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('admintest', function (){
    return 'Admin tests';
 });
-Route::get('webrtcReceiver', function (){
-    return view('webrtc.receiver');
-});
-Route::get('webrtcSender', function (){
-    return view('webrtc.sender');
-});
-Route::get('webrtctest', function(){
-    return view('webrtc.index');
-});
+
+Route::get('challenge/resultList', [\App\Http\Controllers\ShareController::class, 'challengeUserResultList']);
+Route::get('team/resultList', [\App\Http\Controllers\ShareController::class, 'teamResultList']);
+Route::get('team/answer/{id}/{team}', [\App\Http\Controllers\ShareController::class, 'teamAnswertList']);
 

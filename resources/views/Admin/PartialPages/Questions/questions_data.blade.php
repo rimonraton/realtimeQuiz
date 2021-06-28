@@ -58,17 +58,17 @@
                                                     <span>__</span>
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td id="eq_{{$qs->id}}">
                                                     {{$qs->question_text}}
                                                 </td>
-                                                <td>{{$qs->bd_question_text}}</td>
-                                                <td class="text-center">
+                                                <td id="bq_{{$qs->id}}">{{$qs->bd_question_text}}</td>
+                                                <td class="text-center" id="eo_{{$qs->id}}">
                                                     @foreach($qs->options as $qo)
                                                         @if($qo->option)
                                                             @if($qo->correct)
                                                             <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                                 <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                                {{$qo->option}}
+                                                               {{$qo->option}}
                                                             </span>
                                                             @endif
                                                         @else
@@ -76,7 +76,7 @@
                                                         @endif
                                                     @endforeach
                                                 </td>
-                                                <td>
+                                                <td id="bo_{{$qs->id}}">
                                                     @foreach($qs->options as $qo)
                                                         @if($qo->bd_option)
                                                             @if($qo->correct)

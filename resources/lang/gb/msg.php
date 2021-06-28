@@ -22,7 +22,7 @@ return [
     'register' => 'Register',
     'login' => 'Login',
     'english' => 'English',
-    'bangla' => 'Bangla',
+    'bangla' => 'বাংলা',
     'checkfeatures' => 'Check The Features',
     'checktopics' => 'Check The Topics',
     'checkfaq' => 'Frequently Asked Questions',
@@ -73,4 +73,9 @@ return [
     'add' => 'Add',
     'payment' => 'Payment',
     'menu_setup' => 'Menu Setup',
+    'loading'=>'Please wait..',
+    'send_msg'=>'Your message has been sent. Thank you!',
+    'result'=>'Result',
+    'delete'=>'Delete',
+    'notify'=>'Notice',
 ];

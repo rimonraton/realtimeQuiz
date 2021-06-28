@@ -8,7 +8,10 @@ use App\Providers\RouteServiceProvider;
 use App\RoleUser;
 use App\User;
 use App\UserInfo;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -45,7 +48,28 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        if(is_numeric($request->email)){
+            if (User::where('email',$request->email.'@gyankosh.org')->count()){
+                \Session::flash('status', __('auth.already_registered'));
+                return redirect()->back();
+            }
+        }
 
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath());
+    }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -56,7 +80,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+//            'email' => ['required', 'string','email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -67,15 +92,46 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+//    protected function create(array $data)
+//    {
+//        $user = User::create([
+//            'name' => $data['name'],
+//            'email' => $data['email'],
+//            'password' => Hash::make($data['password']),
+////            'tokan' => Str::random(60),
+//        ]);
+//        $ui = new UserInfo();
+//        $ui->user_id = $user->id;
+//        $ui->nick_name = $data['special_name'];
+//        $ui->save();
+//        $ru = new RoleUser();
+//        $ru->user_id = $user->id;
+//        $ru->role_id = 5;
+//        $ru->save();
+//        Mail::to($user->email)->send(new WelcomeMail($user));
+//        return $user;
+//    }
+
+
     protected function create(array $data)
     {
+        $email = '';
+        $ui = new UserInfo();
+        if(is_numeric($data['email'])){
+            $email = $data['email'].'@gyankosh.org';
+            $ui->mobile = $data['email'];
+        }
+        else{
+
+            $email = $data['email'];
+        }
         $user = User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'email' => $email,
             'password' => Hash::make($data['password']),
 //            'tokan' => Str::random(60),
         ]);
-        $ui = new UserInfo();
+
         $ui->user_id = $user->id;
         $ui->nick_name = $data['special_name'];
         $ui->save();
@@ -83,7 +139,14 @@ class RegisterController extends Controller
         $ru->user_id = $user->id;
         $ru->role_id = 5;
         $ru->save();
-        Mail::to($user->email)->send(new WelcomeMail($user));
+        if(is_numeric($data['email'])){
+
+        }
+        else{
+            Mail::to($user->email)->send(new WelcomeMail($user));
+        }
+
         return $user;
     }
+
 }

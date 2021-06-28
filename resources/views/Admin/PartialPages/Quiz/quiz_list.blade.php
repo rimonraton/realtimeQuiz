@@ -137,7 +137,6 @@
 @section('js')
 <script>
     $(function() {
-
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -165,7 +164,6 @@
             var id = $(this).val();
             quizList(id);
         })
-
         function quizList(id) {
             if (id != '') {
                 $.ajax({
@@ -223,14 +221,13 @@
                             // alert($this.parent().parent());
                             $this.closest("tr").remove();
                             Swal.fire({
-                                text: data,
+                                text: '{{__('form.delete_success')}}',
                                 type: 'success',
                                 timer: 1000,
                                 showConfirmButton: false
                             })
                         }
                     })
-
                 }
             })
         })

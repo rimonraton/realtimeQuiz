@@ -199,5 +199,10 @@ return [
     'password_not_matched'=>'Password does not Match',
     'special_name_or_nickname'=>'Enter User Name',
     'challenge_name'=>'Challenge Name',
-
+    'success'=>'Success',
+    'team_member'=>'Team members',
+    'create'=>'Create',
+    'teams'=>'Teams',
+    'quiz'=>'Quiz List',
+    'edit_quiz'=>'Edit Quiz',
 ];

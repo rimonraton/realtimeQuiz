@@ -21,4 +21,8 @@ return [
     'schedule'=>'সময়সূচী',
     'public_private'=>'পাবলিক/প্রাইভেট',
     'public'=>'পাবলিক',
+    'participants'=>'অংশগ্রহণকারীরা',
+    'participation_time'=>'অংশগ্রহনের সময়',
+    'results'=>'ফলাফল',
+    'view_result'=> 'ফলাফল দেখুন',
 ];

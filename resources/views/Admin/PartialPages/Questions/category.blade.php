@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-12 m-b-20">
-                            <input type="text" class="form-control" name="name" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.sub_topic_en')}}" require>
+                            <input type="text" class="form-control" name="name"  placeholder="{{__('form.sub_topic_en')}}" require>
                         </div>
                     </div>
                     <div class="form-group">
@@ -134,8 +134,44 @@
 
 @section('js')
 <script>
+    $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
     $(function() {
+
         allCategory();
+        $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+            var id = $(this).attr('data-id');
+            if (state == true) {
+
+               console.log('Publish',id);
+                publishedOrNot(id,1);
+                // $(this).prop('checked', true);
+            } else {
+                publishedOrNot(id,0);
+                console.log('UnPublish',id);
+                // $(this).removeProp('checked');
+
+            }
+        });
+        function publishedOrNot(id, value) {
+            $.ajax({
+                url: "{{url('category-Published')}}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id,
+                    'value': value
+                },
+                success: function(data) {
+                    Swal.fire({
+                        text: "{{__('form.success')}}",
+                        type: 'success',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    // console.log(data);
+                }
+            })
+        }
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -203,7 +239,7 @@
                             // alert($this.parent().parent());
                             $this.closest("tr").remove();
                             Swal.fire({
-                                text: data,
+                                text: '{{__('form.delete_success')}}',
                                 type: 'success',
                                 timer: 1000,
                                 showConfirmButton: false

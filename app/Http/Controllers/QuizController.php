@@ -10,8 +10,10 @@ use App\QuestionsOption;
 use App\QuestionType;
 use App\Quiz;
 use App\QuizCategory;
+use App\Team;
 use BeyondCode\LaravelWebSockets\Apps\App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\Return_;
 
 class QuizController extends Controller
@@ -24,14 +26,25 @@ class QuizController extends Controller
 
     public function create()
     {
+        $teams = Team::all();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
          $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         // $question_category = QuizCategory::all();
         $gameType = Game::all();
-        return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType']));
+        return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType','teams']));
     }
 
+    public function game_quiz_create()
+    {
+        $teams = Team::all();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        // $question_category = QuizCategory::all();
+        $gameType = Game::all();
+        return view('games.game_quiz_cteate', compact(['question_topic', 'gameType','teams']));
+    }
     public function list($tid = '')
     {
         $admin = auth()->user()->admin;
@@ -44,6 +57,7 @@ class QuizController extends Controller
                 $catName = Category::find($tid)->bn_name;
             }
         }
+
         $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Quiz.quiz_list', compact('category', 'tid', 'catName'));
     }
@@ -74,10 +88,22 @@ class QuizController extends Controller
 
         return redirect('quiz/view/list/' . $request->cid);
     }
+    public function game_quiz_save(Request $request)
+    {
+//          return $request->all();
+        if ($request->quizCreateType == 'qb') {
+            $this->storeFromQB($request);
+            return redirect('team_quiz');
+        }
+        $this->storeFromCustom($request);
+
+        return redirect('team_quiz');
+    }
 
     public function storeFromQB($request)
     {
         $questions = '';
+        $team_id = null;
 
           if ($request->NOQ){
               $admin = auth()->user()->admin;
@@ -94,7 +120,9 @@ class QuizController extends Controller
 //        foreach ($request->questions as $q) {
 //            $questions[] = $q;
 //        }
-//        $questionsid = implode(',', $questions);
+        if($request->teams){
+            $team_id = implode(',', $request->teams);
+        }
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,
@@ -103,10 +131,12 @@ class QuizController extends Controller
             'category_id'       => $request->cid,
             'difficulty'        => $request->difficulty,
             'user_id'           => auth()->user()->id,
+            'team_ids'          =>$team_id,
         ]);
     }
     public function storeFromCustom($request)
     {
+        $team_id = null;
          $value = explode(',',$request->selectedindex);
 //        return $value[2];
 //        $option_value = 0;
@@ -140,6 +170,9 @@ class QuizController extends Controller
         }
 
         $questions = implode(',', $questionId);
+        if($request->teams){
+            $team_id = implode(',', $request->teams);
+        }
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,
@@ -149,6 +182,7 @@ class QuizController extends Controller
             'custom_create'     => 1,
             'difficulty'        => $request->difficulty,
             'user_id'           => auth()->user()->id,
+            'team_ids'          =>$team_id,
         ]);
     }
     public function quiz($id)
@@ -165,12 +199,18 @@ class QuizController extends Controller
          $admin_users = $admin->users()->pluck('id');
          if ($role ==='Quiz Master'){
              $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->paginate(10);
+             return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
          }
          else{
+             $games = Game::all();
+             $quizgame = Game::with(['quiz'=>function($q) use ($id,$admin_users){
+                 $q->where('category_id', $id)->whereIn('user_id',$admin_users);
+             }])->get();
             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+            return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
          }
 
-        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
+//        return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
     }
     public function deleteQuiz($id)
     {
