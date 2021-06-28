@@ -105,7 +105,7 @@
                         <div class="alert alert-success" role="alert">
                             {{app()->getLocale()=='gb'?session('status'):'আমরা আপনার পাসওয়ার্ড রিসেট লিঙ্কটি ইমেল করেছি!' }}
                         </div>
-                        <div class="form-group row mb-0">
+                        <div class="form-group row justify-content-between mb-0">
                             <div class="col-md-12 text-center">
                                 <a href="{{ url('password/reset') }}" class="btn btn-warning">
                                     {{__('auth.retry_password')}}
