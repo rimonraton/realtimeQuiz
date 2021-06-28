@@ -41,7 +41,7 @@
             :user="user"
             v-if="screen.result">
         </group-result>
-        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult" :teamPosition="position" ></team-result>
+        <team-result :results="results" :uid="uid" :user="user" v-if="screen.teamresult" :teamPosition="position" :teamuser="getUserTeam()"></team-result>
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
@@ -56,7 +56,7 @@
                     <div class="card-header card-title d-flex justify-content-between">
                         <a @click="reloadPage" class="btn btn-sm btn-danger" >{{tbe('রিসেট','Reset',user.lang)}}</a>
                         <!-- <strong>Information</strong> -->
-                        <a class="btn btn-sm btn-warning" v-if="!isLastQuestion" @click="teamResult">{{ tbe('খেলা শেষ করুন','Game Finish',user.lang) }}</a>
+                        <a class="btn btn-sm btn-info" v-if="!isLastQuestion" @click="teamResult">{{ tbe('খেলা শেষ করুন','Game Finish',user.lang) }}</a>
 
                         <a class="btn btn-sm btn-warning" v-if="isLastQuestion" @click="nextQuestion">{{ tbe('পরবর্তী প্রশ্ন','NEXT QUESTION',user.lang) }}</a>
                     </div>
@@ -423,8 +423,11 @@ export default {
              return this.position;
         },
         getUserTeam(){
+            if(this.uid == this.user.id){
+                return null;
+            }
             let team = this.teams.find(t=>t.id == this.user.gid)
-            console.log('team..' +team);
+            console.log('team..' + team);
             return team.name;
         },
         teamResult(){
