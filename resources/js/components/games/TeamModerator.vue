@@ -271,8 +271,8 @@ export default {
                     this.users.push(user);
                 console.log(`${user.name} join`);
 
-                if(this.game_start)
-                    this.kickUser(user.id)
+                // if(this.game_start)
+                //     this.kickUser(user.id)
             })
             .leaving((user) => {
                 this.users = this.users.filter(u => u.id != user.id);
