@@ -25,4 +25,7 @@ return [
     'participation_time'=>'অংশগ্রহনের সময়',
     'results'=>'ফলাফল',
     'view_result'=> 'ফলাফল দেখুন',
+    'correct_answer'=>'সঠিক উত্তর',
+    'given_answer'=>'দেওয়া উত্তর',
+    'answered_by' =>'উত্তর দিয়েছে',
 ];

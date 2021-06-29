@@ -69,12 +69,12 @@
 @endsection
 @php $lang = App::getLocale(); @endphp
 @section('content')
-    <a href=
-       "whatsapp://send?text=GFG Example for whatsapp sharing"
-       data-action="share/whatsapp/share"
-       target="_blank">
-        Share to whatsapp
-    </a>
+{{--    <a href=--}}
+{{--       "whatsapp://send?text=GFG Example for whatsapp sharing"--}}
+{{--       data-action="share/whatsapp/share"--}}
+{{--       target="_blank">--}}
+{{--        Share to whatsapp--}}
+{{--    </a>--}}
     <br>
     <div class="selectedQuestionCount text-center">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
@@ -83,32 +83,33 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title text-center">{{__('msg.createquiz')}}</h4>
+                    <h4 class="card-title text-center">{{__('msg.createquiz')}} <a class="btn btn-success waves-effect waves-light text-white float-right" href="{{url('team_quiz')}}">{{__('form.goto_quiz_list')}}</a></h4>
                     <hr>
                     <form class="form-horizontal r-separator" action="{{url('game_quiz_save')}}" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
-                        <div class="form-group row justify-content-center">
-                            <div class="btn-group" data-toggle="buttons">
+                        <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="btn-group" data-toggle="buttons">--}}
 
-                                @can('readOwrite',\App\Quiz::class)
-                                    <label class="btn btn-primary active">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
-                                        </div>
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
-                                        </div>
-                                    </label>
-                                @else
-                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
-                                @endcan
-                            </div>
-                        </div>
+{{--                                @can('readOwrite',\App\Quiz::class)--}}
+{{--                                    <label class="btn btn-primary active">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">--}}
+{{--                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                    <label class="btn btn-primary">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">--}}
+{{--                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                @else--}}
+{{--                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">--}}
+{{--                                @endcan--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_en')}} : </label>
@@ -136,7 +137,7 @@
                                 <div class="col-sm-4">
                                     <select class="form-control custom-select" name="difficulty" required>
                                         <option>{{__('form.game_type')}}</option>
-                                        <option value="1">{{__('form.easy')}}</option>
+                                        <option value="1" selected>{{__('form.easy')}}</option>
                                         <option value="2">{{__('form.intermediate')}}</option>
                                         <option value="3">{{__('form.difficult')}}</option>
                                     </select>
@@ -301,7 +302,7 @@
                         <div class="form-group mb-0 text-right">
                             @can('create',App\Quiz::class)
                                 <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('msg.createquiz')}}</button>
-                                <a class="btn btn-success waves-effect waves-light text-white" href="{{url('team_quiz')}}">{{__('form.goto_quiz_list')}}</a>
+{{--                                <a class="btn btn-success waves-effect waves-light text-white" href="{{url('team_quiz')}}">{{__('form.goto_quiz_list')}}</a>--}}
                             @else
                                 <a class="btn btn-secondary waves-effect waves-light disabled">{{__('msg.createquiz')}}</a>
                                 <a class="btn btn-secondary waves-effect waves-light text-white disabled">{{__('form.goto_quiz_list')}}</a>

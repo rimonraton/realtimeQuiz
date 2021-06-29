@@ -95,9 +95,9 @@ class QuizController extends Controller
             $this->storeFromQB($request);
             return redirect('team_quiz');
         }
-        $this->storeFromCustom($request);
-
-        return redirect('team_quiz');
+//        $this->storeFromCustom($request);
+//
+//        return redirect('team_quiz');
     }
 
     public function storeFromQB($request)
@@ -123,6 +123,7 @@ class QuizController extends Controller
         if($request->teams){
             $team_id = implode(',', $request->teams);
         }
+//        return $team_id;
         Quiz::create([
             'quiz_name'         => $request->quizName,
             'bd_quiz_name'      => $request->bdquizName,

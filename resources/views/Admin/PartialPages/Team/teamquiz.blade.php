@@ -51,11 +51,26 @@
                 <div class="row justify-content-center">
                     <!-- col -->
                     @foreach($quizzes as $q)
-                    <div class="col-lg-3 col-md-6 mt-3" id="qcard_{{$q->id}}">
+                    <div class="col-lg-4 col-md-6 mt-3" id="qcard_{{$q->id}}">
                         <div class="card bg-light-primary h-100 ">
                             <a style="cursor: pointer" class="text-right m-1 deleteQuiz" data-id="{{$q->id}}"><i class="fas fa-trash-alt text-danger"></i></a>
                             <div class="card-body">
-                                <h5 class="card-title text-center font-20">{{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}</h5>
+                                <h5 class="card-title text-center font-20">
+{{--                                    {{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}--}}
+                                    @if($lang=='gb')
+                                        @if(!is_null($q->quiz_name))
+                                            {{$q->quiz_name}}
+                                        @else
+                                            {{$q->bd_quiz_name}}
+                                        @endif
+                                    @else
+                                        @if(!is_null($q->bd_quiz_name))
+                                        {{$q->bd_quiz_name}}
+                                        @else
+                                        {{$q->quiz_name}}
+                                        @endif
+                                    @endif
+                                </h5>
                                 <div  class="carousel slide">
                                     <!-- Carousel items -->
                                     <div class="carousel-inner">
@@ -64,7 +79,21 @@
 {{--                                            <p class="text-white">25th Jan</p>--}}
                                             <div class="text-white mt-2 text-center">
                                                 @foreach(App\Team::whereIn('id',explode(',',$q->team_ids))->get() as $team)
-                                                <span class="badge badge-secondary">{{$lang=='gb'?$team->name:$team->bn_name}}</span>
+                                                <span class="badge badge-secondary">
+                                                    @if($lang=='gb')
+                                                        @if(!is_null($team->name))
+                                                            {{$team->name}}
+                                                        @else
+                                                            {{$team->bn_name}}
+                                                        @endif
+                                                    @else
+                                                        @if(!is_null($team->bn_name))
+                                                            {{$team->bn_name}}
+                                                        @else
+                                                            {{$team->name}}
+                                                        @endif
+                                                    @endif
+                                                </span>
                                                 @endforeach
                                             </div>
 

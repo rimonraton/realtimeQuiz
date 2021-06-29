@@ -25,5 +25,8 @@ return [
     'participation_time'=>'Participation time',
     'results'=>'Results',
     'view_result'=> 'View Results',
+    'correct_answer'=>'Correct Answer',
+    'given_answer'=>'Given Answer',
+    'answered_by' =>'Answered By',
 ];
 
