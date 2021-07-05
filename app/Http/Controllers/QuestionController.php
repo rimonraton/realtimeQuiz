@@ -166,8 +166,8 @@ class QuestionController extends Controller
                 $t = $created_at->timestamp;
                 $r = Str::random(40);
                 $random_name = $t . '' . $r . '.' . $ext;
-                $path = public_path() . '/' . $optionimglocation.$question->id.'/';
-                $filename = $optionimglocation.$question->id.'/'. $random_name;
+                $path = public_path() . '/' . $optionimglocation;
+                $filename = $optionimglocation.$random_name;
                 $img->move($path, $filename);
 //                $optionimg = $filename;
                 $data[$key]['question_id'] = $question->id;
