@@ -39,7 +39,7 @@
                                         </thead>
                                         <tbody>
                                         @php
-                                            $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+                                            $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
                                         @endphp
                                             @foreach($questionCat as $qs)
                                             <tr>
@@ -71,6 +71,13 @@
                                                                {{$qo->option}}
                                                             </span>
                                                             @endif
+                                                        @elseif($qo->flag == 'img')@if($qo->correct)
+                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">
+                                                            </span>
+                                                        @endif
+
                                                         @else
                                                             -
                                                         @endif

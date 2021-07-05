@@ -306,7 +306,7 @@
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]">
+                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -322,7 +322,7 @@
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                             <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]">
+                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -439,7 +439,7 @@
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
                              <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]">
+                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">

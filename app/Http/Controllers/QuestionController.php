@@ -171,7 +171,7 @@ class QuestionController extends Controller
                 $img->move($path, $filename);
 //                $optionimg = $filename;
                 $data[$key]['question_id'] = $question->id;
-                $data[$key]['option'] = $filename;
+                $data[$key]['img_link'] = $filename;
                 $data[$key]['flag'] = 'img';
             }
 

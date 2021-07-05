@@ -77,7 +77,7 @@
                                                                             </thead>
                                                                             <tbody>
                                                                             @php
-                                                                                    $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->whereIn('user_id',$admin_users)->paginate(10);
+                                                                                    $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
                                                                             @endphp
                                                                                 @foreach($questionCat as $qs)
                                                                                 <tr>
@@ -90,7 +90,7 @@
                                                                                             <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
                                                                                             {{$qo->flag?$qs->flag:'nai'}}
                                                                                             @if($qo->flag == 'img')
-                                                                                                <img src="{{asset($qo->option)}}" width="20px" alt="">
+                                                                                                <img src="{{asset($qo->img_link)}}" width="20px" alt="">
                                                                                                 @else
                                                                                             {{$qo->option}}
                                                                                                 @endif
