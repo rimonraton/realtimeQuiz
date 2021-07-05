@@ -114,9 +114,15 @@ class QuestionController extends Controller
         //     'correct' => 'required',
         // ]);
 
+
         $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
+        $optionimglocation = 'images/option_images/';
+        $optionimg = '';
+
+
+
         if ($request->customRadio == 'image') {
             $location = 'images/question_images/';
             $file = $request->file('file');
@@ -150,18 +156,41 @@ class QuestionController extends Controller
             'user_id' => Auth::user()->id,
             // 'created_at' => Carbon::,
         ]);
-        foreach ($request->option as  $k => $o) {
-            $data[$k]['question_id'] = $question->id;
-            $data[$k]['option'] = $o;
-        }
 
-        foreach ($request->optionbd as  $k => $o) {
-            $data[$k]['bd_option'] = $o;
+        if($request->hasFile('optionimg'))
+        {
+            foreach ( $request->file('optionimg') as $key=>$img){
+                $original_name = $img->getClientOriginalName();
+                $ext = strtolower(\File::extension($original_name));
+                $created_at = Carbon::now('Asia/Dhaka');
+                $t = $created_at->timestamp;
+                $r = Str::random(40);
+                $random_name = $t . '' . $r . '.' . $ext;
+                $path = public_path() . '/' . $optionimglocation.$question->id.'/';
+                $filename = $optionimglocation.$question->id.'/'. $random_name;
+                $img->move($path, $filename);
+//                $optionimg = $filename;
+                $data[$key]['question_id'] = $question->id;
+                $data[$key]['option'] = $filename;
+                $data[$key]['flag'] = 'img';
+            }
+
+        }
+        else{
+            foreach ($request->option as  $k => $o) {
+                $data[$k]['question_id'] = $question->id;
+                $data[$k]['option'] = $o;
+            }
+
+            foreach ($request->optionbd as  $k => $o) {
+                $data[$k]['bd_option'] = $o;
+            }
         }
 
         foreach ($request->ans as  $k => $a) {
             $data[$k]['correct'] = $a;
         }
+
 
         QuestionsOption::insert($data);
 

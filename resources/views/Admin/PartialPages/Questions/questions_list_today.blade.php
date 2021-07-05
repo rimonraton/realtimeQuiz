@@ -77,7 +77,6 @@
                                                                             </thead>
                                                                             <tbody>
                                                                             @php
-
                                                                                     $questionCat = $q->questions()->where('category_id', $id)->where('created_at', '>', $today)->whereIn('user_id',$admin_users)->paginate(10);
                                                                             @endphp
                                                                                 @foreach($questionCat as $qs)
@@ -87,7 +86,15 @@
                                                                                     <td>{{$qs->bd_question_text}}</td>
                                                                                     <td class="text-center">
                                                                                         @foreach($qs->options as $qo)
-                                                                                        <button class="btn btn-sm custom-border m-1"><i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i> {{$qo->option}}</button>
+                                                                                        <button class="btn btn-sm custom-border m-1">
+                                                                                            <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                                            {{$qo->flag?$qs->flag:'nai'}}
+                                                                                            @if($qo->flag == 'img')
+                                                                                                <img src="{{asset($qo->option)}}" width="20px" alt="">
+                                                                                                @else
+                                                                                            {{$qo->option}}
+                                                                                                @endif
+                                                                                        </button>
                                                                                         @endforeach
                                                                                     </td>
                                                                                     <td class="text-center">

@@ -24,8 +24,15 @@ class TeamController extends Controller
 //        return Arr::collapse([$tids]);
        foreach ($tids as $tid){
           $arr = explode(',',$tid->user_ids);
-          $data = Arr::collapse([$arr]);;
+          $data = Arr::collapse([$arr]);
        }
+//       return count($tdata);
+//        if(in_array(56,$data))
+//        {
+//           return $newdata = implode(',',$data);
+//           return TeamMember::where('user_ids',$newdata)->get();
+//
+//        }
 //       return count($data);
 
 //       whereNotIn
@@ -117,7 +124,7 @@ class TeamController extends Controller
 
     public function team_quiz()
     {
-        $quizzes = Quiz::where('game_id',3)->where('user_id',Auth::id())->get();
+        $quizzes = Quiz::where('game_id',3)->where('user_id',Auth::id())->orderBy('id','desc')->get();
         return view('Admin.PartialPages.Team.teamquiz',compact('quizzes'));
     }
 

@@ -299,11 +299,14 @@
 
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="file" class="form-control" name="optionimg[]">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -312,11 +315,14 @@
                         </div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="file" class="form-control" name="optionimg[]">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -426,11 +432,14 @@
             var data = '';
             data += `<div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
+                            </div>
+                             <div class="col-sm-2">
+                                <input type="file" class="form-control" name="optionimg[]">
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
