@@ -15,16 +15,20 @@
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
 
-                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded"
-                             :src="question.more_info_link" style="max-height:70vh" alt="">
-
+                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded"
+                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
                         <p class="my-1 font-bold"
                            v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></p>
-
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1"
-                                v-html="tbe(option.bd_option, option.option, user.lang)">
+                                v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'" >
+
+                            </li>
+                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
+                                <img  class="image mt-1 rounded"
+                                     :src="'/'+ option.img_link" style="max-height:15vh" alt="">
 
                             </li>
                         </ul>
@@ -157,6 +161,8 @@ export default {
 
         getCorrectAnswertext() {
             let qco = this.questions[this.qid].options.find(o => o.correct == 1)
+            if(qco.flag=='img')
+                return qco.img_link;
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 

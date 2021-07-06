@@ -8,7 +8,13 @@
         <div class="list-group">
             <a class="list-group-item active text-white">{{$q->question_text?$q->question_text:$q->bd_question_text}}</a>
             @foreach($q->options as $qo)
-            <a class="list-group-item">{{$qo->option?$qo->option:$qo->bd_option}}<span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
+            <a class="list-group-item">
+                @if($qo->flag == 'img')
+                    <img src="{{asset($qo->img_link)}}" alt="" width="50vh">
+                @else
+                {{$qo->option?$qo->option:$qo->bd_option}}
+                @endif
+                <span class="badge float-right text-primary">{{$qo->correct ==1?'✓':''}}</span></a>
             @endforeach
         </div>
     </div>

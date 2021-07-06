@@ -14,15 +14,27 @@
                         <div class="font-weight-light f-13">
                             <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
-                             <span class="font-weight-light font-italic" v-html="result.selected"></span>
+                             <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
+                                 <img  class="image mt-1 rounded"
+                                       :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                             </span>
+                             <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
                             </p>
                             <p v-else>
-                                <span class="font-weight-light font-italic" v-html="result.selected"></span>
+                                <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
+                                    <img  class="image mt-1 rounded"
+                                          :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                                </span>
+                                <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                 <br>
 
-                                <span class="font-weight-light font-italic" v-html="result.answer"></span>
+                                <span class="font-weight-light font-italic" v-if="isImg(result.answer)">
+                                     <img  class="image mt-1 rounded"
+                                           :src="'/'+ result.answer" style="max-height:10vh" alt="">
+                                </span>
+                                <span class="font-weight-light font-italic" v-html="result.answer" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
 
                             </p>
@@ -61,6 +73,11 @@
                 window.history.back()
                 // window.history.back()
             },
+            isImg(link){
+                let data = link.split('.')
+                console.log(data.length > 1)
+                return data.length > 1
+            }
         }
 
     };

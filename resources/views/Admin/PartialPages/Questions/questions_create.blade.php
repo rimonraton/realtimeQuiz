@@ -198,6 +198,7 @@
 
                     <input type="hidden" name="cid" id="selectedCid">
                     <div class="card-body">
+                        <input type="radio" id="image" value="image" name="customRadio" class="custom-control-input" checked="">
                         <div class="form-group row justify-content-center">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-primary">
@@ -206,12 +207,12 @@
                                         <label class="custom-control-label" for="customRadio4">{{__('form.image')}}</label>
                                     </div>
                                 </label>
-                                <label class="btn btn-primary">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="video" value="video" name="customRadio" class="custom-control-input" >
-                                        <label class="custom-control-label" for="customRadio5">{{__('form.video')}}</label>
-                                    </div>
-                                </label>
+{{--                                <label class="btn btn-primary">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="video" value="video" name="customRadio" class="custom-control-input" >--}}
+{{--                                        <label class="custom-control-label" for="customRadio5">{{__('form.video')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
                             </div>
                         </div>
                         <div class="form-group row pb-3" id="divImage">

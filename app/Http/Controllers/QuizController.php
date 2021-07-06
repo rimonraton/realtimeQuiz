@@ -199,7 +199,7 @@ class QuizController extends Controller
          $admin = auth()->user()->admin;
          $admin_users = $admin->users()->pluck('id');
          if ($role ==='Quiz Master'){
-             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->paginate(10);
+             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->orderBy('id','desc')->paginate(10);
              return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
          }
          else{
@@ -207,7 +207,7 @@ class QuizController extends Controller
              $quizgame = Game::with(['quiz'=>function($q) use ($id,$admin_users){
                  $q->where('category_id', $id)->whereIn('user_id',$admin_users);
              }])->get();
-            $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->paginate(10);
+            $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
             return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
          }
 
