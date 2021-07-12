@@ -45,7 +45,7 @@
                                     <a class="" data-id="{{$q->id}}" href="{{url('quiz/'.$quiz->id.'/'.$q->id.'/delete')}}"> <input type="hidden" value="{{$q->id}}" name="questions[]" id=""><i class="fas fa-trash text-danger"></i></a></p>
                                 @foreach($q->options as $qo)
                                 <a class="list-group-item">
-                                    @if($qo)
+                                    @if($qo->img_link)
                                         <img src="{{asset($qo->img_link)}}" alt="" width="30vh">
                                     @else
                                     @if($lang=='gb')
