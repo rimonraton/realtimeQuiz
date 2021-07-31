@@ -15,7 +15,7 @@
                             <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
                              <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                 <img  class="image mt-1 rounded"
+                                 <img  class="image mt-1 rounded img-thumbnail"
                                        :src="'/'+ result.selected" style="max-height:10vh" alt="">
                              </span>
                              <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
@@ -23,7 +23,7 @@
                             </p>
                             <p v-else>
                                 <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                    <img  class="image mt-1 rounded"
+                                    <img  class="image mt-1 rounded img-thumbnail"
                                           :src="'/'+ result.selected" style="max-height:10vh" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
@@ -31,7 +31,7 @@
                                 <br>
 
                                 <span class="font-weight-light font-italic" v-if="isImg(result.answer)">
-                                     <img  class="image mt-1 rounded"
+                                     <img  class="image mt-1 rounded img-thumbnail"
                                            :src="'/'+ result.answer" style="max-height:10vh" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.answer" v-else></span>

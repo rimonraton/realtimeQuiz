@@ -15,7 +15,7 @@
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
 
-                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded"
+                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
                         <p class="my-1 font-bold"
                            v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></p>
@@ -27,7 +27,7 @@
                             </li>
                             <li @click="checkAnswer(question.id, option.img_link, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
-                                <img  class="image mt-1 rounded"
+                                <img  class="image mt-1 rounded img-thumbnail"
                                      :src="'/'+ option.img_link" style="max-height:15vh" alt="">
 
                             </li>
