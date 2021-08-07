@@ -17,7 +17,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        passphrase: ${{ secrets.PASSPHRASE }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd /var/www/html/gyankosh/
           git checkout -f 
