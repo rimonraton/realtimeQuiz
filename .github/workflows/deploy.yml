@@ -7,13 +7,6 @@ jobs:
   laravel-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-    - name: NPM Install
-      run: npm install
-    - name: NPM Production
-      run: npm run production
     - name: Checkout
       uses: actions/checkout@v2
     - name: Deployment
@@ -28,6 +21,7 @@ jobs:
           cd /var/www/html/gyankosh/
           git checkout -f 
           git pull
+          npm run production
 
 
 
