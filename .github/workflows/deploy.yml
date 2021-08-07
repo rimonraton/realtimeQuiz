@@ -2,18 +2,31 @@ name: Gyankosh
 
 on:
   push:
-    branches:
-      - master
-
+    branches: [ master ]
 jobs:
-  build:
-    name: Build and deploy
-    runs-on: ubuntu-16.04
+  laravel-action:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@master
-      - name: Javascript Compile
-        run: |
-          npm install
-          npm run prod
+    - uses: actions/checkout@v2
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Deployment
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        script: |
+          cd /var/www/html/gyankosh/
+          git checkout -f 
+          git pull
+          npm run production
+
+
 
