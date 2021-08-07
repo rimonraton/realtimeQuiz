@@ -7,8 +7,16 @@ jobs:
   laravel-build:
     runs-on: ubuntu-latest
     steps:
+    
     - name: Checkout
       uses: actions/checkout@v2
+      
+    - name: NPM Install
+      run: npm install
+      
+    - name: NPM Production
+      run: npm run prod
+    
     - name: Deployment
       uses: appleboy/ssh-action@master
       with:
@@ -21,7 +29,6 @@ jobs:
           cd /var/www/html/gyankosh/
           git checkout -f 
           git pull
-          npm run production
 
 
 
