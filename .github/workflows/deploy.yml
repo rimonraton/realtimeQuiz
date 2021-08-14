@@ -11,11 +11,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       
-    - name: NPM Install
-      run: npm install
+    #- name: NPM Install
+    #  run: npm install
       
-    - name: NPM Production
-      run: npm run prod
+    #- name: NPM Production
+    #  run: npm run prod
     
     - name: Deployment
       uses: appleboy/ssh-action@master
