@@ -28,7 +28,7 @@
                             <li @click="checkAnswer(question.id, option.img_link, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
                                 <img  class="image mt-1 rounded img-thumbnail"
-                                     :src="'/'+ option.img_link" style="max-height:15vh" alt="">
+                                     :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
 
                             </li>
                         </ul>
