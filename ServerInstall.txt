@@ -203,3 +203,8 @@ rsync -rP raton@35.232.113.230:/var/bigbluebutton/recording/raw/ /var/bigbluebut
 
 tar -czvf archive.tar.gz raw
 tar -xzvf archive.tar.gz
+
+
+cat ~/.ssh/id_rsa.pub | ssh raton@35.232.113.230 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
+rsync -rP raton@35.232.113.230:/var/bigbluebutton/published/ /var/bigbluebutton/published/
