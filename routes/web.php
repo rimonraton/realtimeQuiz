@@ -238,6 +238,7 @@ Route::post('save_team',[\App\Http\Controllers\TeamController::class,'save_team'
 //Team Quiz
 Route::get('team_quiz',[\App\Http\Controllers\TeamController::class,'team_quiz']);
 Route::get('delete_team_quiz/{id}',[\App\Http\Controllers\TeamController::class,'delete_team_quiz']);
+Route::get('quiz_info/{id}',[\App\Http\Controllers\TeamController::class,'quiz_info']);
 
 //role user search
 Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::class,'searchRoleUser']);

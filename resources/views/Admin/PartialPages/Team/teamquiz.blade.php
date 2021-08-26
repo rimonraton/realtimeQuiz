@@ -3,6 +3,13 @@
 
 @section('css')
     <style>
+        .my-card
+        {
+            position:absolute;
+            border-radius:50%;
+            text-align :center;
+
+        }
         .iframe-size{
             width: 90vw;
             height: 90vh;
@@ -46,14 +53,16 @@
                 <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('game_quiz_create')}}" >{{__('form.create_quiz')}}</a>
                 <h4 class="card-title text-center">{{__('form.quiz')}}</h4>
                 <hr>
-
-
                 <div class="row justify-content-center">
                     <!-- col -->
                     @foreach($quizzes as $q)
-                    <div class="col-lg-4 col-md-6 mt-3" id="qcard_{{$q->id}}">
+                    <div class="col-lg-3 col-md-6 mt-3" id="qcard_{{$q->id}}">
                         <div class="card bg-light-primary h-100 ">
-                            <a style="cursor: pointer" class="text-right m-1 deleteQuiz" data-id="{{$q->id}}"><i class="fas fa-trash-alt text-danger"></i></a>
+                            <div class="d-flex justify-content-between">
+                                <div><a style="cursor: pointer" class="m-1 quizinfo" data-id="{{$q->id}}" data-toggle="tooltip" data-placement="top" title="{{$lang=='gb'?'Info':'তথ্য'}}"><i class="fas fa-info text-info"></i></a></div>
+                                <div><a style="cursor: pointer" class="m-1 deleteQuiz" data-id="{{$q->id}}" data-toggle="tooltip" data-placement="top" title="{{$lang == 'gb'?'Delete':'মুছুন'}}"><i class="fas fa-trash-alt text-danger"></i></a></div>
+                            </div>
+
                             <div class="card-body">
                                 <h5 class="card-title text-center font-20">
 {{--                                    {{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}--}}
@@ -160,6 +169,36 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<!-- Modal Info -->
+<div class="modal fade" id="quizInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Quiz Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card border-info mx-sm-1 p-3">
+                                <div class="text-info text-center mt-3"><h4>Cars</h4></div>
+                                <div class="text-info text-center mt-2"><h1>234</h1></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -213,6 +252,24 @@
             }
         })
     });
+    $(document).on('click','.quizinfo',function (){
+        $('#quizInfo').modal('show');
+        var $this = $(this);
+        var id = $this.attr('data-id');
+        $.ajax({
+            url: "{{url('quiz_info')}}/" + id,
+            type: "GET",
+            success: function(data) {
+                console.log(data);
+                {{--Swal.fire({--}}
+                {{--    text: '{{__('form.delete_success')}}',--}}
+                {{--    type: 'success',--}}
+                {{--    timer: 1000,--}}
+                {{--    showConfirmButton: false--}}
+                {{--})--}}
+            }
+        })
+    })
 
 
 </script>

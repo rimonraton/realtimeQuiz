@@ -19,7 +19,7 @@ class Category extends Model
 
     public function childs()
     {
-        return $this->hasMany(Category::class, "sub_topic_id", "id");
+        return $this->hasMany(Category::class, "sub_topic_id", "id")->where('is_published',1);
     }
     public function parent()
     {

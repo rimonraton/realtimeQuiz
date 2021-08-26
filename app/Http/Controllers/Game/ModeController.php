@@ -21,7 +21,7 @@ class ModeController extends Controller
         $quiz = $quiz->orderBy('id','desc')->paginate(9);
 
         $user = \Auth::user();
-        $categories = Category::where('sub_topic_id', 0)->get();
+        $categories = Category::where('sub_topic_id', 0)->where('is_published',1)->get();
         return view('mode', compact('quiz', 'user', 'categories', 'type', 'ban'));
     }
 

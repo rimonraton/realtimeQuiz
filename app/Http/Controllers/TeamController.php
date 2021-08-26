@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Quiz;
 use App\Team;
 use App\TeamMember;
+use App\TeamResult;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -124,6 +125,12 @@ class TeamController extends Controller
 
     public function team_quiz()
     {
+//         $quiz = Quiz::find(822);
+//         $teams = Team::whereIn('id',explode(',',$quiz->team_ids))->get();
+//         $collection = collect($quiz);
+//         $merge_qt = $collection->merge($teams);
+//         return $result = $merge_qt->quiz_name;
+
         $quizzes = Quiz::where('game_id',3)->where('user_id',Auth::id())->orderBy('id','desc')->get();
         return view('Admin.PartialPages.Team.teamquiz',compact('quizzes'));
     }
@@ -132,5 +139,12 @@ class TeamController extends Controller
     {
         Quiz::find($id)->delete();
         return 'Success';
+    }
+
+    public function quiz_info($id)
+    {
+        $quiz = Quiz::find($id);
+        $teams = Team::whereIn('id',explode(',',$quiz->team_ids))->get();
+        return [$quiz, $teams];
     }
 }
