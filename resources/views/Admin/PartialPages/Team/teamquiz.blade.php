@@ -60,7 +60,11 @@
                         <div class="card bg-light-primary h-100 ">
                             <div class="d-flex justify-content-between">
 {{--                                <div><a style="cursor: pointer" class="m-1 quizinfo" data-id="{{$q->id}}" data-toggle="tooltip" data-placement="top" title="{{$lang=='gb'?'Info':'তথ্য'}}"><i class="fas fa-info text-info"></i></a></div>--}}
-                                <div><a style="cursor: pointer" class="m-1 deleteQuiz" data-id="{{$q->id}}" data-toggle="tooltip" data-placement="top" title="{{$lang == 'gb'?'Delete':'মুছুন'}}"><i class="fas fa-trash-alt text-danger"></i></a></div>
+                                <div>
+                                    <a style="cursor: pointer" class="m-1 deleteQuiz" data-id="{{$q->id}}" data-toggle="tooltip" data-placement="top" title="{{$lang == 'gb'?'Delete':'মুছুন'}}">
+                                        <i class="fas fa-trash-alt text-danger"></i>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="card-body">
@@ -194,7 +198,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>

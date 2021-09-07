@@ -231,7 +231,8 @@ class QuizController extends Controller
     }
     public function quizUpdate(Request $request)
     {
-        // return $request->all();
+//         return $request->all();
+//        return auth()->user()->id;
         $qa = $request->questions;
         $questionId = array();
         if ($request->question) {
@@ -244,7 +245,8 @@ class QuizController extends Controller
                     'bd_question_text'      => $request->bdquestion[$k],
                     'answer_explanation'    => $request->explenation[$k],
                     'category_id'           =>  $request->category_id,
-                    // 'quizcategory_id'       =>  1,
+                    'quizcategory_id'       =>  1,
+                    'user_id' =>auth()->user()->id,
                 ])->id;
                 $questionId[] = $qid;
                 array_push($qa, $qid);

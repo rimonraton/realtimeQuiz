@@ -145,6 +145,9 @@ class TeamController extends Controller
     {
         $quiz = Quiz::find($id);
         $teams = Team::whereIn('id',explode(',',$quiz->team_ids))->get();
-        return [$quiz, $teams];
+        $team_result = TeamResult::where('qid',$id)->paginate(10);
+//        return collect(json_decode($team_result[0]->results));
+//        return [$quiz, $teams];
+        return view('Admin.PartialPages.Team.teamInfo',compact('team_result'));
     }
 }
