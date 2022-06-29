@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\APIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,13 @@ Route::post('addQuestion',[GameController::class,'addQuestion']);
 Route::post('addTeam',[GameController::class,'addTeam']);
 Route::post('deleteTeam',[GameController::class,'deleteTeam']);
 Route::post('teamResult',[GameController::class,'teamResult']);
+
+
+// api section
+Route::get('get-categories', [APIController::class, 'getCategories']);
+Route::get('get-sub-categories/{categoryId}', [APIController::class, 'getSubCategories']);
+Route::get('get-quizzes/{subCategoryId}', [APIController::class, 'getQuizzes']);
+Route::get('get-questions/{quizId}', [APIController::class, 'getQuestions']);
 
 
 

@@ -79,7 +79,7 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
-//          return $request->all();
+        //  return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('quiz/view/list/' . $request->cid);
