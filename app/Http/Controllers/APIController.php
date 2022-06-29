@@ -23,7 +23,7 @@ class APIController extends Controller
     }
     public function getQuestions($quizId)
     {
-        $q = Quiz::find($id);
+        $q = Quiz::find($quizId);
         $questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
         $collection = collect($q);
         $merged = $collection->merge(['q' => $questions]);
