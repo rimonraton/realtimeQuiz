@@ -11,7 +11,7 @@ class APIController extends Controller
 {
     public function getCategories()
     {
-        return Category::where('sub_topic_id', 0)->get();
+        return Category::withCount('childs')->where('sub_topic_id', 0)->get();
     }
     public function getSubCategories($categoryId)
     {
