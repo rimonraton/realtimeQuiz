@@ -54,13 +54,20 @@
                         </span>
 
                         <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
-
+<!--                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"-->
+<!--                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">-->
                         <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>
 
                         <ul class="list-group" v-for="option in question.options">
                             <li @click="checkAnswer(question.id, option.option, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1">
-                                <span v-html="tbe(option.bd_option, option.option, user.lang)"></span>
+                                <span v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'"></span>
+                            </li>
+                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
+                                <img  class="image mt-1 rounded img-thumbnail"
+                                      :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
+
                             </li>
                         </ul>
                     </div>
