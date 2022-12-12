@@ -14,9 +14,17 @@
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
-
-                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"
-                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+<!--                        <div>-->
+<!--                            {{getImageVideoAudio(question)}}-->
+                            <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                                 :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                            <video controls v-if="question.fileType == 'video'" class="image w-100 mt-1 rounded img-thumbnail">
+                                <source :src="'/' + question.question_file_link" type="video/*">
+                            </video>
+                            <audio controls  v-if="question.fileType == 'audio'">
+                                <source :src="'/' + question.question_file_link" type="audio/*">
+                            </audio>
+<!--                        </div>-->
                         <p class="my-1 font-bold"
                            v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></p>
                         <ul class="list-group" v-for="option in question.options">
@@ -223,11 +231,41 @@ export default {
             if (l === 'gb')
                 return `Question ${q + 1} of ${qn} `;
             return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+        },
+        getImageVideoAudio(param){
+            if(param.fileType == 'image'){
+                var img = document.createElement("img");
+                img.className = 'image w-100 mt-1 rounded img-thumbnail'
+                img.src = URL.createObjectURL(param.question_file_link);
+                $(`#img_video_audio_div${param.id}`).prepend(img)
+                img.onload = function() {
+                    URL.revokeObjectURL(img.src) // free memory
+                }
+            } else if(param.fileType == 'video') {
+                var video = document.createElement('video');
+                video.src = URL.createObjectURL(param.question_file_link);
+                video.class = 'image w-100 mt-1 rounded img-thumbnail'
+                video.controls = true
+                video.width = 400
+                $(`#img_video_audio_div${param.id}`).prepend(video)
+                video.onload = function() {
+                    URL.revokeObjectURL(video.src) // free memory
+                }
+            }else {
+                var audio = document.createElement('audio');
+                audio.src = URL.createObjectURL(param.question_file_link);
+                audio.controls = true
+                $(`#img_video_audio_div${param.id}`).prepend(audio)
+                audio.onload = function() {
+                    URL.revokeObjectURL(audio.src) // free memory
+                }
         }
+        }
+    }
     }
 
 
-};
+
 
 </script>
 

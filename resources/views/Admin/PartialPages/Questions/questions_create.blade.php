@@ -69,6 +69,10 @@
         display: none;
         text-align: center;
     }
+    .file-upload-content2 {
+        display: none;
+        text-align: center;
+    }
 
     .file-upload-input {
         position: absolute;
@@ -115,10 +119,11 @@
     }
 
     .drag-text h3 {
-        font-weight: 100;
+        font-weight: 50;
         text-transform: uppercase;
         color: #15824B;
         padding: 60px 0;
+        font-size: 20px;
     }
 
     .file-upload-image {
@@ -129,14 +134,14 @@
     }
 
     .remove-image {
-        width: 200px;
+        /*width: 200px;*/
         margin: 0;
         color: #fff;
         background: #cd4535;
         border: none;
         padding: 10px;
         border-radius: 4px;
-        border-bottom: 4px solid #b02818;
+        /*border-bottom: 4px solid #b02818;*/
         transition: all .2s ease;
         outline: none;
         text-transform: uppercase;
@@ -183,6 +188,56 @@
     .activeli {
         background-color: #e9ecef !important;
     }
+    .btn-tertiary {
+        color: #555;
+        padding: 0;
+        line-height: 1;
+        /*width: 300px;*/
+        margin: auto;
+        display: block;
+        border: 2px solid #555;
+    }
+    .btn-tertiary:hover, .btn-tertiary:focus {
+        color: #888888;
+        border-color: #888888;
+    }
+    /* input file style */
+    .input-file {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+    .input-file + .js-labelFile {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+    .labelFilepreview {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    .input-file + .js-labelFile .icon:before {
+        content: "";
+    }
+    .input-file + .js-labelFile.has-file .icon:before {
+        content: "";
+        color: #5aac7b;
+    }
+    .img-preview{
+        width: 180px;
+        height: 50px;
+        cursor: pointer;
+    }
+    .optionImage{
+        display: none;
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -198,53 +253,119 @@
 
                     <input type="hidden" name="cid" id="selectedCid">
                     <div class="card-body">
-                        <input type="radio" id="image" value="image" name="customRadio" class="custom-control-input" checked="">
+                        <input type="hidden" id="fileType" value="" name="fileType" class="custom-control-input">
                         <div class="form-group row justify-content-center">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-primary">
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="image" value="image" name="customRadio" class="custom-control-input" checked="">
-                                        <label class="custom-control-label" for="customRadio4">{{__('form.image')}}</label>
+                                        <input type="radio" id="sentence" value="sentence" name="sentenceOrfile" class="custom-control-input" checked="">
+                                        <label class="custom-control-label" for="sentence">{{__('form.txt')}}</label>
                                     </div>
                                 </label>
+                                <label class="btn btn-primary">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="file" value="file" name="sentenceOrfile" class="custom-control-input">
+                                        <label class="custom-control-label" for="file">{{__('form.media')}}</label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="btn-group" data-toggle="buttons">--}}
+{{--                                <label class="btn btn-primary">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="txt" value="txt" name="customRadio" class="custom-control-input" checked="">--}}
+{{--                                        <label class="custom-control-label" for="txt">{{__('form.txt')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
+{{--                                <label class="btn btn-primary">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="image" value="image" name="customRadio" class="custom-control-input">--}}
+{{--                                        <label class="custom-control-label" for="image">{{__('form.image')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
 {{--                                <label class="btn btn-primary">--}}
 {{--                                    <div class="custom-control custom-radio">--}}
 {{--                                        <input type="radio" id="video" value="video" name="customRadio" class="custom-control-input" >--}}
-{{--                                        <label class="custom-control-label" for="customRadio5">{{__('form.video')}}</label>--}}
+{{--                                        <label class="custom-control-label" for="video">{{__('form.video')}}</label>--}}
 {{--                                    </div>--}}
 {{--                                </label>--}}
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3" id="divImage">
-                            <div class="file-upload">
-                                <div class="image-upload-wrap">
-                                    <input class="file-upload-input ipf" name="file" type='file' accept="image/*" />
-                                    <div class="drag-text">
-                                        <h3 id="txt">{{__('form.image_title')}}</h3>
+{{--                                <label class="btn btn-primary">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="audio" value="audio" name="customRadio" class="custom-control-input" >--}}
+{{--                                        <label class="custom-control-label" for="audio">{{__('form.audio')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div id="allMedia" class="d-none">--}}
+{{--                            <div class="form-group row pb-3" id="divImage">--}}
+{{--                                <div class="file-upload">--}}
+{{--                                    <div class="image-upload-wrap">--}}
+{{--                                        <input class="file-upload-input ipf" name="file" type='file' accept="image/*" />--}}
+{{--                                        <div class="drag-text">--}}
+{{--                                            <h3 id="txt">{{__('form.image_title')}}</h3>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="file-upload-content">--}}
+{{--                                        <img class="file-upload-image" src="#" alt="your image" />--}}
+{{--                                        <div class="image-title-wrap">--}}
+{{--                                            <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_image')}}</span></button>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="form-group row pb-3 d-none" id="divVideo">--}}
+{{--                                <div class="file-upload">--}}
+{{--                                    <div class="image-upload-wrap">--}}
+{{--                                        <input class="file-upload-input ipf" name="video" type='file' accept="video/*" />--}}
+{{--                                        <div class="drag-text">--}}
+{{--                                            <h3 id="txt">{{__('form.video_title')}}</h3>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="file-upload-content1">--}}
+{{--                                        <video id="videos" width="400" controls>--}}
+{{--                                            <source src="" type="video/*">--}}
+{{--                                        </video>--}}
+{{--                                        <div class="image-title-wrap">--}}
+{{--                                            <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_video')}}</span></button>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="form-group row pb-3 d-none" id="divAudio">--}}
+{{--                                <div class="file-upload">--}}
+{{--                                    <div class="image-upload-wrap">--}}
+{{--                                        <input class="file-upload-input ipf" name="audio" type='file' accept="audio/*" />--}}
+{{--                                        <div class="drag-text">--}}
+{{--                                            <h3 id="txt">{{__('form.audio_title')}}</h3>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="file-upload-content2">--}}
+{{--                                        <audio id="audios" controls>--}}
+{{--                                            <source src="" type="audio/*">--}}
+{{--                                        </audio>--}}
+{{--                                        <div class="image-title-wrap">--}}
+{{--                                            <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_audio')}}</span></button>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                        <div id="allMediaFiles" class="d-none">
+                            <div class="form-group row pb-3">
+                                <div class="file-upload">
+                                    <div class="image-upload-wrap">
+                                        <input class="file-upload-input" name="file" id="allfileupload" type='file' accept="image/*, audio/*, video/*" />
+                                        <div class="drag-text">
+                                            <h3>{{__('form.media_title')}}</h3>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="file-upload-content">
-                                    <img class="file-upload-image" src="#" alt="your image" />
-                                    <div class="image-title-wrap">
-                                        <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_image')}}</span></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3 d-none" id="divVideo">
-                            <div class="file-upload">
-                                <div class="image-upload-wrap">
-                                    <input class="file-upload-input ipf" name="video" type='file' accept="video/*" />
-                                    <div class="drag-text">
-                                        <h3 id="txt">{{__('form.video_title')}}</h3>
-                                    </div>
-                                </div>
-                                <div class="file-upload-content1">
-                                    <video id="videos" width="400" controls>
-                                        <source src="" type="video/*">
-                                    </video>
-                                    <div class="image-title-wrap">
-                                        <button type="button" class="remove-image">{{__('form.remove')}} <span class="image-title">{{__('form.uploaded_video')}}</span></button>
+                                    <div class="d-none text-center" id="filePreview">
+{{--                                        <img class="file-upload-image" src="#" alt="your image" />--}}
+                                        <div class="image-title-wrap">
+                                            <button type="button" class="remove-image" id="removeMediaFile">{{__('form.remove')}}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -297,17 +418,50 @@
                                 <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
                             </div>
                         </div>
-
+                        <div class="form-group row justify-content-center" id="textImagePanel">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-info">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="textOpt" value="textOpt" name="textOrImage" class="custom-control-input" checked="">
+                                        <label class="custom-control-label" for="textOpt">{{__('form.optTxt')}}</label>
+                                    </div>
+                                </label>
+                                <label class="btn btn-info">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="imageOpt" value="imageOpt" name="textOrImage" class="custom-control-input">
+                                        <label class="custom-control-label" for="imageOpt">{{__('form.image')}}</label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
-                            <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
+                            <div class="col-sm-2 optionImage">
+{{--                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">--}}
+                                <div class="form-group">
+                                    <input type="file" id="optionOne" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <div class="btn btn-tertiary js-labelFile">
+                                        <label for="optionOne" class="d-flex flex-column">
+                                            <span class="js-fileName">
+                                                <i class="icon fa fa-check"></i> {{__('form.choose_file')}}
+                                            </span>
+                                            <small class="">({{__('form.video_image_audio')}})</small>
+                                        </label>
+                                    </div>
+                                    <label for="optionOne" class="d-none img-label">
+{{--                                        <img class="img-preview js-labelFilepreview" src="" alt="">--}}
+                                    </label>
+                                    <div class="d-none text-center">
+                                        <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -316,23 +470,34 @@
                         </div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
-                            <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
+                            <div class="col-sm-2 optionImage">
+{{--                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">--}}
+                                <div class="form-group">
+                                    <input type="file" id="optionTwo" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <div class="btn btn-tertiary js-labelFile">
+                                        <label for="optionTwo" class="d-flex flex-column">
+                                            <span class="js-fileName"><i class="icon fa fa-check"></i> {{__('form.choose_file')}}</span>
+                                            <small class="">({{__('form.video_image_audio')}})</small>
+                                        </label>
+                                    </div>
+                                    <label for="optionTwo" class="d-none img-label">
+{{--                                        <img class="img-preview js-labelFilepreview" src="" alt="">--}}
+                                    </label>
+                                    <div class="d-none text-center"><i class="ti-close removePreview" style="color:red;cursor:pointer;"></i></div>
+                                </div>
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
                                 <input type="checkbox" class="chk" name="answer[]" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>
-                        <div id="newOne">
-
-                        </div>
+                        <div id="newOne"></div>
                         <div class="form-group row pb-3">
                             <label for="option1" class="col-sm-4 text-right control-label col-form-label">
                                 <a class="waves-effect waves-light" id="createNew" href="">{{__('form.new_option')}}</a>
@@ -427,20 +592,33 @@
                 })
             }
         })
+            let numb = 2
 
-        $('#createNew').on('click', function(e) {
+            $('#createNew').on('click', function(e) {
+                numb++
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="optionbd[]" placeholder="{{__('form.option_bn_placholder')}}">
                             </div>
-                             <div class="col-sm-2">
-                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">
+                             <div class="col-sm-2 optionImage">
+                                 <div class="form-group">
+                                    <input type="file" id="option${numb}" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <div class="btn btn-tertiary js-labelFile">
+                                        <label for="option${numb}" class="d-flex flex-column">
+                                            <span class="js-fileName"><i class="icon fa fa-check"></i> {{__('form.choose_file')}}</span>
+                                            <small class="">({{__('form.video_image_audio')}})</small>
+                                        </label>
+                                    </div>
+                                     <label for="option${numb}" class="d-none img-label">
+                                    </label>
+                                    <div class="d-none text-center"><i class="ti-close removePreview" style="color:red;cursor:pointer;"></i></div>
+                                </div>
                             </div>
                             <div class="col-sm-1 bt-switch">
                                 <input type="hidden" name="ans[]" class="hi" value="0">
@@ -449,6 +627,22 @@
                         </div>`;
             $('#newOne').append(data);
             $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+
+            const checkValue = $('input[name="sentenceOrfile"]:checked').val();
+            if(checkValue == 'sentence') {
+                const checkValue = $('input[name="textOrImage"]:checked').val();
+                if (checkValue == 'textOpt') {
+                    $('.optdiv').show()
+                    $('.optionImage').hide()
+                }
+                else {
+                    $('.optdiv').hide()
+                    $('.optionImage').show()
+                }
+                // $('.optionImage').show()
+            } else{
+                $('.optionImage').hide()
+            }
         });
 
         $(document).on('click', '.remove', function() {
@@ -485,18 +679,21 @@
                         $('.file-upload-image').attr('src', e.target.result);
                         $('.file-upload-content1').hide();
                         $('.file-upload-content').show();
+                        $('.file-upload-content2').hide();
+
 
                         $('.image-title').html(input.files[0].name);
                     };
-                } else {
+                } else if(type == 'video') {
                     reader.onload = function(e) {
                         $('.image-upload-wrap').hide();
-
                         // $('.file-upload-image').attr('src', e.target.result);
                         var video = $('#videos')[0];
                         video.src = e.target.result;
                         $('.file-upload-content').hide();
                         $('.file-upload-content1').show();
+                        $('.file-upload-content2').hide();
+
 
                         $('.image-title').html(input.files[0].name);
                     };
@@ -505,6 +702,18 @@
                     // video.src = videoFile;
                     // video.load();
                     // video.play();
+                } else if (type == 'audio') {
+                    reader.onload = function(e) {
+                        $('.image-upload-wrap').hide();
+                        // $('.file-upload-image').attr('src', e.target.result);
+                        var audio = $('#audios')[0];
+                        audio.src = e.target.result;
+                        $('.file-upload-content').hide();
+                        $('.file-upload-content1').hide();
+                        $('.file-upload-content2').show();
+
+                        $('.image-title').html(input.files[0].name);
+                    }
                 }
                 reader.readAsDataURL(input.files[0]);
 
@@ -518,6 +727,7 @@
             // $('.file-upload-input').replaceWith($('.file-upload-input').clone());
             $('.file-upload-content').hide();
             $('.file-upload-content1').hide();
+            $('.file-upload-content2').hide();
             $('.image-upload-wrap').show();
         }
         $('.image-upload-wrap').bind('dragover', function() {
@@ -531,13 +741,35 @@
 
 
         $('#video').on('change', function() {
+            $('#allMedia').removeClass('d-none')
             $('#divImage').addClass('d-none');
             $('#divVideo').removeClass('d-none');
+            $('#divAudio').addClass('d-none');
+            $('.optionImage').hide();
             // changeVI('Drag and drop a Video file or select add Video', 'video/*');
         })
         $('#image').on('change', function() {
+            $('#allMedia').removeClass('d-none')
             $('#divImage').removeClass('d-none');
             $('#divVideo').addClass('d-none');
+            $('#divAudio').addClass('d-none');
+            $('.optionImage').hide();
+            // changeVI('Drag and drop a Image file or select add Image', 'image/*');
+        })
+        $('#audio').on('change', function() {
+            $('#allMedia').removeClass('d-none')
+            $('#divImage').addClass('d-none');
+            $('#divVideo').addClass('d-none');
+            $('#divAudio').removeClass('d-none');
+            $('.optionImage').hide();
+            // changeVI('Drag and drop a Image file or select add Image', 'image/*');
+        })
+        $('#txt').on('change', function() {
+            $('#allMedia').addClass('d-none')
+            $('#divImage').addClass('d-none');
+            $('#divVideo').addClass('d-none');
+            $('#divAudio').addClass('d-none');
+            $('.optionImage').show();
             // changeVI('Drag and drop a Image file or select add Image', 'image/*');
         })
 
@@ -620,5 +852,139 @@
 
 
     })
+    // var loadFile = function(event) {
+    //     var output = document.getElementById('output');
+    //     output.src = URL.createObjectURL(event.target.files[0]);
+    //     output.onload = function() {
+    //         URL.revokeObjectURL(output.src) // free memory
+    //     }
+    // };
+    $('input[type=radio][name=textOrImage]').change(function() {
+        if (this.value == 'textOpt') {
+            $('.optdiv').show()
+            $('.optionImage').hide()
+        }
+        else {
+            $('.optdiv').hide()
+            $('.optionImage').show()
+        }
+    })
+
+    $('input[type=radio][name=sentenceOrfile]').change(function() {
+        if (this.value == 'sentence') {
+            $('#textImagePanel').show()
+            $('#allMediaFiles').addClass('d-none')
+            $('.optionImage').show();
+            const checkValue = $('input[name="textOrImage"]:checked').val();
+            if (checkValue == 'textOpt') {
+                $('.optdiv').show()
+                $('.optionImage').hide()
+            }
+            else {
+                $('.optdiv').hide()
+                $('.optionImage').show()
+            }
+        }
+        else {
+            $('#textImagePanel').hide()
+            $('#allMediaFiles').removeClass('d-none')
+            $('.optionImage').hide();
+            $('.optdiv').show()
+        }
+    });
+    $(document).on('change', '#allfileupload', function (event) {
+        $(this).parent().addClass('d-none')
+        $('#filePreview').removeClass('d-none')
+        const fileType = ['image', 'video', 'audio']
+        if (event.target.files[0]) {
+            if(fileType.includes(event.target.files[0].type.split('/')[0])) {
+                $('#fileType').val(event.target.files[0].type.split('/')[0])
+                if(event.target.files[0].type.split('/')[0] == 'image'){
+                    var img = document.createElement("img");
+                    img.className = 'file-upload-image'
+                    img.src = URL.createObjectURL(event.target.files[0]);
+                    $('#filePreview').prepend(img)
+                    img.onload = function() {
+                        URL.revokeObjectURL(img.src) // free memory
+                    }
+                } else if(event.target.files[0].type.split('/')[0] == 'video') {
+                    var video = document.createElement('video');
+                    video.src = URL.createObjectURL(event.target.files[0]);
+                    video.controls = true
+                    video.width = 400
+                    $('#filePreview').prepend(video)
+                    video.onload = function() {
+                        URL.revokeObjectURL(video.src) // free memory
+                    }
+                }else {
+                    var audio = document.createElement('audio');
+                    audio.src = URL.createObjectURL(event.target.files[0]);
+                    audio.controls = true
+                    $('#filePreview').prepend(audio)
+                    audio.onload = function() {
+                        URL.revokeObjectURL(audio.src) // free memory
+                    }
+                }
+            } else {
+                console.log('File type is not correct')
+                return
+            }
+        }
+    })
+    $(document).on('click', '#removeMediaFile', function (event) {
+        $('#allfileupload').val(null)
+        $(this).parent().parent().parent().find('.image-upload-wrap').removeClass('d-none')
+        $('#filePreview').addClass('d-none')
+        const whichTag =  $('#filePreview')[0].firstChild
+        if(whichTag.tagName == 'AUDIO' || whichTag.tagName == 'VIDEO') {
+            whichTag.pause()
+        }
+        $('#filePreview')[0].firstChild.remove()
+
+    })
+    $(document).on('change', '.changeFile', function (event) {
+        // console.log('event file', event.target.files.length > 0, event.target.files[0].type.split('/')[0])
+        if (event.target.files[0]) {
+            if(event.target.files[0].type.split('/')[0] == 'image'){
+                $(this).next().addClass('d-none');
+                $(this).next().next().removeClass('d-none');
+                $(this).next().next().next().removeClass('d-none');
+                var output = $(this).siblings('.img-label')[0]
+                if(output.firstElementChild != null) {
+                    output.firstElementChild.remove()
+                }
+
+                var img = document.createElement("img");
+                img.className = 'img-preview js-labelFilepreview'
+                img.src = URL.createObjectURL(event.target.files[0]);
+                output.prepend(img)
+                img.onload = function() {
+                    URL.revokeObjectURL(img.src) // free memory
+                }
+            } else {
+                console.log('File type is not correct')
+                return
+            }
+        }
+    })
+    $(document).on('click', '.removePreview', function (event) {
+        const parent = $(this).parent().parent().find('.changeFile')
+        parent.next().removeClass('d-none')
+        parent.next().next().addClass('d-none')
+        parent.val(null)
+        $(this).parent().addClass('d-none')
+        // console.log('img-label', $(this).parent().siblings('.img-label')[0].firstElementChild.tagName)
+        const whichTag = $(this).parent().siblings('.img-label')[0].firstElementChild
+        if(whichTag.tagName == 'AUDIO' || whichTag.tagName == 'VIDEO') {
+            whichTag.pause()
+        }
+    })
+    $(document).on('switchChange.bootstrapSwitch', '#textOrfile', function(event, state) {
+        if (state == true) {
+            $(this).closest("div.bt-switch").find(".hi").val('1');
+        } else {
+            $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
+        }
+    });
 </script>
 @endsection

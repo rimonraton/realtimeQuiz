@@ -2,14 +2,21 @@
 
 return [
     'questions_type' => 'Question Type',
+    'media' => 'Media',
+    'media_title' => 'Drag and drop or select a Image, Audio, Video file',
     'image' => 'Image',
     'video' => 'Video',
+    'audio' => 'Audio',
+    'txt' => 'Sentence',
+    'optTxt' => 'Text',
     'image_title' => 'Drag and drop a Image file or select add Image',
     'video_title' => 'Drag and drop a Video file or select add Video',
+    'audio_title' => 'Drag and drop a Audio file or select add Audio',
     'excel_title' => 'Drag and drop a Excel file or select add Video',
     'remove' => 'Remove',
     'uploaded_image' => 'Uploaded Image',
     'uploaded_video' => 'Uploaded Video',
+    'uploaded_audio' => 'Uploaded Audio',
     'question_type' => 'Select Question Type',
     'topic' => 'Topic',
     'select_topic' => 'Select Topic',
@@ -205,4 +212,7 @@ return [
     'teams'=>'Teams',
     'quiz'=>'Quiz List',
     'edit_quiz'=>'Edit Quiz',
+    'video_image_audio'=> 'Only Image',
+//    'video_image_audio'=> 'Image, Video, Audio',
+    'choose_file' => 'Choose a file'
 ];

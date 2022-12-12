@@ -106,34 +106,43 @@ class QuestionController extends Controller
     }
     public function storeQuestion(Request $request)
     {
-        // return $request->all();
+//         return $request->all();
+//      return array_search(1, array_keys($request->optionimg));
         // $request->validate([
         //     'category_id' => 'required',
         //     'question_text' => 'required',
         //     'option' => 'required',
         //     'correct' => 'required',
         // ]);
+//        return $request->all();
 
 
         $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
         $optionimglocation = 'images/option_images/';
-        $optionimg = '';
+//        $optionimg = '';
+        $fileType = '';
 
 
-
-        if ($request->customRadio == 'image') {
-            $location = 'images/question_images/';
-            $file = $request->file('file');
+        if ($request->hasFile('file')) {
+            if ($request->fileType == 'image') {
+                $fileType = $request->fileType;
+                $location = 'images/question_images/';
+//            $file = $request->file('file');
+            } else if ($request->fileType == 'video') {
+                $fileType = $request->fileType;
+                $location = 'videos/question_videos/';
+//            $file = $request->file('video');
+            } else {
+                $fileType = $request->fileType;
+                $location = 'audios/question_audios/';
+//            $file = $request->file('video');
+            }
         }
-        else {
-            $location = 'videos/question_videos/';
-            $file = $request->file('video');
-        }
 
-        if ($request->hasFile('file') || $request->hasFile('video')) {
-            $original_name = $file->getClientOriginalName();
+        if ($request->hasFile('file')) {
+            $original_name = $request->file->getClientOriginalName();
             $ext = strtolower(\File::extension($original_name));
             $created_at = Carbon::now('Asia/Dhaka');
             $t = $created_at->timestamp;
@@ -141,7 +150,7 @@ class QuestionController extends Controller
             $random_name = $t . '' . $r . '.' . $ext;
             $path = public_path() . '/' . $location;
             $filename = $location . $random_name;
-            $file->move($path, $filename);
+            $request->file->move($path, $filename);
             $imgPath = $filename;
         }
 
@@ -153,6 +162,7 @@ class QuestionController extends Controller
             'question_file_link' => $imgPath,
             'answer_explanation' => $request->explenation,
             'bd_answer_explanation' => $request->bdexplenation,
+            'fileType' => $fileType,
             'user_id' => Auth::user()->id,
             // 'created_at' => Carbon::,
         ]);
@@ -181,11 +191,28 @@ class QuestionController extends Controller
                 $data[$k]['question_id'] = $question->id;
                 $data[$k]['option'] = $o;
             }
-
             foreach ($request->optionbd as  $k => $o) {
                 $data[$k]['bd_option'] = $o;
             }
         }
+//        foreach ($request->option as  $k => $o) {
+//            $data[$k]['question_id'] = $question->id;
+//            $data[$k]['option'] = $o;
+//            if ($request->hasFile('optionimg')){
+//                if(array_search($k, array_keys($request->optionimg)) >= 0){
+//                    $ofile = $this->optionFile($request->optionimg[$k]);
+//                    $data[$k]['img_link'] = $ofile['img_link'];
+//                    $data[$k]['flag'] = $ofile['flag'];
+//                } else {
+//                    $data[$k]['img_link'] = '';
+//                }
+//
+//            }
+//        }
+//
+//        foreach ($request->optionbd as  $k => $o) {
+//            $data[$k]['bd_option'] = $o;
+//        }
 
         foreach ($request->ans as  $k => $a) {
             $data[$k]['correct'] = $a;
@@ -195,6 +222,28 @@ class QuestionController extends Controller
         QuestionsOption::insert($data);
 
         return redirect('question/list/view' . '/' . $categoryid);
+    }
+
+    public function optionFile($file)
+    {
+        $rand = rand(0,10);
+        $original_name = $file->getClientOriginalName();
+        $ext = strtolower(\File::extension($original_name));
+        $created_at = Carbon::now('Asia/Dhaka');
+        $t = $created_at->timestamp;
+        $r = Str::random(40);
+        $random_name = $t . '' . $r . '.' . $ext;
+        $path = public_path() . '/' . $rand.'/';
+        $filename = $rand.'/'. $random_name;
+        $file->move($path, $filename);
+        return [
+            'img_link'=> $filename,
+            'flag'=> 'img'
+        ];
+//                $optionimg = $filename;
+//        $data[$key]['question_id'] = $question->id;
+//        $data[$key]['img_link'] = $filename;
+//        $data[$key]['flag'] = 'img';
     }
     public function getlist($id)
     {
