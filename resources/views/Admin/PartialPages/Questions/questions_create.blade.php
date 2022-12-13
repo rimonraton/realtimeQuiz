@@ -435,7 +435,7 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label">{{__('form.option')}} :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label optionTitle">{{__('form.option')}} {{$lang=='gb'? '1' : '১' }} :</label>
                             <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
@@ -445,7 +445,7 @@
                             <div class="col-sm-2 optionImage">
 {{--                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">--}}
                                 <div class="form-group">
-                                    <input type="file" id="optionOne" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <input type="file" id="optionOne" class="input-file changeFile" name="optionimg[]" accept="image/*">
                                     <div class="btn btn-tertiary js-labelFile">
                                         <label for="optionOne" class="d-flex flex-column">
                                             <span class="js-fileName">
@@ -469,7 +469,7 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"> {{__('form.option')}} :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label optionTitle"> {{__('form.option')}} {{$lang=='gb'? '2' : '২' }} :</label>
                             <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
@@ -479,7 +479,7 @@
                             <div class="col-sm-2 optionImage">
 {{--                                <input type="file" class="form-control" name="optionimg[]" accept="image/png, image/gif, image/jpeg">--}}
                                 <div class="form-group">
-                                    <input type="file" id="optionTwo" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <input type="file" id="optionTwo" class="input-file changeFile" name="optionimg[]" accept="image/*">
                                     <div class="btn btn-tertiary js-labelFile">
                                         <label for="optionTwo" class="d-flex flex-column">
                                             <span class="js-fileName"><i class="icon fa fa-check"></i> {{__('form.choose_file')}}</span>
@@ -599,7 +599,7 @@
             e.preventDefault();
             var data = '';
             data += `<div class="form-group row pb-3">
-                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> {{__('form.option')}} :</label>
+                            <label for="option1" class="col-sm-3 text-right control-label col-form-label"><i class="ti-close remove" style="color:red;cursor:pointer;"></i> <label class="optionTitle">{{__('form.option')}} ${numb}:</label></label>
                             <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" pattern="^[a-zA-Z0-9 ]+$" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
                             </div>
@@ -608,7 +608,7 @@
                             </div>
                              <div class="col-sm-2 optionImage">
                                  <div class="form-group">
-                                    <input type="file" id="option${numb}" class="input-file changeFile" name="optionimg[]" accept="image/*,video/*,audio/*">
+                                    <input type="file" id="option${numb}" class="input-file changeFile" name="optionimg[]" accept="image/*">
                                     <div class="btn btn-tertiary js-labelFile">
                                         <label for="option${numb}" class="d-flex flex-column">
                                             <span class="js-fileName"><i class="icon fa fa-check"></i> {{__('form.choose_file')}}</span>
@@ -627,7 +627,7 @@
                         </div>`;
             $('#newOne').append(data);
             $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-
+                numberSerial()
             const checkValue = $('input[name="sentenceOrfile"]:checked').val();
             if(checkValue == 'sentence') {
                 const checkValue = $('input[name="textOrImage"]:checked').val();
@@ -647,6 +647,7 @@
 
         $(document).on('click', '.remove', function() {
             $(this).closest('.row').remove();
+            numberSerial()
         });
 
         $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
@@ -893,40 +894,63 @@
         }
     });
     $(document).on('change', '#allfileupload', function (event) {
-        $(this).parent().addClass('d-none')
-        $('#filePreview').removeClass('d-none')
-        const fileType = ['image', 'video', 'audio']
+
         if (event.target.files[0]) {
+            const fileType = ['image', 'video', 'audio']
             if(fileType.includes(event.target.files[0].type.split('/')[0])) {
-                $('#fileType').val(event.target.files[0].type.split('/')[0])
+                const size = Math.round(event.target.files[0].size/1024)
                 if(event.target.files[0].type.split('/')[0] == 'image'){
-                    var img = document.createElement("img");
-                    img.className = 'file-upload-image'
-                    img.src = URL.createObjectURL(event.target.files[0]);
-                    $('#filePreview').prepend(img)
-                    img.onload = function() {
-                        URL.revokeObjectURL(img.src) // free memory
+                    // console.log('size..', size)
+                    if(size <= 100){
+                        var img = document.createElement("img");
+                        img.className = 'file-upload-image'
+                        img.src = URL.createObjectURL(event.target.files[0]);
+                        $('#filePreview').prepend(img)
+                        img.onload = function() {
+                            URL.revokeObjectURL(img.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 100KB')
+                        alertMessage('File Size less than 100KB')
+                        return;
                     }
                 } else if(event.target.files[0].type.split('/')[0] == 'video') {
-                    var video = document.createElement('video');
-                    video.src = URL.createObjectURL(event.target.files[0]);
-                    video.controls = true
-                    video.width = 400
-                    $('#filePreview').prepend(video)
-                    video.onload = function() {
-                        URL.revokeObjectURL(video.src) // free memory
+                    if (size <= 1024) {
+                        var video = document.createElement('video');
+                        video.src = URL.createObjectURL(event.target.files[0]);
+                        video.controls = true
+                        video.width = 400
+                        $('#filePreview').prepend(video)
+                        video.onload = function() {
+                            URL.revokeObjectURL(video.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 1MB')
+                        alertMessage('File Size less than 1MB')
+                        return;
                     }
+
                 }else {
-                    var audio = document.createElement('audio');
-                    audio.src = URL.createObjectURL(event.target.files[0]);
-                    audio.controls = true
-                    $('#filePreview').prepend(audio)
-                    audio.onload = function() {
-                        URL.revokeObjectURL(audio.src) // free memory
+                    if (size <= 500) {
+                        var audio = document.createElement('audio');
+                        audio.src = URL.createObjectURL(event.target.files[0]);
+                        audio.controls = true
+                        $('#filePreview').prepend(audio)
+                        audio.onload = function() {
+                            URL.revokeObjectURL(audio.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 500KB')
+                        alertMessage('File Size less than 500KB')
+                        return;
                     }
                 }
+                $('#fileType').val(event.target.files[0].type.split('/')[0])
+                $(this).parent().addClass('d-none')
+                $('#filePreview').removeClass('d-none')
             } else {
-                console.log('File type is not correct')
+                // alert('File format is not correct')
+                alertMessage('File format is not correct')
                 return
             }
         }
@@ -945,25 +969,33 @@
     $(document).on('change', '.changeFile', function (event) {
         // console.log('event file', event.target.files.length > 0, event.target.files[0].type.split('/')[0])
         if (event.target.files[0]) {
+            const size = Math.round(event.target.files[0].size/1024)
             if(event.target.files[0].type.split('/')[0] == 'image'){
-                $(this).next().addClass('d-none');
-                $(this).next().next().removeClass('d-none');
-                $(this).next().next().next().removeClass('d-none');
-                var output = $(this).siblings('.img-label')[0]
-                if(output.firstElementChild != null) {
-                    output.firstElementChild.remove()
+                if (size <= 100) {
+                    $(this).next().addClass('d-none');
+                    $(this).next().next().removeClass('d-none');
+                    $(this).next().next().next().removeClass('d-none');
+                    var output = $(this).siblings('.img-label')[0]
+                    if(output.firstElementChild != null) {
+                        output.firstElementChild.remove()
+                    }
+                    var img = document.createElement("img");
+                    img.className = 'img-preview js-labelFilepreview'
+                    img.src = URL.createObjectURL(event.target.files[0]);
+                    output.prepend(img)
+                    img.onload = function() {
+                        URL.revokeObjectURL(img.src) // free memory
+                    }
+                } else {
+                    // alert('File Size less than 100KB')
+                    alertMessage('File Size less than 100KB')
+                    return;
                 }
 
-                var img = document.createElement("img");
-                img.className = 'img-preview js-labelFilepreview'
-                img.src = URL.createObjectURL(event.target.files[0]);
-                output.prepend(img)
-                img.onload = function() {
-                    URL.revokeObjectURL(img.src) // free memory
-                }
             } else {
-                console.log('File type is not correct')
-                return
+                // alert('File format is not correct')
+                alertMessage(`${event.target.files[0].type.split('/')[0]} file format is not correct`)
+                return;
             }
         }
     })
@@ -986,5 +1018,32 @@
             $(this).closest("div.bt-switch").find("input[name='ans[]']").val('0');
         }
     });
+    function alertMessage(title){
+        Swal.fire({
+            position: 'top-end',
+            type: 'error',
+            title: title,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+    function numberSerial() {
+        {{--console.log('lang..', '{{$lang}}')--}}
+        $('.optionTitle').each(function(idx, elem){
+            if('{{$lang}}' == 'gb') {
+                $(elem).text( 'Option ' + (idx+1));
+            } else {
+                $(elem).text( 'অপশন ' + q2bNumber(idx+1));
+            }
+
+        });
+    }
+   function q2bNumber(numb) {
+        let numbString = numb.toString();
+        let bn = ''
+        let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+        [...numbString].forEach(n => bn += eb[n])
+        return bn
+    }
 </script>
 @endsection
