@@ -12,35 +12,51 @@
                     <!-- <transition name="fade" mode="out-in"> -->
                     <div class="card-body animate__animated animate__backInRight animate__faster" :key="qid">
                         <span class="q_num text-right text-muted">
+                            {{question.fileType}}
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
 <!--                        <div>-->
 <!--                            {{getImageVideoAudio(question)}}-->
                             <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                                  :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
-                            <video controls v-if="question.fileType == 'video'" class="image w-100 mt-1 rounded img-thumbnail">
-                                <source :src="'/' + question.question_file_link" type="video/*">
+                            <video
+                                v-if="question.fileType == 'video'"
+                                @ended="onEnd()"
+                                @play="onStart()"
+                                class="image w-100 mt-1 rounded img-thumbnail"
+                                autoplay>
+                                <source :src="'/'+question.question_file_link" type="video/mp4">
                             </video>
-                            <audio controls  v-if="question.fileType == 'audio'">
-                                <source :src="'/' + question.question_file_link" type="audio/*">
-                            </audio>
+                            <div class="audio" v-if="question.fileType == 'audio'">
+                                <audio
+                                    @ended="onEnd()"
+                                    @play="onStart()"
+                                    controls
+                                    autoplay>
+                                    <source :src="'/'+question.question_file_link" type="audio/mpeg">
+                                </audio>
+                                <div id="ar"></div>
+                            </div>
+
 <!--                        </div>-->
-                        <p class="my-1 font-bold"
-                           v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></p>
-                        <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
-                                class="list-group-item list-group-item-action cursor my-1"
-                                v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'" >
+                        <div v-show="av">
+                            <p class="my-1 font-bold"
+                               v-html="tbe(question.bd_question_text, question.question_text, user.lang)">
+                            </p>
+                            <ul class="list-group" v-for="option in question.options">
+                                <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                    class="list-group-item list-group-item-action cursor my-1"
+                                    v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'" >
 
-                            </li>
-                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
-                                <img  class="image mt-1 rounded img-thumbnail"
-                                     :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
+                                </li>
+                                <li @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                    class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
+                                    <img  class="image mt-1 rounded img-thumbnail"
+                                          :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
 
-                            </li>
-                        </ul>
-
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- </transition>                  -->
@@ -108,6 +124,7 @@ export default {
             answer_minutes: 0,
             mc: 0,
             pm: '',
+            av: true
         };
     },
 
@@ -120,11 +137,9 @@ export default {
         document.head.appendChild(confetti)
 
         this.startTimer()
-
     },
 
     methods: {
-
         startTimer() {
             console.log('timer start')
             this.timer = setInterval(() => {
@@ -219,6 +234,19 @@ export default {
         tbe(b, e, l) {
             return l === 'bd' ? (b !== null ? b : e) : (e !== null ? e : b)
         },
+        qne2b(q, qn, l) {
+            if (l === 'gb')
+                return `Question ${q + 1} of ${qn} `;
+            return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+        },
+        onEnd() {
+            this.av = true
+            this.startTimer()
+        },
+        onStart() {
+            this.av = false
+            clearInterval(this.timer);
+        },
         q2bNumber(numb) {
             let numbString = numb.toString();
             let bn = ''
@@ -226,46 +254,20 @@ export default {
             [...numbString].forEach(n => bn += eb[n])
             return bn
         },
-        qne2b(q, qn, l) {
-
-            if (l === 'gb')
-                return `Question ${q + 1} of ${qn} `;
-            return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
-        },
-        getImageVideoAudio(param){
-            if(param.fileType == 'image'){
-                var img = document.createElement("img");
-                img.className = 'image w-100 mt-1 rounded img-thumbnail'
-                img.src = URL.createObjectURL(param.question_file_link);
-                $(`#img_video_audio_div${param.id}`).prepend(img)
-                img.onload = function() {
-                    URL.revokeObjectURL(img.src) // free memory
-                }
-            } else if(param.fileType == 'video') {
-                var video = document.createElement('video');
-                video.src = URL.createObjectURL(param.question_file_link);
-                video.class = 'image w-100 mt-1 rounded img-thumbnail'
-                video.controls = true
-                video.width = 400
-                $(`#img_video_audio_div${param.id}`).prepend(video)
-                video.onload = function() {
-                    URL.revokeObjectURL(video.src) // free memory
-                }
-            }else {
-                var audio = document.createElement('audio');
-                audio.src = URL.createObjectURL(param.question_file_link);
-                audio.controls = true
-                $(`#img_video_audio_div${param.id}`).prepend(audio)
-                audio.onload = function() {
-                    URL.revokeObjectURL(audio.src) // free memory
-                }
-        }
-        }
     }
-    }
+}
 
 
 
 
 </script>
+<style>
+#ar {
+    position: absolute;
+    background: transparent;
+    width: 60%;
+    height: 50px;
+    top: 18px;
+}
+</style>
 
