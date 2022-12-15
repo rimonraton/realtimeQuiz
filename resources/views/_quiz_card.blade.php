@@ -26,7 +26,7 @@
         @endphp
         <a href="{{ url($mode . $type . '/'. $qz->id . '/' . Auth::id()) }}" class="" >
             <div class="card-body py-0 ">
-                <h5 class="my-3 text-primary">{{ app()->getLocale() == 'bd'? $qz->bd_quiz_name : $qz->quiz_name }}</h5>
+                <h5 class="my-3 text-primary">{{ app()->getLocale() == 'bd'? ($qz->bd_quiz_name !== null ? $qz->bd_quiz_name : $qz->quiz_name) : ($qz->quiz_name !== null ? $qz->quiz_name : $qz->bd_quiz_name) }}</h5>
                 <div id="shareBtn{{ $qz->id }}" class="show_share shareBtnDiv"></div>
             </div>
         </a>

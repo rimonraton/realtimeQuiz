@@ -12,26 +12,10 @@
                     <!-- <transition name="fade" mode="out-in"> -->
                     <div class="card-body animate__animated animate__backInRight animate__faster" :key="qid">
                         <span class="q_num text-right text-muted">
-                            {{question.fileType}}
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
 <!--                        <div>-->
 <!--                            {{getImageVideoAudio(question)}}-->
-<<<<<<< HEAD
-                        <template v-if="question.fileType == 'image'">
-                            <img class="image w-100 mt-1 rounded img-thumbnail" :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
-                        </template>
-                        <template v-if="question.fileType == 'video'">
-                            <video class="image w-100 mt-1 rounded img-thumbnail" ref="videoRef" id="video-container" controls>
-<!--                                <source :src="'/' + question.question_file_link" type="video/*">-->
-                            </video>
-                        </template>
-                        <template  v-if="question.fileType == 'audio'">
-                            <audio controls>
-                                <source :src="'/' + question.question_file_link" type="audio/*">
-                            </audio>
-                        </template>
-=======
                             <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                                  :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
                             <video
@@ -40,7 +24,7 @@
                                 @play="onStart()"
                                 class="image w-100 mt-1 rounded img-thumbnail"
                                 autoplay>
-                                <source :src="'/'+question.question_file_link" type="video/mp4">
+                                <source :src="'/'+ question.question_file_link" type="video/mp4">
                             </video>
                             <div class="audio" v-if="question.fileType == 'audio'">
                                 <audio
@@ -48,30 +32,47 @@
                                     @play="onStart()"
                                     controls
                                     autoplay>
-                                    <source :src="'/'+question.question_file_link" type="audio/mpeg">
+                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
                                 </audio>
                                 <div id="ar"></div>
                             </div>
-
->>>>>>> a497c359870430a5b56dd4143bb022cb651f123a
 <!--                        </div>-->
                         <div v-show="av">
-                            <p class="my-1 font-bold"
-                               v-html="tbe(question.bd_question_text, question.question_text, user.lang)">
-                            </p>
-                            <ul class="list-group" v-for="option in question.options">
-                                <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
-                                    class="list-group-item list-group-item-action cursor my-1"
-                                    v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'" >
+<!--                            <p class="my-1 font-bold"-->
+<!--                               v-html="tbe(question.bd_question_text, question.question_text, user.lang)">-->
+<!--                            </p>-->
+<!--                            <div class="card shadow-1" v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></div>-->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex flex-row align-items-center question-title">
+                                        <h3 class="text-danger">Q.</h3>
+                                        <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+                                    </div>
+<!--                                   <h3 class="text-danger">Q. </h3> {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
+                                </div>
+                            </div>
+                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
+                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
+                                    <ul class="list-group" v-if="option.flag != 'img'">
+                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                            class="list-group-item list-group-item-action cursor my-1"
+                                            v-html="tbe(option.bd_option, option.option, user.lang)" >
 
-                                </li>
-                                <li @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                    class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
-                                    <img  class="image mt-1 rounded img-thumbnail"
-                                          :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
+                                        </li>
 
-                                </li>
-                            </ul>
+    <!--                                    <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
+    <!--                                        class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
+    <!--                                        <img  class="image mt-1 rounded img-thumbnail"-->
+    <!--                                              :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
+
+    <!--                                    </li>-->
+
+                                    </ul>
+                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
+                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -247,6 +248,7 @@ export default {
             window.location.reload()
         },
         tbe(b, e, l) {
+            console.log(b,e,l)
             return l === 'bd' ? (b !== null ? b : e) : (e !== null ? e : b)
         },
         qne2b(q, qn, l) {
@@ -269,6 +271,11 @@ export default {
             [...numbString].forEach(n => bn += eb[n])
             return bn
         },
+        imageOption(objArray){
+            const data = objArray.some(a => a.flag == 'img')
+           // const data = objArray.find(a => a.flag == 'img');
+           return data
+        }
     }
 }
 </script>
@@ -279,6 +286,36 @@ export default {
     width: 60%;
     height: 50px;
     top: 18px;
+}
+.shadow-1:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: inherit;
+    height: inherit;
+    z-index: -2;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);
+}
+
+.shadow-1:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: inherit;
+    height: inherit;
+    z-index: -2;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+}
+.imageDiv :hover{
+    background-color: #38c172
 }
 </style>
 
