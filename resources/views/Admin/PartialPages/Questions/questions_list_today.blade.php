@@ -88,7 +88,7 @@
                                                                                         @foreach($qs->options as $qo)
                                                                                         <button class="btn btn-sm custom-border m-1">
                                                                                             <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                                                            {{$qo->flag?$qs->flag:'nai'}}
+{{--                                                                                            {{$qo->flag?$qs->flag:'nai'}}--}}
                                                                                             @if($qo->flag == 'img')
                                                                                                 <img src="{{asset($qo->img_link)}}" width="20px" alt="">
                                                                                                 @else
