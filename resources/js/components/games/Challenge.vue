@@ -52,24 +52,66 @@
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
-
-                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">
+                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                        <video
+                            v-if="question.fileType == 'video'"
+                            @ended="onEnd()"
+                            @play="onStart()"
+                            class="image w-100 mt-1 rounded img-thumbnail"
+                            autoplay>
+                            <source :src="'/'+ question.question_file_link" type="video/mp4">
+                        </video>
+                        <div class="audio" v-if="question.fileType == 'audio'">
+                            <audio
+                                @ended="onEnd()"
+                                @play="onStart()"
+                                controls
+                                autoplay>
+                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                            </audio>
+                            <div id="ar"></div>
+                        </div>
+<!--                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">-->
 <!--                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"-->
 <!--                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">-->
-                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>
+<!--                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>-->
+                        <div v-show="av">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex flex-row align-items-center question-title">
+                                        <h3 class="text-danger">Q.</h3>
+                                        <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
+                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
+                                    <ul class="list-group" v-if="option.flag != 'img'">
+                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                            class="list-group-item list-group-item-action cursor my-1"
+                                            v-html="tbe(option.bd_option, option.option, user.lang)" >
 
-                        <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, option.option, option.correct)"
-                                class="list-group-item list-group-item-action cursor my-1">
-                                <span v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'"></span>
-                            </li>
-                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >
-                                <img  class="image mt-1 rounded img-thumbnail"
-                                      :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">
+                                        </li>
+                                    </ul>
+                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
+                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <ul class="list-group" v-for="option in question.options">-->
+<!--                            <li @click="checkAnswer(question.id, option.option, option.correct)"-->
+<!--                                class="list-group-item list-group-item-action cursor my-1">-->
+<!--                                <span v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'"></span>-->
+<!--                            </li>-->
+<!--                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
+<!--                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
+<!--                                <img  class="image mt-1 rounded img-thumbnail"-->
+<!--                                      :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
 
-                            </li>
-                        </ul>
+<!--                            </li>-->
+<!--                        </ul>-->
                     </div>
                 </div>
             </div>
@@ -125,6 +167,7 @@
                 counter: 2,
                 timer: null,
                 current: 0,
+                av: true,
                 qid: 0,
                 screen:{
                     waiting: 1,
@@ -474,7 +517,18 @@
             },
             waitingResult(){
                 return 'waiting-result';
-            }
+            },
+            imageOption(objArray){
+               return  objArray.some(a => a.flag == 'img')
+            },
+            onEnd() {
+                this.av = true
+                this.QuestionTimer()
+            },
+            onStart() {
+                this.av = false
+                clearInterval(this.qt.timer);
+            },
 
         },
 
