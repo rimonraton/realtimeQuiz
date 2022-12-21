@@ -91,9 +91,12 @@
                                                             <!-- <span class="font-weight-bold">
                                                                 {{ answer.question }}
                                                             </span> -->
-                                                            <span class="font-weight-light font-italic">
-                                                        {{ answer.user.name + ' - ' + answer.selected }}
-                                                    </span>
+                                                            <span v-if="(/\.(gif|jpg|jpeg|tiff|png)$/i).test(answer.selected)">
+                                                                <img  class="image mt-1 rounded img-thumbnail" width="100px" :src="'/'+ answer.selected" alt="">
+                                                            </span>
+                                                            <span class="font-weight-light font-italic" v-else>
+                                                                {{ answer.user.name + ' - ' + answer.selected }}
+                                                            </span>
                                                             <i v-if="answer.isCorrect == 1" class="fa fa-check text-success" aria-hidden="true" ></i>
                                                             <i v-else class="fa fa-times text-danger" aria-hidden="true" ></i>
 
@@ -136,16 +139,35 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                            <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">
-                                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
+<!--                            <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">-->
+<!--                                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
+<!--                            </div>-->
+<!--                            <ul class="list-group" v-for="(option, index) in question.options">-->
+<!--                                <li @click="clickSelect(index, option)"-->
+<!--                                    class="list-group-item list-group-item-action cursor my-1"-->
+<!--                                    :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">-->
+<!--                                    {{ tbe(option.bd_option, option.option, user.lang) }}-->
+<!--                                </li>-->
+<!--                            </ul>-->
+                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
+                                <div v-for="(option, index) in question.options" :class="{'col-6':option.flag == 'img'}">
+                                    <ul class="list-group" v-if="option.flag != 'img'">
+                                        <li @click="clickSelect(index, option)"
+                                            class="list-group-item list-group-item-action cursor my-1"
+                                            :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]"
+                                            v-html="tbe(option.bd_option, option.option, user.lang)" >
+
+                                        </li>
+                                    </ul>
+                                    <div v-else @click="clickSelect(index, option)" class="cursor my-1 imageDiv">
+                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                        <span v-if="qoption.selected == index" class="imgTick">
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
                             </div>
-                            <ul class="list-group" v-for="(option, index) in question.options">
-                                <li @click="clickSelect(index, option)"
-                                    class="list-group-item list-group-item-action cursor my-1"
-                                    :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
-                                    {{ tbe(option.bd_option, option.option, user.lang) }}
-                                </li>
-                            </ul>
                         </div>
                         <div class="modal-footer text-muted d-flex justify-content-between">
                             <button class="btn btn-secondary rounded-pill element-animation5"
@@ -534,14 +556,14 @@ export default {
         },
 
         checkAnswer(q, a, rw){
-            this.gamedata.['id'] = this.qid + 1
-            this.gamedata.['question'] = this.ToText(this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang))
-            this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
-            this.gamedata.['selected'] = this.ToText(a)
-            this.gamedata.['isCorrect'] = rw
-            this.gamedata.['user'] = this.user
-            this.gamedata.['channel'] = this.channel
-            this.gamedata.['team'] = this.team
+            this.gamedata['id'] = this.qid + 1
+            this.gamedata['question'] = this.ToText(this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang))
+            this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext())
+            this.gamedata['selected'] = this.ToText(a)
+            this.gamedata['isCorrect'] = rw
+            this.gamedata['user'] = this.user
+            this.gamedata['channel'] = this.channel
+            this.gamedata['team'] = this.team
             let clone = {...this.gamedata}
             console.log(clone);
             this.answered_user_data.push(clone)
@@ -671,10 +693,14 @@ export default {
 
 
         getCorrectAnswertext(){
-            if (this.user.lang=='gb'){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
+            let op = this.questions[this.qid].options.find(o => o.correct == 1)
+            if (op.flag == 'img') {
+                return op.img_link
             }
-            return this.questions[this.qid].options.find(o => o.correct == 1).bd_option
+            if (this.user.lang=='gb'){
+                return op.option
+            }
+            return op.bd_option
 
         },
 
@@ -699,7 +725,7 @@ export default {
                 })
         },
         clickSelect(index, option){
-            console.log([index, option])
+            console.log('select data', index, option)
             if(this.qoption.selected == index){
                 this.qoption.selected = null
                 this.qoption.id = option.question_id
@@ -708,7 +734,7 @@ export default {
             }else{
                 this.qoption.selected = index
                 this.qoption.id = option.question_id
-                this.qoption.option= this.tbe(option.bd_option,option.option,this.user.lang)
+                this.qoption.option= option.flag== 'img'? option.img_link :this.tbe(option.bd_option,option.option,this.user.lang)
                 this.qoption.correct= option.correct
             }
             // console.log(this.isPredict())
@@ -729,6 +755,7 @@ export default {
         },
 
         ToText(input){
+            console.log('input......', input)
             if(!!input){
                 return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
             }
@@ -764,6 +791,11 @@ export default {
             })
             axios.post(`/api/jointeam`, obj).then(res => this.screen.team = 0)
         },
+        imageOption(objArray){
+            const data = objArray.some(a => a.flag == 'img')
+            // const data = objArray.find(a => a.flag == 'img');
+            return data
+        }
 
     },
 

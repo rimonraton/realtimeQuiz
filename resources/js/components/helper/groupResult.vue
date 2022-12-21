@@ -29,7 +29,10 @@
                                         <!-- <span class="font-weight-bold">
                                             {{ answer.question }}
                                         </span> -->
-                                        <span class="font-weight-light font-italic">
+                                        <span v-if="(/\.(gif|jpg|jpeg|tiff|png)$/i).test(answer.selected)">
+                                            <img  class="image mt-1 rounded img-thumbnail" width="100px" :src="'/'+ answer.selected" alt="">
+                                        </span>
+                                        <span class="font-weight-light font-italic" v-else>
                                             {{ answer.user.name + ' - ' + answer.selected }}
                                         </span>
                             <i v-if="answer.isCorrect==1" class="fa fa-check text-success" aria-hidden="true" ></i>

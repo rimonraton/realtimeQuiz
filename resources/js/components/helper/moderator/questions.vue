@@ -19,17 +19,37 @@
 		                v-if="question.more_info_link">
 		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
 		            </div>
-		            <ul class="list-group text-dark">
-		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
-		                    <small>
-		                        {{ tbe(option.bd_option,option.option,user.lang) }}
-		                    </small>
-		                    <span v-if="option.correct ==1">
-		                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-		                    </span>
-		                </li>
+<!--		            <ul class="list-group text-dark">-->
+<!--		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">-->
+<!--		                    <small>-->
+<!--		                        {{ tbe(option.bd_option,option.option,user.lang) }}-->
+<!--		                    </small>-->
+<!--		                    <span v-if="option.correct ==1">-->
+<!--		                        <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+<!--		                    </span>-->
+<!--		                </li>-->
 
-		            </ul>
+<!--		            </ul>-->
+                      <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
+                          <div v-for="(option, index) in question.options" :key="option.id" :class="{'col-6':option.flag == 'img'}">
+                              <ul class="list-group" v-if="option.flag != 'img'">
+                                  <li  class="list-group-item d-flex justify-content-between align-items-center p-1">
+                                      <small class="text-black-50">
+                                          {{ tbe(option.bd_option,option.option,user.lang) }}
+                                      </small>
+                                      <span v-if="option.correct ==1">
+                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                      </span>
+                                  </li>
+                              </ul>
+                              <div v-else class="cursor my-1">
+                                  <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                  <span v-if="option.correct ==1" class="imgTick">
+                                      <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
 		          </div>
 		        </div>
 		    </div>
@@ -134,6 +154,11 @@
 			ToText(input){
               return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
             },
+            imageOption(objArray){
+                const data = objArray.some(a => a.flag == 'img')
+                // const data = objArray.find(a => a.flag == 'img');
+                return data
+            }
 		}
 
 
@@ -153,5 +178,10 @@
     border-radius: 50%;
     width: 35px;
     /* z-index: 999999; */
+}
+.imgTick{
+    position: absolute;
+    right: 24px;
+    top: 15px;
 }
 </style>
