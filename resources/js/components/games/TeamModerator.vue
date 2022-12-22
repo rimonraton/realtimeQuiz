@@ -128,27 +128,42 @@
                 <div class="container-fluid px-0">
                     <!-- <div class="modal-dialog"> -->
                     <div class="modal-content" v-for="question in questions" v-if="question.id == current" >
-                        <div class="modal-header" style="justify-content:flex-start">
-                            <div class="col-xs-1 my-1 element-animation0">
-                                <span class="bg-success text-white rounded-circle" id="qid">{{ user.lang=='gb'?qid + 1:q2bNumber(qid + 1) }}</span>
+                        <div class="modal-header" style="justify-content:flex-start" v-if="fileType(question.fileType)">
+                            <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                                 :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                            <video
+                                v-if="question.fileType == 'video'"
+                                @ended="onEnd()"
+                                @play="onStart()"
+                                class="image w-100 mt-1 rounded img-thumbnail avf"
+                                autoplay :id="question.id">
+                                <source :src="'/'+ question.question_file_link" type="video/mp4">
+                            </video>
+                            <div class="audio" v-if="question.fileType == 'audio'">
+                                <audio
+                                    @ended="onEnd()"
+                                    @play="onStart()"
+                                    controls
+                                    style="width: 261px;" :id="question.id" autoplay>
+                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                                </audio>
+                                <div id="ar"></div>
                             </div>
-                            <div class="col-xs-11">
-                                <h6 class="pl-1 element-animation0">
-                                    {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-<!--                            <div class="col-md-8 offset-md-2 element-animation1" v-if="question.more_info_link">-->
-<!--                                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
+<!--                            <div v-if="av" class="d-flex align-items-center">-->
+
 <!--                            </div>-->
-<!--                            <ul class="list-group" v-for="(option, index) in question.options">-->
-<!--                                <li @click="clickSelect(index, option)"-->
-<!--                                    class="list-group-item list-group-item-action cursor my-1"-->
-<!--                                    :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">-->
-<!--                                    {{ tbe(option.bd_option, option.option, user.lang) }}-->
-<!--                                </li>-->
-<!--                            </ul>-->
+                        </div>
+                        <div class="modal-body" v-if="av">
+                            <div class="d-flex align-items-center p-2">
+                                <div class="col-xs-1 my-1 element-animation0">
+                                    <span class="bg-success text-white rounded-circle" id="qid">{{ user.lang=='gb'?qid + 1:q2bNumber(qid + 1) }}</span>
+                                </div>
+                                <div class="col-xs-11">
+                                    <h6 class="pl-1 element-animation0">
+                                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    </h6>
+                                </div>
+                            </div>
                             <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
                                 <div v-for="(option, index) in question.options" :class="{'col-6':option.flag == 'img'}">
                                     <ul class="list-group" v-if="option.flag != 'img'">
@@ -169,7 +184,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer text-muted d-flex justify-content-between">
+                        <div class="modal-footer text-muted d-flex justify-content-between" v-if="av">
                             <button class="btn btn-secondary rounded-pill element-animation5"
                                     :class="{disabled: !qoption.selected }"
                                     @click="predictAnswer">
@@ -268,6 +283,7 @@ export default {
             team_ranking:null,
             perform:null,
             position:null,
+            av: true
         };
     },
 
@@ -311,7 +327,10 @@ export default {
         Echo.channel(this.channel)
 
             .listen('TeamResult', (data) => {
-                console.log('TeamResult..........')
+                console.log('TeamResult..........', this.questions[this.qid])
+                if(this.questions[this.qid].fileType == 'audio' || this.questions[this.qid].fileType == 'video'){
+                    document.getElementById(this.questions[this.qid].id).pause()
+                }
                 this.screen.teamresult = 1;
                 if (this.resultPosition() == 0){
                     confetti({
@@ -356,6 +375,9 @@ export default {
             })
             .listen('GameTeamModeratorStartEvent', (data) => {
                 console.log('GameTeamModeratorStartEvent.............')
+                if(this.questions[this.qid].fileType == 'audio'){
+                    document.getElementById(this.questions[this.qid].id).play()
+                }
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.user.lang = data.lang
@@ -363,7 +385,15 @@ export default {
 
             })
             .listen('NextQuestionEvent', (data) => {
-                console.log('NextQuestionEvent.............',data)
+                console.log('NextQuestionEvent.............',data, this.qid)
+                // if(this.qid) {
+                //     const qs = this.questions[this.qid - 1].fileType
+                // }
+                //
+                // if(qs == 'video' || qs == 'audio') {
+                //     document.getElementById(this.questions[this.qid].id).pause()
+                // }
+                this.av = true
                 this.qid = data.qid
                 this.current = this.questions[this.qid].id // Next Question from Moderator...
                 this.pie_data = []
@@ -439,7 +469,14 @@ export default {
         //             return prev.perform_status < curr.perform_status ? prev : curr;
         //         });
         // },
-
+        onEnd() {
+            this.av = true
+            this.QuestionTimer()
+        },
+        onStart() {
+            this.av = false
+            clearInterval(this.qt.timer);
+        },
         resultPosition(){
              this.position = this.results.findIndex(r=>  r.name == this.getUserTeam() );
              return this.position;
@@ -521,7 +558,10 @@ export default {
         },
 
         nextQuestion(){
-            console.log('NextQuestion Clicked')
+            // this.onEnd()
+            // this.QuestionTimer()
+            console.log('video element.......', document.getElementsByClassName('avf'))
+            console.log('NextQuestion Clicked', this.av)
             if(this.qid + 1 == this.questions.length){
                 clearInterval(this.timer);
                 this.winner()
@@ -648,7 +688,10 @@ export default {
         },
 
         predictAnswer(){
-
+            if(this.qoption.option == null){
+                alert('Please select an option first!')
+                return;
+            }
             let pre = {
                 ans: this.ToText(this.qoption.option),
                 user:this.user,
@@ -795,6 +838,12 @@ export default {
             const data = objArray.some(a => a.flag == 'img')
             // const data = objArray.find(a => a.flag == 'img');
             return data
+        },
+        fileType(fileT){
+            if (fileT == 'image' || fileT == 'video'||fileT == 'audio'){
+                return true
+            }
+            return false
         }
 
     },
@@ -829,3 +878,12 @@ export default {
 };
 
 </script>
+<style>
+#ar {
+    position: absolute;
+    background: transparent;
+    width: 60%;
+    height: 50px;
+    top: 18px;
+}
+</style>

@@ -9,15 +9,28 @@
 		            :data-target="'#collapse'+ index"
 		            aria-expanded="true"
 		            :aria-controls="'collapse'+ index">
-		            <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
-		              {{ tbe(question.bd_question_text,question.question_text,user.lang) }}
+		            <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}</span>
+		              {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}
 		        </div>
 
 		        <div :id="'collapse'+ index" class="collapse" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
 		          <div class="card-body p-0">
-		            <div class="col-md-8 offset-md-2"
-		                v-if="question.more_info_link">
-		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">
+		            <div class="" v-if="question.fileType=='image'||question.fileType=='video'||question.fileType=='audio'">
+                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                        <video
+                            v-if="question.fileType == 'video'"
+                            class="image w-100 mt-1 rounded img-thumbnail" controls>
+                            <source :src="'/'+ question.question_file_link" type="video/mp4">
+                        </video>
+                        <div class="audio" v-if="question.fileType == 'audio'">
+                            <audio controls>
+                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
+                        {{ tbe(question.bd_question_text,question.question_text,user.lang) }}
+<!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
 		            </div>
 <!--		            <ul class="list-group text-dark">-->
 <!--		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">-->
@@ -158,6 +171,18 @@
                 const data = objArray.some(a => a.flag == 'img')
                 // const data = objArray.find(a => a.flag == 'img');
                 return data
+            },
+            fileType(fileT){
+		        if (fileT == 'image' || fileT == 'video'||fileT == 'audio'){
+		            return true
+                }
+		        return false
+            },
+            fileText(file, lang){
+		        if(lang == 'gb') {
+		           return file == 'image'? 'This is image question': file == 'video' ? 'This is video question': 'This is audio question'
+                }
+                return file == 'image'? 'এটি ইমেজ প্রশ্ন': file == 'video' ? 'এটি ভিডিও প্রশ্ন': 'এটি অডিও প্রশ্ন'
             }
 		}
 
