@@ -145,11 +145,13 @@
                     </div>
                     <div class="row">
                         @foreach($admin_users as $au)
-                            @if($au->roleuser->role_id > 3)
-                                <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">
-                                    <input type="checkbox" name="members[]" value="{{$au->id}}" id="chce_{{$au->id}}" class="material-inputs chk child">
-                                    <label for="chce_{{$au->id}}">{{$au->name}}</label>
-                                </div>
+                            @if($au->roleuser)
+                                @if($au->roleuser->role_id > 3)
+                                    <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">
+                                        <input type="checkbox" name="members[]" value="{{$au->id}}" id="chce_{{$au->id}}" class="material-inputs chk child">
+                                        <label for="chce_{{$au->id}}">{{$au->name}}</label>
+                                    </div>
+                                @endif
                             @endif
                         @endforeach
                     </div>
