@@ -144,8 +144,8 @@
                                     @ended="onEnd()"
                                     @play="onStart()"
                                     controls
-                                    style="width: 261px;" :id="question.id" autoplay>
-                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                                    style="width: 261px;" :id="question.id" autoplay class="avf">
+                                    <source :src="'/'+ question.question_file_link+ '?noCache=' + Math.floor(Math.random() * 1000000)" type="audio/mpeg">
                                 </audio>
                                 <div id="ar"></div>
                             </div>
@@ -375,7 +375,7 @@ export default {
             })
             .listen('GameTeamModeratorStartEvent', (data) => {
                 console.log('GameTeamModeratorStartEvent.............')
-                if(this.questions[this.qid].fileType == 'audio'){
+                if(this.questions[this.qid].fileType == 'audio' || this.questions[this.qid].fileType == 'video'){
                     document.getElementById(this.questions[this.qid].id).play()
                 }
                 this.game_start = 1 // Game Start from Game Owner...
@@ -385,15 +385,16 @@ export default {
 
             })
             .listen('NextQuestionEvent', (data) => {
-                console.log('NextQuestionEvent.............',data, this.qid)
-                // if(this.qid) {
-                //     const qs = this.questions[this.qid - 1].fileType
-                // }
-                //
-                // if(qs == 'video' || qs == 'audio') {
-                //     document.getElementById(this.questions[this.qid].id).pause()
-                // }
                 this.av = true
+                console.log('NextQuestionEvent.............',data, this.questions[data.qid].id, this.qid, this.questions[this.qid].id, document.getElementById(this.questions[this.qid].id))
+                // const qs = this.questions[this.qid - 1].fileType
+                if(this.questions[data.qid].fileType == 'video' || this.questions[data.qid].fileType == 'audio') {
+                    console.log('next page reload...', this.questions[data.qid].id)
+                    setTimeout(() => {
+                        document.getElementById(this.questions[data.qid].id).src = '/' + this.questions[data.qid].question_file_link
+                        document.getElementById(this.questions[data.qid].id).play()
+                    }, 10)
+                }
                 this.qid = data.qid
                 this.current = this.questions[this.qid].id // Next Question from Moderator...
                 this.pie_data = []
@@ -442,6 +443,10 @@ export default {
             })
             .listen('PageReloadEvent', (data) => {
                 console.log('PageReloadEvent.............')
+                if(this.questions[this.qid].fileType == 'video' || this.questions[this.qid].fileType == 'audio') {
+                    console.log('page reload...')
+                    document.getElementById(this.questions[this.qid].id).pause()
+                }
                 window.location.reload()
 
             })
