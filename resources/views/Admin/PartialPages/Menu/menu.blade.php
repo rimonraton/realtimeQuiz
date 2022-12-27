@@ -24,7 +24,7 @@
                                         <div class="col-sm-12" id="options">
                                             <select class="form-control" name="parent_id" id="">
                                                 <option value="0">{{__('form.select_menu')}}</option>
-                                                @foreach($menus as $menu)
+                                                @foreach($parent_menus as $menu)
                                                 <option value="{{$menu->id}}">{{$lang=='gb'?$menu->name:$menu->bn_name}}</option>
                                                 @endforeach
                                             </select>

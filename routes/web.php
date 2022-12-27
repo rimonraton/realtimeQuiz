@@ -243,3 +243,7 @@ Route::get('quiz_info/{id}',[\App\Http\Controllers\TeamController::class,'quiz_i
 //role user search
 Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::class,'searchRoleUser']);
 
+//Exam
+Route::get('list-of-exam', [\App\Http\Controllers\ExamController::class, 'index']);
+Route::get('create-exam', [\App\Http\Controllers\ExamController::class, 'createExam']);
+

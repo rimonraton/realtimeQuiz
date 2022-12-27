@@ -7,7 +7,6 @@
 <div class="card">
     <div class="card-body" id="quiz_view">
     @include('Admin.PartialPages.Quiz.Partial._quiz_search')
-
     </div>
 </div>
 <!-- end card-body-->

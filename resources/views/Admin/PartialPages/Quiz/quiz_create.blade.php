@@ -67,7 +67,7 @@
     }
 </style>
 @endsection
-@php $lang = App::getLocale(); @endphp
+{{--@php $lang = App::getLocale(); @endphp--}}
 @section('content')
     <div class="selectedQuestionCount text-center">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
