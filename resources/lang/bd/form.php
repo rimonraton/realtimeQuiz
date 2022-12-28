@@ -213,6 +213,6 @@ return [
     'edit_quiz'=>'কুইজ এডিট করুন',
 //    'video_image_audio' => 'ছবি, ভিডিও, অডিও',
     'video_image_audio' => 'শুধুমাত্র ছবি',
-    'choose_file' => 'ফাইল নির্বাচন করুন'
-
+    'choose_file' => 'ফাইল নির্বাচন করুন',
+    'question_media' => 'ফাইল'
 ];

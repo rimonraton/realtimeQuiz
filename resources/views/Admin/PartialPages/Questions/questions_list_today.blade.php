@@ -68,6 +68,7 @@
                                                                             <thead>
                                                                                 <tr role="row">
                                                                                     <th style="width: 10%;">{{__('form.sl')}}</th>
+                                                                                    <th style="width: 20%;">{{__('form.question_media')}}</th>
                                                                                     <th style="width: 30%;">{{__('form.question_en')}}</th>
                                                                                     <th style="width: 30%;">{{__('form.question_bn')}}</th>
                                                                                     <th style="width: 50%;">{{__('form.en_options')}}</th>
@@ -82,19 +83,38 @@
                                                                                 @foreach($questionCat as $qs)
                                                                                 <tr>
                                                                                     <td class="sorting_1">{{$loop->iteration}}</td>
+                                                                                    <td>
+                                                                                        @if($qs->fileType == 'image' || $qs->fileType == 'video' || $qs->fileType == 'audio')
+{{--                                                                                            {{$qs->fileType}}--}}
+                                                                                            @if($qs->fileType == 'image')
+                                                                                                <img src="{{asset($qs->question_file_link)}}" width="100%" alt="">
+                                                                                            @elseif($qs->fileType == 'video')
+                                                                                                <video class="image w-100 mt-1 rounded img-thumbnail" controls>
+                                                                                                    <source src="{{asset($qs->question_file_link)}}" type="video/mp4">
+                                                                                                </video>
+                                                                                            @else
+                                                                                                <audio controls style="width: 261px;">
+                                                                                                    <source src="{{asset($qs->question_file_link)}}" type="audio/mpeg">
+                                                                                                </audio>
+                                                                                            @endif
+                                                                                        @else
+                                                                                            --
+                                                                                        @endif
+                                                                                    </td>
                                                                                     <td>{{$qs->question_text}}</td>
                                                                                     <td>{{$qs->bd_question_text}}</td>
                                                                                     <td class="text-center">
                                                                                         @foreach($qs->options as $qo)
-                                                                                        <button class="btn btn-sm custom-border m-1">
-                                                                                            <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-{{--                                                                                            {{$qo->flag?$qs->flag:'nai'}}--}}
-                                                                                            @if($qo->flag == 'img')
-                                                                                                <img src="{{asset($qo->img_link)}}" width="20px" alt="">
-                                                                                                @else
-                                                                                            {{$qo->option}}
-                                                                                                @endif
-                                                                                        </button>
+                                                                                            @if($qo->option || $qo->flag == 'img')
+                                                                                                <button class="btn btn-sm custom-border m-1">
+                                                                                                    <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                                                    @if($qo->flag == 'img')
+                                                                                                        <img src="{{asset($qo->img_link)}}" width="20px" alt="">
+                                                                                                    @else
+                                                                                                        {{$qo->option}}
+                                                                                                    @endif
+                                                                                                </button>
+                                                                                            @endif
                                                                                         @endforeach
                                                                                     </td>
                                                                                     <td class="text-center">
@@ -117,6 +137,7 @@
                                                                             <tfoot>
                                                                                 <tr>
                                                                                     <th>{{__('form.sl')}}</th>
+                                                                                    <th>{{__('form.question_media')}}</th>
                                                                                     <th>{{__('form.question_en')}}</th>
                                                                                     <th>{{__('form.question_bn')}}</th>
                                                                                     <th>{{__('form.en_options')}}</th>

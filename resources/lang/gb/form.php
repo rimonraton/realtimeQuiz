@@ -214,5 +214,6 @@ return [
     'edit_quiz'=>'Edit Quiz',
     'video_image_audio'=> 'Only Image',
 //    'video_image_audio'=> 'Image, Video, Audio',
-    'choose_file' => 'Choose a file'
+    'choose_file' => 'Choose a file',
+    'question_media' => 'File'
 ];

@@ -166,6 +166,7 @@ export default {
             }, 1000);
         },
         checkAnswer: function (q, a, rw) {
+            console.log('this.getCorrectAnswertext()', this.getCorrectAnswertext())
             this.right_wrong = rw
             this.gamedata['id'] = this.qid + 1
             this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang)
@@ -192,8 +193,9 @@ export default {
 
         getCorrectAnswertext() {
             let qco = this.questions[this.qid].options.find(o => o.correct == 1)
-            if(qco.flag=='img')
+            if(qco.flag=='img'){
                 return qco.img_link;
+            }
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
@@ -240,7 +242,7 @@ export default {
             window.location.reload()
         },
         tbe(b, e, l) {
-            console.log(b,e,l)
+            // console.log(b,e,l)
             return l === 'bd' ? (b !== null ? b : e) : (e !== null ? e : b)
         },
         qne2b(q, qn, l) {

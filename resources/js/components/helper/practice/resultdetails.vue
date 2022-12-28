@@ -74,9 +74,10 @@
                 // window.history.back()
             },
             isImg(link){
-                let data = link.split('.')
-                console.log(data.length > 1)
-                return data.length > 1
+                return link.match(/\.(jpeg|jpg|gif|png)$/) != null
+                // let data = link.split('.')
+                // console.log(data.length > 1)
+                // return data.length > 1
             }
         }
 
