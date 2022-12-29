@@ -45,7 +45,7 @@
                                 @php $users = collect(json_decode($result->results)); @endphp
                                 <tr>
                                     <td class="sorting_1">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                    <td>{{$result->challenge->name}}</td>
+                                    <td>{{$result->challenge ? $result->challenge->name : ''}}</td>
                                     <td>
                                         @foreach($users as $user)
 {{--                                            {{ $user->name . ( $loop->last? '': ',' ) }}--}}
