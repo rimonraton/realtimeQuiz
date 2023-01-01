@@ -17,7 +17,7 @@ class ModeController extends Controller
         }
         $ban = new Bengali();
 
-        $quiz =  Quiz::with('quizCategory', 'progress');
+        $quiz =  Quiz::where('game_id', 1)->with('quizCategory', 'progress');
         $quiz = $quiz->orderBy('id','desc')->paginate(9);
 
         $user = \Auth::user();
