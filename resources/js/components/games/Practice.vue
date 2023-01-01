@@ -10,7 +10,7 @@
             <div class="col-md-7">
                 <div class="card my-4" v-for="question in questions" v-if="question.id === current" >
                     <!-- <transition name="fade" mode="out-in"> -->
-                    <div class="card-body animate__animated animate__backInRight animate__faster" :key="qid">
+                    <div class="card-body animate__animated animate__backInDown animate__faster" :key="qid">
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
@@ -76,6 +76,9 @@
                                         <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="text-center" v-else>
+                                <img src="/img/loading.gif" style="width: 200px" alt="Loading...">
                             </div>
                         </div>
                     </div>
@@ -170,29 +173,6 @@ export default {
         // this.startTimer()
     },
     methods: {
-        startTimer() {
-            console.log('timer check av')
-
-            if(this.av == true) {
-                console.log('timer start')
-                this.timer = setInterval(() => {
-
-                    this.seconds++
-                    if (this.seconds > 59) {
-                        this.seconds = 0
-                        this.minutes++
-                    }
-
-                    this.answer_seconds++
-                    if (this.answer_seconds > 59) {
-                        this.answer_seconds = 0
-                        this.answer_minutes++
-                    }
-                    this.sqo = true
-                }, 1000);
-
-            }
-        },
         checkAnswer: function (q, a, rw) {
             this.right_wrong = rw
             this.gamedata['id'] = this.qid + 1
@@ -302,12 +282,34 @@ export default {
            return data
         },
         showQuestionOptions (question) {
-            clearInterval(this.timer);
             if(question == null || question == 'image') {
+                clearInterval(this.timer);
+                this.sqo = false
                 setTimeout(() => {
-                    console.log('setTimeout startTimer')
+                    console.log('showQuestionOptions')
+                    this.sqo = true
                     this.startTimer()
                 }, 3000)
+            }
+        },
+        startTimer() {
+            console.log('timer check av')
+            if(this.av == true) {
+                console.log('timer start')
+                this.timer = setInterval(() => {
+
+                    this.seconds++
+                    if (this.seconds > 59) {
+                        this.seconds = 0
+                        this.minutes++
+                    }
+
+                    this.answer_seconds++
+                    if (this.answer_seconds > 59) {
+                        this.answer_seconds = 0
+                        this.answer_minutes++
+                    }
+                }, 1000);
             }
         }
     }
