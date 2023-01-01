@@ -8,7 +8,7 @@
 
         <div class="row justify-content-center">
             <div class="col-md-7">
-                <div class="card my-4" v-for="question in questions" v-if="question.id === current">
+                <div class="card my-4" v-for="question in questions" v-if="question.id === current" >
                     <!-- <transition name="fade" mode="out-in"> -->
                     <div class="card-body animate__animated animate__backInRight animate__faster" :key="qid">
                         <span class="q_num text-right text-muted">
@@ -16,14 +16,16 @@
                         </span>
 <!--                        <div>-->
 <!--                            {{getImageVideoAudio(question)}}-->
-                            <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
-                                 :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                            <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
+                                 :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
                             <video
                                 v-if="question.fileType == 'video'"
                                 @ended="onEnd()"
                                 @play="onStart()"
                                 class="image w-100 mt-1 rounded img-thumbnail"
-                                autoplay>
+                                autoplay
+                                controls
+                            >
                                 <source :src="'/'+ question.question_file_link" type="video/mp4">
                             </video>
                             <div class="audio" v-if="question.fileType == 'audio'">
@@ -34,7 +36,7 @@
                                     autoplay>
                                     <source :src="'/'+ question.question_file_link" type="audio/mpeg">
                                 </audio>
-                                <div id="ar"></div>
+                                <div ></div>
                             </div>
 <!--                        </div>-->
                         <div v-show="av">
@@ -51,7 +53,9 @@
 <!--                                   <h3 class="text-danger">Q. </h3> {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
                                 </div>
                             </div>
-                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
+                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster"
+                                :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
+                            >
                                 <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
                                     <ul class="list-group" v-if="option.flag != 'img'">
                                         <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
@@ -59,6 +63,14 @@
                                             v-html="tbe(option.bd_option, option.option, user.lang)" >
 
                                         </li>
+
+    <!--                                    <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
+    <!--                                        class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
+    <!--                                        <img  class="image mt-1 rounded img-thumbnail"-->
+    <!--                                              :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
+
+    <!--                                    </li>-->
+
                                     </ul>
                                     <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
                                         <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
@@ -133,40 +145,55 @@ export default {
             answer_minutes: 0,
             mc: 0,
             pm: '',
-            av: true
+            av: true,
+            sqo: false
         };
+    },
+    watch: {
+        questions: {
+            handler(newQuestion) {
+                console.log('newQuestion', newQuestion[0])
+                this.showQuestionOptions(newQuestion[0].fileType);
+            },
+            // force eager callback execution
+            immediate: true
+        }
     },
 
     mounted() {
-        console.log('timer start')
+        // console.log('timer start')
         this.current = this.questions[this.qid].id
 
         let confetti = document.createElement('script')
         confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
         document.head.appendChild(confetti)
-
-        this.startTimer()
+        // this.startTimer()
     },
     methods: {
         startTimer() {
-            console.log('timer start')
-            this.timer = setInterval(() => {
-                this.seconds++
-                if (this.seconds > 59) {
-                    this.seconds = 0
-                    this.minutes++
-                }
+            console.log('timer check av')
 
-                this.answer_seconds++
-                if (this.answer_seconds > 59) {
-                    this.answer_seconds = 0
-                    this.answer_minutes++
-                }
+            if(this.av == true) {
+                console.log('timer start')
+                this.timer = setInterval(() => {
 
-            }, 1000);
+                    this.seconds++
+                    if (this.seconds > 59) {
+                        this.seconds = 0
+                        this.minutes++
+                    }
+
+                    this.answer_seconds++
+                    if (this.answer_seconds > 59) {
+                        this.answer_seconds = 0
+                        this.answer_minutes++
+                    }
+                    this.sqo = true
+                }, 1000);
+
+            }
         },
         checkAnswer: function (q, a, rw) {
-            console.log('this.getCorrectAnswertext()', this.getCorrectAnswertext())
             this.right_wrong = rw
             this.gamedata['id'] = this.qid + 1
             this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang)
@@ -189,13 +216,14 @@ export default {
 
             this.qid++
             this.current = this.questions[this.qid].id
+            this.sqo = false
+            this.showQuestionOptions()
         },
 
         getCorrectAnswertext() {
             let qco = this.questions[this.qid].options.find(o => o.correct == 1)
-            if(qco.flag=='img'){
+            if(qco.flag=='img')
                 return qco.img_link;
-            }
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
@@ -251,12 +279,15 @@ export default {
             return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
         },
         onEnd() {
+            console.log('onEnded....')
             this.av = true
-            this.startTimer()
+            this.showQuestionOptions(null)
         },
         onStart() {
-            this.av = false
+            console.log('onStart....')
             clearInterval(this.timer);
+            this.av = false
+            this.sqo = false
         },
         q2bNumber(numb) {
             let numbString = numb.toString();
@@ -269,6 +300,15 @@ export default {
             const data = objArray.some(a => a.flag == 'img')
            // const data = objArray.find(a => a.flag == 'img');
            return data
+        },
+        showQuestionOptions (question) {
+            clearInterval(this.timer);
+            if(question == null || question == 'image') {
+                setTimeout(() => {
+                    console.log('setTimeout startTimer')
+                    this.startTimer()
+                }, 3000)
+            }
         }
     }
 }

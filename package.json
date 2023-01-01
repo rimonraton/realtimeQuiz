@@ -1,5 +1,8 @@
 {
     "private": true,
+    "browserslist": [
+        "defaults"
+    ],
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -26,6 +29,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
         "@fortawesome/vue-fontawesome": "^2.0.2",
+        "canvas-confetti": "^1.6.0",
         "chart.js": "^2.9.4",
         "laravel-echo": "^1.10.0",
         "pusher-js": "^7.0.2",
