@@ -156,7 +156,7 @@ export default {
         questions: {
             handler(newQuestion) {
                 console.log('newQuestion', newQuestion[0])
-                this.showQuestionOptions(newQuestion[0].fileType);
+                this.showQuestionOptions(newQuestion[0].fileType, 'first');
             },
             // force eager callback execution
             immediate: true
@@ -281,7 +281,12 @@ export default {
            // const data = objArray.find(a => a.flag == 'img');
            return data
         },
-        showQuestionOptions (question) {
+        showQuestionOptions (question, f) {
+            console.log('first time', f);
+            let timeout = 3000;
+            if(f == 'first') {
+                timeout = 1500;
+            }
             if(question == null || question == 'image') {
                 clearInterval(this.timer);
                 this.sqo = false
@@ -289,7 +294,7 @@ export default {
                     console.log('showQuestionOptions')
                     this.sqo = true
                     this.startTimer()
-                }, 3000)
+                }, timeout)
             }
         },
         startTimer() {
