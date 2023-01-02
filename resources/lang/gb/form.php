@@ -215,5 +215,7 @@ return [
     'video_image_audio'=> 'Only Image',
 //    'video_image_audio'=> 'Image, Video, Audio',
     'choose_file' => 'Choose a file',
-    'question_media' => 'File'
+    'question_media' => 'File',
+    'quiz_time' => 'Option after question',
+    'quiz_time_placeholder' => 'Give time to look at options',
 ];

@@ -116,17 +116,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-5">
-                                <select class="form-control custom-select" name="game_type" required>
-                                    <option>{{__('form.game_mode_select')}}</option>
-                                    @foreach($gameType as $game)
-                                    <option value="{{$game->id}}">{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>
-                                    @endforeach
-                                </select>
+                            <label for="quizTime" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_time')}} :</label>
+                            <div class="col-sm-9">
+                                <input type="number" value="0" class="form-control" placeholder="{{__('form.quiz_time_placeholder')}}" name="quizTime">
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <input type="hidden" value="1" name="game_type">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+{{--                            <div class="col-sm-5">--}}
+{{--                                <select class="form-control custom-select" name="game_type" required>--}}
+{{--                                    <option>{{__('form.game_mode_select')}}</option>--}}
+{{--                                    @foreach($gameType as $game)--}}
+{{--                                    <option value="{{$game->id}}" {{$game->gb_game_name == 'Practice'?'selected': ''}}>{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                             <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
-                            <div class="col-sm-4">
+                            <div class="col-sm-9">
                                 <select class="form-control custom-select" name="difficulty" required>
                                     <option>{{__('form.game_type')}}</option>
                                     <option value="1">{{__('form.easy')}}</option>
@@ -135,47 +142,47 @@
                                 </select>
                             </div>
                         </div>
-                        @can('QM',\App\Question::class)
+{{--                        @can('QM',\App\Question::class)--}}
 {{--                            {{auth()->user()->roleuser->role_id}}--}}
-                        <div class="form-group row">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-8">
-                                <div class="row justify-content-center" id="team_load">
-                                    @foreach($teams as $team)
-                                            <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">
-                                                <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">
-                                                <label for="chce_{{$team->id}}">
-                                                    @if($lang == 'gb')
-                                                        @if($team->name == null)
-                                                            {{$team->bn_name}}
-                                                        @else
-                                                            {{$team->name}}
-                                                        @endif
-                                                        @else
-                                                        @if($team->bn_name == null)
-                                                            {{$team->name}}
-                                                        @else
-                                                            {{$team->bn_name}}
-                                                        @endif
-                                                        @endif
-                                                </label>
-                                                <a type="button" class="text-danger text-right dlt" data-id="{{$team->id}}" style="position:absolute;right: 5px;font-size: 20px;">×</a>
-                                            </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>--}}
+{{--                            <div class="col-sm-8">--}}
+{{--                                <div class="row justify-content-center" id="team_load">--}}
+{{--                                    @foreach($teams as $team)--}}
+{{--                                            <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">--}}
+{{--                                                <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">--}}
+{{--                                                <label for="chce_{{$team->id}}">--}}
+{{--                                                    @if($lang == 'gb')--}}
+{{--                                                        @if($team->name == null)--}}
+{{--                                                            {{$team->bn_name}}--}}
+{{--                                                        @else--}}
+{{--                                                            {{$team->name}}--}}
+{{--                                                        @endif--}}
+{{--                                                        @else--}}
+{{--                                                        @if($team->bn_name == null)--}}
+{{--                                                            {{$team->name}}--}}
+{{--                                                        @else--}}
+{{--                                                            {{$team->bn_name}}--}}
+{{--                                                        @endif--}}
+{{--                                                        @endif--}}
+{{--                                                </label>--}}
+{{--                                                <a type="button" class="text-danger text-right dlt" data-id="{{$team->id}}" style="position:absolute;right: 5px;font-size: 20px;">×</a>--}}
+{{--                                            </div>--}}
 
-                                    @endforeach
-                                </div>
+{{--                                    @endforeach--}}
+{{--                                </div>--}}
 {{--                                <select class="select2 form-control" multiple="multiple" style="height: 36px;width: 100%;">--}}
 {{--                                    @foreach($teams as $team)--}}
 {{--                                    <option value="{{$team->id}}">{{$team->name}}</option>--}}
 {{--                                    @endforeach--}}
 {{--                                </select>--}}
-                            </div>
-                            <div class="col-sm-1">
-                                <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>
-                            </div>
+{{--                            </div>--}}
+{{--                            <div class="col-sm-1">--}}
+{{--                                <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>--}}
+{{--                            </div>--}}
 
-                        </div>
-                        @endcan
+{{--                        </div>--}}
+{{--                        @endcan--}}
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-6">

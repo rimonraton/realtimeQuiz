@@ -214,5 +214,7 @@ return [
 //    'video_image_audio' => 'ছবি, ভিডিও, অডিও',
     'video_image_audio' => 'শুধুমাত্র ছবি',
     'choose_file' => 'ফাইল নির্বাচন করুন',
-    'question_media' => 'ফাইল'
+    'question_media' => 'ফাইল',
+    'quiz_time' => 'প্রশ্নের পর অপশন',
+    'quiz_time_placeholder' => 'অপশন দেখার সময় দিন'
 ];

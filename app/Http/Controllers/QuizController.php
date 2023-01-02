@@ -79,7 +79,7 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
-        //  return $request->all();
+//          return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('quiz/view/list/' . $request->cid);
@@ -133,6 +133,7 @@ class QuizController extends Controller
             'difficulty'        => $request->difficulty,
             'user_id'           => auth()->user()->id,
             'team_ids'          =>$team_id,
+            'quiz_time'          =>$request->quizTime,
         ]);
     }
     public function storeFromCustom($request)
@@ -184,6 +185,7 @@ class QuizController extends Controller
             'difficulty'        => $request->difficulty,
             'user_id'           => auth()->user()->id,
             'team_ids'          =>$team_id,
+            'quiz_time'          =>$request->quizTime,
         ]);
     }
     public function quiz($id)
@@ -199,7 +201,7 @@ class QuizController extends Controller
          $admin = auth()->user()->admin;
          $admin_users = $admin->users()->pluck('id');
          if ($role ==='Quiz Master'){
-             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('user_id',auth()->user()->id)->orderBy('id','desc')->paginate(10);
+             $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('game_id', 1)->where('user_id',auth()->user()->id)->paginate(10);
              return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role'));
          }
          else{
@@ -207,7 +209,7 @@ class QuizController extends Controller
              $quizgame = Game::with(['quiz'=>function($q) use ($id,$admin_users){
                  $q->where('category_id', $id)->whereIn('user_id',$admin_users);
              }])->get();
-            $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
+            $quiz = Quiz::orderBy('id', 'desc')->where('category_id', $id)->whereIn('user_id',$admin_users)->where('game_id', 1)->paginate(10);
             return view('Admin.PartialPages.Quiz.Partial.quizzes_list', compact('quiz','role','id','admin_users','games'));
          }
 

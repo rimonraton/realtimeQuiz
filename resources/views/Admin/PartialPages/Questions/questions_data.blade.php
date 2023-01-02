@@ -52,8 +52,22 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    @if($qs->question_file_link)
-                                                    <img src="{{asset($qs->question_file_link)}}" alt="" width="30px" height="30px">
+                                                    @if($qs->fileType == 'image' || $qs->fileType == 'video' || $qs->fileType == 'audio')
+                                                        @if($qs->fileType == 'image')
+                                                            <img src="{{asset($qs->question_file_link)}}" alt="" width="150" height="100">
+                                                        @elseif($qs->fileType == 'video')
+                                                            <video width="150" height="100" controls>
+                                                                <source src="{{asset($qs->question_file_link)}}" type="video/mp4">
+                                                                <source src="{{asset($qs->question_file_link)}}" type="video/ogg">
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        @else
+                                                            <audio controls style="width: 150px">
+                                                                <source src="{{asset($qs->question_file_link)}}" type="audio/ogg">
+                                                                <source src="{{asset($qs->question_file_link)}}" type="audio/mpeg">
+                                                                Your browser does not support the audio element.
+                                                            </audio>
+                                                        @endif
                                                     @else
                                                     <span>__</span>
                                                     @endif

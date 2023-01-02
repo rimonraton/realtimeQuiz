@@ -1,4 +1,40 @@
 <input type="hidden" id="ucat_id" value="{{$QwithO->category_id}}" name="cat_id">
+@if($QwithO->fileType == 'image' || $QwithO->fileType == 'video' || $QwithO->fileType == 'audio')
+<div class="text-center">
+    @if($QwithO->fileType == 'image')
+    <img src="{{asset($QwithO->question_file_link)}}" alt="Image" class="img-thumbnail" width="25%">
+    @elseif($QwithO->fileType == 'video')
+    <video width="320" height="240" controls>
+        <source src="{{asset($QwithO->question_file_link)}}" type="video/mp4">
+        <source src="{{asset($QwithO->question_file_link)}}" type="video/ogg">
+        Your browser does not support the video tag.
+    </video>
+    @else
+    <audio controls>
+        <source src="{{asset($QwithO->question_file_link)}}" type="audio/ogg">
+        <source src="{{asset($QwithO->question_file_link)}}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    @endif
+</div>
+@endif
+{{--<div class="form-group">--}}
+{{--    <input type="file" id="optionOne" class="input-file changeFile" name="optionimg[]" accept="image/*">--}}
+{{--    <div class="btn btn-tertiary js-labelFile">--}}
+{{--        <label for="optionOne" class="d-flex flex-column">--}}
+{{--                                            <span class="js-fileName">--}}
+{{--                                                <i class="icon fa fa-check"></i> {{__('form.choose_file')}}--}}
+{{--                                            </span>--}}
+{{--            <small class="">({{__('form.video_image_audio')}})</small>--}}
+{{--        </label>--}}
+{{--    </div>--}}
+{{--    <label for="optionOne" class="d-none img-label">--}}
+{{--        --}}{{--                                        <img class="img-preview js-labelFilepreview" src="" alt="">--}}
+{{--    </label>--}}
+{{--    <div class="d-none text-center">--}}
+{{--        <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <div class="form-group row">
     <div class="col-md-3">
         <label class="pull-right">{{__('form.question_en')}} :</label>
