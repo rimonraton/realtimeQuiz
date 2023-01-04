@@ -51,7 +51,7 @@
                                                         <span>__</span>
                                                     @endif
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center" id="fileavi_{{$qs->id}}">
                                                     @if($qs->fileType == 'image' || $qs->fileType == 'video' || $qs->fileType == 'audio')
                                                         @if($qs->fileType == 'image')
                                                             <img src="{{asset($qs->question_file_link)}}" alt="" width="150" height="100">

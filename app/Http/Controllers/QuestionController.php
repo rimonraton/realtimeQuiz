@@ -272,7 +272,6 @@ class QuestionController extends Controller
     public function updateQuestion(Request $request)
     {
 //        return $request->all();
-//        return $request->bdoption[3];
        $max_id =  QuestionsOption::max('id') + 1;
         // return $request->cid;
         Question::where('id', $request->qid)->update([
@@ -349,25 +348,75 @@ class QuestionController extends Controller
 
     public function question_update(Request $request)
     {
-//        return $request->all();
+//        dd($request->all());
+//        return  explode(',', $request->oid);
+//            return file_exists($request->old_file_path);
+        if ($request->file){
+            $location = '';
+            $imgPath = '';
+            $fileType = '';
+
+            if ($request->hasFile('file')) {
+                if ($request->fileType == 'image') {
+                    $fileType = $request->fileType;
+                    $location = 'images/question_images/';
+                } else if ($request->fileType == 'video') {
+                    $fileType = $request->fileType;
+                    $location = 'videos/question_videos/';
+                } else {
+                    $fileType = $request->fileType;
+                    $location = 'audios/question_audios/';
+                }
+            }
+
+            if ($request->hasFile('file')) {
+                $original_name = $request->file->getClientOriginalName();
+                $ext = strtolower(\File::extension($original_name));
+                $created_at = Carbon::now('Asia/Dhaka');
+                $t = $created_at->timestamp;
+                $r = Str::random(40);
+                $random_name = $t . '' . $r . '.' . $ext;
+                $path = public_path() . '/' . $location;
+                $filename = $location . $random_name;
+                $request->file->move($path, $filename);
+                $imgPath = $filename;
+            }
+            Question::where('id', $request->qid)->update([
+                'question_text' => $request->question,
+                'bd_question_text' => $request->bdquestion,
+                'question_file_link' =>  $imgPath,
+                'fileType' => $fileType
+            ]);
+            if(file_exists($request->old_file_path))
+            {
+                unlink($request->old_file_path);
+            }
+        } else {
+            Question::where('id', $request->qid)->update([
+                'question_text' => $request->question,
+                'bd_question_text' => $request->bdquestion,
+            ]);
+        }
+//        return $request->bdoption[3];
+
         $max_id =  QuestionsOption::max('id') + 1;
         // return $request->cid;
-        Question::where('id', $request->qid)->update([
-            'question_text' => $request->question,
-            'bd_question_text' => $request->bdquestion,
-        ]);
-        foreach ($request->option as  $k => $o) {
-            $oid =$request->oid[$k];
-            if ($request->oid[$k]=='new'){
+//        Question::where('id', $request->qid)->update([
+//            'question_text' => $request->question,
+//            'bd_question_text' => $request->bdquestion,
+//        ]);
+        foreach (explode(',', $request->option) as  $k => $o) {
+            $oid = explode(',', $request->oid)[$k];
+            if (explode(',', $request->oid)[$k]=='new'){
                 $oid =$max_id;
                 $max_id++;
             }
              QuestionsOption::updateOrCreate(
                 ['id' => $oid],
                 [
-                    'bd_option' => $request->bdoption[$k],
+                    'bd_option' => explode(',',$request->bdoption)[$k],
                     'option' => $o,
-                    'correct' => $request->ans[$k],
+                    'correct' => explode(',', $request->ans)[$k],
                     'question_id'=>$request->qid,
                     'dami'=>'english'
                 ]

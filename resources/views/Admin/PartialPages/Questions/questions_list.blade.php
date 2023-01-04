@@ -129,7 +129,7 @@
                     <input type="hidden" id="uqid" name="qid">
                     <div id="quistion_view">
                     </div>
-                    <div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>
+{{--                    <div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>--}}
                     <div class="modal-footer">
 {{--                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>--}}
                         <button type="button" class="btn btn-primary waves-effect " id="tet" >{{__('form.update')}}</button>
@@ -147,6 +147,11 @@
 @endsection
 @section('js')
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $(function() {
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
@@ -394,53 +399,76 @@
         })
 
     });
-    $('#add_option').on('click',function (e){
-        e.preventDefault();
-        var data = '';
-        data += `<div class="form-group row">
-                            <label for="option1" class="col-md-2">{{__('form.option')}} :</label>
-                            <div class="col-sm-4">
-                            <input name=oid[] class="oid" value='new' type='hidden' />
-                                <input type="text" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
-                            </div>
-                            <div class="col-sm-1 bt-switch">
-                                <input type="hidden" name="ans[]" class="hi ans" value="0">
-                                <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
-                            </div>
-                            <div class="col-md-1">
-                                <a style="cursor: pointer" class="m-4 text-danger remove"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </div>`;
-        $('#quistion_view').append(data);
-        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-    })
+    {{--$('#add_option').on('click',function (e){--}}
+    {{--    e.preventDefault();--}}
+    {{--    var data = '';--}}
+    {{--    data += `<div class="form-group row">--}}
+    {{--                        <label for="option1" class="col-md-2 optionTitle">{{__('form.option')}} :</label>--}}
+    {{--                        <div class="col-sm-4">--}}
+    {{--                        <input name=oid[] class="oid" value='new' type='hidden' />--}}
+    {{--                            <input type="text" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">--}}
+    {{--                        </div>--}}
+    {{--                        <div class="col-sm-4">--}}
+    {{--                            <input type="text" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">--}}
+    {{--                        </div>--}}
+    {{--                        <div class="col-sm-1 bt-switch">--}}
+    {{--                            <input type="hidden" name="ans[]" class="hi ans" value="0">--}}
+    {{--                            <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />--}}
+    {{--                        </div>--}}
+    {{--                        <div class="col-md-1">--}}
+    {{--                            <a style="cursor: pointer" class="m-4 text-danger remove"><i class="fas fa-trash"></i></a>--}}
+    {{--                        </div>--}}
+    {{--                    </div>`;--}}
+    {{--    $('#quistion_view').append(data);--}}
+    {{--    $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();--}}
+    {{--    numberSerial()--}}
+    {{--})--}}
 
     $(document).on('click', '.remove', function() {
         $(this).closest('.row').remove();
+        numberSerial()
     });
     var oid =[];
     var option =[];
     var bdoption =[];
     var ans =[];
     function updateQuestion(){
+        // alert($('#questionUpdate').val() ? $('#questionUpdate').prop('files')[0]: 'null')
+        // return
+        var files = $('#questionUpdate')[0].files;
+        var fd = new FormData();
+        if(files.length > 0){
+            // console.log('oid....', files[0].type.split('/')[0])
+            fd.append('file',files[0]);
+            fd.append('fileType', files[0].type.split('/')[0]);
+        }
+        fd.append('qid', $('#uqid').val());
+        fd.append('cat_id', $('#ucat_id').val());
+        fd.append('oid', oid);
+        fd.append('option', option);
+        fd.append('bdoption', bdoption);
+        fd.append('ans', ans);
+        fd.append('question', $('#uquestion').val());
+        fd.append('bdquestion', $('#ubdquestion').val());
+        fd.append('old_file_path', $('#ufile_path').val());
         $.ajax({
             url:"{{url('question-update')}}",
             type:"Post",
-            data:{
-                "_token": "{{ csrf_token() }}",
-                qid:$('#uqid').val(),
-                cat_id:$('#ucat_id').val(),
-                oid:oid,
-                option:option,
-                bdoption:bdoption,
-                ans:ans,
-                question:$('#uquestion').val(),
-                bdquestion:$('#ubdquestion').val(),
-
-            },
+            {{--data:{--}}
+            {{--    --}}{{--"_token": "{{ csrf_token() }}",--}}
+            {{--    qid:$('#uqid').val(),--}}
+            {{--    cat_id:$('#ucat_id').val(),--}}
+            {{--    oid:oid,--}}
+            {{--    option:option,--}}
+            {{--    bdoption:bdoption,--}}
+            {{--    ans:ans,--}}
+            {{--    question:$('#uquestion').val(),--}}
+            {{--    bdquestion:$('#ubdquestion').val(),--}}
+            {{--    // fileUpdate:$('#questionUpdate')[0].files--}}
+            {{--},--}}
+            data: fd,
+            contentType: false,
+            processData: false,
             success:function (data){
                 if(data.question_text != null){
                     $('#eq_'+$('#uqid').val()).html(data.question_text);
@@ -456,9 +484,9 @@
                 $('#bo_'+$('#uqid').val()).html('');
                 $.each(data.options, function(key, value) {
                     if(value.correct == 1){
-                    console.log(value.option);
-                    console.log(value.bd_option);
-                        if(value.option != null){
+                    console.log('english...', value.option);
+                    console.log('bangla...', value.bd_option);
+                        if(!!value.option){
                             $('#eo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                                 <i class="fa fa-check" style="color:#5378e8"></i>
                                                                 ${value.option}
@@ -468,7 +496,7 @@
                             $('#eo_'+$('#uqid').val()).html('- - - -');
                         }
 
-                        if(value.bd_option != null){
+                        if(!!value.bd_option){
                             $('#bo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                                 <i class="fa fa-check" style="color:#5378e8"></i>
                                                                 ${value.bd_option}
@@ -480,7 +508,32 @@
 
                     }
                 });
-
+                if(data.fileType == 'image' || data.fileType == 'audio' || data.fileType == 'video'){
+                    if (data.fileType == 'image') {
+                        var img = document.createElement("img");
+                        // img.className = 'file-upload-image'
+                        img.width = 150
+                        img.height = 100
+                        img.src = '/'+ data.question_file_link
+                        $('#fileavi_'+$('#uqid').val()).html(img)
+                    } else if (data.fileType == 'video') {
+                        var video = document.createElement('video');
+                        video.src = '/'+ data.question_file_link
+                        video.controls = true
+                        // video.width = 400
+                        video.width = 150
+                        video.height = 100
+                        $('#fileavi_'+$('#uqid').val()).html(video)
+                    } else {
+                        var audio = document.createElement('audio');
+                        audio.style = 'width:150px'
+                        audio.src = '/'+ data.question_file_link
+                        audio.controls = true
+                        $('#fileavi_'+$('#uqid').val()).html(audio)
+                    }
+                } else {
+                    $('#fileavi_'+$('#uqid').val()).html('__')
+                }
                 $('#edit-questions').modal('hide');
             }
         })
@@ -523,5 +576,23 @@
         updateQuestion();
         // console.log(oid,option,bdoption,ans);
     })
+    function numberSerial() {
+        {{--console.log('lang..', '{{$lang}}')--}}
+        $('.optionTitle').each(function(idx, elem){
+            if('{{$lang}}' == 'gb') {
+                $(elem).text( 'Option ' + (idx+1));
+            } else {
+                $(elem).text( 'অপশন ' + q2bNumber(idx+1));
+            }
+
+        });
+    }
+    function q2bNumber(numb) {
+        let numbString = numb.toString();
+        let bn = ''
+        let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+        [...numbString].forEach(n => bn += eb[n])
+        return bn
+    }
 </script>
 @endsection

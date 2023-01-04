@@ -1,6 +1,7 @@
 <input type="hidden" id="ucat_id" value="{{$QwithO->category_id}}" name="cat_id">
+<input type="hidden" id="ufile_path" value="{{$QwithO->question_file_link}}" name="ufile_path">
 @if($QwithO->fileType == 'image' || $QwithO->fileType == 'video' || $QwithO->fileType == 'audio')
-<div class="text-center">
+<div class="text-center" id="preMedia">
     @if($QwithO->fileType == 'image')
     <img src="{{asset($QwithO->question_file_link)}}" alt="Image" class="img-thumbnail" width="25%">
     @elseif($QwithO->fileType == 'video')
@@ -17,24 +18,32 @@
     </audio>
     @endif
 </div>
-@endif
-{{--<div class="form-group">--}}
-{{--    <input type="file" id="optionOne" class="input-file changeFile" name="optionimg[]" accept="image/*">--}}
-{{--    <div class="btn btn-tertiary js-labelFile">--}}
-{{--        <label for="optionOne" class="d-flex flex-column">--}}
-{{--                                            <span class="js-fileName">--}}
-{{--                                                <i class="icon fa fa-check"></i> {{__('form.choose_file')}}--}}
-{{--                                            </span>--}}
-{{--            <small class="">({{__('form.video_image_audio')}})</small>--}}
+<div class="d-none text-center" id="fileUpdatePreview">
+    <div class="image-title-wrap">
+        <button type="button" class="remove-image" id="removeUpdateMediaFile">{{__('form.remove')}}</button>
+    </div>
+</div>
+<div class="text-center">
+    <div class="form-group">
+        <input type="file" id="questionUpdate" class="optipt changeFile" name="questionimg" accept="image/*,video/*,audio/*">
+        <div class="btn btn-tertiary js-labelFile" id="questionFileInput">
+            <label for="optionOne" class="d-flex flex-column">
+                <span class="js-fileName">
+                    <i class="icon fa fa-upload"></i> {{__('form.choose_file')}}
+                </span>
+{{--                <small class="">({{__('form.video_image_audio')}})</small>--}}
+            </label>
+        </div>
+{{--        <label for="optionOne" class="d-none img-label">--}}
+{{--            <img class="img-preview js-labelFilepreview" src="" alt="">--}}
 {{--        </label>--}}
-{{--    </div>--}}
-{{--    <label for="optionOne" class="d-none img-label">--}}
-{{--        --}}{{--                                        <img class="img-preview js-labelFilepreview" src="" alt="">--}}
-{{--    </label>--}}
-{{--    <div class="d-none text-center">--}}
-{{--        <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
-{{--    </div>--}}
-{{--</div>--}}
+{{--        <div class="d-none text-center">--}}
+{{--            <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
+{{--        </div>--}}
+    </div>
+</div>
+@endif
+
 <div class="form-group row">
     <div class="col-md-3">
         <label class="pull-right">{{__('form.question_en')}} :</label>
@@ -54,15 +63,37 @@
 @foreach($QwithO->options as $QO)
 <div class="form-group row" id="op_{{$QO->id}}">
     <div class="col-md-2">
-        <label>{{__('form.option')}} :</label>
+        <label class="optionTitle">{{__('form.option')}} :</label>
     </div>
-    <div class="col-md-4">
-        <input type="hidden" class="oid" name="oid[]" value="{{$QO->id}}">
+    <input type="hidden" class="oid" name="oid[]" value="{{$QO->id}}">
+    @if($QO->flag == 'img')
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="file" class="changeFile optipt" name="optionimg[]" accept="image/*">
+                <div class="btn btn-tertiary js-labelFile d-none">
+                    <label for="optionOne" class="d-flex flex-column">
+                <span class="js-fileName">
+                    <i class="icon fa fa-check"></i> {{__('form.choose_file')}}
+                </span>
+                        <small class="">({{__('form.video_image_audio')}})</small>
+                    </label>
+                </div>
+                <label for="optionOne" class="img-label">
+                    <img class="img-preview js-labelFilepreview" src="{{asset($QO->img_link)}}" alt="">
+                </label>
+                <div class="text-center">
+                    <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>
+                </div>
+            </div>
+        </div>
+    @else
+    <div class="col-md-3">
         <input type="text" value="{{$QO->option}}" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <input type="text" value="{{$QO->bd_option}}" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
     </div>
+    @endif
     <div class="col-md-1">
         <div class="bt-switch">
             <input type="hidden" name="ans[]" class="hi ans" value="{{$QO->correct}}">
@@ -74,10 +105,13 @@
     </div>
 </div>
 @endforeach
-
+<div id="optadd"></div>
+<div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>
+@php $lang = App::getLocale(); @endphp
 <script>
     $(function() {
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+        numberSerial()
         $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
             var qid = $(this).data('id');
             if (state == true) {
@@ -90,6 +124,207 @@
                 $('#dlt_'+qid).removeClass('disabled').addClass('text-danger');
             }
         });
+    })
+    $('#add_option').on('click',function (e){
+        e.preventDefault();
+        var data = '';
+        // alert('data', data)
+        var optOrImage = ''
+        if ('{{$QwithO->options[0]['flag']}}' == 'img') {
+            optOrImage = `<div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="file" class="optipt changeFile" name="optionimg[]" accept="image/*">
+                                    <div class="btn btn-tertiary js-labelFile">
+                                        <label for="optionOne" class="d-flex flex-column">
+                                    <span class="js-fileName">
+                                        <i class="icon fa fa-check"></i> {{__('form.choose_file')}}
+                                        </span>
+                                         <small class="">({{__('form.video_image_audio')}})</small>
+                                        </label>
+                                    </div>
+                                    <label for="optionOne" class="d-none img-label">
+                                        <img class="img-preview js-labelFilepreview" src="" alt="">
+                                    </label>
+                                    <div class="d-none text-center">
+                                        <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>
+                                    </div>
+                                </div>
+                            </div>`
+        } else {
+            optOrImage = `<div class="col-sm-3">
+                                <input type="text" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">
+                            </div>`
+        }
+        data += `<div class="form-group row">
+                            <label for="option1" class="col-md-2 optionTitle">{{__('form.option')}} :</label>
+                             <input name=oid[] class="oid" value='new' type='hidden' />
+                                 ${optOrImage}
+                            <div class="col-sm-1 bt-switch">
+                                <input type="hidden" name="ans[]" class="hi ans" value="0">
+                                <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
+                            </div>
+                            <div class="col-md-1">
+                                <a style="cursor: pointer" class="m-4 text-danger remove"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>`;
+        $('#optadd').append(data);
+        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+        numberSerial()
+    })
+    function numberSerial() {
+        {{--console.log('lang..', '{{$lang}}')--}}
+        $('.optionTitle').each(function(idx, elem){
+            if('{{$lang}}' == 'gb') {
+                $(elem).text( 'Option ' + (idx+1));
+            } else {
+                $(elem).text( 'অপশন ' + q2bNumber(idx+1));
+            }
+
+        });
+    }
+    function q2bNumber(numb) {
+        let numbString = numb.toString();
+        let bn = ''
+        let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+        [...numbString].forEach(n => bn += eb[n])
+        return bn
+    }
+    $('#questionUpdate').on('change', function (event) {
+        if (event.target.files[0]) {
+            const fileType = ['image', 'video', 'audio']
+            if(fileType.includes(event.target.files[0].type.split('/')[0])) {
+                const size = Math.round(event.target.files[0].size/1024)
+                if(event.target.files[0].type.split('/')[0] == 'image'){
+                    // console.log('size..', size)
+                    if(size <= 100){
+                        $('#preMedia').addClass('d-none')
+                        $('#fileUpdatePreview').removeClass('d-none')
+                        $('#questionFileInput').addClass('d-none')
+                        var img = document.createElement("img");
+                        img.className = 'file-upload-image'
+                        img.width = 200
+                        img.src = URL.createObjectURL(event.target.files[0]);
+                        $('#fileUpdatePreview').prepend(img)
+                        img.onload = function() {
+                            URL.revokeObjectURL(img.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 100KB')
+                        alertMessage('File Size less than 100KB')
+                        return;
+                    }
+                } else if(event.target.files[0].type.split('/')[0] == 'video') {
+                    if (size <= 1024) {
+                        $('#preMedia').addClass('d-none')
+                        $('#fileUpdatePreview').removeClass('d-none')
+                        $('#questionFileInput').addClass('d-none')
+                        var video = document.createElement('video');
+                        video.src = URL.createObjectURL(event.target.files[0]);
+                        video.controls = true
+                        video.width = 400
+                        $('#fileUpdatePreview').prepend(video)
+                        video.onload = function() {
+                            URL.revokeObjectURL(video.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 1MB')
+                        alertMessage('File Size less than 1MB')
+                        return;
+                    }
+
+                }else {
+                    if (size <= 500) {
+                        $('#preMedia').addClass('d-none')
+                        $('#fileUpdatePreview').removeClass('d-none')
+                        $('#questionFileInput').addClass('d-none')
+                        var audio = document.createElement('audio');
+                        audio.src = URL.createObjectURL(event.target.files[0]);
+                        audio.controls = true
+                        $('#fileUpdatePreview').prepend(audio)
+                        audio.onload = function() {
+                            URL.revokeObjectURL(audio.src) // free memory
+                        }
+                    } else {
+                        // alert('File Size less than 500KB')
+                        alertMessage('File Size less than 500KB')
+                        return;
+                    }
+                }
+            console.log('after all true')
+                // $('#questionUpdate').val(event.target.files[0].type.split('/')[0])
+                // $(this).parent().addClass('d-none')
+            } else {
+                // alert('File format is not correct')
+                alertMessage('File format is not correct')
+                return
+            }
+        }
+    })
+    function alertMessage(title){
+        Swal.fire({
+            position: 'top-end',
+            type: 'error',
+            title: title,
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+    $('#removeUpdateMediaFile').on('click', function (event) {
+        $('#preMedia').removeClass('d-none')
+        $('#questionUpdate').val(null)
+        // $(this).parent().parent().parent().find('.image-upload-wrap').removeClass('d-none')
+        $('#fileUpdatePreview').addClass('d-none')
+        const whichTag =  $('#fileUpdatePreview')[0].firstChild
+        if(whichTag.tagName == 'AUDIO' || whichTag.tagName == 'VIDEO') {
+            whichTag.pause()
+        }
+        $('#fileUpdatePreview')[0].firstChild.remove()
+        $('#questionFileInput').removeClass('d-none')
 
     })
 </script>
+<style>
+    .optipt{
+        width: 100%;
+        height: 100px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+    }
+    .input-file {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+    .input-file + .js-labelFile {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+    .labelFilepreview {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    .input-file + .js-labelFile .icon:before {
+        content: "";
+    }
+    .input-file + .js-labelFile.has-file .icon:before {
+        content: "";
+        color: #5aac7b;
+    }
+    .img-preview{
+        width: 180px;
+        height: 50px;
+        cursor: pointer;
+    }
+</style>
