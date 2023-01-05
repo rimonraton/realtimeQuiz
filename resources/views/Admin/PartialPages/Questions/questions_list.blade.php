@@ -435,12 +435,16 @@
     function updateQuestion(){
         // alert($('#questionUpdate').val() ? $('#questionUpdate').prop('files')[0]: 'null')
         // return
-        var files = $('#questionUpdate')[0].files;
+        // alert($('#questionUpdate').length)
+        // return
         var fd = new FormData();
-        if(files.length > 0){
-            // console.log('oid....', files[0].type.split('/')[0])
-            fd.append('file',files[0]);
-            fd.append('fileType', files[0].type.split('/')[0]);
+        if($('#questionUpdate').length > 0){
+            var files = $('#questionUpdate')[0].files;
+            if(files.length > 0){
+                // console.log('oid....', files[0].type.split('/')[0])
+                fd.append('file',files[0]);
+                fd.append('fileType', files[0].type.split('/')[0]);
+            }
         }
         fd.append('qid', $('#uqid').val());
         fd.append('cat_id', $('#ucat_id').val());
