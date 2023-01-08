@@ -296,7 +296,7 @@ class QuestionController extends Controller
                     'option' => $o,
                     'correct' => $request->ans[$k],
                     'question_id'=>$request->qid,
-                    'dami'=>'english'
+//                    'dami'=>'english'
                 ]
             );
         }
@@ -325,16 +325,12 @@ class QuestionController extends Controller
         return view('Admin.PartialPages.Questions.questions_list_today', compact('questions', 'id','today','admin_users'));
     }
     // End Questions
-
-
-
     //option delete
     public function deleteOption($id)
     {
         QuestionsOption::where('id',$id)->delete();
         return 'Delete Successfully';
     }
-
     //category published
     public function published_category(Request $request)
     {
@@ -405,24 +401,88 @@ class QuestionController extends Controller
 //            'question_text' => $request->question,
 //            'bd_question_text' => $request->bdquestion,
 //        ]);
-        foreach (explode(',', $request->option) as  $k => $o) {
-            $oid = explode(',', $request->oid)[$k];
-            if (explode(',', $request->oid)[$k]=='new'){
-                $oid =$max_id;
-                $max_id++;
+        if ($request->option || $request->bdoption){
+            foreach (explode(',', $request->option) as  $k => $o) {
+                $oid = explode(',', $request->oid)[$k];
+                if (explode(',', $request->oid)[$k]=='new'){
+                    $oid =$max_id;
+                    $max_id++;
+                }
+                QuestionsOption::updateOrCreate(
+                    ['id' => $oid],
+                    [
+                        'bd_option' => explode(',',$request->bdoption)[$k],
+                        'option' => $o,
+                        'correct' => explode(',', $request->ans)[$k],
+                        'question_id'=>$request->qid,
+//                    'dami'=>'english'
+                    ]
+                );
             }
-             QuestionsOption::updateOrCreate(
-                ['id' => $oid],
-                [
-                    'bd_option' => explode(',',$request->bdoption)[$k],
-                    'option' => $o,
-                    'correct' => explode(',', $request->ans)[$k],
-                    'question_id'=>$request->qid,
-                    'dami'=>'english'
-                ]
-            );
+        } else {
+            foreach (explode(',', $request->ans) as  $k => $a) {
+                $oid = explode(',', $request->oid)[$k];
+                if (explode(',', $request->oid)[$k]=='new'){
+                    $oid =$max_id;
+                    $max_id++;
+                }
+                QuestionsOption::updateOrCreate(
+                    ['id' => $oid],
+                    [
+//                        'bd_option' => explode(',',$request->bdoption)[$k],
+//                        'option' => $o,
+                        'correct' => $a,
+//                        'question_id'=>$request->qid,
+//                    'dami'=>'english'
+                    ]
+                );
+            }
         }
+
        return $question = Question::with('options')->where('id',$request->qid)->first();;
         return 'Success';
+    }
+
+    public function optionFileUpdate(Request $request)
+    {
+//        dd($request->all());
+//        dd(file_exists($request->old_file));
+        $optionimglocation = 'images/option_images/';
+        if ($request->hasFile('file')) {
+            $original_name = $request->file->getClientOriginalName();
+            $ext = strtolower(\File::extension($original_name));
+            $created_at = Carbon::now('Asia/Dhaka');
+            $t = $created_at->timestamp;
+            $r = Str::random(40);
+            $random_name = $t . '' . $r . '.' . $ext;
+            $path = public_path() . '/' . $optionimglocation.$request->qid.'/';
+            $filename = $optionimglocation.$request->qid.'/'. $random_name;
+            $request->file->move($path, $filename);
+//            $data['img_link'] = $filename;
+//            $data['flag'] = 'img';
+            if ($request->id) {
+                QuestionsOption::where('id', $request->id)->update(
+                    [
+                        'img_link' => $filename,
+//                    'correct' => 0,
+//                        'question_id'=> $request->qid,
+//                        'flag'=> 'img',
+                    ]
+                );
+                if(file_exists($request->old_file))
+                {
+                    unlink($request->old_file);
+                }
+            } else {
+                QuestionsOption::create([
+                    'img_link' => $filename,
+                    'correct' => 0,
+                    'question_id'=> $request->qid,
+                    'flag'=> 'img',
+                ]);
+            }
+
+        }
+        return 'success';
     }
 }

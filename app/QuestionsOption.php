@@ -8,7 +8,7 @@ class QuestionsOption extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['option','bd_option','correct', 'question_id'];
+    protected $guarded = [];
 
     public function setQuestionIdAttribute($input)
     {

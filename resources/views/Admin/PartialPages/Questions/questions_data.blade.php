@@ -32,8 +32,9 @@
                                                 <th style="width: 4%;">{{__('form.file')}}</th>
                                                 <th style="width: 30%;">{{__('form.question_en')}}</th>
                                                 <th style="width: 30%;">{{__('form.question_bn')}}</th>
-                                                <th style="width: 15%;">{{__('form.en_options')}}</th>
-                                                <th style="width: 15%;">{{__('form.bn_options')}}</th>
+                                                <th style="width: 10%;">{{__('form.en_options')}}</th>
+                                                <th style="width: 10%;">{{__('form.bn_options')}}</th>
+                                                <th style="width: 10%;">{{__('form.file')}}</th>
                                                 <th style="width: 3%;" class="text-center">{{__('form.action')}}</th>
                                             </tr>
                                         </thead>
@@ -85,12 +86,12 @@
                                                                {{$qo->option}}
                                                             </span>
                                                             @endif
-                                                        @elseif($qo->flag == 'img')@if($qo->correct)
-                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">
-                                                            </span>
-                                                        @endif
+{{--                                                        @elseif($qo->flag == 'img')@if($qo->correct)--}}
+{{--                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">--}}
+{{--                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>--}}
+{{--                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">--}}
+{{--                                                            </span>--}}
+{{--                                                        @endif--}}
 
                                                         @else
                                                             -
@@ -108,6 +109,21 @@
                                                                 @endif
                                                         @else
                                                             -
+                                                    @endif
+                                                    @endforeach
+                                                </td>
+                                                <td id="optImg_{{$qs->id}}">
+{{--                                                    {{$qs->options->first()}}--}}
+                                                    @foreach($qs->options as $qo)
+                                                    @if($qo->flag == 'img')
+                                                        @if($qo->correct)
+                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">
+                                                            </span>
+                                                        @endif
+                                                    @else
+                                                    -
                                                     @endif
                                                     @endforeach
                                                 </td>

@@ -430,6 +430,7 @@
     });
     var oid =[];
     var option =[];
+    var optionImg =[];
     var bdoption =[];
     var ans =[];
     function updateQuestion(){
@@ -437,15 +438,26 @@
         // return
         // alert($('#questionUpdate').length)
         // return
+        // console.log('file input', $('#questionUpdate'))
         var fd = new FormData();
         if($('#questionUpdate').length > 0){
             var files = $('#questionUpdate')[0].files;
             if(files.length > 0){
                 // console.log('oid....', files[0].type.split('/')[0])
-                fd.append('file',files[0]);
+                fd.append('file', files[0]);
                 fd.append('fileType', files[0].type.split('/')[0]);
             }
         }
+        // console.log('type', $('.optipt'))
+        // alert($('.optipt').length)
+        // if($('.optipt').length > 0){
+        //     $.each($('.optipt'), function(i, file) {
+        //         // console.log('filesss.......',i,file.defaultValue)
+        //         fd.append('optionimg[]', file.files[0]);
+        //         fd.append('defaultoptionimg[]', file.defaultValue);
+        //     });
+        //     // fd.append('optImg[]', optionImg)
+        // }
         fd.append('qid', $('#uqid').val());
         fd.append('cat_id', $('#ucat_id').val());
         fd.append('oid', oid);
@@ -490,8 +502,22 @@
                     if(value.correct == 1){
                     console.log('english...', value.option);
                     console.log('bangla...', value.bd_option);
+                    if (value.flag == 'img'){
+                        // var img = document.createElement("img");
+                        // img.className = 'file-upload-image'
+                        // img.width = 30
+                        // img.height = 100
+                        // img.style = 'width:30px'
+                        // img.src = '/'+ value.img_link
+                        const srcImg = '/'+ value.img_link
+                        $('#optImg_'+$('#uqid').val()).html(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                               <img src="${srcImg}" alt="" width="30px">
+                                                            </span>`)
+
+                    }
                         if(!!value.option){
-                            $('#eo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                            $('#eo_'+$('#uqid').val()).append(`<span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
                                                                 <i class="fa fa-check" style="color:#5378e8"></i>
                                                                 ${value.option}
                                                             </span>`)
@@ -509,6 +535,7 @@
                         else{
                             $('#bo_'+$('#uqid').val()).html('- - - -');
                         }
+
 
                     }
                 });
@@ -556,6 +583,15 @@
         });
         // return oid;
     }
+    function geoptionimg(){
+        optionImg = [];
+        $('.optipt').each(function(i, obj) {
+            // console.log('object.....Img', obj.files)
+            // var files = obj[0].files;
+            optionImg.push(obj.files[0]);
+        });
+        // return oid;
+    }
     function getbdoption(){
         bdoption = [];
         $('.bdoption').each(function(i, obj) {
@@ -573,6 +609,7 @@
 
     $('#tet').click(function (){
         // alert('hello');
+        // geoptionimg();
         getoid();
         geoption();
         getbdoption();

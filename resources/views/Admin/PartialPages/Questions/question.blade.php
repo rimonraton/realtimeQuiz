@@ -25,7 +25,7 @@
 </div>
 <div class="text-center">
     <div class="form-group">
-        <input type="file" id="questionUpdate" class="optipt changeFile" name="questionimg" accept="image/*,video/*,audio/*">
+        <input type="file" id="questionUpdate" class="optipt" name="questionimg" accept="image/*,video/*,audio/*">
         <div class="btn btn-tertiary js-labelFile" id="questionFileInput">
             <label for="optionOne" class="d-flex flex-column">
                 <span class="js-fileName">
@@ -69,7 +69,7 @@
     @if($QO->flag == 'img')
         <div class="col-md-2">
             <div class="form-group">
-                <input type="file" class="changeFile optipt" name="optionimg[]" accept="image/*">
+                <input type="file" class="changeFile optipt" data-qid="{{$QwithO->id}}" data-id="{{$QO->id}}" data-old="{{$QO->img_link}}" accept="image/*">
                 <div class="btn btn-tertiary js-labelFile d-none">
                     <label for="optionOne" class="d-flex flex-column">
                 <span class="js-fileName">
@@ -79,11 +79,14 @@
                     </label>
                 </div>
                 <label for="optionOne" class="img-label">
-                    <img class="img-preview js-labelFilepreview" src="{{asset($QO->img_link)}}" alt="">
+                    <img class="img-preview js-labelFilepreview optImg" src="{{asset($QO->img_link)}}" alt="">
                 </label>
-                <div class="text-center">
-                    <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>
+                <div class="text-center" id="loading-{{$QO->id}}" style="display: none">
+                    <img src="{{asset('img/upload.gif')}}" alt="" width="100">
                 </div>
+{{--                <div class="text-center">--}}
+{{--                    <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
+{{--                </div>--}}
             </div>
         </div>
     @else
@@ -130,10 +133,12 @@
         var data = '';
         // alert('data', data)
         var optOrImage = ''
+        var id = ''
+        var qid = '{{$QwithO->id}}'
         if ('{{$QwithO->options[0]['flag']}}' == 'img') {
             optOrImage = `<div class="col-md-2">
                                 <div class="form-group">
-                                    <input type="file" class="optipt changeFile" name="optionimg[]" accept="image/*">
+                                    <input type="file" class="optipt changeFile" data-id="" data-qid="${qid}" data-old="" accept="image/*">
                                     <div class="btn btn-tertiary js-labelFile">
                                         <label for="optionOne" class="d-flex flex-column">
                                     <span class="js-fileName">
@@ -285,6 +290,75 @@
         $('#questionFileInput').removeClass('d-none')
 
     })
+    $(document).on('change', '.changeFile', function (event) {
+        // console.log('event file', event.target.files.length > 0, event.target.files[0].type.split('/')[0])
+        // console.log('event...', $(this)[0])
+        // return;
+        if (event.target.files[0]) {
+            const size = Math.round(event.target.files[0].size/1024)
+            if(event.target.files[0].type.split('/')[0] == 'image'){
+                if (size <= 100) {
+                    $(this).next().addClass('d-none');
+                    $(this).next().next().removeClass('d-none');
+                    // $(this).next().next().next().removeClass('d-none');
+                    var output = $(this).siblings('.img-label')[0]
+                    if(output.firstElementChild != null) {
+                        output.firstElementChild.remove()
+                    }
+                    var img = document.createElement("img");
+                    img.className = 'img-preview js-labelFilepreview optImg'
+                    img.src = URL.createObjectURL(event.target.files[0]);
+                    output.prepend(img)
+                    img.onload = function() {
+                        URL.revokeObjectURL(img.src) // free memory
+                    }
+
+                    var fd = new FormData();
+                    var files = $(this)[0].files;
+                    if(files.length > 0){
+                        fd.append('file', files[0]);
+                        fd.append('id', $(this).attr('data-id'));
+                        fd.append('old_file', $(this).attr('data-old'));
+                        fd.append('qid', $(this).attr('data-qid'));
+                        // fd.append('fileType', files[0].type.split('/')[0]);
+                    }
+                    $.ajax({
+                        url:"{{url('option-file-update')}}",
+                        type:"Post",
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function () {
+                            // console.log('next element....', $(this).next().next().next())
+                            // $(this).next().next().next().removeClass('d-none');
+                            // $(this).next().next().next().removeClass('d-none');
+                            $('#loading-'+$(this).attr('data-id')).show()
+                            console.log('before mounted..')
+                        },
+                        success:function (data) {
+                            console.log(data)
+                        },
+                        complete: function () {
+                            // $(this).next().next().next().addClass('d-none');
+                            // $(this).next().next().next().addClass('d-none');
+                            $('#loading-'+$(this).attr('data-id')).hide()
+                            console.log('completed')
+                        }
+                    })
+
+                } else {
+                    // alert('File Size less than 100KB')
+                    alertMessage('File Size less than 100KB')
+                    return;
+                }
+
+            } else {
+                // alert('File format is not correct')
+                alertMessage(`${event.target.files[0].type.split('/')[0]} file format is not correct`)
+                return;
+            }
+        }
+    })
 </script>
 <style>
     .optipt{
@@ -323,7 +397,7 @@
         color: #5aac7b;
     }
     .img-preview{
-        width: 180px;
+        width: 102px;
         height: 50px;
         cursor: pointer;
     }

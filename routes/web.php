@@ -63,6 +63,7 @@ Route::get('question/list/view/{cid}', 'QuestionController@getQuestiontoday');
 Route::get('deleteoption/{id}','QuestionController@deleteOption');
 Route::get('question_excel',[\App\Http\Controllers\ExcelController::class,'index']);
 Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::class,'store']);
+Route::post('option-file-update',[QuestionController::class,'optionFileUpdate']);
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
