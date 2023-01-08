@@ -216,5 +216,6 @@ return [
     'choose_file' => 'ফাইল নির্বাচন করুন',
     'question_media' => 'ফাইল',
     'quiz_time' => 'প্রশ্নের পর অপশন',
-    'quiz_time_placeholder' => 'অপশন দেখার সময় দিন'
+    'quiz_time_placeholder' => 'অপশন দেখার সময় দিন',
+    'option_upload' => 'আপলোড সফলভাবে সম্পন্ন হয়েছে'
 ];

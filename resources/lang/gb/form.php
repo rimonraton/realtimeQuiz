@@ -218,4 +218,5 @@ return [
     'question_media' => 'File',
     'quiz_time' => 'Option after question',
     'quiz_time_placeholder' => 'Give time to look at options',
+    'option_upload' => 'Upload completed successfully'
 ];

@@ -84,9 +84,9 @@
                 <div class="text-center" id="loading-{{$QO->id}}" style="display: none">
                     <img src="{{asset('img/upload.gif')}}" alt="" width="100">
                 </div>
-{{--                <div class="text-center">--}}
-{{--                    <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
-{{--                </div>--}}
+                <div class="text-center">
+                    <i class="ti-pencil text-danger" style="cursor:pointer;"></i>
+                </div>
             </div>
         </div>
     @else
@@ -343,6 +343,9 @@
                             // $(this).next().next().next().addClass('d-none');
                             $('#loading-'+$(this).attr('data-id')).hide()
                             console.log('completed')
+                            toastr.success("{{__('form.option_upload')}}", {
+                                "closeButton": true
+                            });
                         }
                     })
 
