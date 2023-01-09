@@ -296,4 +296,15 @@ class QuizController extends Controller
             return "Quiz Unpublished";
         }
     }
+
+    public function quizTimeUpdate(Request $request)
+    {
+//      return  [$request->value ? $request->value : 0, $request->all()];
+      $qtime = $request->value ? $request->value : 0;
+      $quiz = Quiz::find($request->id);
+      $quiz->update([
+          'quiz_time' => $qtime
+      ]);
+      return $quiz;
+    }
 }

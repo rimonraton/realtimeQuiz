@@ -218,5 +218,9 @@ return [
     'question_media' => 'File',
     'quiz_time' => 'Option after question',
     'quiz_time_placeholder' => 'Give time to look at options',
-    'option_upload' => 'Upload completed successfully'
+    'option_upload' => 'Upload completed successfully',
+    'upload_notification_message' => 'Successfully Updated',
+    'option_delay' => 'Option Delay',
+    'tooltip_msg' => 'Click and type your given delay time',
+    'info_message' => 'If there is 0 then the question options will be visible without any delay and if there is any number other than 0 then that number delay options will be visible one by one.'
 ];

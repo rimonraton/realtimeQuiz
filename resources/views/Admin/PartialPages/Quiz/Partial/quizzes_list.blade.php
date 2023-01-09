@@ -75,4 +75,49 @@
         }
     });
 
+    // document.getElementsByClassName("editor").addEventListener("input", (e) => {
+    //     console.log("input event fired", e);
+    // }, false);
+    // $('.editor').on('change', function() {alert('changed')});
+    // var outerText = ''
+    // function someFunc(e) {
+    //     console.log(e.target.outerText, 'event',e)
+    //     e.target.next().removeClass('d-none')
+    //     outerText = e.target.outerText
+    // }
+    var outerText = ''
+    $(document).on('input', '.editor', function (e) {
+            $(this).next().removeClass('d-none')
+            outerText = e.target.outerText
+        // console.log('next element',e.target.outerText == "\n", e.target.outerText)
+        // if (e.target.outerText) {
+        //     console.log(e.target.outerText, 'inside')
+        //     $(this).next().removeClass('d-none')
+        //     outerText = e.target.outerText
+        // } else {
+        //     console.log(e.target.outerText, 'outside')
+        //     outerText = 0
+        // }
+    })
+    $('.btn_update').on('click', function () {
+        const id = $(this).attr('data-id')
+        $(this).addClass('d-none')
+        $.ajax({
+            url: "{{url('qiiz-time-update')}}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'id': id,
+                'value': outerText
+            },
+            success: function(data) {
+                // console.log(data)
+                $('#qtime_'+ data.id).text(data.quiz_time)
+                toastr.success("{{__('form.upload_notification_message')}}", {
+                    "closeButton": true
+                });
+            }
+        })
+        // console.log('id, text', id, outerText)
+    })
 </script>

@@ -221,10 +221,19 @@
                                 <table id="zero_config" class="table table-striped table-bordered ">
                                     <thead>
                                     <tr role="row" class="text-center">
-                                        <th style="width: 10%;">{{__('form.sl')}}</th>
+                                        <th style="width: 5%;">{{__('form.sl')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_en')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_bn')}}</th>
-                                        <th style="width: 15%;">{{__('form.noq')}}</th>
+                                        <th style="width: 10%;">{{__('form.noq')}}</th>
+                                        <th style="width: 10%;">
+                                            {{__('form.option_delay')}}
+                                            <br>
+                                            <div class="help-tip">
+                                                <p>
+                                                    {{__('form.info_message')}}
+                                                </p>
+                                            </div>
+                                        </th>
                                         @if($role ==='Participant')
                                             <th style="width: 15%;">{{__('form.publish')}}</th>
                                         @else
@@ -240,7 +249,17 @@
                                             <td>@if($qs->quiz_name){{$qs->quiz_name}}@endif </td>
 
                                             <td>@if($qs->bd_quiz_name){{$qs->bd_quiz_name}} @endif</td>
-                                            <td> <span class="badge badge-info">{{$lang=='bd'?$bang->bn_number(count(explode(",", $qs->questions))):count(explode(",", $qs->questions))}} {{__('form.qus')}}</span></td>
+                                            <td>
+                                                <span class="badge badge-info">
+                                                    {{$lang=='bd'?$bang->bn_number(count(explode(",", $qs->questions))):count(explode(",", $qs->questions))}} {{__('form.qus')}}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <p contentEditable="true" class="badge badge-danger editor" id="qtime_{{$qs->id}}" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="{{__('form.tooltip_msg')}}">
+                                                    {{$qs->quiz_time}}
+                                                </p>
+                                                <span class="btn_update badge d-none" data-id="{{$qs->id}}" style="cursor: pointer">Update</span>
+                                            </td>
                                             @if($role==='Participant')
                                                 <td>
                                                     <span class="badge badge-info">{{$qs->status ==1?__('form.yes'):__('form.no')}}</span></td>
@@ -277,10 +296,11 @@
                                     </tbody>
                                     <tfoot>
                                     <tr role="row" class="text-center">
-                                        <th style="width: 10%;">{{__('form.sl')}}</th>
+                                        <th style="width: 5%;">{{__('form.sl')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_en')}}</th>
                                         <th style="width: 25%;">{{__('form.quiz_name_bn')}}</th>
-                                        <th style="width: 15%;">{{__('form.noq')}}</th>
+                                        <th style="width: 10%;">{{__('form.noq')}}</th>
+                                        <th style="width: 10%;">{{__('form.option_delay')}}</th>
                                         @if($role ==='Participant')
                                             <th style="width: 15%;">{{__('form.publish')}}</th>
                                         @else
@@ -318,3 +338,100 @@
 <script>
     $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
 </script>
+<style>
+    .help-tip{
+        /*position: absolute;*/
+        /*top: 50%;*/
+        /*left: 50%;*/
+        /*transform: translate(-50%, -50%);*/
+        margin: auto;
+        text-align: center;
+        border: 1px solid #444;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        /*line-height: 42px;*/
+        cursor: default;
+    }
+
+    .help-tip:before{
+        content:'i';
+        font-family: sans-serif;
+        font-weight: normal;
+        color:#444;
+    }
+
+    .help-tip:hover p{
+        display:block;
+        transform-origin: 100% 0%;
+        -webkit-animation: fadeIn 0.3s ease;
+        animation: fadeIn 0.3s ease;
+    }
+
+    /* The tooltip */
+    .help-tip p {
+        display: none;
+        font-family: sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+        background-color: #FFFFFF;
+        padding: 12px 16px;
+        width: 178px;
+        height: auto;
+        /*position: absolute;*/
+        /*left: 50%;*/
+        transform: translate(-50%, 5%);
+        border-radius: 3px;
+        /* 	border: 1px solid #E0E0E0; */
+        box-shadow: 0 0px 20px 0 rgba(0,0,0,0.1);
+        color: #37393D;
+        font-size: 12px;
+        line-height: 18px;
+        z-index: 99;
+    }
+
+    .help-tip p a {
+        color: #067df7;
+        text-decoration: none;
+    }
+
+    .help-tip p a:hover {
+        text-decoration: underline;
+    }
+
+    /* The pointer of the tooltip */
+    .help-tip p:before {
+        position: absolute;
+        content: '';
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom-color:#FFFFFF;
+        top: -9px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Prevents the tooltip from being hidden */
+    .help-tip p:after {
+        width: 10px;
+        height: 40px;
+        content:'';
+        position: absolute;
+        top: -40px;
+        left: 0;
+    }
+
+    /* CSS animation */
+    @-webkit-keyframes fadeIn {
+        0% { opacity:0; }
+        100% { opacity:100%; }
+    }
+
+    @keyframes fadeIn {
+        0% { opacity:0; }
+        100% { opacity:100%; }
+    }
+</style>

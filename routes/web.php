@@ -91,6 +91,7 @@ Route::get('quiz/{id}/edit', 'QuizController@quizEdit');
 Route::post('quiz/update', 'QuizController@quizUpdate');
 Route::get('quiz/{quiz_id}/{question_id}/delete', 'QuizController@quizdelete');
 Route::post('quizPublished', 'QuizController@quizPublished');
+Route::post('qiiz-time-update', 'QuizController@quizTimeUpdate');
 
 // Quiz with Option by id
 Route::get('quiz/quiz/{id}', 'QuizController@quiz');

@@ -148,6 +148,7 @@
                                                 <th>{{__('form.question_bn')}}</th>
                                                 <th>{{__('form.en_options')}}</th>
                                                 <th>{{__('form.bn_options')}}</th>
+                                                <th>{{__('form.file')}}</th>
                                                 <th>{{__('form.action')}}</th>
                                             </tr>
 

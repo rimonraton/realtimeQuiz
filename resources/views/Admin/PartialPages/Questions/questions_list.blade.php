@@ -566,6 +566,10 @@
                     $('#fileavi_'+$('#uqid').val()).html('__')
                 }
                 $('#edit-questions').modal('hide');
+
+                toastr.success("{{__('form.upload_notification_message')}}", {
+                    "closeButton": true
+                });
             }
         })
     }
