@@ -7,6 +7,7 @@
             	:questions="{{ $questions }}"
             	:user="{{ $user }}"
             	:gmsg="{{ $gmsg }}"
+            	:quiz="{{ $quiz }}"
             	></practice>
         </div>
     </div>
