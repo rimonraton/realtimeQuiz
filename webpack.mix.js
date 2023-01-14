@@ -15,7 +15,7 @@ mix.js('resources/js/app.js', 'public/js/quizapp.js')
 		    'public/Landing/assets/js/main.js'
 		], 'public/js/theme-site.js')
 		.styles([
-		    'public/Landing/assets/vendor/bootstrap/css/bootstrap.min.css',
+		    'public/Landing/assets/vendor/bootstrap/css/bootstrap.css',
 		    'public/Landing/assets/vendor/boxicons/css/boxicons.min.css',
 		    'public/Landing/assets/vendor/owl.carousel/assets/owl.carousel.min.css',
 		    'public/Landing/assets/css/style.css',

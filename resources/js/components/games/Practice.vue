@@ -60,7 +60,7 @@
                                      :class="[{'col-6':option.flag == 'img'}]"
                                 >
                                     <ul class="list-group" v-if="option.flag != 'img'"
-                                        :class="getOptionClass(i)"
+                                        :class="getOptionClass(i, quiz.quiz_time)"
                                     >
                                         <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                             class="list-group-item list-group-item-action cursor my-1"
@@ -145,7 +145,7 @@ export default {
             mc: 0,
             pm: '',
             av: true,
-            sqo: false
+            sqo: true
         };
     },
     watch: {
@@ -191,7 +191,7 @@ export default {
 
             this.qid++
             this.current = this.questions[this.qid].id
-            this.sqo = false
+            // this.sqo = false
             this.showQuestionOptions()
         },
 
@@ -262,7 +262,7 @@ export default {
             console.log('onStart....')
             clearInterval(this.timer);
             this.av = false
-            this.sqo = false
+            // this.sqo = false
         },
         q2bNumber(numb) {
             let numbString = numb.toString();
@@ -288,36 +288,36 @@ export default {
             }
             if(question == null || question == 'image') {
                 clearInterval(this.timer);
-                this.sqo = false
                 setTimeout(() => {
-                    console.log('showQuestionOptions')
-                    this.sqo = true
+                    // this.sqo = true
                     this.startTimer()
                 }, timeout)
             }
         },
         startTimer () {
-            console.log('timer check av')
-            if(this.av == true) {
-                console.log('timer start')
-                this.timer = setInterval(() => {
+            this.timer = setInterval(() => {
+                this.seconds++
+                if (this.seconds > 59) {
+                    this.seconds = 0
+                    this.minutes++
+                }
 
-                    this.seconds++
-                    if (this.seconds > 59) {
-                        this.seconds = 0
-                        this.minutes++
-                    }
-
-                    this.answer_seconds++
-                    if (this.answer_seconds > 59) {
-                        this.answer_seconds = 0
-                        this.answer_minutes++
-                    }
-                }, 1000);
-            }
+                this.answer_seconds++
+                if (this.answer_seconds > 59) {
+                    this.answer_seconds = 0
+                    this.answer_minutes++
+                }
+            }, 1000);
         },
-        getOptionClass (index) {
-            return 'option' + index;
+        getOptionClass (index, qtime) {
+            if(qtime > 0){
+                if(index == 0) {
+                    return 'animate__animated animate__lightSpeedInRight';
+                }
+                return 'animate__animated animate__lightSpeedInRight animate__delay-' + index +'s';
+            }
+
+            return '';
         }
     }
 }
