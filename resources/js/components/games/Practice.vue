@@ -56,21 +56,17 @@
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster"
                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
-                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
-                                    <ul class="list-group" v-if="option.flag != 'img'">
+                                <div v-for="(option, i) in question.options"
+                                     :class="[{'col-6':option.flag == 'img'}]"
+                                >
+                                    <ul class="list-group" v-if="option.flag != 'img'"
+                                        :class="getOptionClass(i, quiz.quiz_time)"
+                                    >
                                         <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                             class="list-group-item list-group-item-action cursor my-1"
                                             v-html="tbe(option.bd_option, option.option, user.lang)" >
 
                                         </li>
-
-    <!--                                    <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
-    <!--                                        class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
-    <!--                                        <img  class="image mt-1 rounded img-thumbnail"-->
-    <!--                                              :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
-
-    <!--                                    </li>-->
-
                                     </ul>
                                     <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
                                         <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
@@ -129,7 +125,7 @@ import resultdetails from '../helper/practice/resultdetails'
 
 
 export default {
-    props: ['id', 'user', 'questions', 'gmsg'],
+    props: ['id', 'user', 'questions', 'gmsg', 'quiz'],
     components: {resultdetails},
 
     data() {
@@ -149,7 +145,7 @@ export default {
             mc: 0,
             pm: '',
             av: true,
-            sqo: false
+            sqo: true
         };
     },
     watch: {
@@ -162,7 +158,6 @@ export default {
             immediate: true
         }
     },
-
     mounted() {
         // console.log('timer start')
         this.current = this.questions[this.qid].id
@@ -196,7 +191,7 @@ export default {
 
             this.qid++
             this.current = this.questions[this.qid].id
-            this.sqo = false
+            // this.sqo = false
             this.showQuestionOptions()
         },
 
@@ -267,7 +262,7 @@ export default {
             console.log('onStart....')
             clearInterval(this.timer);
             this.av = false
-            this.sqo = false
+            // this.sqo = false
         },
         q2bNumber(numb) {
             let numbString = numb.toString();
@@ -283,80 +278,107 @@ export default {
         },
         showQuestionOptions (question, f) {
             console.log('first time', f);
-            let timeout = 3000;
-            if(f == 'first') {
-                timeout = 1500;
+            let timeout = 0;
+
+            if(this.quiz.quiz_time != 0) {
+                timeout = this.quiz.quiz_time * 1000
+                if(f == 'first') {
+                    timeout = timeout / 2;
+                }
             }
             if(question == null || question == 'image') {
                 clearInterval(this.timer);
-                this.sqo = false
                 setTimeout(() => {
-                    console.log('showQuestionOptions')
-                    this.sqo = true
+                    // this.sqo = true
                     this.startTimer()
                 }, timeout)
             }
         },
-        startTimer() {
-            console.log('timer check av')
-            if(this.av == true) {
-                console.log('timer start')
-                this.timer = setInterval(() => {
+        startTimer () {
+            this.timer = setInterval(() => {
+                this.seconds++
+                if (this.seconds > 59) {
+                    this.seconds = 0
+                    this.minutes++
+                }
 
-                    this.seconds++
-                    if (this.seconds > 59) {
-                        this.seconds = 0
-                        this.minutes++
-                    }
-
-                    this.answer_seconds++
-                    if (this.answer_seconds > 59) {
-                        this.answer_seconds = 0
-                        this.answer_minutes++
-                    }
-                }, 1000);
+                this.answer_seconds++
+                if (this.answer_seconds > 59) {
+                    this.answer_seconds = 0
+                    this.answer_minutes++
+                }
+            }, 1000);
+        },
+        getOptionClass (index, qtime) {
+            if(qtime > 0){
+                if(index == 0) {
+                    return 'animate__animated animate__lightSpeedInRight';
+                }
+                return 'animate__animated animate__lightSpeedInRight animate__delay-' + index +'s';
             }
+
+            return '';
         }
     }
 }
 </script>
 <style>
-#ar {
-    position: absolute;
-    background: transparent;
-    width: 60%;
-    height: 50px;
-    top: 18px;
-}
-.shadow-1:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: inherit;
-    height: inherit;
-    z-index: -2;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);
-}
-
-.shadow-1:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: inherit;
-    height: inherit;
-    z-index: -2;
-    box-sizing: border-box;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
-}
-.imageDiv :hover{
-    background-color: #38c172
-}
+    #ar {
+        position: absolute;
+        background: transparent;
+        width: 60%;
+        height: 50px;
+        top: 18px;
+    }
+    .shadow-1:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: inherit;
+        height: inherit;
+        z-index: -2;
+        box-sizing: border-box;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);
+    }
+    .shadow-1:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: inherit;
+        height: inherit;
+        z-index: -2;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+    }
+    .imageDiv:hover {
+        background-color: #38c172
+    }
+    .option0 {
+        animation: fadeInLeft;
+        animation-duration: .5s;
+    }
+    .option1 {
+        animation: lightSpeedInRight;
+        animation-duration: 1s;
+    }
+    .option2 {
+        animation: fadeInLeft;
+        animation-duration: 1s;
+    }
+    .option3 {
+        animation: lightSpeedInRight;
+        animation-duration: 1.5s;
+    }
+    :root {
+        --animate-duration: .2s;
+        --animate-delay: 1s;
+        --animate-repeat: 1;
+    }
 </style>
 

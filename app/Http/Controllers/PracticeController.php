@@ -25,7 +25,7 @@ class PracticeController extends Controller
         $user['log'] = 1;
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
 
-        return view('games.practice', compact(['id', 'user', 'questions', 'gmsg']));
+        return view('games.practice', compact(['id', 'user', 'questions', 'gmsg', 'quiz']));
     }
 
 
