@@ -81,27 +81,28 @@
                 <form class="form-horizontal r-separator" action="{{url('quiz/save')}}" method="POST" autocomplete="off">
                     @csrf
                     <input type="hidden" name="cid" id="selectedCid" required>
-                    <div class="form-group row justify-content-center">
-                        <div class="btn-group" data-toggle="buttons">
+                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+{{--                    <div class="form-group row justify-content-center">--}}
+{{--                        <div class="btn-group" data-toggle="buttons">--}}
 
-                            @can('readOwrite',\App\Quiz::class)
-                                <label class="btn btn-primary active">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                        <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
-                                    </div>
-                                </label>
-                                <label class="btn btn-primary">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                        <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
-                                    </div>
-                                </label>
-                            @else
-                                <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
-                            @endcan
-                        </div>
-                    </div>
+{{--                            @can('readOwrite',\App\Quiz::class)--}}
+{{--                                <label class="btn btn-primary active">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">--}}
+{{--                                        <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
+{{--                                <label class="btn btn-primary">--}}
+{{--                                    <div class="custom-control custom-radio">--}}
+{{--                                        <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">--}}
+{{--                                        <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>--}}
+{{--                                    </div>--}}
+{{--                                </label>--}}
+{{--                            @else--}}
+{{--                                <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">--}}
+{{--                            @endcan--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_name_en')}} : </label>
@@ -118,7 +119,12 @@
                         <div class="form-group row">
                             <label for="quizTime" class="col-sm-3 text-right control-label col-form-label">{{__('form.quiz_time')}} :</label>
                             <div class="col-sm-9">
-                                <input type="number" value="0" class="form-control" placeholder="{{__('form.quiz_time_placeholder')}}" name="quizTime">
+{{--                                <input type="number" value="0" class="form-control" placeholder="{{__('form.quiz_time_placeholder')}}" name="quizTime">--}}
+                                <select class="form-control custom-select" name="quizTime" required>
+                                    <option value="0">{{__('form.option_layout')}}</option>
+                                    <option value="0">{{__('form.option_together')}}</option>
+                                    <option value="3">{{__('form.option_one_by_one')}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">

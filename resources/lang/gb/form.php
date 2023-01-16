@@ -216,11 +216,14 @@ return [
 //    'video_image_audio'=> 'Image, Video, Audio',
     'choose_file' => 'Choose a file',
     'question_media' => 'File',
-    'quiz_time' => 'Option after question',
-    'quiz_time_placeholder' => 'Give time to look at options',
+    'quiz_time' => 'Option Layout',
+    'quiz_time_placeholder' => 'Enter delay time',
     'option_upload' => 'Upload completed successfully',
     'upload_notification_message' => 'Successfully Updated',
-    'option_delay' => 'Option Delay',
+    'option_delay' => 'Option Layout',
     'tooltip_msg' => 'Click and type your given delay time',
-    'info_message' => 'If there is 0 then the question options will be visible without any delay and if there is any number other than 0 then that number delay options will be visible one by one.'
+    'info_message' => 'Enabled (yes) will make the options visible one by one and disabled (no) will make the options visible together',
+    'option_layout' => 'Select Option Layout',
+    'option_together' => 'Option visible together',
+    'option_one_by_one' => 'Option visible one by one',
 ];
