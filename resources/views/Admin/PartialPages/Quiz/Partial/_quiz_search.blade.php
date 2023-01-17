@@ -229,7 +229,7 @@
                                             {{__('form.option_delay')}}
                                             <br>
                                             <div class="help-tip">
-                                                <p>
+                                                <p style="z-index: 999999; position: relative;">
                                                     {{__('form.info_message')}}
                                                 </p>
                                             </div>
@@ -255,10 +255,13 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <p contentEditable="true" class="badge badge-danger editor" id="qtime_{{$qs->id}}" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="{{__('form.tooltip_msg')}}">
-                                                    {{$qs->quiz_time}}
-                                                </p>
-                                                <span class="btn_update badge d-none" data-id="{{$qs->id}}" style="cursor: pointer">Update</span>
+{{--                                                <p contentEditable="true" class="badge badge-danger editor" id="qtime_{{$qs->id}}" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="{{__('form.tooltip_msg')}}">--}}
+{{--                                                    {{$qs->quiz_time}}--}}
+{{--                                                </p>--}}
+                                                <div class="bt-switch">
+                                                    <input type="checkbox" class="quizTime" data-id="{{$qs->id}}" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$qs->quiz_time > 0 ? "checked" : ""}} />
+                                                </div>
+{{--                                                <span class="btn_update badge d-none" data-id="{{$qs->id}}" style="cursor: pointer">Update</span>--}}
                                             </td>
                                             @if($role==='Participant')
                                                 <td>

@@ -24,6 +24,22 @@
 
         }
     });
+    $(document).on('switchChange.bootstrapSwitch', '.quizTime', function(event, state) {
+        var id = $(this).attr('data-id');
+        console.log(id)
+        if (state == true) {
+            // console.log(id, 3)
+            quizTimeUpdate(id, 3)
+            // publishedOrNot(id, 1);
+            // $(this).prop('checked', true);
+        } else {
+            // console.log(id, 0)
+            quizTimeUpdate(id, 0)
+            // publishedOrNot(id, 0);
+            // $(this).removeProp('checked');
+
+        }
+    });
 
     function publishedOrNot(id, value) {
         $.ajax({
@@ -48,6 +64,24 @@
         responsive: true,
         "ordering": false,
     });
+    function quizTimeUpdate(id, value) {
+        $.ajax({
+            url: "{{url('qiiz-time-update')}}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'id': id,
+                'value': value
+            },
+            success: function(data) {
+                // console.log(data)
+                // $('#qtime_'+ data.id).text(data.quiz_time)
+                toastr.success("{{__('form.upload_notification_message')}}", {
+                    "closeButton": true
+                });
+            }
+        })
+    }
 
     $(document).on('keyup','#quiz_search',function (){
         let keyword = $(this).val();
