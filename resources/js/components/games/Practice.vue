@@ -53,23 +53,28 @@
 <!--                                   <h3 class="text-danger">Q. </h3> {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
                                 </div>
                             </div>
-                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster"
+                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
-                                <div v-for="(option, i) in question.options"
-                                     :class="[{'col-6':option.flag == 'img'}]"
+                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
                                 >
-                                    <ul class="list-group" v-if="option.flag != 'img'"
+                                    <div class="list-group" v-if="option.flag != 'img'"
                                         :class="getOptionClass(i, quiz.quiz_time)"
                                     >
-                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                        <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                             class="list-group-item list-group-item-action cursor my-1"
                                             v-html="tbe(option.bd_option, option.option, user.lang)" >
 
-                                        </li>
-                                    </ul>
-                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
-                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                        </span>
+                                    </div>
+                                    <div
+                                        v-else
+                                        @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                        class="cursor my-1 imageDiv"
+                                        :class="getOptionClass(i, quiz.quiz_time)"
+                                    >
+                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -279,9 +284,8 @@ export default {
         showQuestionOptions (question, f) {
             console.log('first time', f);
             let timeout = 0;
-
             if(this.quiz.quiz_time != 0) {
-                timeout = this.quiz.quiz_time * 1000
+                timeout = 3000; // this.quiz.quiz_time * 1000
                 if(f == 'first') {
                     timeout = timeout / 2;
                 }
@@ -295,19 +299,21 @@ export default {
             }
         },
         startTimer () {
-            this.timer = setInterval(() => {
-                this.seconds++
-                if (this.seconds > 59) {
-                    this.seconds = 0
-                    this.minutes++
-                }
+            if(this.av == true) {
+                this.timer = setInterval(() => {
+                    this.seconds++
+                    if (this.seconds > 59) {
+                        this.seconds = 0
+                        this.minutes++
+                    }
 
-                this.answer_seconds++
-                if (this.answer_seconds > 59) {
-                    this.answer_seconds = 0
-                    this.answer_minutes++
-                }
-            }, 1000);
+                    this.answer_seconds++
+                    if (this.answer_seconds > 59) {
+                        this.answer_seconds = 0
+                        this.answer_minutes++
+                    }
+                }, 1000);
+            }
         },
         getOptionClass (index, qtime) {
             if(qtime > 0){
@@ -359,26 +365,17 @@ export default {
     .imageDiv:hover {
         background-color: #38c172
     }
-    .option0 {
-        animation: fadeInLeft;
-        animation-duration: .5s;
+    .imageOption {
+        height: 100px;
+        width: 100%;
     }
-    .option1 {
-        animation: lightSpeedInRight;
-        animation-duration: 1s;
+
+    @media screen and (min-width: 480px) {
+        .imageOption {
+            height: 170px;
+            width: 100%;
+        }
     }
-    .option2 {
-        animation: fadeInLeft;
-        animation-duration: 1s;
-    }
-    .option3 {
-        animation: lightSpeedInRight;
-        animation-duration: 1.5s;
-    }
-    :root {
-        --animate-duration: .2s;
-        --animate-delay: 1s;
-        --animate-repeat: 1;
-    }
+
 </style>
 
