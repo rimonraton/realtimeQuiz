@@ -64,7 +64,7 @@ class HomeController extends Controller
         $user['lang'] = app()->getLocale();
         $user['group'] = Auth::user()->group;
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
-        return view('games.' . Str::slug($type), compact(['id', 'user', 'questions', 'uid', 'gmsg']));
+        return view('games.' . Str::slug($type), compact(['id', 'user', 'questions', 'uid', 'gmsg', 'quiz']));
     }
 
 

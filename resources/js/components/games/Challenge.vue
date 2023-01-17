@@ -85,20 +85,50 @@
                                     </div>
                                 </div>
                             </div>
-                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
-                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
-                                    <ul class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(i, question.option_view_time)">
-                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
-                                            class="list-group-item list-group-item-action cursor my-1"
-                                            v-html="tbe(option.bd_option, option.option, user.lang)" >
 
-                                        </li>
-                                    </ul>
-                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv">
-                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+<!--                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
+<!--                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">-->
+<!--                                    <ul class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(i, id.option_view_time)">-->
+<!--                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"-->
+<!--                                            class="list-group-item list-group-item-action cursor my-1"-->
+<!--                                            v-html="tbe(option.bd_option, option.option, user.lang)" >-->
+
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv" :class="getOptionClass(i, id.option_view_time)">-->
+<!--                                        <img  class="imageOption image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
+                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
+                            >
+                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
+                                >
+                                    <div class="list-group" v-if="option.flag != 'img'"
+                                         :class="getOptionClass(i, id.option_view_time)"
+                                    >
+                                        <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                              class="list-group-item list-group-item-action cursor my-1"
+                                              v-html="tbe(option.bd_option, option.option, user.lang)" >
+
+                                        </span>
+                                    </div>
+                                    <div
+                                        v-else
+                                        @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                        class="cursor my-1 imageDiv"
+                                        :class="getOptionClass(i, id.option_view_time)"
+                                    >
+                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
                                     </div>
                                 </div>
                             </div>
+
+
+
                         </div>
 <!--                        <ul class="list-group" v-for="option in question.options">-->
 <!--                            <li @click="checkAnswer(question.id, option.option, option.correct)"-->
@@ -131,7 +161,6 @@
                                 {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
                             </li>
                         </transition-group>
-
 
 
                     </div>
@@ -168,6 +197,7 @@
                 timer: null,
                 current: 0,
                 av: true,
+                sqo:false,
                 qid: 0,
                 screen:{
                     waiting: 1,
@@ -225,6 +255,16 @@
                 });
 
         },
+        watch: {
+            questions: {
+                handler(newQuestion) {
+                    console.log('newQuestion', newQuestion[0])
+                    this.showQuestionOptions(newQuestion[0].fileType, 'first');
+                },
+                // force eager callback execution
+                immediate: true
+            }
+        },
 
         mounted() {
             Echo.join(`challenge.${this.id.id}.${this.uid}`)
@@ -275,6 +315,7 @@
             // },
 
             gameStart: function () {
+                this.sqo = true
                 let ids = this.users.map(u => u.id)
                 let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
                 console.log(gd);
@@ -302,13 +343,13 @@
             checkAnswer(q, a, rw){
                 this.answered = 1
                 this.right_wrong = rw
-                this.gamedata.['uid'] = this.user.id
-                this.gamedata.['channel'] = this.channel
-                this.gamedata.['name'] = this.user.name
-                this.gamedata.['question'] = this.questions[this.qid].question_text
-                this.gamedata.['answer'] = this.getCorrectAnswertext()
-                this.gamedata.['selected'] = a
-                this.gamedata.['isCorrect'] = rw == 1? Math.floor(this.progress): 0
+                this.gamedata['uid'] = this.user.id
+                this.gamedata['channel'] = this.channel
+                this.gamedata['name'] = this.user.name
+                this.gamedata['question'] = this.questions[this.qid].question_text
+                this.gamedata['answer'] = this.getCorrectAnswertext()
+                this.gamedata['selected'] = a
+                this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                     axios.post(`/api/questionClick`, this.gamedata)
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
@@ -318,7 +359,7 @@
                     let gr = {result: this.results, 'share_id': this.share.id}
                     axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
                 }
-
+                this.showQuestionOptions()
             },
 
             getCorrectAnswertext(){
@@ -524,6 +565,7 @@
             onEnd() {
                 this.av = true
                 this.QuestionTimer()
+                this.showQuestionOptions(null)
             },
             onStart() {
                 this.av = false
@@ -538,7 +580,24 @@
                 }
 
                 return '';
-            }
+            },
+            showQuestionOptions (question, f) {
+                console.log('first time', f);
+                let timeout = 0;
+                if(this.id.option_view_time != 0) {
+                    timeout = 3000; // this.quiz.quiz_time * 1000
+                    if(f == 'first') {
+                        timeout = timeout / 2;
+                    }
+                }
+                if(question == null || question == 'image') {
+                    clearInterval(this.qt.timer);
+                    setTimeout(() => {
+                        // this.sqo = true
+                        this.QuestionTimer()
+                    }, timeout)
+                }
+            },
 
         },
 
@@ -556,3 +615,16 @@
 
     };
 </script>
+<style>
+    .imageOption {
+        height: 100px;
+        width: 100%;
+    }
+
+    @media screen and (min-width: 480px) {
+        .imageOption {
+            height: 170px;
+            width: 100%;
+        }
+    }
+</style>
