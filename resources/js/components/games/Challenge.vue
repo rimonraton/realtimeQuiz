@@ -87,7 +87,7 @@
                             </div>
                             <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
                                 <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">
-                                    <ul class="list-group" v-if="option.flag != 'img'">
+                                    <ul class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(i, question.option_view_time)">
                                         <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                             class="list-group-item list-group-item-action cursor my-1"
                                             v-html="tbe(option.bd_option, option.option, user.lang)" >
@@ -529,6 +529,16 @@
                 this.av = false
                 clearInterval(this.qt.timer);
             },
+            getOptionClass (index, qtime) {
+                if(qtime > 0){
+                    if(index == 0) {
+                        return 'animate__animated animate__lightSpeedInRight';
+                    }
+                    return 'animate__animated animate__lightSpeedInRight animate__delay-' + index +'s';
+                }
+
+                return '';
+            }
 
         },
 
