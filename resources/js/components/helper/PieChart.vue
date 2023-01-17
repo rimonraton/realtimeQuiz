@@ -7,8 +7,9 @@
     extends: Pie,
     mixins: [reactiveProp],
     mounted () {
+
       this.renderChart(this.chartData, this.options)
-    }    
+    }
 
   };
 

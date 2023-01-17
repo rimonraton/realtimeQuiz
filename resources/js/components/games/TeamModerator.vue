@@ -91,8 +91,8 @@
                                                             <!-- <span class="font-weight-bold">
                                                                 {{ answer.question }}
                                                             </span> -->
-                                                            <span v-if="(/\.(gif|jpg|jpeg|tiff|png)$/i).test(answer.selected)">
-                                                                <img  class="image mt-1 rounded img-thumbnail" width="100px" :src="'/'+ answer.selected" alt="">
+                                                            <span v-if="(/\.(gif|jpg|jpeg|tiff|png)$/i).test(answer.img_link)">
+                                                                <img  class="image mt-1 rounded img-thumbnail" width="100px" :src="'/'+ answer.img_link" alt="">
                                                             </span>
                                                             <span class="font-weight-light font-italic" v-else>
                                                                 {{ answer.user.name + ' - ' + answer.selected }}
@@ -591,16 +591,17 @@ export default {
                 return;
             }
             console.log('data'+this.qoption.bd_option);
-            this.checkAnswer(this.qoption.id,this.qoption.option, this.qoption.correct);
+            this.checkAnswer(this.qoption.id,this.qoption.option, this.qoption.correct, this.qoption.img_link);
             this.qoption.selected = null
             this.qoption.id = null
             this.qoption.option = null
+            this.qoption.img_link = null
             this.qoption.correct = null
             this.screen.result = 1
             this.TimerInit()
         },
 
-        checkAnswer(q, a, rw){
+        checkAnswer(q, a, rw, ai){
             this.gamedata['id'] = this.qid + 1
             this.gamedata['question'] = this.ToText(this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang))
             this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext())
@@ -609,8 +610,11 @@ export default {
             this.gamedata['user'] = this.user
             this.gamedata['channel'] = this.channel
             this.gamedata['team'] = this.team
+            if(!!ai) {
+                this.gamedata['img_link'] = ai
+            }
             let clone = {...this.gamedata}
-            console.log(clone);
+            console.log('GameData', clone);
             this.answered_user_data.push(clone)
             axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
 
@@ -693,12 +697,12 @@ export default {
         },
 
         predictAnswer(){
-            if(this.qoption.option == null){
+            if(this.qoption.option == null && this.qoption.img_link == null){
                 alert('Please select an option first!')
                 return;
             }
             let pre = {
-                ans: this.ToText(this.qoption.option),
+                ans: this.ToText(this.qoption.option, this.qoption.img_link),
                 user:this.user,
                 channel: this.channel,
             }
@@ -722,7 +726,7 @@ export default {
             return this.prediction.find(p => p.user.group_id === this.user.group_id)
         },
         getPredict(){
-            var counts = {};
+            let counts = {};
             let options = this.questions[this.qid].options
             this.prediction.forEach(p => {
                 if(p.user.gid === this.user.gid){
@@ -731,7 +735,7 @@ export default {
             });
 
             this.pie_data = options.map(o => {
-                var c = counts[this.ToText(this.tbe(o.bd_option,o.option,this.user.lang))]
+                let c = counts[this.ToText(this.tbe(o.bd_option,o.option,this.user.lang), o.img_link)]
                 if(c === undefined)
                     return 0
                 return c
@@ -778,12 +782,14 @@ export default {
                 this.qoption.selected = null
                 this.qoption.id = option.question_id
                 this.qoption.option= null
+                this.qoption.img_link= null
                 this.qoption.correct= null
             }else{
                 this.qoption.selected = index
                 this.qoption.id = option.question_id
-                this.qoption.option= option.flag== 'img'? option.img_link :this.tbe(option.bd_option,option.option,this.user.lang)
-                this.qoption.correct= option.correct
+                this.qoption.option = this.tbe(option.bd_option,option.option,this.user.lang)
+                this.qoption.img_link = option.img_link
+                this.qoption.correct = option.correct
             }
             // console.log(this.isPredict())
 
@@ -792,7 +798,9 @@ export default {
 
         fillPie() {
             this.datacollection = {
-                labels: this.questions[this.qid].options.map(o => { return this.ToText(this.tbe(o.bd_option,o.option,this.user.lang)) }),
+                labels: this.questions[this.qid].options.map((o, i)=> {
+                    return this.ToText(this.tbe(o.bd_option,o.option,this.user.lang), i+1)
+                }),
                 datasets: [{
                     borderWidth: 1,
                     borderColor: ['#7fdbda', '#ade498', '#ede682', '#febf63'],
@@ -802,8 +810,11 @@ export default {
             }
         },
 
-        ToText(input){
-            console.log('input......', input)
+        ToText(input, i){
+            if(input == null) {
+                return i;
+            }
+            console.log('input....ToText..', input)
             if(!!input){
                 return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
             }
