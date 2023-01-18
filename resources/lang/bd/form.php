@@ -225,4 +225,7 @@ return [
     'option_layout' => 'অপশন বিন্যাস নির্বাচন করুন',
     'option_together' => 'অপশনগুলো একত্রে দৃশ্যমান',
     'option_one_by_one' => 'অপশনগুলো একটি পর একটি দৃশ্যমান',
+    'option_together_title' => 'একত্রে',
+    'option_one_by_one_title' => 'একটি পর একটি',
+    'layout_title' => 'অপশন বিন্যাস',
 ];

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Challenge extends Model
 {
+    protected $guarded = [];
     public function share()
     {
         return $this->hasMany(Share::class);

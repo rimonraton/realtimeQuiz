@@ -226,4 +226,7 @@ return [
     'option_layout' => 'Select Option Layout',
     'option_together' => 'Option visible together',
     'option_one_by_one' => 'Option visible one by one',
+    'option_together_title' => 'Together',
+    'option_one_by_one_title' => 'One by one',
+    'layout_title' => 'Option Layout',
 ];

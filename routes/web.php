@@ -194,6 +194,7 @@ Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge'])
 Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team']);
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
+Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout']);
 Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult']);
 Route::get('challengeShareResult/{link}/details', [\App\Http\Controllers\ShareController::class, 'challengeShareResultDetails']);
 Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShare']);

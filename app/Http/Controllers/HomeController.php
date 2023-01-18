@@ -239,4 +239,13 @@ class HomeController extends Controller
 
         return view('Admin.Games.partials._challange_search',compact('challange'));
     }
+
+    public function updateChallengeOptionLayout(Request $request)
+    {
+      $challenge =  Challenge::find($request->id);
+      $challenge->update([
+          'option_view_time' => $request->value
+      ]);
+      return 'updated successfully';
+    }
 }
