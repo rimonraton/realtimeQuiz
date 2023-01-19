@@ -20,7 +20,9 @@
                     :user="{{ $user }}"
                     :gmsg="{{ $gmsg }}"
                     :teams="{{$team}}"
-                    :topics="{{$topic}}">
+                    :topics="{{$topic}}"
+                    :quiz="{{$quiz}}"
+                    >
                     </team-moderator>
                 </div>
             </div>

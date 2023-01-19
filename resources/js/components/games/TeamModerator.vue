@@ -164,23 +164,48 @@
                                     </h6>
                                 </div>
                             </div>
-                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">
-                                <div v-for="(option, index) in question.options" :class="{'col-6':option.flag == 'img'}">
-                                    <ul class="list-group" v-if="option.flag != 'img'">
-                                        <li @click="clickSelect(index, option)"
-                                            class="list-group-item list-group-item-action cursor my-1"
-                                            :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]"
-                                            v-html="tbe(option.bd_option, option.option, user.lang)" >
+<!--                            <div v-if="sqo" :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
+<!--                                <div v-for="(option, index) in question.options" class="col-md-6 px-1" :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]">-->
+<!--                                    <div class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(index, quiz.quiz_time)">-->
+<!--                                        <span @click="clickSelect(index, option)"-->
+<!--                                            class="list-group-item list-group-item-action cursor my-1"-->
+<!--                                            :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]"-->
+<!--                                            v-html="tbe(option.bd_option, option.option, user.lang)" >-->
 
-                                        </li>
-                                    </ul>
-                                    <div v-else @click="clickSelect(index, option)" class="cursor my-1 imageDiv">
-                                        <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
-                                        <span v-if="qoption.selected == index" class="imgTick">
-                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+<!--                                        </span>-->
+<!--                                    </div>-->
+<!--                                    <div v-else @click="clickSelect(index, option)" class="cursor my-1 imageDiv" :class="getOptionClass(index, quiz.quiz_time)">-->
+<!--                                        <img  class="mt-1 rounded img-thumbnail imageOption" :src="'/'+ option.img_link" alt="">-->
+<!--                                        <span v-if="qoption.selected == index" class="imgTick">-->
+<!--                                            <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+<!--                                        </span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
+                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
+                            >
+                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
+                                >
+                                    <div class="list-group" v-if="option.flag != 'img'"
+                                         :class="getOptionClass(i, quiz.quiz_time)"
+                                    >
+                                        <span @click="clickSelect(i, option)"
+                                              class="list-group-item list-group-item-action cursor my-1"
+                                              :class="[`element-animation${i + 1}`, {selected:qoption.selected == i}]"
+                                              v-html="tbe(option.bd_option, option.option, user.lang)" >
                                         </span>
                                     </div>
-
+                                    <div
+                                        v-else
+                                        @click="clickSelect(index, option)"
+                                        class="cursor my-1 imageDiv"
+                                        :class="getOptionClass(i, quiz.quiz_time)"
+                                    >
+                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +261,7 @@ import TeamResult from '../helper/TeamResult'
 
 
 export default {
-    props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics'],
+    props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics', 'quiz'],
 
     components: { PieChart, questions, groupResult,waiting,TeamMember,TeamResult },
 
@@ -283,7 +308,8 @@ export default {
             team_ranking:null,
             perform:null,
             position:null,
-            av: true
+            av: true,
+            sqo:false
         };
     },
 
@@ -381,6 +407,7 @@ export default {
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.user.lang = data.lang
+                this.sqo = true
                 this.QuestionTimer() // Set and Start QuestionTimer
 
             })
@@ -463,6 +490,17 @@ export default {
 
     },
 
+    // watch: {
+    //     questions: {
+    //         handler(newQuestion) {
+    //             console.log('newQuestion', newQuestion[0])
+    //             this.showQuestionOptions(newQuestion[0].fileType, 'first');
+    //         },
+    //         // force eager callback execution
+    //         immediate: true
+    //     }
+    // },
+
 
     methods: {
         // winner_msg(){
@@ -477,6 +515,7 @@ export default {
         onEnd() {
             this.av = true
             this.QuestionTimer()
+            // this.showQuestionOptions(null)
         },
         onStart() {
             this.av = false
@@ -540,6 +579,8 @@ export default {
             return [];
         },
         gameStart: function () {
+            console.log('clicked', this.sqo)
+            console.log('clicked after', this.sqo)
             axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel,lang:this.user.lang}).then(res =>  console.log(res.data))
             this.game_start = 1
             this.screen.waiting = 0
@@ -617,7 +658,7 @@ export default {
             console.log('GameData', clone);
             this.answered_user_data.push(clone)
             axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
-
+            // this.showQuestionOptions()
         },
 
         QuestionTimer(){
@@ -860,7 +901,34 @@ export default {
                 return true
             }
             return false
-        }
+        },
+        getOptionClass (index, qtime) {
+            if(qtime > 0){
+                if(index == 0) {
+                    return 'animate__animated animate__lightSpeedInRight';
+                }
+                return 'animate__animated animate__lightSpeedInRight animate__delay-' + index +'s';
+            }
+
+            return '';
+        },
+        showQuestionOptions (question, f) {
+            console.log('first time', f);
+            let timeout = 0;
+            if(this.quiz.quiz_time != 0) {
+                timeout = 3000; // this.quiz.quiz_time * 1000
+                if(f == 'first') {
+                    timeout = timeout / 2;
+                }
+            }
+            if(question == null || question == 'image') {
+                clearInterval(this.qt.timer);
+                setTimeout(() => {
+                    // this.sqo = true
+                    this.QuestionTimer()
+                }, timeout)
+            }
+        },
 
     },
 
@@ -901,5 +969,16 @@ export default {
     width: 60%;
     height: 50px;
     top: 18px;
+}
+.imageOption {
+    height: 100px;
+    width: 100%;
+}
+
+@media screen and (min-width: 480px) {
+    .imageOption {
+        height: 170px;
+        width: 100%;
+    }
 }
 </style>

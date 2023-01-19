@@ -114,6 +114,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-between mx-3">
+                                <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $q->id }}">
+                                    {{ __('form.layout_title') }}
+                                </div>
+                                <div id="together-{{$q->id}}-0" class="optlayout pointer small btn btn-xs btn-outline-info align-self-center {{$q->quiz_time == 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="0">
+                                    {{--                                    <i class="fas fa-share-alt"></i> --}}
+                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
+                                    {{ __('form.option_together_title') }}
+                                    <div class="loading{{ $q->id }}"></div>
+                                </div>
+                                <div id="together-{{$q->id}}-3" class="optlayout btn btn btn-xs btn-outline-info align-self-center {{$q->quiz_time > 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="3">
+                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
+                                    {{__('form.option_one_by_one_title')}}
+                                </div>
+                            </div>
+
                             <div class="card-footer d-flex justify-content-between">
                                 <div id="shareBtn{{ $q->id }}" class="show_share shareBtnDiv"></div>
                                 <a class="shareBtn pointer small btn btn-outline-info" data-id="{{ $q->id }}">
@@ -272,6 +288,32 @@
                 {{--})--}}
             }
         })
+    })
+
+    $('.optlayout').on('click', function () {
+        var $this = $(this)
+        $.ajax({
+            url: "{{url('qiiz-time-update')}}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'id': $(this).data('id'),
+                'value': $(this).data('value')
+            },
+            success: function(data) {
+                if($this.data('value') == 0){
+                    $('#together-'+$this.data('id')+'-'+3).removeClass('bg-info text-white')
+                    $this.addClass('bg-info text-white')
+                } else {
+                    $('#together-'+$this.data('id')+'-'+0).removeClass('bg-info text-white')
+                    $this.addClass('bg-info text-white')
+                }
+                toastr.success("{{__('form.upload_notification_message')}}", {
+                    "closeButton": true
+                });
+            }
+        })
+
     })
 
 
