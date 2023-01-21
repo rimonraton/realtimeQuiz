@@ -225,7 +225,9 @@
                     this.share = data.share
                     this.game_start = 1 // Game Start from Game Owner...
                     this.screen.waiting = 0
-                    this.QuestionTimer() // Set and Start QuestionTimer
+                    this.showQuestionOptions(null)
+                    this.sqo = true
+                    // this.QuestionTimer() // Set and Start QuestionTimer
 
                 })
                 .listen('GameResetEvent', (data) => {
@@ -255,16 +257,16 @@
                 });
 
         },
-        watch: {
-            questions: {
-                handler(newQuestion) {
-                    console.log('newQuestion', newQuestion[0])
-                    this.showQuestionOptions(newQuestion[0].fileType, 'first');
-                },
-                // force eager callback execution
-                immediate: true
-            }
-        },
+        // watch: {
+        //     questions: {
+        //         handler(newQuestion) {
+        //             console.log('newQuestion', newQuestion[0])
+        //             this.showQuestionOptions(newQuestion[0].fileType, '');
+        //         },
+        //         // force eager callback execution
+        //         immediate: true
+        //     }
+        // },
 
         mounted() {
             Echo.join(`challenge.${this.id.id}.${this.uid}`)
@@ -322,7 +324,8 @@
                 axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
                 this.game_start = 1
                 this.screen.waiting = 0
-                this.QuestionTimer()
+                this.showQuestionOptions(this.questions[0].fileType)
+                // this.QuestionTimer()
             },
             gameResetCall() {
                 axios.post(`/api/gameReset`, {channel: this.channel }).then(res => console.log(res.data))
@@ -358,14 +361,14 @@
                 if(this.qid+1 == this.questions.length) {
                     let gr = {result: this.results, 'share_id': this.share.id}
                     axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
+                } else {
+                    this.showQuestionOptions(null)
                 }
-                this.showQuestionOptions()
-            },
 
+            },
             getCorrectAnswertext(){
                 return this.questions[this.qid].options.find(o => o.correct == 1).option
             },
-
             resultScreen(){
                 console.log('resultScreen')
                 this.getResult() //Sorting this.results
@@ -487,13 +490,11 @@
 
                 }
             },
-
             externalJS(){
                 let confetti = document.createElement('script')
                 confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
                 document.head.appendChild(confetti)
             },
-
             kickUser(id){
                 if(id != this.uid){
 
@@ -581,14 +582,11 @@
 
                 return '';
             },
-            showQuestionOptions (question, f) {
-                console.log('first time', f);
+            showQuestionOptions (question) {
                 let timeout = 0;
                 if(this.id.option_view_time != 0) {
                     timeout = 3000; // this.quiz.quiz_time * 1000
-                    if(f == 'first') {
-                        timeout = timeout / 2;
-                    }
+
                 }
                 if(question == null || question == 'image') {
                     clearInterval(this.qt.timer);
@@ -598,7 +596,6 @@
                     }, timeout)
                 }
             },
-
         },
 
         computed: {

@@ -56,7 +56,7 @@
                                   </li>
                               </ul>
                               <div v-else class="cursor my-1">
-                                  <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                  <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
                                   <span v-if="option.correct ==1" class="imgTick">
                                       <i class="fa fa-check text-success" aria-hidden="true"></i>
                                   </span>
@@ -71,8 +71,6 @@
             <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</a>
 
         </div>
-
-
         <div class="modal" tabindex="-1" data-backdrop="false" role="dialog" id="qmodal">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -104,8 +102,6 @@
             </div>
         </div>
 	</div>
-
-
 </template>
 
 <script>
@@ -120,7 +116,6 @@
                 questiondata:this.questions,
             }
         },
-
 		methods: {
 		    onnoFunc(){
 		        $('#qmodal').modal('hide');
@@ -162,8 +157,6 @@
                 $('#qmodal').modal('show');
                 this.isModalVisible = true
             },
-
-
 			ToText(input){
               return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'').replace(/&rsquo;/g,'');
             },
@@ -208,5 +201,15 @@
     position: absolute;
     right: 24px;
     top: 15px;
+}
+.imageOption {
+    height: 100px;
+    width: 100%;
+}
+@media screen and (min-width: 480px) {
+    .imageOption {
+        height: 170px;
+        width: 100%;
+    }
 }
 </style>

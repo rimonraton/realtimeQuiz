@@ -156,7 +156,7 @@ export default {
     watch: {
         questions: {
             handler(newQuestion) {
-                console.log('newQuestion', newQuestion[0])
+                console.log('newQuestion', newQuestion[0].fileType)
                 this.showQuestionOptions(newQuestion[0].fileType, 'first');
             },
             // force eager callback execution
@@ -197,7 +197,7 @@ export default {
             this.qid++
             this.current = this.questions[this.qid].id
             // this.sqo = false
-            this.showQuestionOptions()
+            this.showQuestionOptions(null)
         },
 
         getCorrectAnswertext() {
@@ -282,7 +282,7 @@ export default {
            return data
         },
         showQuestionOptions (question, f) {
-            console.log('first time', f);
+            console.log('first time', f, question);
             let timeout = 0;
             if(this.quiz.quiz_time != 0) {
                 timeout = 3000; // this.quiz.quiz_time * 1000

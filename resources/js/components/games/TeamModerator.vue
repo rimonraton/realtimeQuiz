@@ -200,7 +200,7 @@
                                     </div>
                                     <div
                                         v-else
-                                        @click="clickSelect(index, option)"
+                                        @click="clickSelect(i, option)"
                                         class="cursor my-1 imageDiv"
                                         :class="getOptionClass(i, quiz.quiz_time)"
                                     >
@@ -258,7 +258,6 @@ import groupResult from '../helper/groupResult'
 import waiting from '../helper/moderator/waiting'
 import TeamMember from '../helper/TeamMember'
 import TeamResult from '../helper/TeamResult'
-
 
 export default {
     props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics', 'quiz'],
@@ -395,6 +394,7 @@ export default {
             .listen('AddQuestionEvent', (data) => {
                 console.log('AddQuestionEvent..........')
                 console.log(data);
+                this.sqo = false
                 data.questions.map(q=>this.questions.push(q))
                 // this.QuestionTimer() // Set and Start QuestionTimer
 
@@ -413,6 +413,8 @@ export default {
             })
             .listen('NextQuestionEvent', (data) => {
                 this.av = true
+                this.sqo = true
+                console.log('sqo...', this.sqo)
                 console.log('NextQuestionEvent.............',data, this.questions[data.qid].id, this.qid, this.questions[this.qid].id, document.getElementById(this.questions[this.qid].id))
                 // const qs = this.questions[this.qid - 1].fileType
                 if(this.questions[data.qid].fileType == 'video' || this.questions[data.qid].fileType == 'audio') {
@@ -466,7 +468,6 @@ export default {
                 if(req.data.user.gid == this.user.gid) {
                     this.TimerInit();
                 }
-
             })
             .listen('PageReloadEvent', (data) => {
                 console.log('PageReloadEvent.............')
