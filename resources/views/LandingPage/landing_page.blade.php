@@ -180,7 +180,7 @@
                 <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
                     <div data-aos="zoom-out">
                         <h1 style="font-size: 2.2em;">{{__('msg.motivation')}}</h1>
-                        <h2>{{__('msg.slogan')}} cc</h2>
+                        <h2>{{__('msg.slogan')}} </h2>
                     </div>
                 </div>
                 <div id="logoimg" class="col-lg-5 order-1 order-lg-2 hero-img text-md-right" data-aos="zoom-out" data-aos-delay="300">
