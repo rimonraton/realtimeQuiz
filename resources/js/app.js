@@ -24,6 +24,8 @@ import TeamQuiz from './components/games/TeamQuiz'
 import Moderator from './components/games/Moderator'
 import Team from './components/games/Team'
 import TeamModerator from './components/games/TeamModerator'
+import ExamQuestionTimeMode from './components/games/ExamQuestionTimeMode'
+import ExamTimeMode from './components/games/ExamTimeMode'
 // import router from './router/Router.js';
 
 /**
@@ -47,6 +49,8 @@ const app = new Vue({
 	    'Moderator': Moderator,
 	    'Team': Team,
         'TeamModerator':TeamModerator,
+        'ExamQuestionTimeMode' : ExamQuestionTimeMode,
+        'ExamTimeMode' : ExamTimeMode,
 	}
     // router
 });

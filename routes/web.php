@@ -248,5 +248,8 @@ Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::c
 
 //Exam
 Route::get('list-of-exam', [\App\Http\Controllers\ExamController::class, 'index']);
+Route::get('trainee-exams/{id?}', [\App\Http\Controllers\ExamController::class, 'traineeExams']);
+Route::get('start-exams/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'startExam']);
 Route::get('create-exam', [\App\Http\Controllers\ExamController::class, 'createExam']);
+Route::post('mode-update', [\App\Http\Controllers\ExamController::class, 'timeModeUpdate']);
 

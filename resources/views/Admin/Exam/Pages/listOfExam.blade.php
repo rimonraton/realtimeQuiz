@@ -68,26 +68,63 @@
                                             <th style="width: 0px;">{{__('exam.sl')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_english')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_bangla')}}</th>
+                                            <th style="width: 0px;">{{__('mode')}}</th>
+                                            <th style="width: 0px;">{{__('Time ( Minutes )')}}</th>
+                                            <th style="width: 5%;">{{__('Status')}}</th>
                                             <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-{{--                                        @foreach($menus as $menu)--}}
-{{--                                            <tr>--}}
-{{--                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>--}}
-{{--                                                <th>{{$menu->name}}</th>--}}
-{{--                                                <th>{{$menu->bn_name}}</th>--}}
-{{--                                                <th><a class="edit" href="" data-id="{{$menu->id}}" data-name="{{$menu->name}}" data-bnname="{{$menu->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>--}}
-{{--                                                    <a class="delete text-danger" style="cursor: pointer;" data-id="{{$menu->id}}" title="Remove"><i class="fas fa-trash"></i></a>--}}
-{{--                                                </th>--}}
-{{--                                            </tr>--}}
-{{--                                        @endforeach--}}
+                                        @php
+                                            function convert_seconds($seconds)
+                                             {
+                                              $dt1 = new DateTime("@0");
+                                              $dt2 = new DateTime("@$seconds");
+                                              return $dt1->diff($dt2)->format('%h hours %i minutes %s seconds');
+                                              }
+                                        @endphp
+                                        @foreach($exam_data as $exam)
+                                            <tr>
+                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                                                <th>{{$exam->exam_en}}</th>
+                                                <th>{{$exam->exam_bn}}</th>
+                                                <th class="text-center">
+                                                    <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
+                                                        {{$exam->exam_time ? 'Normal mode' : ($exam->question_time ? 'Set of question time mode' : 'No mode')}}
+                                                    </span>
+                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" title="Edit Mode">
+                                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                                    </a>
+
+                                                </th>
+                                                <th>
+
+                                                    {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
+                                                </th>
+                                                <th>
+                                                    <div class="bt-switch">
+                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('Published')}}" data-off-text="{{__('Not Published')}}" data-size="normal" {{$exam->status ==1?"checked":""}} />
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <a class="edit" href="" data-id="{{$exam->id}}" title="Edit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                    <a class="delete text-danger" style="cursor: pointer;" data-id="{{$exam->id}}" title="Remove">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                         <tfoot>
                                         <tr>
                                             <th rowspan="1" colspan="1">{{__('exam.sl')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_english')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_bangla')}}</th>
+                                            <th rowspan="1">{{__('mode')}}</th>
+                                            <th rowspan="1">{{__('Time ( Minutes )')}}</th>
+                                            <th rowspan="1">{{__('Status')}}</th>
                                             <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                         </tfoot>
@@ -100,7 +137,11 @@
                                 </div> -->
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-md-8">
+                                    {{$exam_data->links()}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,10 +183,66 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div id="edit-mode" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('Update Mode')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('mode-update')}}" autocomplete="off">
+                        @csrf
+                        <input type="hidden" id="muid" name="id">
+                        <h4 class="text-center">Change Exam time mode</h4>
+                        <div class="d-flex justify-content-center">
+                                <label class="container">
+                                    <input type="radio" name="mode" value="et" id="et" checked>
+                                    Normal Mode
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">
+                                    <input type="radio" name="mode" value="qt" id="qt">
+                                    Secondary Mode
+                                    <span class="checkmark"></span>
+                                </label>
+                        </div>
+                        <hr>
+{{--                        <div class="form-group">--}}
+{{--                            <div class="col-md-12 m-b-20">--}}
+{{--                                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                        <div class="form-group row justify-content-center">
+                            <div class="col-md-4 m-b-20">
+                                <input type="number" class="form-control" id="inp_time" name="time" placeholder="{{__('Enter Time')}}">
+                            </div>
+                            <div class="col-md-4 m-b-20">
+                                <select class="form-control" name="timeUnit" id="time_unit">
+                                    <option value="s">Seconds</option>
+                                    <option value="m">Minutes</option>
+                                    <option value="h">Hours</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 
 @section('js')
     <script>
+        $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $(function() {
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
@@ -153,6 +250,32 @@
                 $('#editName').val($(this).attr('data-name'));
                 $('#editbanglaName').val($(this).attr('data-bnname'));
                 $('#edit-category').modal('show');
+            })
+
+            $(document).on('click', '.mode_edit', function(e) {
+                e.preventDefault();
+                let time = 0;
+                let givenTime = $(this).attr('data-qt') > 0 ? $(this).attr('data-qt') : ($(this).attr('data-et') > 0 ? $(this).attr('data-et') : 0 )
+                if ($(this).attr('data-timeUnit') == 's'){
+                    time = givenTime
+                } else if ($(this).attr('data-timeUnit') == 'm') {
+                    time = Math.round( parseInt(givenTime)/60)
+                } else if ($(this).attr('data-timeUnit') == 'h') {
+                    time =  Math.round(parseInt(givenTime)/3600)
+                }
+                $('#muid').val($(this).attr('data-id'));
+
+                if($(this).attr('data-qt') > 0){
+                    $("#qt").prop("checked", true);
+                    $('#inp_time').val(time);
+                } else if ($(this).attr('data-et') > 0) {
+                    $("#et").prop("checked", true);
+                    $('#inp_time').val(time);
+                } else {
+                    $('#inp_time').val(time);
+                }
+                $('#time_unit').val($(this).attr('data-timeUnit'))
+                $('#edit-mode').modal('show');
             })
 
             $(document).on('click', ".delete", function() {

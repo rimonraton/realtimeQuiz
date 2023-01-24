@@ -156,7 +156,7 @@
                         <div class="modal-body" v-if="av">
                             <div class="d-flex align-items-center p-2">
                                 <div class="col-xs-1 my-1 element-animation0">
-                                    <span class="bg-success text-white rounded-circle" id="qid">{{ user.lang=='gb'?qid + 1:q2bNumber(qid + 1) }}</span>
+                                    <span class="bg-success text-white rounded-circle" id="qid">{{ user.lang=='gb' ? qid + 1 : q2bNumber(qid + 1) }}</span>
                                 </div>
                                 <div class="col-xs-11">
                                     <h6 class="pl-1 element-animation0">
@@ -278,7 +278,7 @@ export default {
             users: [],
             datacollection: null,
             progress:{},
-            progress_count:100,
+            progress_count: 100,
             qoption:{
                 selected: null,
                 id: null,
@@ -826,7 +826,7 @@ export default {
                 this.qoption.option= null
                 this.qoption.img_link= null
                 this.qoption.correct= null
-            }else{
+            } else{
                 this.qoption.selected = index
                 this.qoption.id = option.question_id
                 this.qoption.option = this.tbe(option.bd_option,option.option,this.user.lang)
@@ -834,7 +834,6 @@ export default {
                 this.qoption.correct = option.correct
             }
             // console.log(this.isPredict())
-
         },
 
 
