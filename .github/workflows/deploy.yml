@@ -17,14 +17,18 @@ jobs:
     #- name: NPM Production
     #  run: npm run prod
     
+    # host: ${{ secrets.SSH_HOST }} 
+    # username: ${{ secrets.SSH_USERNAME }}
+    # key: ${{ secrets.SSH_PRIVATE_KEY }}
+    # passphrase: ${{ secrets.SSH_PASSPHRASE }}
+    
     - name: Deployment
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY }}
         port: 22
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd /var/www/html/gyankosh/
           git checkout -f 

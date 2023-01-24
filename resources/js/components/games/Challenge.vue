@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <div :class="{'preventClick': preventClick}"></div>
         <div class="result-waiting" v-if="screen.resultWaiting">
             <div class="text-center bg-light">
                 <img src="/img/quiz/result-waiting.gif" alt="Waiting for game end.">
@@ -46,7 +47,6 @@
                         > {{ Math.floor(progress) }}
                     </div>
                 </div>
-
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
                     <div class="card-body animate__animated animate__backInRight animate__faster">
                         <span class="q_num text-right text-muted">
@@ -213,7 +213,8 @@
                 progress: 100,
                 share:null,
                 pm:'',
-                perform:0
+                perform:0,
+                preventClick: true
 
             };
         },
@@ -362,6 +363,7 @@
                     let gr = {result: this.results, 'share_id': this.share.id}
                     axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
                 } else {
+                    this.preventClick = true
                     this.showQuestionOptions(null)
                 }
 
@@ -377,7 +379,8 @@
                 if(this.qid+1 == this.questions.length){
                     axios.post(`/api/gameEndUser`, {'channel': this.channel})
                     this.end_user ++
-                    if(this.users.length == this.end_user) {
+                    console.log('users + end user', this.users.length, this.end_user)
+                    if(this.users.length <= this.end_user) {
                         this.winner()
                         return
                     }
@@ -386,14 +389,16 @@
                 }
                 this.qid ++
                 this.current = this.questions[this.qid].id
-                this.QuestionTimer()
+                this.showQuestionOptions(null)
+                // this.QuestionTimer()
             },
             QuestionTimer(){
                 let pdec = 100 / (10 * this.qt.time);
-                console.log('QuestionTimer started')
+                this.preventClick = false
                 this.qt.timer =
                     setInterval(() => {
                         if(this.qt.time == 0){
+                            clearInterval(this.qt.timer)
                             if(!this.answered){
                                 this.checkAnswer(this.qid, 'Not Answered', 0);
                             }
@@ -427,8 +432,8 @@
 
                     this.qid ++
                     this.current = this.questions[this.qid].id
-
-                    this.QuestionTimer()
+                    this.showQuestionOptions(null)
+                   // this.QuestionTimer()
                 }
                 this.counter --
             },
@@ -565,7 +570,7 @@
             },
             onEnd() {
                 this.av = true
-                this.QuestionTimer()
+                // this.QuestionTimer()
                 this.showQuestionOptions(null)
             },
             onStart() {
@@ -586,12 +591,12 @@
                 let timeout = 0;
                 if(this.id.option_view_time != 0) {
                     timeout = 3000; // this.quiz.quiz_time * 1000
-
                 }
                 if(question == null || question == 'image') {
                     clearInterval(this.qt.timer);
                     setTimeout(() => {
                         // this.sqo = true
+                        this.preventClick = false
                         this.QuestionTimer()
                     }, timeout)
                 }
@@ -616,6 +621,15 @@
     .imageOption {
         height: 100px;
         width: 100%;
+    }
+    .preventClick {
+        position: absolute;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        width: 100%;
+        z-index: 999;
+        left: 0px;
+        top: 0px;
     }
 
     @media screen and (min-width: 480px) {
