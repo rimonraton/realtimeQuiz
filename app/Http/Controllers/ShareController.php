@@ -18,6 +18,8 @@ class ShareController extends Controller
         $share = Share::find($request->share_id);
         $share->results = json_encode($request->result);
         $share->save();
+        $gc = new GameController();
+        $gc->gameEndUser($request);
         return 'success';
     }
     public function challengeShare($link)
