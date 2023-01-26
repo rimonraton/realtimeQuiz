@@ -78,4 +78,5 @@ return [
     'result'=>'ফলাফল',
     'delete'=>'মুছুন',
     'notify'=>'নোটিশ',
+    'not_published_yet' => 'এখনো প্রকাশিত হয়নি'
 ];

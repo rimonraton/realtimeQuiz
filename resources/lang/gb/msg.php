@@ -78,4 +78,5 @@ return [
     'result'=>'Result',
     'delete'=>'Delete',
     'notify'=>'Notice',
+    'not_published_yet' => 'Not Published Yet'
 ];

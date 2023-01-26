@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Result;
 use Illuminate\Http\Request;
 use App\Question;
 use App\Quiz;
@@ -28,5 +29,15 @@ class APIController extends Controller
         $collection = collect($q);
         $merged = $collection->merge(['q' => $questions]);
         return $merged->all();
+    }
+    public function saveResults(Request $request)
+    {
+//        return $request->all();
+        Result::create([
+            'user_id' => $request->user_id,
+            'examination_id' => $request->examination_id,
+            'result' => json_encode($request->results)
+        ]);
+        return 'Exam submitted';
     }
 }

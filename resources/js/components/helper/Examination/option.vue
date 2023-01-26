@@ -33,7 +33,7 @@
 
 <script>
 export default {
-    props: ['options', 'user'],
+    props: ['options', 'user', 'question'],
     data(){
         return {
             qoption:{
@@ -41,25 +41,30 @@ export default {
                 id: null,
                 option: null,
                 correct: null,
+                question: this.question,
+                correctOption: null,
+                img_link: null
             },
         }
     },
     methods:{
         clickSelect(index, option){
-            console.log('select data', index, option)
             if(this.qoption.selected == index){
                 this.qoption.selected = null
                 this.qoption.id = option.question_id
                 this.qoption.option= null
                 this.qoption.img_link= null
                 this.qoption.correct= null
+                this.qoption.correctOption= null
             } else{
                 this.qoption.selected = index
                 this.qoption.id = option.question_id
                 this.qoption.option = this.tbe(option.bd_option,option.option,this.user.lang)
                 this.qoption.img_link = option.img_link
                 this.qoption.correct = option.correct
+                this.qoption.correctOption = option.correct == 0  ? this.tbe(this.options.find(o => o.correct == 1).bd_option , this.options.find(o => o.correct == 1).option, this.user.lang) : null
             }
+            this.$emit('answer', this.qoption)
             // console.log(this.isPredict())
         },
         tbe(b, e, l) {

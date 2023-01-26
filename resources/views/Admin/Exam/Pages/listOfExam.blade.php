@@ -69,18 +69,46 @@
                                             <th style="width: 0px;">{{__('exam.exam_name_english')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_bangla')}}</th>
                                             <th style="width: 0px;">{{__('mode')}}</th>
-                                            <th style="width: 0px;">{{__('Time ( Minutes )')}}</th>
+                                            <th style="width: 0px;">{{__('Time')}}</th>
                                             <th style="width: 5%;">{{__('Status')}}</th>
                                             <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @php
-                                            function convert_seconds($seconds)
+                                            function convert_seconds($seconds_value)
                                              {
-                                              $dt1 = new DateTime("@0");
-                                              $dt2 = new DateTime("@$seconds");
-                                              return $dt1->diff($dt2)->format('%h hours %i minutes %s seconds');
+                                                 $hasHours = '';
+                                                 $hasMinutes = '';
+                                                 $hasSeconds = '';
+                                                $hours = $seconds_value > 3600 ? round($seconds_value/3600) : 0;
+                                               $minutes = round($seconds_value/60);
+                                               $seconds = round($seconds_value % 60);
+
+                                                if( App::getLocale() == 'gb') {
+                                                    // return hours + this.hourOrHours(hours) + ' ' + minutes + this.minuteOrMinutes(minutes) + ' ' + seconds + this.secondOrSeconds(seconds)
+                                                    if($hours > 0) {
+                                                       return $hasHours = $hours .' hours';
+                                                    }
+                                                    if ($minutes > 0) {
+                                                        return $hasMinutes = $minutes . ' minutes';
+                                                    }
+                                                    if ($seconds > 0) {
+                                                        return $hasSeconds = $seconds . 'seconds';
+                                                    }
+                                                    return $hasHours . ' ' . $hasMinutes .' '. $hasSeconds;
+                                                } else {
+                                                    if($hours > 0) {
+                                                        $hasHours = $hours . ' ঘণ্টা';
+                                                    }
+                                                    if ($minutes > 0) {
+                                                        $hasMinutes = $minutes . ' মিনিট';
+                                                    }
+                                                    if ($seconds > 0) {
+                                                        $hasSeconds = $seconds . ' সেকেন্ড';
+                                                    }
+                                                   return $hasHours . ' ' . $hasMinutes . ' ' . $hasSeconds;
+                                                }
                                               }
                                         @endphp
                                         @foreach($exam_data as $exam)
@@ -103,7 +131,7 @@
                                                 </th>
                                                 <th>
                                                     <div class="bt-switch">
-                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('Published')}}" data-off-text="{{__('Not Published')}}" data-size="normal" {{$exam->status ==1?"checked":""}} />
+                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('Published')}}" data-off-text="{{__('Not Published')}}" data-size="normal" {{$exam->is_published ==1?"checked":""}} />
                                                     </div>
                                                 </th>
                                                 <th>
@@ -123,7 +151,7 @@
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_english')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_bangla')}}</th>
                                             <th rowspan="1">{{__('mode')}}</th>
-                                            <th rowspan="1">{{__('Time ( Minutes )')}}</th>
+                                            <th rowspan="1">{{__('Time')}}</th>
                                             <th rowspan="1">{{__('Status')}}</th>
                                             <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
@@ -310,6 +338,38 @@
 
                     }
                 })
+            });
+
+            function publishedOrNot(id, value) {
+                $.ajax({
+                    url: "{{url('examPublished')}}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': id,
+                        'value': value
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            text: data,
+                            type: 'success',
+                            timer: 1000,
+                            showConfirmButton: false
+                        })
+                    }
+                })
+            }
+
+            $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+                var id = $(this).attr('data-id');
+                if (state == true) {
+                    publishedOrNot(id, 1);
+                    // $(this).prop('checked', true);
+                } else {
+                    publishedOrNot(id, 0);
+                    // $(this).removeProp('checked');
+
+                }
             });
         })
     </script>

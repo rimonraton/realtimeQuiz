@@ -1,5 +1,14 @@
 <template>
-	<div class="row justify-content-center">
+    <div>
+        <div class="container">
+            <div class="winner" v-if="screen.examSubmit">
+<!--                <h2 class="text-center">Quiz Game Over</h2>-->
+                <h3>Your exam is submitted. </h3>
+                <a class="btn btn-outline-primary btn-sm" :href="'/show-result/' + qid.id + '/' + user.id">Show Result</a>
+            </div>
+        </div>
+
+	<div class="row justify-content-center" v-if="screen.exam">
         <div class="col-md-8" >
             <div class="d-md-none">
                 <div class="row">
@@ -58,7 +67,7 @@
                             </audio>
                         </div>
                         <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
-                        {{ tbe(question.bd_question_text,question.question_text,user.lang) }}
+                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
 <!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
 		            </div>
 <!--		            <ul class="list-group text-dark">-->
@@ -94,14 +103,16 @@
 <!--                      </div>-->
                       <option-component
                           :options="question.options"
+                          :question="tbe(question.bd_question_text, question.question_text, user.lang)"
                           :user="user"
+                          @answer="answer"
                       ></option-component>
 		          </div>
 		        </div>
 		    </div>
 		</div>
             <div class="d-flex justify-content-center py-2">
-                <span class="btn btn-sm btn-info rounded border">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
+                <span class="btn btn-sm btn-info rounded border" @click="submitExam">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
             </div>
         </div>
         <div class="col-md-4" >
@@ -178,6 +189,7 @@
 <!--            </div>-->
 <!--        </div>-->
 	</div>
+    </div>
 </template>
 
 <script>
@@ -187,6 +199,10 @@
         props: ['questions', 'qid','topics','user', 'examTime'],
         data(){
 		    return{
+                screen:{
+                    exam: true,
+                    examSubmit: false
+                },
                 formData:{
                     topics:0,
                     q_number:null,
@@ -197,7 +213,8 @@
                     hours: 0,
                     minutes:0,
                     seconds:0,
-                }
+                },
+                results: []
             }
         },
 		methods: {
@@ -232,18 +249,15 @@
             },
             tbe(b, e, l) {
                 if(b !== null && e !== null){
-                    console.log('no null question')
                     if(l === 'bd') {
                         return b;
                     }
                     return e;
                 }
                 else if(b !== null && e === null) {
-                    console.log('Bangla not null');
                     return b;
                 }
                 else if(b === null && e !== null) {
-                    console.log('English not null');
                     return e;
                 }
                 return b;
@@ -332,6 +346,50 @@
                 }
                 return ' second'
             },
+            answer(data){
+                if(this.results.length > 0) {
+                    const found = this.results.some(el => el.id === data.id);
+                    if(found) {
+                        const itemToRemoveIndex = this.results.findIndex(function(item) {
+                            return item.id === data.id;
+                        });
+                        if(data.selected == null){
+                            if(itemToRemoveIndex !== -1){
+                                this.results.splice(itemToRemoveIndex, 1);
+                            }
+                        } else {
+                            this.results[itemToRemoveIndex] = data
+                        }
+                    } else {
+                        this.results.push(data)
+                    }
+
+                } else {
+                    this.results.push(data)
+                }
+                console.log(this.results, 'results')
+
+
+
+                // proceed to remove an item only if it exists.
+                // if(itemToRemoveIndex !== -1){
+                //     myArray.splice(itemToRemoveIndex, 1);
+                // }
+                // this.results.push(data)
+            },
+            submitExam(){
+                const resultValue = {
+                    'user_id': this.user.id,
+                    'examination_id': this.qid.id,
+                    'results': this.results
+                }
+                axios.post('/api/save-results', resultValue).then((res) => {
+                    console.log(res, 'response from server')
+                    this.screen.exam = false
+                    this.screen.examSubmit = true
+                })
+                console.log(this.results)
+            }
 		},
         created(){
             this.countDownTimer()

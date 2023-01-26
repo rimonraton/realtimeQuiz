@@ -51,5 +51,7 @@ Route::get('get-sub-categories/{categoryId}', [APIController::class, 'getSubCate
 Route::get('get-quizzes/{subCategoryId}', [APIController::class, 'getQuizzes']);
 Route::get('get-questions/{quizId}', [APIController::class, 'getQuestions']);
 
+//result
+Route::post('save-results', [APIController::class, 'saveResults']);
 
 

@@ -53,9 +53,20 @@ class ExamController extends Controller
         $challenges_own = Challenge::where('user_id',Auth::user()->id)->where('is_published',0)->latest()->get();
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
         $questions = Question::all();
-        $exams = Examination::paginate(12);
+        $exams = Examination::with('category:id,name,bn_name')
+           ->withCount(['results' => function ($q) {
+               $q->where('user_id', Auth::user()->id);
+           }])->orderBy('id', 'desc')->paginate(12);
+
+
         return view('Admin.Exam.Pages.traineeExam', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions', 'exams']));
     }
+//    function exam_completed($data){
+//        $results = array_filter((array)$data, function($item){
+//            return ($item->user_id === Auth::user()->id);
+//        });
+//        return $results;
+//    }
     public function startExam(Examination $examination, $uid)
     {
         $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
@@ -92,5 +103,26 @@ class ExamController extends Controller
         $examination->save();
         $exam_data = Examination::paginate(10);
         return view('Admin.Exam.Pages.listOfExam', compact('exam_data'));
+    }
+
+    public function examPublished(Request $request)
+    {
+        Examination::find($request->id)->update([
+            'is_published' => $request->value
+        ]);
+        return 'Updated successfuly';
+    }
+
+    public function showResult(Examination $examination, $uid)
+    {
+//        return $uid;
+//        return $examination;
+         $exam_result = $examination->load(['results' => function($q) use($uid) {
+            $q->where('user_id', $uid);
+        }]);
+        $user = Auth::user();
+        $user['lang'] = app()->getLocale();
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('Admin.Exam.Pages.result', compact(['exam_result','user']));
     }
 }

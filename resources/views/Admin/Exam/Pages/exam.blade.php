@@ -120,9 +120,3 @@
         </div>
     </div>
 @endsection
-<script>
-    import ExamTimeMode from "../../../../js/components/games/ExamTimeMode";
-    export default {
-        components: {ExamTimeMode}
-    }
-</script>
