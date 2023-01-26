@@ -9,7 +9,7 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='(qid + 1) == questions.length'
+            <result :results='results' :lastQuestion='qid == questions.length'
                     v-if="screen.result">
             </result>
         </transition>
@@ -27,11 +27,24 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
-            <img class="card-img img-responsive my-3" :src="getUrl('challengeShareResult/'+share.link)" type="image/png" style="width: 500px !important">
-            <iframe :src="getShareLink('challengeShareResult/'+share.link)" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <img
+                class="card-img img-responsive my-3 lazy"
+                :src="getUrl('challengeShareResult/'+share.link)"
+                type="image/png"
+                style="width: 500px !important"
+            >
+            <iframe
+                :src="getShareLink('challengeShareResult/'+share.link)"
+                width="77" height="28"
+                style="border:none; overflow:hidden"
+                scrolling="no"
+                frameborder="0"
+                allowfullscreen="true"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            ></iframe>
         </div>
 
-        <waiting :uid='uid' :users='users' :user='user' :time='id.schedule'
+        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule'
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
                 @gameReset="gameReset"
@@ -79,7 +92,7 @@
                         <div v-show="av">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="d-flex flex-row align-items-center question-title">
+                                    <div class="d-flex align-items-center question-title">
                                         <h3 class="text-danger">Q.</h3>
                                         <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
                                     </div>
@@ -108,7 +121,7 @@
                                      :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
                                 >
                                     <div class="list-group" v-if="option.flag != 'img'"
-                                         :class="getOptionClass(i, id.option_view_time)"
+                                         :class="getOptionClass(i, challenge.option_view_time)"
                                     >
                                         <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                               class="list-group-item list-group-item-action cursor my-1"
@@ -120,15 +133,12 @@
                                         v-else
                                         @click="checkAnswer(question.id, option.img_link, option.correct)"
                                         class="cursor my-1 imageDiv"
-                                        :class="getOptionClass(i, id.option_view_time)"
+                                        :class="getOptionClass(i, challenge.option_view_time)"
                                     >
                                         <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
 <!--                        <ul class="list-group" v-for="option in question.options">-->
 <!--                            <li @click="checkAnswer(question.id, option.option, option.correct)"-->
@@ -177,7 +187,7 @@
 
     export default {
 
-        props : ['id', 'uid', 'user', 'questions', 'gmsg','teams'],
+        props : ['challenge', 'uid', 'user', 'questions', 'gmsg','teams'],
 
         components: { waiting, result },
 
@@ -185,7 +195,7 @@
             return {
                 qt:{
                     ms: 0,
-                    time:50,
+                    time:10,
                     timer:null
                 },
                 users: [],
@@ -215,7 +225,6 @@
                 pm:'',
                 perform:0,
                 preventClick: true
-
             };
         },
 
@@ -226,8 +235,8 @@
                     this.share = data.share
                     this.game_start = 1 // Game Start from Game Owner...
                     this.screen.waiting = 0
-                    this.showQuestionOptions(null)
                     this.sqo = true
+                    this.showQuestionOptions(null)
                     // this.QuestionTimer() // Set and Start QuestionTimer
 
                 })
@@ -252,7 +261,7 @@
                     this.users = this.users.filter( u => u.id !== data.uid )
 
                     if(this.user.id == data.uid){
-                        window.location.href = "http://quiz.test"
+                        window.location.href = "/"
                     }
 
                 });
@@ -270,7 +279,7 @@
         // },
 
         mounted() {
-            Echo.join(`challenge.${this.id.id}.${this.uid}`)
+            Echo.join(`challenge.${this.challenge.id}.${this.uid}`)
                 .here((users) => {
                     this.users = users;
                 })
@@ -320,12 +329,15 @@
             gameStart: function () {
                 this.sqo = true
                 let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.id.id, users:this.users,host_id:this.uid}
+                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.challenge.id, users:this.users,host_id:this.uid}
                 console.log(gd);
-                axios.post(`/api/gameStart`, gd).then(res => this.share = res.data)
-                this.game_start = 1
-                this.screen.waiting = 0
-                this.showQuestionOptions(this.questions[0].fileType)
+                axios.post(`/api/gameStart`, gd)
+                    .then(res => {
+                        this.share = res.data
+                        this.game_start = 1
+                        this.screen.waiting = 0
+                        this.showQuestionOptions(this.questions[0].fileType)
+                    })
                 // this.QuestionTimer()
             },
             gameResetCall() {
@@ -354,18 +366,25 @@
                 this.gamedata['answer'] = this.getCorrectAnswertext()
                 this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
-                    axios.post(`/api/questionClick`, this.gamedata)
                 let clone = {...this.gamedata}
+                this.questionInit()
+                console.log('this.questionInit() call.........')
+                axios.post(`/api/questionClick`, clone)
+                .then(res => {
+                    this.resultScreen();
+                })
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
-                this.resultScreen();
-                if(this.qid+1 == this.questions.length) {
-                    let gr = {result: this.results, 'share_id': this.share.id}
-                    axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
-                } else {
-                    this.preventClick = true
-                    this.showQuestionOptions(null)
-                }
+                // if(this.qid == this.questions.length) {
+                //     console.log('......checkAnswer')
+                //     this.quizEnd()
+                //     // let gr = {result: this.results, 'share_id': this.share.id}
+                //     // axios.post(`/api/challengeResult`, gr).then(res => console.log('line 365', res.data))
+                // } else {
+                //     this.preventClick = true
+                //     console.log('preventClick True')
+                //     // this.showQuestionOptions(null)
+                // }
 
             },
             getCorrectAnswertext(){
@@ -377,58 +396,64 @@
                 this.countDown()
                 this.questionInit()
                 if(this.qid+1 == this.questions.length){
-                    axios.post(`/api/gameEndUser`, {'channel': this.channel})
-                    this.end_user ++
-                    console.log('users + end user', this.users.length, this.end_user)
-                    if(this.users.length <= this.end_user) {
-                        this.winner()
-                        return
-                    }
-                    this.screen.resultWaiting = 1;
-                    return
+                    console.log('......resultScreen')
+
+                    this.quizEnd()
+                    // axios.post(`/api/gameEndUser`, {'channel': this.channel})
+                    // this.end_user ++
+                    // console.log('users + end user', this.users.length, this.end_user)
+                    // if(this.users.length <= this.end_user) {
+                    //     this.winner()
+                    //     return
+                    // }
+                    // this.screen.resultWaiting = 1;
+                    // return
+                } else {
+                    console.log('resultScreen preventClick True')
+                    this.preventClick = true
+                    this.qid ++
+                    this.current = this.questions[this.qid].id
+                    this.showQuestionOptions(null)
                 }
-                this.qid ++
-                this.current = this.questions[this.qid].id
-                this.showQuestionOptions(null)
+
                 // this.QuestionTimer()
             },
             QuestionTimer(){
-                let pdec = 100 / (10 * this.qt.time);
+                let pdec = 100 / (5 * this.qt.time);
+                console.log('pdec', pdec)
                 this.preventClick = false
                 this.qt.timer =
                     setInterval(() => {
-                        if(this.qt.time == 0){
-                            clearInterval(this.qt.timer)
-                            if(!this.answered){
-                                this.checkAnswer(this.qid, 'Not Answered', 0);
-                            }
+                        // console.log('this.qt.time', this.qt.time)
+                        if(this.qt.time <= 0){
                             this.questionInit();
-                            this.resultScreen();
+                            this.checkAnswer(this.qid, 'Not Answered', 0);
+                            // this.resultScreen();
                         }
                         else{
                             this.qt.ms ++
                             this.progress -= pdec
 
-                            if(this.qt.ms == 10){
+                            if(this.qt.ms == 5){
                                 this.qt.time --
                                 this.qt.ms=0
                             }
 
                         }
 
-                    }, 100);
+                    }, 200);
             },
             countDown(){
                 console.log('countDown')
-                if(this.counter == 0){
+                if(this.counter <= 0){
 
                     this.questionInit()
 
-                    if(this.qid+1 == this.questions.length){
-                        this.winner()
-                        this.counter =0
-                        return
-                    }
+                    // if(this.qid+1 == this.questions.length){
+                    //     this.winner()
+                    //     this.counter = 0
+                    //     return
+                    // }
 
                     this.qid ++
                     this.current = this.questions[this.qid].id
@@ -516,7 +541,7 @@
                 clearInterval(this.timer)
                 clearInterval(this.qt.timer)
                 this.qt.ms = 0
-                this.qt.time = 50
+                this.qt.time = 10
                 this.progress = 100
                 this.answered = 0
                 this.counter = 2
@@ -588,9 +613,10 @@
                 return '';
             },
             showQuestionOptions (question) {
-                let timeout = 0;
-                if(this.id.option_view_time != 0) {
-                    timeout = 3000; // this.quiz.quiz_time * 1000
+                console.log('showQuestionOptions', question)
+                let timeout = 1000;
+                if(this.challenge.option_view_time != 0) {
+                    timeout = 3500; // this.quiz.quiz_time * 1000
                 }
                 if(question == null || question == 'image') {
                     clearInterval(this.qt.timer);
@@ -601,11 +627,24 @@
                     }, timeout)
                 }
             },
+            quizEnd () {
+                // axios.post(`/api/gameEndUser`, {'channel': this.channel})
+                let gameResult = { result: this.results, 'share_id': this.share.id, 'channel': this.channel }
+                axios.post(`/api/challengeResult`, gameResult).then(res => console.log('line 365', res.data))
+                this.end_user ++
+                console.log('users + end user', this.users.length, this.end_user)
+                if(this.users.length <= this.end_user) {
+                    this.winner()
+                    return
+                }
+                this.screen.resultWaiting = 1;
+                return
+            }
         },
 
         computed: {
             channel(){
-                return `challenge.${this.id.id}.${this.uid}`
+                return `challenge.${this.challenge.id}.${this.uid}`
             },
             progressClass(){
                 return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
