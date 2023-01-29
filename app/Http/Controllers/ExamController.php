@@ -7,6 +7,7 @@ use App\Examination;
 use App\Models\Challenge;
 use App\Question;
 use App\QuestionType;
+use App\Result;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
@@ -69,6 +70,11 @@ class ExamController extends Controller
 //    }
     public function startExam(Examination $examination, $uid)
     {
+        $result = Result::where('examination_id', $examination->id)->where('user_id', $uid)->first();
+         $result_count = $result ? count(json_decode($result->result)) : 0;
+        if ($result_count > 0) {
+            return redirect('exams');
+        }
         $gmsg = \DB::table('perform_messages')->where('game_id', 2)->get();
         $id = $examination;
         $questions = Question::with('options')
@@ -77,6 +83,7 @@ class ExamController extends Controller
         $user['lang'] = app()->getLocale();
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('Admin.Exam.Pages.exam', compact(['id', 'user', 'questions', 'uid', 'gmsg', 'examination']));
+
 
     }
     public function timeModeUpdate(Request $request)
@@ -117,12 +124,26 @@ class ExamController extends Controller
     {
 //        return $uid;
 //        return $examination;
-         $exam_result = $examination->load(['results' => function($q) use($uid) {
-            $q->where('user_id', $uid);
-        }]);
-        $user = Auth::user();
-        $user['lang'] = app()->getLocale();
-        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
-        return view('Admin.Exam.Pages.result', compact(['exam_result','user']));
+         $result = Result::where('examination_id', $examination->id)->where('user_id', $uid)->first();
+        $result_count = count(json_decode($result->result));
+//        return count(json_decode($result->result));
+        if ($result_count > 0) {
+            $exam_result = $examination->load(['results' => function($q) use($uid) {
+                $q->where('user_id', $uid);
+            }]);
+            $user = Auth::user();
+            $user['lang'] = app()->getLocale();
+            $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+            return view('Admin.Exam.Pages.result', compact(['exam_result','user', 'result_count']));
+        } else{
+//            $exam_result = $examination;
+             $questions = Question::with('options')
+                ->whereIn('id', explode(",", $examination->questions))->get();
+            $user = Auth::user();
+            $user['lang'] = app()->getLocale();
+            $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+            return view('Admin.Exam.Pages.result', compact(['questions','user', 'result_count', 'examination']));
+        }
+
     }
 }

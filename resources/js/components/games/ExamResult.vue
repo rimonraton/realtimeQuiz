@@ -76,13 +76,23 @@
                           </div>
                           <div
                               v-else
-                              class="cursor my-1 imageDiv"
+                              class="cursor my-1"
                           >
-                              <p class="text-dark">(Your answer)
-                                    <i class="fa fa-check text-success" aria-hidden="true" v-if="result.correct == 1"></i>
-                                <i class="fa fa-times text-danger" aria-hidden="true" v-else></i>
-                              </p>
-                              <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.img_link" alt="">
+                              <div class="d-flex">
+                                  <div>
+                                      <p class="text-dark">(Your answer)
+                                          <i class="fa fa-check text-success" aria-hidden="true" v-if="result.correct == 1"></i>
+                                          <i class="fa fa-times text-danger" aria-hidden="true" v-else></i>
+                                      </p>
+                                      <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.img_link" alt="">
+                                  </div>
+                                  <div v-if="result.correct == 0">
+                                      <p class="text-dark">(Correct answer)
+                                          <i class="fa fa-check text-success" aria-hidden="true" ></i>
+                                      </p>
+                                      <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.correct_img_link" alt="">
+                                  </div>
+                              </div>
 <!--                              <div v-if="qoption.selected == index" class="Tick d-flex justify-content-center align-items-center">-->
 <!--                                  &lt;!&ndash;                <i class="fa fa-check text-success" aria-hidden="true"></i>&ndash;&gt;-->
 <!--                                  <img :src="'/img/icons/tick.png'" width="100px" height="100px">-->
@@ -335,6 +345,7 @@
 		},
         created(){
             this.countDownTimer()
+            console.log('created')
         }
 	};
 </script>
@@ -360,7 +371,7 @@
 }
 .imageOption {
     height: 100px;
-    width: 50%;
+    width: 100%;
 }
 @media screen and (min-width: 480px) {
     .imageOption {

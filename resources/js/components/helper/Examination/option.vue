@@ -43,7 +43,8 @@ export default {
                 correct: null,
                 question: this.question,
                 correctOption: null,
-                img_link: null
+                img_link: null,
+                correct_img_link: null
             },
         }
     },
@@ -61,6 +62,7 @@ export default {
                 this.qoption.id = option.question_id
                 this.qoption.option = this.tbe(option.bd_option,option.option,this.user.lang)
                 this.qoption.img_link = option.img_link
+                this.qoption.correct_img_link = option.flag == 'img' ?  (option.correct == 0 ? this.options.find(o => o.correct == 1).img_link : null) : null
                 this.qoption.correct = option.correct
                 this.qoption.correctOption = option.correct == 0  ? this.tbe(this.options.find(o => o.correct == 1).bd_option , this.options.find(o => o.correct == 1).option, this.user.lang) : null
             }

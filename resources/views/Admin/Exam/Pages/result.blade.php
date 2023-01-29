@@ -16,12 +16,20 @@
 {{--                                    <p>{{$result->option}}</p>--}}
 {{--                                @endforeach--}}
 {{--                            @endif--}}
+                            @if($result_count > 0)
                             <exam-result
                                 :exam ='{{$exam_result}}'
-                                :user = '{{$user}}'
-                            >
-
+                                :user = '{{$user}}'>
                             </exam-result>
+                            @else
+                                <exam-result-when-empty
+                                    :exam ='{{$examination}}'
+                                    :user = '{{$user}}'
+                                    :questions = '{{$questions}}'
+                                >
+
+                                </exam-result-when-empty>
+                            @endif
 {{--                        <exam-time-mode--}}
 {{--                            :questions="{{ $questions }}"--}}
 {{--                            :qid="{{$id}}"--}}

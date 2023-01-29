@@ -356,17 +356,18 @@
                 this.gamedata['answer'] = this.getCorrectAnswertext()
                 this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
-                    axios.post(`/api/questionClick`, this.gamedata)
+                    // axios.post(`/api/questionClick`, this.gamedata)
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
                 this.resultScreen();
-                if(this.qid+1 == this.questions.length) {
-                    let gr = {result: this.results, 'share_id': this.share.id}
-                    axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
-                } else {
-                    this.showQuestionOptions(null)
-                }
+                this.showQuestionOptions(null)
+                // if(this.qid+1 == this.questions.length) {
+                //     let gr = {result: this.results, 'share_id': this.share.id}
+                //     axios.post(`/api/challengeResult`, gr).then(res => console.log(res.data))
+                // } else {
+                //     this.showQuestionOptions(null)
+                // }
 
             },
             getCorrectAnswertext(){

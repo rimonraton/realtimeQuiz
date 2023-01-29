@@ -27,6 +27,7 @@ import TeamModerator from './components/games/TeamModerator'
 import ExamQuestionTimeMode from './components/games/ExamQuestionTimeMode'
 import ExamTimeMode from './components/games/ExamTimeMode'
 import ExamResult from './components/games/ExamResult'
+import ExamResultWhenEmpty from './components/games/ExamResultWhenSubmitEmpty'
 // import router from './router/Router.js';
 
 /**
@@ -37,7 +38,10 @@ import ExamResult from './components/games/ExamResult'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 library.add(faUserSecret)
+Vue.use(VueSweetalert2);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -53,6 +57,7 @@ const app = new Vue({
         'ExamQuestionTimeMode' : ExamQuestionTimeMode,
         'ExamTimeMode' : ExamTimeMode,
         'ExamResult' : ExamResult,
+        'ExamResultWhenEmpty' : ExamResultWhenEmpty
 	}
     // router
 });

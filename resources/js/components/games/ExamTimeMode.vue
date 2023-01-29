@@ -7,7 +7,6 @@
                 <a class="btn btn-outline-primary btn-sm" :href="'/show-result/' + qid.id + '/' + user.id">Show Result</a>
             </div>
         </div>
-
 	<div class="row justify-content-center" v-if="screen.exam">
         <div class="col-md-8" >
             <div class="d-md-none">
@@ -112,7 +111,7 @@
 		    </div>
 		</div>
             <div class="d-flex justify-content-center py-2">
-                <span class="btn btn-sm btn-info rounded border" @click="submitExam">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
+                <span class="btn btn-sm btn-info rounded border" @click="submited">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
             </div>
         </div>
         <div class="col-md-4" >
@@ -388,11 +387,35 @@
                     this.screen.exam = false
                     this.screen.examSubmit = true
                 })
-                console.log(this.results)
+            },
+            submited(){
+                const txt = this.user.lang == 'gb' ?'Are you sure submit to your exam!': 'আপনি কি নিশ্চিত, আপনার পরীক্ষা জমা দেয়ার জন্য!'
+                const title = this.user.lang == 'gb' ?'Are you sure?': 'আপনি কি নিশ্চিত?'
+                const yes = this.user.lang == 'gb' ?'Yes': 'হ্যাঁ'
+                const no = this.user.lang == 'gb' ?'No': 'না'
+                this.$swal({
+                    title: title,
+                    text: txt,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: yes,
+                    cancelButtonText: no,
+                }).then((result) => {
+                    if (result.value) {
+                        this.submitExam()
+                    }
+                });
             }
 		},
         created(){
             this.countDownTimer()
+            this.$watch('countDown', (newValue) => {
+                if (newValue == 0) {
+                    this.submitExam()
+                }
+            })
         }
 	};
 </script>
