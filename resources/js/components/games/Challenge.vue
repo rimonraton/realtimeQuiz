@@ -72,7 +72,9 @@
                             @ended="onEnd()"
                             @play="onStart()"
                             class="image w-100 mt-1 rounded img-thumbnail"
-                            autoplay>
+                            autoplay
+                            controls
+                        >
                             <source :src="'/'+ question.question_file_link" type="video/mp4">
                         </video>
                         <div class="audio" v-if="question.fileType == 'audio'">
@@ -195,7 +197,7 @@
             return {
                 qt:{
                     ms: 0,
-                    time:10,
+                    time:30,
                     timer:null
                 },
                 users: [],
@@ -375,39 +377,18 @@
                 })
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
-                // if(this.qid == this.questions.length) {
-                //     console.log('......checkAnswer')
-                //     this.quizEnd()
-                //     // let gr = {result: this.results, 'share_id': this.share.id}
-                //     // axios.post(`/api/challengeResult`, gr).then(res => console.log('line 365', res.data))
-                // } else {
-                //     this.preventClick = true
-                //     console.log('preventClick True')
-                //     // this.showQuestionOptions(null)
-                // }
-
             },
             getCorrectAnswertext(){
                 return this.questions[this.qid].options.find(o => o.correct == 1).option
             },
             resultScreen(){
                 console.log('resultScreen')
+                this.questionInit()
                 this.getResult() //Sorting this.results
                 this.countDown()
-                this.questionInit()
                 if(this.qid+1 == this.questions.length){
                     console.log('......resultScreen')
-
                     this.quizEnd()
-                    // axios.post(`/api/gameEndUser`, {'channel': this.channel})
-                    // this.end_user ++
-                    // console.log('users + end user', this.users.length, this.end_user)
-                    // if(this.users.length <= this.end_user) {
-                    //     this.winner()
-                    //     return
-                    // }
-                    // this.screen.resultWaiting = 1;
-                    // return
                 } else {
                     console.log('resultScreen preventClick True')
                     this.preventClick = true
@@ -415,10 +396,9 @@
                     this.current = this.questions[this.qid].id
                     this.showQuestionOptions(null)
                 }
-
-                // this.QuestionTimer()
             },
             QuestionTimer(){
+                if(this.qid == this.questions.length) return
                 let pdec = 100 / (5 * this.qt.time);
                 console.log('pdec', pdec)
                 this.preventClick = false
@@ -446,21 +426,14 @@
             countDown(){
                 console.log('countDown')
                 if(this.counter <= 0){
-
-                    this.questionInit()
-
-                    // if(this.qid+1 == this.questions.length){
-                    //     this.winner()
-                    //     this.counter = 0
-                    //     return
-                    // }
-
+                    // this.questionInit()
                     this.qid ++
                     this.current = this.questions[this.qid].id
                     this.showQuestionOptions(null)
                    // this.QuestionTimer()
+                } else {
+                    this.counter --
                 }
-                this.counter --
             },
             getResult(){
                 console.log('getResult')
@@ -541,7 +514,7 @@
                 clearInterval(this.timer)
                 clearInterval(this.qt.timer)
                 this.qt.ms = 0
-                this.qt.time = 10
+                this.qt.time = 30
                 this.progress = 100
                 this.answered = 0
                 this.counter = 2
@@ -577,6 +550,7 @@
             getUrl (path) {
                 return location.origin +'/'+ path
             },
+
             getShareLink(path){
                 console.log(['urlencode', encodeURI(this.getUrl(path))]);
                 return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
@@ -595,12 +569,11 @@
             },
             onEnd() {
                 this.av = true
-                // this.QuestionTimer()
                 this.showQuestionOptions(null)
             },
             onStart() {
+                setTimeout(() => this.questionInit(), 1000)
                 this.av = false
-                clearInterval(this.qt.timer);
             },
             getOptionClass (index, qtime) {
                 if(qtime > 0){
@@ -630,15 +603,18 @@
             quizEnd () {
                 // axios.post(`/api/gameEndUser`, {'channel': this.channel})
                 let gameResult = { result: this.results, 'share_id': this.share.id, 'channel': this.channel }
-                axios.post(`/api/challengeResult`, gameResult).then(res => console.log('line 365', res.data))
-                this.end_user ++
-                console.log('users + end user', this.users.length, this.end_user)
-                if(this.users.length <= this.end_user) {
-                    this.winner()
-                    return
-                }
-                this.screen.resultWaiting = 1;
-                return
+                axios.post(`/api/challengeResult`, gameResult).then(res => {
+                    this.end_user ++
+                    console.log('users + end user', this.users.length, this.end_user)
+                    if(this.users.length <= this.end_user) {
+                        this.winner()
+                        return
+                    } else {
+                        this.screen.resultWaiting = 1;
+                        return
+                    }
+                })
+
             }
         },
 
