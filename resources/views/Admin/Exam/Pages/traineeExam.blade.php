@@ -189,9 +189,11 @@
 {{--                    </a>--}}
                     <div class="info d-flex justify-content-end py-1 px-2 mt-auto ">
                         @if($exam->results_count)
+                            @if(auth()->user()->roleuser->role->id < 4)
                                 <a href="{{ url('show-result/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-xs btn-outline-danger align-self-center">
                                     {{__('Show result')}}
                                 </a>
+                                @endif
                         @else
                             @if($exam->is_published)
                             <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-xs btn-outline-info align-self-center" >

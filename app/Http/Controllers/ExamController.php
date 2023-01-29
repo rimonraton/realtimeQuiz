@@ -38,6 +38,7 @@ class ExamController extends Controller
     }
     public function traineeExams($id = null)
     {
+//        $user = Auth::user();
         $admin_users = auth()->user()->admin->users()->pluck('id');
         $catName = '';
         if ($id) {

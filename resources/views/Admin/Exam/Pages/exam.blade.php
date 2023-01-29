@@ -15,7 +15,7 @@
                         @endif
 {{--                        {{$id->question_time}}--}}
                             @if($examination->question_time > 0)
-                                <exam-question-time-mode :id="{{ $id }}"
+                                <exam-question-time-mode :challenge="{{ $id }}"
                                                       :uid="{{ $uid }}"
                                                       :questions="{{ $questions }}"
                                                       :user="{{ $user }}"

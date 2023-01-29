@@ -4,10 +4,10 @@
             <div class="winner" v-if="screen.examSubmit">
 <!--                <h2 class="text-center">Quiz Game Over</h2>-->
                 <h3>Your exam is submitted. </h3>
-                <a class="btn btn-outline-primary btn-sm" :href="'/show-result/' + qid.id + '/' + user.id">Show Result</a>
+                <a class="btn btn-outline-primary btn-sm" :href="'/exams'">Go Exam List Page</a>
             </div>
         </div>
-	<div class="row justify-content-center" v-if="screen.exam">
+	    <div class="row justify-content-center" v-if="screen.exam">
         <div class="col-md-8" >
             <div class="d-md-none">
                 <div class="row">
@@ -187,7 +187,7 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </div>-->
-	</div>
+	    </div>
     </div>
 </template>
 
