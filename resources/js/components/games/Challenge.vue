@@ -27,12 +27,15 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
-            <img
-                class="card-img img-responsive my-3 lazy"
-                :src="getUrl('challengeShareResult/'+share.link)"
-                type="image/png"
-                style="width: 500px !important"
-            >
+
+            <div class="px-2">
+                <img
+                    class="card-img img-responsive my-3 lazy share-result-image"
+                    :src="getUrl('challengeShareResult/'+share.link)"
+                    type="image/png"
+                >
+            </div>
+
             <iframe
                 :src="getShareLink('challengeShareResult/'+share.link)"
                 width="77" height="28"
@@ -277,7 +280,7 @@
         //         },
         //         // force eager callback execution
         //         immediate: true
-        //     }
+        //     },
         // },
 
         mounted() {
@@ -382,7 +385,7 @@
                 return this.questions[this.qid].options.find(o => o.correct == 1).option
             },
             resultScreen(){
-                console.log('resultScreen')
+                // console.log('resultScreen')
                 this.questionInit()
                 this.getResult() //Sorting this.results
                 this.countDown()
@@ -399,8 +402,9 @@
             },
             QuestionTimer(){
                 if(this.qid == this.questions.length) return
+                if(this.av == false) return
                 let pdec = 100 / (5 * this.qt.time);
-                console.log('pdec', pdec)
+                // console.log('pdec', pdec)
                 this.preventClick = false
                 this.qt.timer =
                     setInterval(() => {
@@ -424,7 +428,7 @@
                     }, 200);
             },
             countDown(){
-                console.log('countDown')
+                // console.log('countDown')
                 if(this.counter <= 0){
                     // this.questionInit()
                     this.qid ++
@@ -436,7 +440,7 @@
                 }
             },
             getResult(){
-                console.log('getResult')
+                // console.log('getResult')
                 this.results = []
                 this.users.forEach(user => {
                     let score = 0;
@@ -550,7 +554,6 @@
             getUrl (path) {
                 return location.origin +'/'+ path
             },
-
             getShareLink(path){
                 console.log(['urlencode', encodeURI(this.getUrl(path))]);
                 return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
@@ -572,7 +575,7 @@
                 this.showQuestionOptions(null)
             },
             onStart() {
-                setTimeout(() => this.questionInit(), 1000)
+                // this.questionInit()
                 this.av = false
             },
             getOptionClass (index, qtime) {
@@ -586,7 +589,7 @@
                 return '';
             },
             showQuestionOptions (question) {
-                console.log('showQuestionOptions', question)
+                // console.log('showQuestionOptions', question)
                 let timeout = 1000;
                 if(this.challenge.option_view_time != 0) {
                     timeout = 3500; // this.quiz.quiz_time * 1000
@@ -615,6 +618,10 @@
                     }
                 })
 
+            },
+            audioVideo () {
+                this.questionInit()
+                console.log('audioVideo()')
             }
         },
 
@@ -645,6 +652,9 @@
         z-index: 999;
         left: 0px;
         top: 0px;
+    }
+    .share-result-image {
+        max-width: fit-content;
     }
 
     @media screen and (min-width: 480px) {
