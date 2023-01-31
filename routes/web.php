@@ -251,7 +251,9 @@ Route::get('list-of-exam', [\App\Http\Controllers\ExamController::class, 'index'
 Route::get('exams/{id?}', [\App\Http\Controllers\ExamController::class, 'traineeExams']);
 Route::get('start-exams/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'startExam']);
 Route::get('create-exam', [\App\Http\Controllers\ExamController::class, 'createExam']);
+Route::post('save-examination', [\App\Http\Controllers\ExamController::class, 'store']);
 Route::post('mode-update', [\App\Http\Controllers\ExamController::class, 'timeModeUpdate']);
 Route::post('examPublished', [\App\Http\Controllers\ExamController::class, 'examPublished']);
-Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'showResult']);
+Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'showUserResult']);
+Route::get('exam-result/{examination}', [\App\Http\Controllers\ExamController::class, 'showExamResult']);
 

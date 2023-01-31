@@ -105,7 +105,7 @@
 		    </div>
 		</div>
             <div class="d-flex justify-content-center py-2">
-                <a class="btn btn-sm btn-info rounded border" :href="'/exams'">{{ tbe('ফিরে যান','Go Back',user.lang) }}</a>
+                <a class="btn btn-sm btn-info rounded border" :href="'/exam-result/'+ exam.id">{{ tbe('ফিরে যান','Go Back',user.lang) }}</a>
             </div>
         </div>
         <div class="col-md-4" >

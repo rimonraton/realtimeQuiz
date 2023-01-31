@@ -77,7 +77,7 @@
                 <div class="card-body">
                     <h4 class="card-title text-center">{{__('exam.create_exam')}}</h4>
                     <hr>
-                    <form class="form-horizontal r-separator" action="{{url('quiz/save')}}" method="POST" autocomplete="off">
+                    <form class="form-horizontal r-separator" action="{{url('save-examination')}}" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
                         <div class="form-group row justify-content-center">
@@ -114,67 +114,55 @@
                                     <input type="text" class="form-control" placeholder="{{__('exam.exam_bn_placholder')}}" name="bdquizName">
                                 </div>
                             </div>
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>--}}
-{{--                                <div class="col-sm-5">--}}
-{{--                                    <select class="form-control custom-select" name="game_type" required>--}}
-{{--                                        <option>{{__('form.game_mode_select')}}</option>--}}
-{{--                                        @foreach($gameType as $game)--}}
-{{--                                            <option value="{{$game->id}}">{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->--}}
-{{--                                <div class="col-sm-4">--}}
-{{--                                    <select class="form-control custom-select" name="difficulty" required>--}}
-{{--                                        <option>{{__('form.game_type')}}</option>--}}
-{{--                                        <option value="1">{{__('form.easy')}}</option>--}}
-{{--                                        <option value="2">{{__('form.intermediate')}}</option>--}}
-{{--                                        <option value="3">{{__('form.difficult')}}</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            @can('QM',\App\Question::class)--}}
-{{--                                --}}{{--                            {{auth()->user()->roleuser->role_id}}--}}
-{{--                                <div class="form-group row">--}}
-{{--                                    <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>--}}
-{{--                                    <div class="col-sm-8">--}}
-{{--                                        <div class="row justify-content-center" id="team_load">--}}
-{{--                                            @foreach($teams as $team)--}}
-{{--                                                <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">--}}
-{{--                                                    <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">--}}
-{{--                                                    <label for="chce_{{$team->id}}">--}}
-{{--                                                        @if($lang == 'gb')--}}
-{{--                                                            @if($team->name == null)--}}
-{{--                                                                {{$team->bn_name}}--}}
-{{--                                                            @else--}}
-{{--                                                                {{$team->name}}--}}
-{{--                                                            @endif--}}
-{{--                                                        @else--}}
-{{--                                                            @if($team->bn_name == null)--}}
-{{--                                                                {{$team->name}}--}}
-{{--                                                            @else--}}
-{{--                                                                {{$team->bn_name}}--}}
-{{--                                                            @endif--}}
-{{--                                                        @endif--}}
-{{--                                                    </label>--}}
-{{--                                                    <a type="button" class="text-danger text-right dlt" data-id="{{$team->id}}" style="position:absolute;right: 5px;font-size: 20px;">×</a>--}}
-{{--                                                </div>--}}
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('Exam Type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <div class="col-sm-3">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <label class="container form-control">
+                                            <input type="radio" name="mode" value="et" id="et" checked>
+                                            {{__('exam.normal')}}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container form-control ml-3">
+                                            <input type="radio" name="mode" value="qt" id="qt">
+                                            {{__('exam.set_of_q')}}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" placeholder="{{__('Enter Time')}}" name="time">
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="timeUnit" id="time_unit">
+                                        <option value="s">Seconds</option>
+                                        <option value="m">Minutes</option>
+                                        <option value="h">Hours</option>
+                                    </select>
+                                </div>
 
-{{--                                            @endforeach--}}
-{{--                                        </div>--}}
-{{--                                        --}}{{--                                <select class="select2 form-control" multiple="multiple" style="height: 36px;width: 100%;">--}}
-{{--                                        --}}{{--                                    @foreach($teams as $team)--}}
-{{--                                        --}}{{--                                    <option value="{{$team->id}}">{{$team->name}}</option>--}}
-{{--                                        --}}{{--                                    @endforeach--}}
-{{--                                        --}}{{--                                </select>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-sm-1">--}}
-{{--                                        <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>--}}
-{{--                                    </div>--}}
-
-{{--                                </div>--}}
-{{--                            @endcan--}}
+                            </div>
+                            <div class="form-group row d-none" id="optLay">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.option_layout')}}
+                                    <span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <div class="col-sm-9">
+                                    <div class="d-flex justify-content-center align-items-center-center px-4">
+                                        <label class="container form-control">
+                                            <input type="radio" name="op_layout" value="0" checked id="togetherLayout">
+                                            {{__('exam.together')}}
+                                            <span class="checkmark"></span>
+                                            <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                        </label>
+                                        <label class="container form-control">
+                                            <input type="radio" name="op_layout" value="3" id="onebyoneLayout">
+                                            {{__('exam.one_by_one')}}
+                                            <span class="checkmark"></span>
+                                            <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                                 <div class="col-sm-6">
@@ -779,6 +767,15 @@
                 })
             })
 
+            $('input[type=radio][name=mode]').change(function() {
+                console.log($(this).val(), 'radio value..')
+                if($(this).val() == 'qt') {
+                    $('#optLay').removeClass('d-none')
+                } else {
+                    $("#togetherLayout").prop("checked", true);
+                    $('#optLay').addClass('d-none')
+                }
+            });
 
             function questions(id) {
                 $.ajax({

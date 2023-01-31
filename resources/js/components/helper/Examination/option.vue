@@ -18,7 +18,7 @@
         <div
             v-else
             @click="clickSelect(index, option)"
-            class="cursor my-1 imageDiv"
+            class="cursor my-1"
         >
             <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
             <div v-if="qoption.selected == index" class="Tick d-flex justify-content-center align-items-center">

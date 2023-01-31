@@ -68,9 +68,9 @@
                                             <th style="width: 0px;">{{__('exam.sl')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_english')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_bangla')}}</th>
-                                            <th style="width: 0px;">{{__('mode')}}</th>
-                                            <th style="width: 0px;">{{__('Time')}}</th>
-                                            <th style="width: 5%;">{{__('Status')}}</th>
+                                            <th style="width: 0px;">{{__('exam.exam_type')}}</th>
+                                            <th style="width: 0px;">{{__('exam.exam_time')}}</th>
+                                            <th style="width: 5%;">{{__('exam.status')}}</th>
                                             <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                         </thead>
@@ -118,12 +118,23 @@
                                                 <th>{{$exam->exam_bn}}</th>
                                                 <th class="text-center">
                                                     <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
-                                                        {{$exam->exam_time ? 'Normal mode' : ($exam->question_time ? 'Set of question time mode' : 'No mode')}}
+                                                        {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No mode')}}
                                                     </span>
-                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" title="Edit Mode">
+                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" data-layout="{{$exam->option_view_time}}" title="Edit Mode">
                                                         <i class="fas fa-pencil-alt text-warning"></i>
                                                     </a>
-
+                                                    @if($exam->question_time)
+                                                        <br>
+                                                        @if($exam->option_view_time > 0)
+                                                            <span>
+                                                                <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                                            </span>
+                                                        @else
+                                                            <span>
+                                                                <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                                            </span>
+                                                        @endif
+                                                    @endif
                                                 </th>
                                                 <th>
 
@@ -131,7 +142,7 @@
                                                 </th>
                                                 <th>
                                                     <div class="bt-switch">
-                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('Published')}}" data-off-text="{{__('Not Published')}}" data-size="normal" {{$exam->is_published ==1?"checked":""}} />
+                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('exam.published')}}" data-off-text="{{__('exam.not_published')}}" data-size="normal" {{$exam->is_published ==1?"checked":""}} />
                                                     </div>
                                                 </th>
                                                 <th>
@@ -150,9 +161,9 @@
                                             <th rowspan="1" colspan="1">{{__('exam.sl')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_english')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_bangla')}}</th>
-                                            <th rowspan="1">{{__('mode')}}</th>
-                                            <th rowspan="1">{{__('Time')}}</th>
-                                            <th rowspan="1">{{__('Status')}}</th>
+                                            <th rowspan="1">{{__('exam.exam_type')}}</th>
+                                            <th rowspan="1">{{__('exam.exam_time')}}</th>
+                                            <th rowspan="1">{{__('exam.status')}}</th>
                                             <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                         </tfoot>
@@ -215,25 +226,43 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('Update Mode')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.update_exam_type')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal form-material" method="POST" action="{{url('mode-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="muid" name="id">
-                        <h4 class="text-center">Change Exam time mode</h4>
+                        <h4 class="text-center">{{__('exam.change_exam_type')}}</h4>
                         <div class="d-flex justify-content-center">
                                 <label class="container">
                                     <input type="radio" name="mode" value="et" id="et" checked>
-                                    Normal Mode
+                                    {{__('exam.normal')}}
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="container">
                                     <input type="radio" name="mode" value="qt" id="qt">
-                                    Secondary Mode
+                                    {{__('exam.set_of_q')}}
                                     <span class="checkmark"></span>
                                 </label>
+                        </div>
+                        <hr>
+                        <div class="d-none" id="optLayout">
+                            <h5 class="text-center">{{__('exam.option_layout')}}</h5>
+                            <div class="d-flex justify-content-center align-items-center-center px-4">
+                                <label class="container">
+                                    <input type="radio" name="op_layout" value="0" checked id="togetherLayout">
+                                    {{__('exam.together')}}
+                                    <span class="checkmark"></span>
+                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                </label>
+                                <label class="container">
+                                    <input type="radio" name="op_layout" value="3" id="onebyoneLayout">
+                                    {{__('exam.one_by_one')}}
+                                    <span class="checkmark"></span>
+                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                </label>
+                            </div>
                         </div>
                         <hr>
 {{--                        <div class="form-group">--}}
@@ -296,6 +325,7 @@
                 if($(this).attr('data-qt') > 0){
                     $("#qt").prop("checked", true);
                     $('#inp_time').val(time);
+                    $(this).attr('data-layout') > 0 ? $("#onebyoneLayout").prop("checked", true) : $("#togetherLayout").prop("checked", true)
                 } else if ($(this).attr('data-et') > 0) {
                     $("#et").prop("checked", true);
                     $('#inp_time').val(time);
@@ -303,6 +333,11 @@
                     $('#inp_time').val(time);
                 }
                 $('#time_unit').val($(this).attr('data-timeUnit'))
+                if($('#qt').is(':checked')) {
+                    $('#optLayout').removeClass('d-none')
+                } else {
+                    $('#optLayout').addClass('d-none')
+                }
                 $('#edit-mode').modal('show');
             })
 
@@ -351,7 +386,7 @@
                     },
                     success: function(data) {
                         Swal.fire({
-                            text: data,
+                            text: "{{__('exam.updated_msg')}}",
                             type: 'success',
                             timer: 1000,
                             showConfirmButton: false
@@ -372,5 +407,14 @@
                 }
             });
         })
+        $('input[type=radio][name=mode]').change(function() {
+            console.log($(this).val(), 'radio value..')
+            if($(this).val() == 'qt') {
+                $('#optLayout').removeClass('d-none')
+            } else {
+                $("#togetherLayout").prop("checked", true);
+                $('#optLayout').addClass('d-none')
+            }
+        });
     </script>
 @endsection
