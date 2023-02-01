@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('Exam Type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                                 <div class="col-sm-3">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <label class="container form-control">
@@ -132,13 +132,13 @@
                                 </div>
                                 <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
                                 <div class="col-sm-3">
-                                    <input type="number" class="form-control" placeholder="{{__('Enter Time')}}" name="time">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.exam_time_placeholder')}}" name="time">
                                 </div>
                                 <div class="col-sm-3">
                                     <select class="form-control" name="timeUnit" id="time_unit">
-                                        <option value="s">Seconds</option>
-                                        <option value="m">Minutes</option>
-                                        <option value="h">Hours</option>
+                                        <option value="s">{{__('exam.second')}}</option>
+                                        <option value="m">{{__('exam.minute')}}</option>
+                                        <option value="h">{{__('exam.hour')}}</option>
                                     </select>
                                 </div>
 

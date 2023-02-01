@@ -22,5 +22,9 @@ return [
     'together' => 'একইসাথে',
     'one_by_one' => 'একটির পর একটি',
     'result_title' => 'এর ফলাফল',
-
+    'submitted' => 'পরীক্ষা জমা হয়েছে',
+    'exam_time_placeholder' => 'অনুগ্রহ করে পরীক্ষার সময়কাল লিখুন',
+    'second' => 'সেকেন্ড',
+    'minute' => 'মিনিট',
+    'hour' => 'ঘণ্টা'
 ];

@@ -21,4 +21,9 @@ return [
     'option_layout' => 'Choose Layout',
     'together' => 'Together',
     'result_title' => 'Result of',
+    'submitted' => 'Exam Submitted',
+    'exam_time_placeholder' => 'Please enter the exam duration',
+    'second' => 'Second',
+    'minute' => 'Minute',
+    'hour' => 'Hour'
 ];

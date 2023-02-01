@@ -181,7 +181,7 @@
                             @if($exam->results_count)
                                 <p>
                                     <a class="btn btn-lg btn-outline-danger align-self-center text-danger cursor-not-allowed">
-                                        {{__('Exam submitted')}}
+                                        {{__('exam.submitted')}}
                                     </a>
                                 </p>
                             @endif
