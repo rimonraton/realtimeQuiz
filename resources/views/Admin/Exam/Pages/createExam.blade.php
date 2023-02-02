@@ -65,6 +65,9 @@
             padding: 5px 10px;
             color: black;
         }
+        .bg-beige{
+            background: beige;
+        }
     </style>
 @endsection
 @section('content')
@@ -396,14 +399,17 @@
             var QC;
             $(document).on('click','.chk',function (){
                 var id = $(this).val();
+                console.log($(this).parent(), 'this element')
                 if ($(this).is(':checked')) {
                     chkquestions.push(id);
+                    $(this).parent().addClass('bg-beige')
                 } else {
                     chkquestions = chkquestions.filter(function(elem){
                         return elem != id;
                     });
+                    $(this).parent().removeClass('bg-beige')
                 }
-                QC=chkquestions.length;
+                QC = chkquestions.length;
                 if (lang=='bd'){
                     QC = q2bNumber(chkquestions.length)
                 }

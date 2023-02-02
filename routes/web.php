@@ -52,6 +52,7 @@ Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::class,'search']);
 
 // Questions
+Route::get('question-list/{tid}', [QuestionController::class, 'qListByTopic']);
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
