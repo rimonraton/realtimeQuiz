@@ -383,6 +383,18 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-7">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
@@ -406,19 +418,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-2 d-none" id="showQ">
-                                <div class="btn btn-sm rounded-lg border border-secondary p-2" id="showQButton">Show Questions</div>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
+                                <div class="btn btn-sm rounded-lg border border-secondary p-2" id="showQButton">{{$lang == 'gb' ? 'View Questions' : 'প্রশ্নসমুহ দেখুন'}}</div>
                             </div>
                         </div>
                         <div class="form-group row justify-content-center" id="textImagePanel">
@@ -538,19 +538,21 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{$lang == 'gb' ? 'Questions' : 'প্রশ্নসমুহ'}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="row justify-content-center" id="custom_input_text">
+
+                </div>
                 <div id="viewQData">
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{$lang== 'gb' ? 'Close' : 'বন্ধ করুন'}}</button>
             </div>
         </div>
     </div>
@@ -562,6 +564,10 @@
 @section('js')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+    // $(document).ready(function () {
+    //     alert('load alert')
+    //     $('#search_keyword').focus();
+    // })
     $.noConflict();
     $(function() {
         // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
@@ -843,18 +849,28 @@
                     //     $('.subtopicDiv').hide();
                     // }
                     $('#viewQData').html(data)
-                }
+                    setTimeout(() => {
+                        $('#search_keyword').focus()
+                    }, 200)
+                },
             })
         }
         $(document).on('click', '.topicls', function() {
 
             // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
             // alert($(this).attr('data-cid'));
-            // const id = $(this).attr('data-cid');
-            // getAllQuestions(id)
-            // $('#qModal').modal('show')
-            // $('#showQ').removeClass('d-none')
-            // $('#showQ').attr( 'data-cid', id)
+            const id = $(this).attr('data-cid');
+            getAllQuestions(id)
+            $('#qModal').modal('show')
+            $('#showQ').removeClass('d-none')
+            $('#showQButton').attr( 'data-cid', id)
+            $('#custom_input_text').empty();
+            if ($('#bdquestion').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ">${$('#bdquestion').val()}</div>`)
+            }
+            if ($('#question').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ">${$('#question').val()}</div>`)
+            }
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
                 $('#selectedCid').val('');
@@ -878,6 +894,54 @@
             getAllQuestions(id)
             $('#qModal').modal('show')
         })
+        $(document).on('click','#refreash_btn', function () {
+            const id = $(this).attr('data-cid');
+            getAllQuestions(id)
+        })
+        $(document).on('click','#search_btn', function () {
+            const cid = $(this).attr('data-cid');
+            const value = $('#search_keyword').val()
+            searchQuestionsByKeyword(cid, value)
+        })
+        $(document).on('keydown','#search_keyword', function (e) {
+            var id = e.which
+            // var id = e.key || e.which || e.keyCode || 0;
+            console.log('event',id)
+
+            const cid = $(this).attr('data-cid');
+            const value = $('#search_keyword').val()
+            if (id == 13) {
+                searchQuestionsByKeyword(cid, value)
+                return false;
+            }
+        })
+        $(document).on('click','.customQ', function () {
+            const cid = $(this).attr('data-cid')
+            const value = $(this).text()
+            searchQuestionsByKeyword(cid,value)
+        })
+        function searchQuestionsByKeyword(cid, value) {
+            if(value == '') {
+                let msg = ''
+                if('{{$lang}}' == 'gb') {
+                    msg =  'Search input is empty'
+                } else {
+                    msg = 'অনুসন্ধান ইনপুট খালি '
+                }
+                alertMessage(msg)
+                return
+            }
+            $.ajax({
+                url: "{{url('question-list-with-keyword')}}/" + cid + '/' + value,
+                type: "GET",
+                success: function(data) {
+                    $('#viewQData').html(data)
+                    setTimeout(() => {
+                        $('#search_keyword').focus()
+                    }, 200)
+                }
+            })
+        }
         var updateOutput = function(e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');

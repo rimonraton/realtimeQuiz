@@ -53,6 +53,7 @@ Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::
 
 // Questions
 Route::get('question-list/{tid}', [QuestionController::class, 'qListByTopic']);
+Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::class, 'qListByTopicKeyword']);
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
