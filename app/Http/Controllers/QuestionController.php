@@ -271,7 +271,7 @@ class QuestionController extends Controller
 
 //        return Question::where('category_id', $id)->get();
 
-        $questions = Question::where('category_id', $tid)->whereIn('user_id',$admin_users)->get(['id','question_text', 'bd_question_text']);
+        $questions = Question::where('category_id', $tid)->whereIn('user_id',$admin_users)->get(['id','question_text', 'bd_question_text', 'fileType', 'question_file_link']);
        return view('Admin.PartialPages.Questions.partial.exists_question', compact('questions', 'tid'));
     }
     public function qListByTopicKeyword($tid, $keyword)
@@ -286,7 +286,7 @@ class QuestionController extends Controller
                     ->whereIn('user_id',$admin_users)
                     ->where('question_text', 'like', '%' . $keyword . '%')
                     ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                    ->get(['id','question_text', 'bd_question_text']);
+                    ->get(['id','question_text', 'bd_question_text', 'fileType', 'question_file_link']);
         return view('Admin.PartialPages.Questions.partial.exists_question', compact('questions', 'tid'));
     }
 

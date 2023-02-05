@@ -238,6 +238,9 @@
     .optionImage{
         display: none;
     }
+    .width-video-100{
+        width: 100%;
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -558,6 +561,38 @@
     </div>
 </div>
 
+<!-- Media Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Media/Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="container">
+                                <div id="media_body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row justify-content-center py-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{$lang== 'gb' ? 'Close' : 'বন্ধ করুন'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 @endsection
@@ -570,6 +605,35 @@
     // })
     $.noConflict();
     $(function() {
+        $(document).on('click', '.mediaQ', function () {
+            $('#media_body').empty()
+            const fileType = $(this).attr('data-fileType')
+            const fileLink = $(this).attr('data-fileLink')
+            if (fileType == 'video') {
+                var video = document.createElement('video');
+                video.id = 'video_q_file'
+                video.src = '/'+ fileLink
+                video.controls = true
+                video.className = 'width-video-100'
+                $('#media_body').prepend(video)
+            }
+            if (fileType == 'image') {
+                var img = document.createElement("img");
+                // img.className = 'file-upload-image'
+                img.className = 'width-video-100'
+                img.src = '/' + fileLink
+                $('#media_body').prepend(img)
+            }
+            if (fileType == 'audio') {
+                var audio = document.createElement('audio');
+                audio.src = '/' + fileLink
+                audio.controls = true
+                audio.id = 'audio_q_file'
+                audio.className = 'width-video-100'
+                $('#media_body').prepend(audio)
+            }
+            $('#mediaModal').modal('show')
+        })
         // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
         // $('.txtareaValidation').keyup(function() {
         //     if (regx.test(this.value)) {
