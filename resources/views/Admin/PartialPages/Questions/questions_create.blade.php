@@ -958,7 +958,7 @@
             getAllQuestions(id)
             $('#qModal').modal('show')
         })
-        $(document).on('click','#refreash_btn', function () {
+        $(document).on('click','.refreash_btn', function () {
             const id = $(this).attr('data-cid');
             getAllQuestions(id)
         })

@@ -4,11 +4,12 @@
         <div class="card">
             <div class="container">
                 <div class="row justify-content-center align-items-center py-2">
-                    <div class="form-group col-sm-10">
+                    <div class="form-group col-sm-8">
                         <input type="text" class="form-control" data-cid="{{$tid}}" placeholder="{{$lang == 'gb' ? 'Search...' : 'অনুসন্ধান...'}}" id="search_keyword">
                     </div>
-                    <div class="col-sm-2 text-center">
+                    <div class="col-sm-4 text-center form-group">
                         <span class="btn btn-primary" id="search_btn" data-cid="{{$tid}}">{{$lang == 'gb' ? 'Search' : 'অনুসন্ধান'}}</span>
+                        <span class="btn btn-info refreash_btn" data-cid="{{$tid}}">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেস করুন'}}</span>
                     </div>
                 </div>
                 @if(count($questions) > 0)
@@ -41,7 +42,7 @@
                     <div class="text-center">
                         {{$lang == 'gb' ? 'No Data Found!' : 'কোন ডাটা পাওয়া যায় নি!'}}
                         <br>
-                        <div class="btn btn-info" id="refreash_btn" data-cid="{{$tid}}">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেস করুন'}}</div>
+                        <div class="btn btn-info refreash_btn"  data-cid="{{$tid}}">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেস করুন'}}</div>
                     </div>
 
                 @endif
