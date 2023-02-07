@@ -93,11 +93,14 @@ class ExamController extends Controller
             'exam_time'         => $request->mode == 'et' ? $time : 0,
             'question_time'     => $request->mode == 'qt' ? $time : 0,
             'time_unit'         => $request->timeUnit,
+            'each_question_mark' => $request->each_q_number ? $request->each_q_number : 1,
+            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0
         ]);
     }
 
     public function storeFromCustom($request)
     {
+//        return $request->all();
 //        $team_id = null;
         $time = 0;
         if($request->timeUnit == 's'){
@@ -153,6 +156,8 @@ class ExamController extends Controller
             'exam_time'         => $request->mode == 'et' ? $time : 0,
             'question_time'     => $request->mode == 'qt' ? $time : 0,
             'time_unit'         => $request->timeUnit,
+            'each_question_mark' => $request->each_q_number ? $request->each_q_number : 1,
+            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0
         ]);
     }
 

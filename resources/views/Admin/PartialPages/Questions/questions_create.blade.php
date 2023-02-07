@@ -930,10 +930,10 @@
             $('#showQButton').attr( 'data-cid', id)
             $('#custom_input_text').empty();
             if ($('#bdquestion').val() != ''){
-                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ">${$('#bdquestion').val()}</div>`)
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#bdquestion').val()}</div>`)
             }
             if ($('#question').val() != ''){
-                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ">${$('#question').val()}</div>`)
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#question').val()}</div>`)
             }
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');

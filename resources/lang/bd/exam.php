@@ -26,5 +26,7 @@ return [
     'exam_time_placeholder' => 'অনুগ্রহ করে পরীক্ষার সময়কাল লিখুন',
     'second' => 'সেকেন্ড',
     'minute' => 'মিনিট',
-    'hour' => 'ঘণ্টা'
+    'hour' => 'ঘণ্টা',
+    'number_negative' => 'প্রতি প্রশ্নের নাম্বার ও নেগেটিভ নাম্বার',
+    'each_question_number_placeholder' => 'প্রতিটি প্রশ্নের নম্বর লিখুন'
 ];

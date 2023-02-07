@@ -25,5 +25,7 @@ return [
     'exam_time_placeholder' => 'Please enter the exam duration',
     'second' => 'Second',
     'minute' => 'Minute',
-    'hour' => 'Hour'
+    'hour' => 'Hour',
+    'number_negative' => 'Number and negative number for each question',
+    'each_question_number_placeholder' => 'Enter the number of each question'
 ];

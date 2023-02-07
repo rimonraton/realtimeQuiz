@@ -83,6 +83,7 @@
                     <form class="form-horizontal r-separator" action="{{url('save-examination')}}" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
+                        <input type="hidden" value="0" name="negetive_mark" id="negetive_mark">
                         <div class="form-group row justify-content-center">
                             <div class="btn-group" data-toggle="buttons">
 
@@ -164,6 +165,25 @@
                                             <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.number_negative')}} :</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="each_q_number"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="select_negetive_mark" disabled="disabled">
+                                        <option value="0">{{__('Please Select Negative mark')}}</option>
+                                        <option value="20">20%</option>
+                                        <option value="25">25%</option>
+                                        <option value="50">50%</option>
+                                        <option value="100">100%</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 d-none" id="parent_custom_negative_number">
+                                    <input type="number" class="form-control" placeholder="{{__('Enter Negative mark in percent')}}" id="custom_negative_number"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -771,6 +791,37 @@
                         console.log(data);
                     }
                 })
+            })
+
+            $('#each_q_number').on('keyup', function () {
+                // console.log('input value...', $(this).val())
+                if ($(this).val()) {
+                    $('#select_negetive_mark').removeAttr('disabled');
+                } else {
+                    $('#select_negetive_mark').attr('disabled', 'disabled');
+                    // $('#parent_custom_negative_number').addClass('d-none')
+                    console.log('hasclass...', $('#parent_custom_negative_number').hasClass('d-none'))
+                    $('#select_negetive_mark').val(0)
+                    if (!$('#parent_custom_negative_number').hasClass('d-none')){
+                        $('#parent_custom_negative_number').addClass('d-none')
+                        $('#custom_negative_number').val('')
+                        $('#negetive_mark').val('')
+                    }
+                }
+            })
+            $('#custom_negative_number').on('keyup', function () {
+                console.log('value', $(this).val())
+                $('#negetive_mark').val($(this).val())
+            })
+            $('#select_negetive_mark').on('change', function () {
+                if($(this).val() == 'custom'){
+                    $('#parent_custom_negative_number').removeClass('d-none')
+                } else {
+                    $('#negetive_mark').val($(this).val())
+                    $('#parent_custom_negative_number').addClass('d-none')
+                    $('#custom_negative_number').val('')
+                }
+
             })
 
             $('input[type=radio][name=mode]').change(function() {
