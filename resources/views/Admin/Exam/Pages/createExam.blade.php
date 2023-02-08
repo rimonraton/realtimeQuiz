@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select class="form-control" id="select_negetive_mark" disabled="disabled">
-                                        <option value="0">{{__('Please Select Negative mark')}}</option>
+                                        <option value="0">{{__('exam.select_negative_mark_placeholder')}}</option>
                                         <option value="20">20%</option>
                                         <option value="25">25%</option>
                                         <option value="50">50%</option>
@@ -183,7 +183,7 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-2 d-none" id="parent_custom_negative_number">
-                                    <input type="number" class="form-control" placeholder="{{__('Enter Negative mark in percent')}}" id="custom_negative_number"/>
+                                    <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="custom_negative_number"/>
                                 </div>
                             </div>
                             <div class="form-group row">

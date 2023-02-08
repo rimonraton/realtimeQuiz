@@ -191,7 +191,7 @@
                         @if($exam->results_count)
                             @if(auth()->user()->roleuser->role->id < 4)
                                 <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-xs btn-outline-danger align-self-center">
-                                    {{__('Show result')}}
+                                    {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}
                                 </a>
                                 @endif
                         @else

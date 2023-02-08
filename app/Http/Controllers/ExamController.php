@@ -263,7 +263,7 @@ class ExamController extends Controller
         $result_count = count(json_decode($result->result));
 //        return count(json_decode($result->result));
         if ($result_count > 0) {
-            $exam_result = $examination->load(['results' => function($q) use($uid) {
+              $exam_result = $examination->load(['results' => function($q) use($uid) {
                 $q->where('user_id', $uid);
             }]);
             $user = Auth::user();

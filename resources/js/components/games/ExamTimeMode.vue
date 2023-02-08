@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <hr>
-                <div class="card my-4" >
+                <div class="card my-2" >
                     <div class="card-header">
                         {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
                     </div>
@@ -41,10 +41,13 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between py-2">
+            <div class="d-flex justify-content-between py-1">
                 <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>
                 <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
-                <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length : q2bNumber(questions.length)}}</span>
+                <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length * qid.each_question_mark : q2bNumber(questions.length * qid.each_question_mark)}}</span>
+            </div>
+            <div class="text-center py-1">
+                <span> {{ user.lang == 'gb' ? '[0' + qid.each_question_mark + ' mark will be given for each correct answer and ' + negativeMark() + ' mark will be deducted for each wrong answer.]' : '[প্রতিটি শুদ্ধ উত্তরের জন্য ০' + q2bNumber(qid.each_question_mark) + ' নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য ' + q2bNumber(negativeMark()) + ' নম্বর কর্তন হবে ।]' }}</span>
             </div>
             <div class="container-fluid p-0 overflow-auto" style="max-height:500px;">
                 <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questiondata">
@@ -433,6 +436,9 @@
                         this.submitExam()
                     }
                 });
+            },
+            negativeMark(){
+                return this.qid.negative_mark > 0 ? (this.qid.each_question_mark * this.qid.negative_mark)/100 : 0
             }
 		},
         created(){

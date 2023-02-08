@@ -28,5 +28,8 @@ return [
     'minute' => 'মিনিট',
     'hour' => 'ঘণ্টা',
     'number_negative' => 'প্রতি প্রশ্নের নাম্বার ও নেগেটিভ নাম্বার',
-    'each_question_number_placeholder' => 'প্রতিটি প্রশ্নের নম্বর লিখুন'
+    'each_question_number_placeholder' => 'প্রতিটি প্রশ্নের নম্বর লিখুন',
+    'select_negative_mark_placeholder' => 'অনুগ্রহ করে নেগেটিভ মার্ক নির্বাচন করুন',
+    'negative_mark_percent_placeholder' => 'শতাংশে নেগেটিভ মার্ক লিখুন',
+
 ];

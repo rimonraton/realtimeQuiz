@@ -114,8 +114,9 @@
                     {{ user.lang == 'gb' ? 'Result' : 'ফলাফল' }}
                 </div>
                 <div class="card-body">
-                    <p>Correct Answer: {{JSON.parse(exam.results[0].result).filter(item => item.correct ==  1).length}}</p>
-                    <p>Wrong Answer: {{JSON.parse(exam.results[0].result).filter(item => item.correct ==  0).length}}</p>
+                    <p>{{user.lang == 'gb' ? 'Correct Answer' : 'সঠিক উত্তর'}}: {{user.lang == 'gb' ? JSON.parse(exam.results[0].result).filter(item => item.correct ==  1).length : q2bNumber(JSON.parse(exam.results[0].result).filter(item => item.correct ==  1).length)}}</p>
+                    <p>{{user.lang == 'gb' ? 'Wrong Answer' : 'ভূল উত্তর'}} : {{user.lang == 'gb' ? JSON.parse(exam.results[0].result).filter(item => item.correct ==  0).length : q2bNumber(JSON.parse(exam.results[0].result).filter(item => item.correct ==  0).length)}}</p>
+                    <p>{{user.lang == 'gb' ? 'Total Number' : 'মোট নম্বর'}}: {{user.lang == 'gb' ? totalMark() : q2bNumber(totalMark())}}</p>
 <!--                    <div class="row">-->
 <!--                        <div class="col">-->
 <!--                            <div class="card-profile-stats d-flex justify-content-between">-->
@@ -195,7 +196,7 @@
             q2bNumber(numb) {
                 let numbString = numb.toString();
                 let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.': '.'};
                 [...numbString].forEach(n => bn += eb[n])
                 return bn
             },
@@ -341,6 +342,16 @@
                     this.screen.examSubmit = true
                 })
                 console.log(this.results)
+            },
+            totalMark(){
+                console.log(this.exam)
+                const ca = JSON.parse(this.exam.results[0].result).filter(item => item.correct ==  1).length
+                const wa = JSON.parse(this.exam.results[0].result).filter(item => item.correct ==  0).length
+                const nm = this.exam.negative_mark > 0 ? (this.exam.each_question_mark * this.exam.negative_mark)/100 : 0
+                const sub_total_mark = ca * this.exam.each_question_mark
+                const for_wrong_answer_negative_sub_total_mark = wa * nm
+                const total = sub_total_mark - for_wrong_answer_negative_sub_total_mark
+                return total > 0 ? total : 0
             }
 		},
         created(){

@@ -27,5 +27,7 @@ return [
     'minute' => 'Minute',
     'hour' => 'Hour',
     'number_negative' => 'Number and negative number for each question',
-    'each_question_number_placeholder' => 'Enter the number of each question'
+    'each_question_number_placeholder' => 'Enter the number of each question',
+    'select_negative_mark_placeholder' => 'Please Select Negative mark',
+    'negative_mark_percent_placeholder' => 'Enter Negative mark in percent',
 ];
