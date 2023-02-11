@@ -3,8 +3,12 @@
         <div class="container">
             <div class="winner" v-if="screen.examSubmit">
 <!--                <h2 class="text-center">Quiz Game Over</h2>-->
-                <h3>{{user.lang == 'gb' ? 'Your test has been submitted' : 'আপনার পরীক্ষা জমা হয়েছে'}}</h3>
-                <a class="btn btn-outline-primary btn-sm" :href="'/exams'">{{user.lang == 'gb' ? 'Finish' : 'শেষ করুন'}}</a>
+                <h3>
+                    {{user.lang == 'gb' ? 'Your test has been submitted' : 'আপনার পরীক্ষা জমা হয়েছে'}}
+                </h3>
+                <a class="btn btn-outline-primary btn-sm" :href="'/exams'">
+                    {{user.lang == 'gb' ? 'Finish' : 'শেষ করুন'}}
+                </a>
             </div>
         </div>
 	    <div class="row justify-content-center" v-if="screen.exam">

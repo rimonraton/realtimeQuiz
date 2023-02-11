@@ -84,27 +84,28 @@
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
                         <input type="hidden" value="0" name="negetive_mark" id="negetive_mark">
-                        <div class="form-group row justify-content-center">
-                            <div class="btn-group" data-toggle="buttons">
+                        <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="btn-group" data-toggle="buttons">--}}
 
-                                @can('readOwrite',\App\Quiz::class)
-                                    <label class="btn btn-primary active">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
-                                        </div>
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
-                                        </div>
-                                    </label>
-                                @else
-                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
-                                @endcan
-                            </div>
-                        </div>
+{{--                                @can('readOwrite',\App\Quiz::class)--}}
+{{--                                    <label class="btn btn-primary active">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">--}}
+{{--                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                    <label class="btn btn-primary">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">--}}
+{{--                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                @else--}}
+{{--                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">--}}
+{{--                                @endcan--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_name_english')}} : </label>
@@ -115,7 +116,7 @@
                             <div class="form-group row">
                                 <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_name_bangla')}} :</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="{{__('exam.exam_bn_placholder')}}" name="bdquizName">
+                                    <input type="text" class="form-control" id="bdquizName" placeholder="{{__('exam.exam_bn_placholder')}}" name="bdquizName">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -136,7 +137,7 @@
                                 </div>
                                 <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
                                 <div class="col-sm-3">
-                                    <input type="number" class="form-control" placeholder="{{__('exam.exam_time_placeholder')}}" name="time">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.exam_time_placeholder')}}" name="time" id="exam_time">
                                 </div>
                                 <div class="col-sm-3">
                                     <select class="form-control" name="timeUnit" id="time_unit">
@@ -211,7 +212,7 @@
                                 </div>
                                 @can('QM',\App\Question::class)
                                     <div class="col-sm-3 mt-1">
-                                        <input type="text" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ">
+                                        <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ" id="noq">
                                     </div>
                                 @endcan
                             </div>
@@ -525,7 +526,19 @@
             //     }
             // });
             $('.smt').on('click', function(e) {
-                var cid = $('#selectedCid').val();
+                // e.preventDefault();
+                var cid = $('#selectedCid').val()
+                const en_exam = $('#quizName').val()
+                const bn_exam = $('#bdquizName').val()
+                const bn_or_en = en_exam != '' ? true : (bn_exam != '' ? true : false)
+                const exam_time = $('#exam_time').val()
+                const selectedQ = $('#selectedQ').val()
+                const noq = $('#noq').val()
+                const questionsValide = selectedQ != '' ? true : (noq != '' ? true : false)
+
+                // console.log('condition', cid, bn_or_en, exam_time, en_exam != '', bn_exam != '')
+                // return
+
                 // var paise = 0;
                 // $('input[name="ans[]"]').each(function() {
                 //     console.log($(this).val());
@@ -533,14 +546,30 @@
                 //         paise = 1;
                 //     }
                 // });
-                if (cid != '') {
+                if (cid != '' && bn_or_en && exam_time != '' && questionsValide) {
                     $('#smtform').submit();
                 } else {
+                    let lang = '{{$lang}}'
+                    let message = ''
+                    if (!bn_or_en) {
+                        message = lang == 'gb' ? 'English or Bangla exam name is required.' : 'ইংরেজি বা বাংলা পরীক্ষার নাম দিন'
+                    }
+                   else if (exam_time == '') {
+                        message = lang == 'gb' ? 'Exam duration is required.' : 'পরীক্ষার সময়কাল দিন'
+                    }
+                    else if(cid == ''){
+                        message = lang == 'gb' ? 'Please select the Topic.' : 'বিষয় নির্বাচন করুন'
+                    }
+                    else if (!questionsValide) {
+                        message = lang == 'gb' ? 'Please check questions or type the number of question' : 'অনুগ্রহ করে প্রশ্ন চেক করুন বা প্রশ্নের সংখ্যা টাইপ করুন'
+                    } else {
+                        message = lang == 'gb' ? 'Something went wrong!' : 'কিছু ভুল হয়েছে'
+                    }
                     e.preventDefault();
                     Swal.fire({
                         type: 'error',
-                        title: 'Oops...',
-                        text: 'Please select the Topic.',
+                        title: lang == 'gb' ? 'Oops...' : 'উফ...',
+                        text: message,
                     })
                 }
                 // if (paise == 1) {

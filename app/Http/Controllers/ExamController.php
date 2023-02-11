@@ -42,14 +42,14 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-//          return $request->all();
+          return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('list-of-exam');
         }
         $this->storeFromCustom($request);
 
-        return redirect('quiz/view/list/' . $request->cid);
+        return redirect('list-of-exam');
     }
 
     public function storeFromQB($request)
