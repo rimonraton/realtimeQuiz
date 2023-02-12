@@ -10,7 +10,7 @@ return [
     'goto_exam_list' => 'পরীক্ষার তালিকায় যান',
     'exam_type' => 'পরীক্ষার ধরন',
     'exam_time' => 'পরীক্ষার সময়',
-    'status' => 'অবস্থা',
+    'status' => 'প্রকাশিত অবস্থা',
     'published' => 'প্রকাশিত হয়েছে',
     'not_published' => 'প্রকাশিত হয়নি',
     'updated_msg' => 'সফলভাবে আপডেট করা হয়েছে',
@@ -31,5 +31,13 @@ return [
     'each_question_number_placeholder' => 'প্রতিটি প্রশ্নের নম্বর লিখুন',
     'select_negative_mark_placeholder' => 'অনুগ্রহ করে নেগেটিভ মার্ক নির্বাচন করুন',
     'negative_mark_percent_placeholder' => 'শতাংশে নেগেটিভ মার্ক লিখুন',
+    'add' => 'যুক্ত করুন',
+    'cancel' => 'বাতিল করুন',
+    'E_T_NMark' => 'প্রতিটি প্রশ্ন নম্বর/মোট নম্বর/নেগেটিভ নম্বর',
+    'each_question_number' => 'প্রতিটি প্রশ্ন নম্বর',
+    'total_number' => 'মোট নম্বর',
+    'negative_number' => 'নেগেটিভ নম্বর',
+    'numberEdit' => 'নম্বর সংশোধন করুন',
+    'modeEdit' => 'পরীক্ষার ধরন সংশোধন করুন'
 
 ];

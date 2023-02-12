@@ -28,7 +28,7 @@ class ExamController extends Controller
     {
 //        $admin = auth()->user()->admin;
 //        $admin_users = $admin->users()->pluck('id');
-        $exam_data = Examination::paginate(10);
+        $exam_data = Examination::orderBy('id','desc')->paginate(10);
         return view('Admin.Exam.Pages.listOfExam', compact('exam_data'));
     }
 
@@ -42,7 +42,7 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-          return $request->all();
+//          return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('list-of-exam');

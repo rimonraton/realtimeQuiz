@@ -68,6 +68,7 @@
                                             <th style="width: 0px;">{{__('exam.sl')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_english')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_bangla')}}</th>
+                                            <th style="width: 0px;">{{__('exam.E_T_NMark')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_type')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_time')}}</th>
                                             <th style="width: 5%;">{{__('exam.status')}}</th>
@@ -78,6 +79,7 @@
                                         @php
                                             function convert_seconds($seconds_value)
                                              {
+                                                  $bengali = new \App\Lang\Bengali();
                                                  $hasHours = '';
                                                  $hasMinutes = '';
                                                  $hasSeconds = '';
@@ -99,28 +101,44 @@
                                                     return $hasHours . ' ' . $hasMinutes .' '. $hasSeconds;
                                                 } else {
                                                     if($hours > 0) {
-                                                        $hasHours = $hours . ' ঘণ্টা';
+                                                        $hasHours = $bengali->bn_number($hours) . ' ঘণ্টা';
                                                     }
                                                     if ($minutes > 0) {
-                                                        $hasMinutes = $minutes . ' মিনিট';
+                                                        $hasMinutes = $bengali->bn_number($minutes) . ' মিনিট';
                                                     }
                                                     if ($seconds > 0) {
-                                                        $hasSeconds = $seconds . ' সেকেন্ড';
+                                                        $hasSeconds = $bengali->bn_number($seconds) . ' সেকেন্ড';
                                                     }
                                                    return $hasHours . ' ' . $hasMinutes . ' ' . $hasSeconds;
+                                                }
+                                              }
+                                              function each_question_mark($value){
+                                                $bengali = new \App\Lang\Bengali();
+                                                if (App::getLocale() == 'gb'){
+                                                    return $value;
+                                                } else {
+                                                   return $bengali->bn_number($value);
                                                 }
                                               }
                                         @endphp
                                         @foreach($exam_data as $exam)
                                             <tr>
-                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                                                <td>{{$lang=='gb' ? $loop->iteration : $bang->bn_number($loop->iteration)}}</td>
                                                 <th>{{$exam->exam_en}}</th>
                                                 <th>{{$exam->exam_bn}}</th>
+                                                <th class="text-center">
+                                                    <span class="badge badge-info"> {{__('exam.each_question_number')}}:  {{ each_question_mark($exam->each_question_mark) }}</span>
+                                                    <span class="badge badge-cyan"> {{__('exam.total_number')}}:  {{ each_question_mark(count(explode(",",$exam->questions)) * $exam->each_question_mark) }}</span>
+                                                    <span class="badge badge-dark-danger"> {{__('exam.negative_number')}}:  {{ each_question_mark(($exam->each_question_mark * $exam->negative_mark)/100) }}</span>
+                                                    <a class="mark_edit" href="" data-id="{{$exam->id}}" data-each_question_mark="{{$exam->each_question_mark}}" data-nagetive_mark="{{$exam->negative_mark}}" title="{{__('exam.numberEdit')}}">
+                                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                                    </a>
+                                                </th>
                                                 <th class="text-center">
                                                     <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
                                                         {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No mode')}}
                                                     </span>
-                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" data-layout="{{$exam->option_view_time}}" title="Edit Mode">
+                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" data-layout="{{$exam->option_view_time}}" title="{{__('exam.modeEdit')}}">
                                                         <i class="fas fa-pencil-alt text-warning"></i>
                                                     </a>
                                                     @if($exam->question_time)
@@ -161,6 +179,7 @@
                                             <th rowspan="1" colspan="1">{{__('exam.sl')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_english')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_bangla')}}</th>
+                                            <th rowspan="1">{{__('exam.E_T_NMark')}}</th>
                                             <th rowspan="1">{{__('exam.exam_type')}}</th>
                                             <th rowspan="1">{{__('exam.exam_time')}}</th>
                                             <th rowspan="1">{{__('exam.status')}}</th>
@@ -276,12 +295,66 @@
                             </div>
                             <div class="col-md-4 m-b-20">
                                 <select class="form-control" name="timeUnit" id="time_unit">
-                                    <option value="s">Seconds</option>
-                                    <option value="m">Minutes</option>
-                                    <option value="h">Hours</option>
+                                    <option value="s">{{__('exam.second')}}</option>
+                                    <option value="m">{{__('exam.minute')}}</option>
+                                    <option value="h">{{__('exam.hour')}}</option>
                                 </select>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div id="edit-mark" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('Update')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('mark-update')}}" autocomplete="off">
+                        @csrf
+                        <input type="hidden" id="markuid" name="id">
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Each question Number')}} :</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="mark_each_q_number"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Negative Mark')}} :</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="mark_select_negetive_mark">
+                                    <option value="0">{{__('exam.select_negative_mark_placeholder')}}</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="50">50%</option>
+                                    <option value="100">100%</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Custom Negative Mark')}} :</label>
+                            <div class="col-sm-8" id="mark_parent_custom_negative_number">
+                                <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="mark_custom_negative_number"/>
+                            </div>
+                        </div>
+                        {{--                        <div class="form-group">--}}
+                        {{--                            <div class="col-md-12 m-b-20">--}}
+                        {{--                                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
@@ -416,5 +489,28 @@
                 $('#optLayout').addClass('d-none')
             }
         });
+        $('.mark_edit').on('click', function (e) {
+            e.preventDefault()
+            const id = $(this).attr('data-id')
+            const eachQuestionMark = $(this).attr('data-each_question_mark')
+            const negativeMark = $(this).attr('data-nagetive_mark')
+
+            var options = $('#mark_select_negetive_mark option');
+
+            var values = $.map(options , function(option) {
+                return option.value
+            });
+            const findValue = values.some(value => value == negativeMark)
+            if(findValue) {
+                $('#mark_select_negetive_mark').val(negativeMark)
+            } else{
+                $('#mark_select_negetive_mark').val('custom')
+                $('#mark_custom_negative_number').val(negativeMark)
+            }
+
+            $('#markuid').val(id)
+            $('#mark_each_q_number').val(eachQuestionMark)
+            $('#edit-mark').modal('show')
+        })
     </script>
 @endsection

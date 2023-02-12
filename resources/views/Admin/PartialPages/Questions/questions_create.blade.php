@@ -919,6 +919,13 @@
                 },
             })
         }
+
+        $(document).on('click','#cancel_q', function () {
+            $('#bdquestion').val('')
+            $('#question').val('')
+            $('#qModal').modal('hide')
+        })
+
         $(document).on('click', '.topicls', function() {
 
             // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
@@ -934,6 +941,18 @@
             }
             if ($('#question').val() != ''){
                 $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#question').val()}</div>`)
+            }
+            if ($('#bdquestion').val() != '' || $('#question').val() != '') {
+                const add = '{{$lang}}' == 'gb'? 'Add' : 'যুক্ত করুন'
+                const cancel = '{{$lang}}' == 'gb'? 'Cancel' : 'বাতিল করুন'
+                $('#custom_input_text').append(
+                    `<div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
+                        <span data-dismiss="modal">${add}</span>
+                    </div>
+                     <div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
+                        <span id="cancel_q">${cancel}</span>
+                    </div>`
+                )
             }
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
@@ -1223,5 +1242,6 @@
         [...numbString].forEach(n => bn += eb[n])
         return bn
     }
+
 </script>
 @endsection

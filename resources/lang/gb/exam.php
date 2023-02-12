@@ -30,4 +30,12 @@ return [
     'each_question_number_placeholder' => 'Enter the number of each question',
     'select_negative_mark_placeholder' => 'Please Select Negative mark',
     'negative_mark_percent_placeholder' => 'Enter Negative mark in percent',
+    'add' => 'Add',
+    'cancel' => 'Cancel',
+    'E_T_NMark' => 'Each Question Number/Total Number/Negative Mark',
+    'each_question_number' => 'Each Question Number',
+    'total_number' => 'Total Number',
+    'negative_number' => 'Negative Number',
+    'numberEdit' => 'Marks Edit',
+    'modeEdit' => 'Type Edit'
 ];
