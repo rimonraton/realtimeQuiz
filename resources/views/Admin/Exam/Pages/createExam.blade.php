@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <label class="container form-control">
                                             <input type="radio" name="mode" value="et" id="et" checked>
@@ -139,7 +139,7 @@
                                 <div class="col-sm-3">
                                     <input type="number" class="form-control" placeholder="{{__('exam.exam_time_placeholder')}}" name="time" id="exam_time">
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <select class="form-control" name="timeUnit" id="time_unit">
                                         <option value="s">{{__('exam.second')}}</option>
                                         <option value="m">{{__('exam.minute')}}</option>
@@ -175,12 +175,12 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <select class="form-control" id="select_negetive_mark" disabled="disabled">
-                                        <option value="0">{{__('exam.select_negative_mark_placeholder')}}</option>
-                                        <option value="20">20%</option>
-                                        <option value="25">25%</option>
-                                        <option value="50">50%</option>
-                                        <option value="100">100%</option>
-                                        <option value="custom">Custom</option>
+                                        <option value="0">{{__('exam.noNegativeMark')}}</option>
+                                        <option value="20">{{__('exam.20_p')}}</option>
+                                        <option value="25">{{__('exam.25_p')}}</option>
+                                        <option value="50">{{__('exam.50_p')}}</option>
+                                        <option value="100">{{__('exam.100_p')}}</option>
+                                        <option value="custom">{{__('exam.custom')}}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2 d-none" id="parent_custom_negative_number">

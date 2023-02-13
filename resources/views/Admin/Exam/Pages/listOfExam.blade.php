@@ -3,6 +3,9 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            @if(session()->has('message'))
+                <p class="alert alert-success">{{ session('message') }}</p>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title text-center">{{__('exam.list_of_exam')}}</h4>
@@ -77,7 +80,7 @@
                                         </thead>
                                         <tbody>
                                         @php
-                                            function convert_seconds($seconds_value)
+                                              function convert_seconds($seconds_value)
                                              {
                                                   $bengali = new \App\Lang\Bengali();
                                                  $hasHours = '';
@@ -124,8 +127,8 @@
                                         @foreach($exam_data as $exam)
                                             <tr>
                                                 <td>{{$lang=='gb' ? $loop->iteration : $bang->bn_number($loop->iteration)}}</td>
-                                                <th>{{$exam->exam_en}}</th>
-                                                <th>{{$exam->exam_bn}}</th>
+                                                <th>{{$exam->exam_en ? $exam->exam_en : '______' }}</th>
+                                                <th>{{$exam->exam_bn ? $exam->exam_bn : '______'}}</th>
                                                 <th class="text-center">
                                                     <span class="badge badge-info"> {{__('exam.each_question_number')}}:  {{ each_question_mark($exam->each_question_mark) }}</span>
                                                     <span class="badge badge-cyan"> {{__('exam.total_number')}}:  {{ each_question_mark(count(explode(",",$exam->questions)) * $exam->each_question_mark) }}</span>
@@ -164,7 +167,7 @@
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    <a class="edit" href="" data-id="{{$exam->id}}" title="Edit">
+                                                    <a class="edit" href="" data-id="{{$exam->id}}" data-quizName="{{$exam->exam_en}}" data-bnQuizName="{{$exam->exam_bn}}" title="Edit">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </a>
                                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$exam->id}}" title="Remove">
@@ -211,21 +214,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('form.menu_update')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('Update')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal form-material" method="POST" action="{{url('menuUpdate')}}" autocomplete="off">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('exam-name-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="uid" name="id">
                         <div class="form-group">
                             <div class="col-md-12 m-b-20">
-                                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">
+                                <input type="text" class="form-control" id="editName" name="uquizName" placeholder="{{__('Enter quiz name in english')}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12 m-b-20">
-                                <input type="text" class="form-control" id="editbanglaName" name="bn_menu" placeholder="{{__('form.menu_placholder_bn')}}">
+                                <input type="text" class="form-control" id="editbanglaName" name="ubnquizName" placeholder="{{__('Enter quiz name in bangla')}}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -318,35 +321,36 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('Update')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.edit_header')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal form-material" method="POST" action="{{url('mark-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="markuid" name="id">
+                        <input type="hidden" id="negativemarkvalue" name="negativemarkvalue">
                         <div class="form-group row">
-                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Each question Number')}} :</label>
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.each_question_mark')}} :</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="mark_each_q_number"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Negative Mark')}} :</label>
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.negative_mark')}} :</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="mark_select_negetive_mark">
-                                    <option value="0">{{__('exam.select_negative_mark_placeholder')}}</option>
-                                    <option value="20">20%</option>
-                                    <option value="25">25%</option>
-                                    <option value="50">50%</option>
-                                    <option value="100">100%</option>
-                                    <option value="custom">Custom</option>
+                                    <option value="0">{{__('exam.noNegativeMark')}}</option>
+                                    <option value="20">{{__('exam.20_p')}}</option>
+                                    <option value="25">{{__('exam.25_p')}}</option>
+                                    <option value="50">{{__('exam.50_p')}}</option>
+                                    <option value="100">{{__('exam.100_p')}}</option>
+                                    <option value="custom">{{__('exam.custom')}}</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('Custom Negative Mark')}} :</label>
-                            <div class="col-sm-8" id="mark_parent_custom_negative_number">
+                        <div class="form-group row" id="mark_parent_custom_negative_number">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.custom')}} :</label>
+                            <div class="col-sm-8">
                                 <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="mark_custom_negative_number"/>
                             </div>
                         </div>
@@ -374,11 +378,12 @@
     <script>
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $(function() {
+            $(".alert").delay(5000).slideUp(300);
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $('#uid').val($(this).attr('data-id'));
-                $('#editName').val($(this).attr('data-name'));
-                $('#editbanglaName').val($(this).attr('data-bnname'));
+                $('#editName').val($(this).attr('data-quizName'));
+                $('#editbanglaName').val($(this).attr('data-bnQuizName'));
                 $('#edit-category').modal('show');
             })
 
@@ -503,14 +508,30 @@
             const findValue = values.some(value => value == negativeMark)
             if(findValue) {
                 $('#mark_select_negetive_mark').val(negativeMark)
+                $('#mark_parent_custom_negative_number').addClass('d-none')
+                // $('#mark_custom_negative_number').val('')
             } else{
                 $('#mark_select_negetive_mark').val('custom')
                 $('#mark_custom_negative_number').val(negativeMark)
+                $('#mark_parent_custom_negative_number').removeClass('d-none')
             }
 
             $('#markuid').val(id)
+            $('#negativemarkvalue').val(negativeMark)
             $('#mark_each_q_number').val(eachQuestionMark)
             $('#edit-mark').modal('show')
+        })
+        $('#mark_select_negetive_mark').on('change', function () {
+            if($(this).val() == 'custom'){
+                $('#mark_parent_custom_negative_number').removeClass('d-none')
+            } else {
+                $('#negativemarkvalue').val($(this).val())
+                $('#mark_parent_custom_negative_number').addClass('d-none')
+                $('#mark_custom_negative_number').val('')
+            }
+        })
+        $('#mark_custom_negative_number').on('keyup', function () {
+            $('#negativemarkvalue').val($(this).val())
         })
     </script>
 @endsection

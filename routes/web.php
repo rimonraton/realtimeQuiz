@@ -258,4 +258,6 @@ Route::post('mode-update', [\App\Http\Controllers\ExamController::class, 'timeMo
 Route::post('examPublished', [\App\Http\Controllers\ExamController::class, 'examPublished']);
 Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'showUserResult']);
 Route::get('exam-result/{examination}', [\App\Http\Controllers\ExamController::class, 'showExamResult']);
+Route::post('mark-update', [\App\Http\Controllers\ExamController::class, 'markUpdate']);
+Route::post('exam-name-update', [\App\Http\Controllers\ExamController::class, 'examNameUpdate']);
 

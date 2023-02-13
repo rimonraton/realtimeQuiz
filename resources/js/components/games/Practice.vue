@@ -290,7 +290,7 @@ export default {
                     timeout = timeout / 2;
                 }
             }
-            if(question == null || question == 'image') {
+            if(!question || question == 'image') {
                 clearInterval(this.timer);
                 setTimeout(() => {
                     // this.sqo = true

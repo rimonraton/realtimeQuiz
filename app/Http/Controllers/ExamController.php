@@ -183,7 +183,10 @@ class ExamController extends Controller
         $questions = Question::all();
         if (auth()->user()->roleuser->role->id < 4) {
             $exams = Examination::with('category:id,name,bn_name')
-                ->withCount(['results'])->orderBy('id', 'desc')->paginate(12);
+                ->whereHas('results')
+                ->withCount(['results'])
+                ->orderBy('id', 'desc')
+                ->paginate(12);
 
         } else {
             $exams = Examination::with('category:id,name,bn_name')
@@ -289,5 +292,29 @@ class ExamController extends Controller
         }]);
 //       $userResult = Result::with('user')->where('examination_id', $examination->id)->get();
         return view('Admin.Exam.Pages.examResult', compact(['userResult']));
+    }
+
+    public function markUpdate(Request $request)
+    {
+//        return $request->all();
+        Examination::where('id', $request->id)->update([
+            'each_question_mark' => $request->each_q_number,
+            'negative_mark' => $request->negativemarkvalue
+        ]);
+        $lang = \App::getLocale();
+        $msg = $lang == 'gb' ? 'Updated successfully!' : 'আপডেট সফল হয়েছে!' ;
+       return \Redirect::to('list-of-exam')->with('message', $msg);
+//        return redirect('list-of-exam');
+    }
+
+    public function examNameUpdate(Request $request)
+    {
+        Examination::where('id', $request->id)->update([
+            'exam_en' => $request->uquizName,
+            'exam_bn' => $request->ubnquizName,
+        ]);
+        $lang = \App::getLocale();
+        $msg = $lang == 'gb' ? 'Updated successfully!' : 'আপডেট সফল হয়েছে!' ;
+        return \Redirect::to('list-of-exam')->with('message', $msg);
     }
 }
