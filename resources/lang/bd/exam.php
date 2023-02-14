@@ -48,4 +48,8 @@ return [
     'edit_header' => 'সংশোধন করুন',
     'each_question_mark' => 'প্রতিটি প্রশ্নের নম্বর',
     'negative_mark' => 'নেগেটিভ নম্বর',
+    'exam_date_time' => 'পরীক্ষা অনুষ্ঠিত হওয়ার তারিখ ও সময়',
+    'placeholder_exam_date_time' => 'পরীক্ষার তারিখ ও সময় দিন',
+    'questions_mark' => 'নম্বর',
+    'expired' => 'পরীক্ষার মেয়াদ শেষ',
 ];

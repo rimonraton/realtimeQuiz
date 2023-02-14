@@ -3,6 +3,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('Admin/assets/libs/select2/dist/css/select2.min.css')}}">
     <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
     <style>
         .custom-select {
             display: inline-block;
@@ -67,6 +68,12 @@
         }
         .bg-beige{
             background: beige;
+        }
+        .iconPostion{
+            position: absolute;
+            right: 24px;
+            top: 11px;
+            cursor: pointer;
         }
     </style>
 @endsection
@@ -186,6 +193,19 @@
                                 <div class="col-sm-2 d-none" id="parent_custom_negative_number">
                                     <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="custom_negative_number"/>
                                 </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} :</label>
+                                <div class="col-sm-4">
+                                    <input name="schedule" type='text' class="form-control timeseconds" id="timeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}"/>
+                                    <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">--}}
+{{--                                            <span class="ti-calendar"></span>--}}
+{{--                                        </span>--}}
+{{--                                    </div>--}}
+                                </div>
+
                             </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
@@ -378,8 +398,38 @@
     </div>
 @endsection
 @section('js')
+    <script src="{{asset('Admin/assets/libs/moment/moment.js')}}"></script>
+    <script src="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.js')}}"></script>
+
     <script>
         $(function() {
+            var today = new Date()
+            $('.timeseconds').daterangepicker({
+                timePicker: true,
+                singleDatePicker: true,
+                timePickerIncrement: 5,
+                timePicker24Hour: false,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                minDate:today,
+                minYear: today.getFullYear(),
+                drops: 'auto',
+                locale: {
+                    format: 'YYYY-MM-DD h:mm A'
+                }
+            });
+            $('.timeseconds').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY, h:mm A'));
+            });
+
+            $('.timeseconds').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            $(document).on('click' , '#iconDatepicker' , function(){
+                // alert('hello click')
+                $('.timeseconds').data('daterangepicker').show()
+                // $('.timeseconds').trigger('show.daterangepicker');
+            });
             $(document).on('click','.dlt',function (e){
                 // e.preventDefault();
                 Swal.fire({
@@ -535,6 +585,7 @@
                 const selectedQ = $('#selectedQ').val()
                 const noq = $('#noq').val()
                 const questionsValide = selectedQ != '' ? true : (noq != '' ? true : false)
+                const dateTime = $('#timeseconds').val()
 
                 // console.log('condition', cid, bn_or_en, exam_time, en_exam != '', bn_exam != '')
                 // return
@@ -557,12 +608,16 @@
                    else if (exam_time == '') {
                         message = lang == 'gb' ? 'Exam duration is required.' : 'পরীক্ষার সময়কাল দিন'
                     }
+                    else if (dateTime == '') {
+                        message = lang == 'gb' ? 'Please give the date and time when the exam will be held' : 'অনুগ্রহ করে পরীক্ষা অনুষ্ঠিত হওয়ার তারিখ ও সময় দিন '
+                    }
                     else if(cid == ''){
                         message = lang == 'gb' ? 'Please select the Topic.' : 'বিষয় নির্বাচন করুন'
                     }
                     else if (!questionsValide) {
                         message = lang == 'gb' ? 'Please check questions or type the number of question' : 'অনুগ্রহ করে প্রশ্ন চেক করুন বা প্রশ্নের সংখ্যা টাইপ করুন'
-                    } else {
+                    }
+                    else {
                         message = lang == 'gb' ? 'Something went wrong!' : 'কিছু ভুল হয়েছে'
                     }
                     e.preventDefault();

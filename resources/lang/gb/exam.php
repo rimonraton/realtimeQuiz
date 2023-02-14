@@ -47,4 +47,8 @@ return [
     'edit_header' => 'Edit',
     'each_question_mark' => 'Each question mark',
     'negative_mark' => 'Negative Mark',
+    'exam_date_time' => 'Date and time of examination',
+    'placeholder_exam_date_time' => 'Enter date and time',
+    'questions_mark' => 'Marks',
+    'expired' => 'Exam expired',
 ];

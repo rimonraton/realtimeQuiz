@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Examination;
+use App\Lang\Bengali;
 use App\Models\Challenge;
 use App\Question;
 use App\QuestionsOption;
@@ -42,7 +43,13 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-//          return $request->all();
+//        $timestamp = \Carbon\Carbon::parse($request->schedule);
+////       return $banglaDate = $timestamp->format('Mm D Y, h:m A');
+//        $banglaDate = $timestamp->format('d F Y, h:m A');
+//        $ban = new Bengali();
+//       return $ban->bn_date_time($banglaDate);
+
+//        return $request->all();
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('list-of-exam');
@@ -94,7 +101,8 @@ class ExamController extends Controller
             'question_time'     => $request->mode == 'qt' ? $time : 0,
             'time_unit'         => $request->timeUnit,
             'each_question_mark' => $request->each_q_number ? $request->each_q_number : 1,
-            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0
+            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0,
+            'schedule'          => \Carbon\Carbon::parse($request->schedule)
         ]);
     }
 
@@ -157,7 +165,8 @@ class ExamController extends Controller
             'question_time'     => $request->mode == 'qt' ? $time : 0,
             'time_unit'         => $request->timeUnit,
             'each_question_mark' => $request->each_q_number ? $request->each_q_number : 1,
-            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0
+            'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0,
+            'schedule'          => \Carbon\Carbon::parse($request->schedule)
         ]);
     }
 
@@ -182,7 +191,7 @@ class ExamController extends Controller
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
         $questions = Question::all();
         if (auth()->user()->roleuser->role->id < 4) {
-            $exams = Examination::with('category:id,name,bn_name')
+             $exams = Examination::with('category:id,name,bn_name')
                 ->whereHas('results')
                 ->withCount(['results'])
                 ->orderBy('id', 'desc')

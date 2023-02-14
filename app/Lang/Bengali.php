@@ -23,6 +23,14 @@ class Bengali
     public static $en_times_uppercase = array('AM', 'PM');
     public static $bn_times = array('পূর্বাহ্ন', 'অপরাহ্ন');
 
+    //Human readble keyword
+    public static $en_keywords = ['days', 'day', 'months', 'month', 'hours', 'hour', 'minutes', 'minute','seconds', 'second', 'from now'];
+    public static $bn_keywords = ['দিন', 'দিন', 'মাস', 'মাস', 'ঘণ্টা', 'ঘণ্টা', 'মিনিট', 'মিনিট' ,'সেকেন্ড', 'সেকেন্ড', 'এখন থেকে'];
+    // Method - English to Bengali Human
+    public static function bn_human($human)
+    {
+        return str_replace(self::$en_keywords, self::$bn_keywords, $human);
+    }
     // Method - English to Bengali Number
     public static function bn_number($number)
     {
