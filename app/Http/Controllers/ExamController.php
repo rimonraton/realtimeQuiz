@@ -29,7 +29,7 @@ class ExamController extends Controller
     {
 //        $admin = auth()->user()->admin;
 //        $admin_users = $admin->users()->pluck('id');
-        $exam_data = Examination::orderBy('id','desc')->paginate(10);
+        $exam_data = Examination::withCount(['results'])->orderBy('id','desc')->paginate(10);
         return view('Admin.Exam.Pages.listOfExam', compact('exam_data'));
     }
 
@@ -322,6 +322,17 @@ class ExamController extends Controller
             'exam_en' => $request->uquizName,
             'exam_bn' => $request->ubnquizName,
         ]);
+        $lang = \App::getLocale();
+        $msg = $lang == 'gb' ? 'Updated successfully!' : 'আপডেট সফল হয়েছে!' ;
+        return \Redirect::to('list-of-exam')->with('message', $msg);
+    }
+    public function scheduleUpdate(Request $request)
+    {
+        if($request->schedule) {
+            Examination::where('id', $request->id)->update([
+                'schedule' => \Carbon\Carbon::parse($request->schedule)
+            ]);
+        }
         $lang = \App::getLocale();
         $msg = $lang == 'gb' ? 'Updated successfully!' : 'আপডেট সফল হয়েছে!' ;
         return \Redirect::to('list-of-exam')->with('message', $msg);

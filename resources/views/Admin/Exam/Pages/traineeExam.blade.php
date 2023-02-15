@@ -207,35 +207,41 @@
                                                 {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}
                                                 </a>
                                             </p>
-                                        @else
-                                            <p>
-                                                <span class="btn btn-sm btn-outline-danger rounded-lg align-self-center text-danger cursor-not-allowed">
-                                                    {{__('exam.submitted')}}
-                                                </span>
-                                            </p>
                                         @endif
-
                                 @endif
                         </div>
 {{--                    </a>--}}
-                    <div class="info d-flex justify-content-end py-1 px-2 mt-auto ">
-                            @if($exam->results_count)
+                    <div class="info d-flex justify-content-center py-1 px-2 mt-auto ">
+                        @if(auth()->user()->roleuser->role->id > 3)
+                        @if($futureDate < $now)
+                        @if($exam->results_count)
 {{--                                @if(auth()->user()->roleuser->role->id < 4)--}}
 {{--                                    <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-xs btn-outline-danger align-self-center">--}}
 {{--                                        {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}--}}
 {{--                                    </a>--}}
 {{--                                    @endif--}}
+                                <p>
+                                    <span class="btn btn-sm btn-outline-danger rounded-lg align-self-center text-danger cursor-not-allowed">
+                                        {{__('exam.submitted')}}
+                                    </span>
+                                </p>
                             @else
-                            @if($futureDate > $now)
-                            @if(auth()->user()->roleuser->role->id > 3)
                                     @if($exam->is_published)
                                     <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-xs btn-outline-info align-self-center" >
                                         {{__('msg.start')}}
                                     </a>
                                     @else
-                                        <a class="btn btn-xs btn-outline-dark align-self-center text-warning cursor-not-allowed">
-                                            {{__('msg.not_published_yet')}}
-                                        </a>
+                                        @if($futureDate < $now)
+                                            <p>
+                                                <span class="btn btn-sm btn-outline-danger rounded-lg align-self-center text-danger cursor-not-allowed">
+                                                    {{__('exam.expired')}}
+                                                </span>
+                                            </p>
+                                        @else
+                                            <a class="btn btn-xs btn-outline-dark align-self-center text-warning cursor-not-allowed">
+                                                {{__('msg.not_published_yet')}}
+                                            </a>
+                                        @endif
                                     @endif
                                 @endif
                             @endif

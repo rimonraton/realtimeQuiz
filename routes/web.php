@@ -260,4 +260,5 @@ Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamControl
 Route::get('exam-result/{examination}', [\App\Http\Controllers\ExamController::class, 'showExamResult']);
 Route::post('mark-update', [\App\Http\Controllers\ExamController::class, 'markUpdate']);
 Route::post('exam-name-update', [\App\Http\Controllers\ExamController::class, 'examNameUpdate']);
+Route::post('schedule-update', [\App\Http\Controllers\ExamController::class, 'scheduleUpdate']);
 

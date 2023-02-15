@@ -199,11 +199,6 @@
                                 <div class="col-sm-4">
                                     <input name="schedule" type='text' class="form-control timeseconds" id="timeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}"/>
                                     <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
-{{--                                    <div class="input-group-append">--}}
-{{--                                        <span class="input-group-text">--}}
-{{--                                            <span class="ti-calendar"></span>--}}
-{{--                                        </span>--}}
-{{--                                    </div>--}}
                                 </div>
 
                             </div>

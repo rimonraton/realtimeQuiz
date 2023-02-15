@@ -8,7 +8,7 @@ return [
     'exam_en_placholder' => 'Type Exam Name',
     'exam_bn_placholder' => 'Type Exam Name',
     'goto_exam_list' => 'Go to Exam list',
-    'exam_type' => 'Exam Type',
+    'exam_type' => 'Exam Type/Duration',
     'exam_time' => 'Exam Time',
     'status' => 'Status',
     'published' => 'Published',

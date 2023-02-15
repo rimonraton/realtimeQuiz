@@ -29,7 +29,9 @@ class Bengali
     // Method - English to Bengali Human
     public static function bn_human($human)
     {
-        return str_replace(self::$en_keywords, self::$bn_keywords, $human);
+        $human = str_replace(self::$en_keywords, self::$bn_keywords, $human);
+        $human = str_replace(self::$en_numbers, self::$bn_numbers, $human);
+        return $human;
     }
     // Method - English to Bengali Number
     public static function bn_number($number)

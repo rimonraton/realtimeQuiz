@@ -8,7 +8,7 @@ return [
     'exam_en_placholder' => 'পরীক্ষার নাম টাইপ করুন',
     'exam_bn_placholder' => 'পরীক্ষার নাম টাইপ করুন',
     'goto_exam_list' => 'পরীক্ষার তালিকায় যান',
-    'exam_type' => 'পরীক্ষার ধরন',
+    'exam_type' => 'পরীক্ষার ধরন/সময়কাল',
     'exam_time' => 'পরীক্ষার সময়',
     'status' => 'প্রকাশিত অবস্থা',
     'published' => 'প্রকাশিত হয়েছে',

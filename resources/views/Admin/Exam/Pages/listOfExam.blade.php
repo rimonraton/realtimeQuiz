@@ -1,5 +1,19 @@
 @extends('Admin.Layout.dashboard')
-@php $lang = App::getLocale(); @endphp
+<link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
+@php
+    $lang = App::getLocale();
+    $ban = new \App\Lang\Bengali();
+ @endphp
+@section('css')
+    <style>
+    .iconPostion{
+    position: absolute;
+    right: 24px;
+    top: 11px;
+    cursor: pointer;
+    }
+    </style>
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -141,6 +155,10 @@
                                                     <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
                                                         {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No mode')}}
                                                     </span>
+                                                    <span class="badge badge-success">
+                                                        {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
+                                                    </span>
+
                                                     <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" data-layout="{{$exam->option_view_time}}" title="{{__('exam.modeEdit')}}">
                                                         <i class="fas fa-pencil-alt text-warning"></i>
                                                     </a>
@@ -158,12 +176,14 @@
                                                     @endif
                                                 </th>
                                                 <th>
-
-                                                    {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
+                                                    {{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}
+                                                    <a class="schedule_edit" href="" data-id="{{$exam->id}}" data-schedule="{{$exam->schedule}}" data-scheduleValue="{{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}" title="{{__('exam.modeEdit')}}">
+                                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                                    </a>
                                                 </th>
                                                 <th>
                                                     <div class="bt-switch">
-                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('exam.published')}}" data-off-text="{{__('exam.not_published')}}" data-size="normal" {{$exam->is_published ==1?"checked":""}} />
+                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('exam.published')}}" data-off-text="{{__('exam.not_published')}}" data-size="normal"  {{$exam->is_published ==1?"checked":""}} />
                                                     </div>
                                                 </th>
                                                 <th>
@@ -372,12 +392,115 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div id="edit-schedule" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.edit_header')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('schedule-update')}}" autocomplete="off">
+                        @csrf
+                        <input type="hidden" id="scheduleuid" name="id">
+{{--                        <input type="hidden" id="scheduledatetime" name="scheduledatetime">--}}
+                        <div class="form-group row">
+                            <div for="category" class="col-sm-4 text-right">{{__('exam.exam_time')}} :</div>
+                            <div class="col-sm-8" id="showSchedule">
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} :</label>
+                            <div class="col-sm-9">
+                                <input name="schedule" type='text' class="form-control timeseconds" id="edittimeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}" required/>
+                                <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 @endsection
 
 @section('js')
+    <script src="{{asset('Admin/assets/libs/moment/moment.js')}}"></script>
+    <script src="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.js')}}"></script>
     <script>
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $(function() {
+            var today = new Date()
+            // $('.timeseconds').daterangepicker({
+            //     timePicker: true,
+            //     singleDatePicker: true,
+            //     timePickerIncrement: 5,
+            //     timePicker24Hour: false,
+            //     showDropdowns: true,
+            //     autoUpdateInput: false,
+            //     minDate:today,
+            //     minYear: today.getFullYear(),
+            //     drops: 'down',
+            //     parentEl: "#edit-schedule .modal-body",
+            //     locale: {
+            //         format: 'YYYY-MM-DD h:mm A'
+            //     },
+            // });
+            $('.timeseconds').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY, h:mm A'));
+            });
+
+            $('.timeseconds').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            $(document).on('click' , '#iconDatepicker' , function(){
+                // alert('hello click')
+                $('.timeseconds').data('daterangepicker').show()
+                // $('.timeseconds').trigger('show.daterangepicker');
+            });
+            // setTimeout(()=> {
+            //
+            // }, 1000)
+            $('.schedule_edit').on('click', function (e) {
+                e.preventDefault()
+                $('#edittimeseconds').val('')
+                const id = $(this).attr('data-id')
+                const schedule = $(this).attr('data-schedule')
+                const scheduleValue = $(this).attr('data-scheduleValue')
+                $('#showSchedule').html(scheduleValue)
+                $('#scheduleuid').val(id)
+                $('#edit-schedule').modal('show')
+                setTimeout(()=>{
+                    // $('#edittimeseconds').focus()
+                    $('.timeseconds').daterangepicker({
+                        timePicker: true,
+                        singleDatePicker: true,
+                        timePickerIncrement: 5,
+                        timePicker24Hour: false,
+                        showDropdowns: true,
+                        autoUpdateInput: false,
+                        minDate:today,
+                        minYear: today.getFullYear(),
+                        drops: 'down',
+                        parentEl: "#edit-schedule .modal-body",
+                        locale: {
+                            format: 'YYYY-MM-DD h:mm A'
+                        },
+                    });
+                    $('.timeseconds').data('daterangepicker').show()
+                },1000)
+            })
             $(".alert").delay(5000).slideUp(300);
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
