@@ -402,12 +402,13 @@
             $('.timeseconds').daterangepicker({
                 timePicker: true,
                 singleDatePicker: true,
-                timePickerIncrement: 5,
+                timePickerIncrement: 1,
                 timePicker24Hour: false,
                 showDropdowns: true,
                 autoUpdateInput: false,
                 minDate:today,
                 minYear: today.getFullYear(),
+                maxYear: today.getFullYear() + 1,
                 drops: 'auto',
                 locale: {
                     format: 'YYYY-MM-DD h:mm A'
