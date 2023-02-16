@@ -137,7 +137,7 @@
                                     <div
                                         v-else
                                         @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                        class="cursor my-1 imageDiv"
+                                        class="cursor my-1 "
                                         :class="getOptionClass(i, challenge.option_view_time)"
                                     >
                                         <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
@@ -164,6 +164,7 @@
                 <div class="card my-4" >
                     <div class="card-header">
                         Score Board
+                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
                     <div class="card-body" v-if="results.length>0">
@@ -189,8 +190,10 @@
 
     import waiting from '../helper/waiting'
     import result from '../helper/result'
+    import { quizHelpers } from '../mixins/quizHelpers'
 
     export default {
+        mixins: [quizHelpers],
 
         props : ['challenge', 'uid', 'user', 'questions', 'gmsg','teams'],
 
@@ -234,6 +237,7 @@
         },
 
         created(){
+            console.log('challenge created')
             Echo.channel(this.channel)
                 .listen('GameStartEvent', (data) => {
                     console.log(['GameStartEvent.............', data])
@@ -300,9 +304,6 @@
                 });
 
             this.current = this.questions[this.qid].id
-
-            this.externalJS()
-
         },
 
         // beforeMount() {
@@ -321,16 +322,13 @@
         //     next();
         // },
 
-
         methods: {
-
             // preventNav(event) {
             //   if (!this.game_start) return;
             //   event.preventDefault();
             //   // Chrome requires returnValue to be set.
             //   event.returnValue = "";
             // },
-
             gameStart: function () {
                 this.sqo = true
                 let ids = this.users.map(u => u.id)
@@ -497,11 +495,6 @@
 
                 }
             },
-            externalJS(){
-                let confetti = document.createElement('script')
-                confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
-                document.head.appendChild(confetti)
-            },
             kickUser(id){
                 if(id != this.uid){
 
@@ -514,69 +507,12 @@
                 }
 
             },
-            questionInit(){
-                clearInterval(this.timer)
-                clearInterval(this.qt.timer)
-                this.qt.ms = 0
-                this.qt.time = 30
-                this.progress = 100
-                this.answered = 0
-                this.counter = 2
-                this.screen.waiting = 0
-                this.screen.loading = 0
-                this.screen.result = 0
-                this.screen.winner = 0
-            },
             gameStarted(user){
                 console.log(['user', user])
-            },
-            q2bNumber(numb) {
-                let numbString = numb.toString();
-                let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
-                [...numbString].forEach(n => bn += eb[n])
-                return bn
-            },
-            tbe(b, e, l) {
-                if(b !== null && e !== null){
-                    if(l === 'bd') return b;
-                    return e;
-                }
-                else if(b !== null && e === null) return b;
-                else if(b === null && e !== null) return e;
-                return b;
-            },
-            qne2b(q, qn, l) {
-                if (l === 'gb')
-                    return `Question ${q + 1} of ${qn} `;
-                return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
-            },
-            getUrl (path) {
-                return location.origin +'/'+ path
             },
             getShareLink(path){
                 console.log(['urlencode', encodeURI(this.getUrl(path))]);
                 return 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURI(this.getUrl(path)) + '&layout=button&size=large&appId=1086594171698024&width=77&height=28'
-            },
-            getMedel(index){
-                if(index == 0) return '<i class="fas fa-award fa-lg" style="color: gold"></i>'
-                if(index == 1) return '<i class="fas fa-award" style="color: silver"></i>'
-                if(index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>'
-                return '';
-            },
-            waitingResult(){
-                return 'waiting-result';
-            },
-            imageOption(objArray){
-               return  objArray.some(a => a.flag == 'img')
-            },
-            onEnd() {
-                this.av = true
-                this.showQuestionOptions(null)
-            },
-            onStart() {
-                // this.questionInit()
-                this.av = false
             },
             getOptionClass (index, qtime) {
                 if(qtime > 0){
@@ -619,27 +555,24 @@
                 })
 
             },
-            audioVideo () {
-                this.questionInit()
-                console.log('audioVideo()')
-            }
+
         },
 
         computed: {
-            channel(){
-                return `challenge.${this.challenge.id}.${this.uid}`
-            },
-            progressClass(){
-                return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
-            },
-            progressWidth(){
-                return {'width':this.progress + '%', }
-            }
+            // channel(){
+            //     return `challenge.${this.challenge.id}.${this.uid}`
+            // },
+            // progressClass(){
+            //     return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
+            // },
+            // progressWidth(){
+            //     return {'width':this.progress + '%', }
+            // }
         }
 
     };
 </script>
-<style>
+<style scoped>
     .imageOption {
         height: 100px;
         width: 100%;

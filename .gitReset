@@ -1,0 +1,5 @@
+git fetch origin
+git reset --hard origin/master
+
+git rm --cached -r directory_to_remove
+git add -f Directory_To_Add
