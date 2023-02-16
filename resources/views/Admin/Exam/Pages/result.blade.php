@@ -27,7 +27,6 @@
                                     :user = '{{$user}}'
                                     :questions = '{{$questions}}'
                                 >
-
                                 </exam-result-when-empty>
                             @endif
 {{--                        <exam-time-mode--}}

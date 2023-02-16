@@ -214,7 +214,7 @@
                             </div>
                             @can('QM',\App\Question::class)
                             <div class="col-sm-3 mt-1">
-                                <input type="text" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ">
+                                <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ">
                             </div>
                             @endcan
                         </div>

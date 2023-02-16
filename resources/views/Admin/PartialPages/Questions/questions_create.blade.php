@@ -238,6 +238,9 @@
     .optionImage{
         display: none;
     }
+    .width-video-100{
+        width: 100%;
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -383,8 +386,20 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                             <div class="col-sm-9">
+                                <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-7">
                                 <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                     <ol class="dd-list">
                                         <li class="dd-item" id="parentdd">
@@ -405,17 +420,8 @@
                                     </ol>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row pb-3">
-                            <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
+                            <div class="col-sm-2 d-none" id="showQ">
+                                <div class="btn btn-sm rounded-lg border border-secondary p-2" id="showQButton">{{$lang == 'gb' ? 'View Questions' : 'প্রশ্নসমুহ দেখুন'}}</div>
                             </div>
                         </div>
                         <div class="form-group row justify-content-center" id="textImagePanel">
@@ -528,17 +534,106 @@
             </div>
         </div>
     </div>
-
-
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="qModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{$lang == 'gb' ? 'Questions' : 'প্রশ্নসমুহ'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center" id="custom_input_text">
+
+                </div>
+                <div id="viewQData">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{$lang== 'gb' ? 'Close' : 'বন্ধ করুন'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Media Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Media/Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="container">
+                                <div id="media_body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row justify-content-center py-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{$lang== 'gb' ? 'Close' : 'বন্ধ করুন'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 @endsection
 @section('js')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+    // $(document).ready(function () {
+    //     alert('load alert')
+    //     $('#search_keyword').focus();
+    // })
     $.noConflict();
     $(function() {
+        $(document).on('click', '.mediaQ', function () {
+            $('#media_body').empty()
+            const fileType = $(this).attr('data-fileType')
+            const fileLink = $(this).attr('data-fileLink')
+            if (fileType == 'video') {
+                var video = document.createElement('video');
+                video.id = 'video_q_file'
+                video.src = '/'+ fileLink
+                video.controls = true
+                video.className = 'width-video-100'
+                $('#media_body').prepend(video)
+            }
+            if (fileType == 'image') {
+                var img = document.createElement("img");
+                // img.className = 'file-upload-image'
+                img.className = 'width-video-100'
+                img.src = '/' + fileLink
+                $('#media_body').prepend(img)
+            }
+            if (fileType == 'audio') {
+                var audio = document.createElement('audio');
+                audio.src = '/' + fileLink
+                audio.controls = true
+                audio.id = 'audio_q_file'
+                audio.className = 'width-video-100'
+                $('#media_body').prepend(audio)
+            }
+            $('#mediaModal').modal('show')
+        })
         // var regx = /^[a-zA-Z0-9?$@#()'!,+\-=_:.&€£*%\s]+$/;
         // $('.txtareaValidation').keyup(function() {
         //     if (regx.test(this.value)) {
@@ -806,10 +901,59 @@
             })
 
         })
+        function getAllQuestions(id) {
+            $.ajax({
+                url: "{{url('question-list')}}/" + id,
+                type: "GET",
+                success: function(data) {
+                    // if (data != '') {
+                    //     $('.subtopicDiv').show();
+                    //     $("#showsubtopic").empty().append(data);
+                    // } else {
+                    //     $('.subtopicDiv').hide();
+                    // }
+                    $('#viewQData').html(data)
+                    setTimeout(() => {
+                        $('#search_keyword').focus()
+                    }, 200)
+                },
+            })
+        }
+
+        $(document).on('click','#cancel_q', function () {
+            $('#bdquestion').val('')
+            $('#question').val('')
+            $('#qModal').modal('hide')
+        })
+
         $(document).on('click', '.topicls', function() {
 
             // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
-
+            // alert($(this).attr('data-cid'));
+            const id = $(this).attr('data-cid');
+            getAllQuestions(id)
+            $('#qModal').modal('show')
+            $('#showQ').removeClass('d-none')
+            $('#showQButton').attr( 'data-cid', id)
+            $('#custom_input_text').empty();
+            if ($('#bdquestion').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#bdquestion').val()}</div>`)
+            }
+            if ($('#question').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#question').val()}</div>`)
+            }
+            if ($('#bdquestion').val() != '' || $('#question').val() != '') {
+                const add = '{{$lang}}' == 'gb'? 'Add' : 'যুক্ত করুন'
+                const cancel = '{{$lang}}' == 'gb'? 'Cancel' : 'বাতিল করুন'
+                $('#custom_input_text').append(
+                    `<div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
+                        <span data-dismiss="modal">${add}</span>
+                    </div>
+                     <div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
+                        <span id="cancel_q">${cancel}</span>
+                    </div>`
+                )
+            }
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
                 $('#selectedCid').val('');
@@ -828,6 +972,59 @@
             }
 
         })
+        $('#showQButton').on('click', function () {
+            const id = $(this).attr('data-cid');
+            getAllQuestions(id)
+            $('#qModal').modal('show')
+        })
+        $(document).on('click','.refreash_btn', function () {
+            const id = $(this).attr('data-cid');
+            getAllQuestions(id)
+        })
+        $(document).on('click','#search_btn', function () {
+            const cid = $(this).attr('data-cid');
+            const value = $('#search_keyword').val()
+            searchQuestionsByKeyword(cid, value)
+        })
+        $(document).on('keydown','#search_keyword', function (e) {
+            var id = e.which
+            // var id = e.key || e.which || e.keyCode || 0;
+            console.log('event',id)
+
+            const cid = $(this).attr('data-cid');
+            const value = $('#search_keyword').val()
+            if (id == 13) {
+                searchQuestionsByKeyword(cid, value)
+                return false;
+            }
+        })
+        $(document).on('click','.customQ', function () {
+            const cid = $(this).attr('data-cid')
+            const value = $(this).text()
+            searchQuestionsByKeyword(cid,value)
+        })
+        function searchQuestionsByKeyword(cid, value) {
+            if(value == '') {
+                let msg = ''
+                if('{{$lang}}' == 'gb') {
+                    msg =  'Search input is empty'
+                } else {
+                    msg = 'অনুসন্ধান ইনপুট খালি '
+                }
+                alertMessage(msg)
+                return
+            }
+            $.ajax({
+                url: "{{url('question-list-with-keyword')}}/" + cid + '/' + value,
+                type: "GET",
+                success: function(data) {
+                    $('#viewQData').html(data)
+                    setTimeout(() => {
+                        $('#search_keyword').focus()
+                    }, 200)
+                }
+            })
+        }
         var updateOutput = function(e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
@@ -1045,5 +1242,6 @@
         [...numbString].forEach(n => bn += eb[n])
         return bn
     }
+
 </script>
 @endsection

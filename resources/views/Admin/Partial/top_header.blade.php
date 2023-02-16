@@ -7,7 +7,7 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{url('/')}}">
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -20,10 +20,10 @@
                 <!-- Logo text -->
                 <span class="logo-text">
                     <!-- dark Logo text -->
-                    <span class="dark-logo" onclick="window.location='{{url('dashboard')}}'">{{__('msg.slogan')}}</span>
+                    <span class="dark-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>
                     <!-- <img src="{{asset('Admin/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" /> -->
                     <!-- Light Logo text -->
-                    <span class="light-logo" onclick="window.location='{{url('dashboard')}}'">{{__('msg.slogan')}}</span>
+                    <span class="light-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>
                     <!-- <img src="{{asset('Admin/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /> -->
                 </span>
             </a>

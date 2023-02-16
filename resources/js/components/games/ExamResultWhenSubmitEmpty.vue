@@ -8,122 +8,132 @@
 <!--            </div>-->
 <!--        </div>-->
 
-	<div class="row justify-content-center" v-if="questions.length > 0">
-        <div class="col-md-8" >
-<!--            <div class="d-flex justify-content-between py-2">-->
-<!--               <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>-->
-<!--               <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>-->
-<!--               <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length : q2bNumber(questions.length)}}</span>-->
-<!--            </div>-->
-		    <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questions">
-		    <div class="card text-white" >
-		        <div class="card-header p-1 cursor bg-danger"
-		            :id="'heading'+ index"
-		            data-toggle="collapse"
-		            :data-target="'#collapse'+ index"
-		            aria-expanded="true"
-		            :aria-controls="'collapse'+ index">
-		            <span class="text-white rounded-circle">
-<!--                        {{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}-->
-                        {{  user.lang=='gb' ? index + 1 : q2bNumber(index + 1) }}
-                    </span>
-<!--		              {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}-->
-                    {{ tbe(question.bd_question_text,question.question_text,user.lang)}}
-		        </div>
-		        <div :id="'collapse'+ index" class="show" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
-		          <div class="card-body">
-<!--		            <div class="" v-if="question.fileType=='image'||question.fileType=='video'||question.fileType=='audio'">-->
-<!--                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"-->
-<!--                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">-->
-<!--                        <video-->
-<!--                            v-if="question.fileType == 'video'"-->
-<!--                            class="image w-100 mt-1 rounded img-thumbnail" controls>-->
-<!--                            <source :src="'/'+ question.question_file_link" type="video/mp4">-->
-<!--                        </video>-->
-<!--                        <div class="audio" v-if="question.fileType == 'audio'">-->
-<!--                            <audio controls>-->
-<!--                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">-->
-<!--                            </audio>-->
-<!--                        </div>-->
-<!--                        <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>-->
-<!--                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
-<!--		            </div>-->
-<!--                      <option-component-->
-<!--                          :options="question.options"-->
-<!--                          :question="tbe(question.bd_question_text, question.question_text, user.lang)"-->
-<!--                          :user="user"-->
-<!--                          @answer="answer"-->
-<!--                      ></option-component>-->
+        <div class="row justify-content-center">
+                    <div class="border border-2 p-2 rounded-lg text-center">
+                        <div>{{ user.lang == 'gb' ? 'Result' : 'ফলাফল' }} :  {{user.lang == 'gb' ? 'Total Number' : 'মোট নম্বর'}} - {{user.lang == 'gb' ? 0 : q2bNumber(0)}}</div>
+                        <br>
+                        <div>
+                            <a class="btn btn-outline-primary btn-sm" :href="'/exams'">{{ tbe('ফিরে যান','Go Back',user.lang) }}</a>
+                        </div>
+                    </div>
+            </div>
+
+<!--	<div class="row justify-content-center" v-if="questions.length > 0">-->
+<!--        <div class="col-md-8" >-->
+<!--&lt;!&ndash;            <div class="d-flex justify-content-between py-2">&ndash;&gt;-->
+<!--&lt;!&ndash;               <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;               <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;               <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length : q2bNumber(questions.length)}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--		    <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questions">-->
+<!--		    <div class="card text-white" >-->
+<!--		        <div class="card-header p-1 cursor bg-danger"-->
+<!--		            :id="'heading'+ index"-->
+<!--		            data-toggle="collapse"-->
+<!--		            :data-target="'#collapse'+ index"-->
+<!--		            aria-expanded="true"-->
+<!--		            :aria-controls="'collapse'+ index">-->
+<!--		            <span class="text-white rounded-circle">-->
+<!--&lt;!&ndash;                        {{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}&ndash;&gt;-->
+<!--                        {{  user.lang=='gb' ? index + 1 : q2bNumber(index + 1) }}-->
+<!--                    </span>-->
+<!--&lt;!&ndash;		              {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}&ndash;&gt;-->
+<!--                    {{ tbe(question.bd_question_text,question.question_text,user.lang)}}-->
+<!--		        </div>-->
+<!--		        <div :id="'collapse'+ index" class="show" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">-->
+<!--		          <div class="card-body">-->
+<!--&lt;!&ndash;		            <div class="" v-if="question.fileType=='image'||question.fileType=='video'||question.fileType=='audio'">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"&ndash;&gt;-->
+<!--&lt;!&ndash;                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <video&ndash;&gt;-->
+<!--&lt;!&ndash;                            v-if="question.fileType == 'video'"&ndash;&gt;-->
+<!--&lt;!&ndash;                            class="image w-100 mt-1 rounded img-thumbnail" controls>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <source :src="'/'+ question.question_file_link" type="video/mp4">&ndash;&gt;-->
+<!--&lt;!&ndash;                        </video>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="audio" v-if="question.fileType == 'audio'">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <audio controls>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">&ndash;&gt;-->
+<!--&lt;!&ndash;                            </audio>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}&ndash;&gt;-->
+<!--&lt;!&ndash;		            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                      <option-component&ndash;&gt;-->
+<!--&lt;!&ndash;                          :options="question.options"&ndash;&gt;-->
+<!--&lt;!&ndash;                          :question="tbe(question.bd_question_text, question.question_text, user.lang)"&ndash;&gt;-->
+<!--&lt;!&ndash;                          :user="user"&ndash;&gt;-->
+<!--&lt;!&ndash;                          @answer="answer"&ndash;&gt;-->
+<!--&lt;!&ndash;                      ></option-component>&ndash;&gt;-->
 
 
-<!--                      note-->
-<!--                      v-if="option.flag != 'img'"-->
+<!--&lt;!&ndash;                      note&ndash;&gt;-->
+<!--&lt;!&ndash;                      v-if="option.flag != 'img'"&ndash;&gt;-->
 
-                      <div class="px-1" v-for="op in question.options">
-                          <div v-if="op.flag == 'img'" class="cursor my-1">
-                              <div class="d-flex">
-                                  <div v-if="op.correct == 1">
-                                      <p class="text-dark">(Correct answer)
-                                          <i class="fa fa-check text-success" aria-hidden="true" ></i>
-                                      </p>
-                                      <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ op.img_link" alt="">
-                                  </div>
-                              </div>
-<!--                              <div v-if="qoption.selected == index" class="Tick d-flex justify-content-center align-items-center">-->
-<!--                                  &lt;!&ndash;                <i class="fa fa-check text-success" aria-hidden="true"></i>&ndash;&gt;-->
-<!--                                  <img :src="'/img/icons/tick.png'" width="100px" height="100px">-->
+<!--                      <div class="px-1" v-for="op in question.options">-->
+<!--                          <div v-if="op.flag == 'img'" class="cursor my-1">-->
+<!--                              <div class="d-flex">-->
+<!--                                  <div v-if="op.correct == 1">-->
+<!--                                      <p class="text-dark">(Correct answer)-->
+<!--                                          <i class="fa fa-check text-success" aria-hidden="true" ></i>-->
+<!--                                      </p>-->
+<!--                                      <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ op.img_link" alt="">-->
+<!--                                  </div>-->
 <!--                              </div>-->
-                          </div>
-                          <div class="list-group" v-else>
-                              <div class="list-group" v-if="op.correct == 1">
-                                <span class="list-group-item list-group-item-action my-1">
-                                    {{ tbe(op.bd_option,op.option,user.lang)}} (correct answer)
-                                    <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                </span>
-                              </div>
-                          </div>
-                      </div>
-		          </div>
-		        </div>
-		    </div>
-		</div>
-            <div class="d-flex justify-content-center py-2">
-                <a class="btn btn-sm btn-info rounded border" :href="'/exams'">{{ tbe('ফিরে যান','Go Back',user.lang) }}</a>
-            </div>
-        </div>
-        <div class="col-md-4" >
-            <div class="card my-4 d-sm-none d-md-block" >
-                <div class="card-header">
-                    {{ user.lang == 'gb' ? 'Result' : 'ফলাফল' }}
-                </div>
-                <div class="card-body">
-                    <p>Correct Answer: 0</p>
-                    <p>Wrong Answer: 0</p>
-<!--                    <div class="row">-->
-<!--                        <div class="col">-->
-<!--                            <div class="card-profile-stats d-flex justify-content-between">-->
-<!--                                <div class="text-center">-->
-<!--                                    <span class="heading">{{ user.lang == 'gb' ? timer.hours : q2bNumber(timer.hours) }}</span>-->
-<!--                                    <br>-->
-<!--                                    <span class="description">{{ user.lang == 'gb' ? (timer.hours > 1 ? 'Hours' : 'Hour') : 'ঘণ্টা' }}</span>-->
-<!--                                </div>-->
-<!--                                <div class="text-center">-->
-<!--                                    <span class="heading">{{  user.lang == 'gb' ? timer.minutes :  q2bNumber(timer.minutes)}}</span>-->
-<!--                                    <br>-->
-<!--                                    <span class="description">{{ user.lang == 'gb' ? (timer.minutes > 1 ? 'Minutes' : 'Minute') : 'মিনিট' }}</span>-->
-<!--                                </div>-->
-<!--                                <div class="text-center">-->
-<!--                                    <span class="heading">{{ user.lang == 'gb' ? timer.seconds : q2bNumber(timer.seconds) }}</span>-->
-<!--                                    <br>-->
-<!--                                    <span class="description">{{ user.lang == 'gb' ? (timer.seconds > 1 ? 'Seconds' : 'Second') : 'সেকেন্ড' }}</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
-            </div>
-        </div>
-	</div>
+<!--&lt;!&ndash;                              <div v-if="qoption.selected == index" class="Tick d-flex justify-content-center align-items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                  &lt;!&ndash;                <i class="fa fa-check text-success" aria-hidden="true"></i>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                  <img :src="'/img/icons/tick.png'" width="100px" height="100px">&ndash;&gt;-->
+<!--&lt;!&ndash;                              </div>&ndash;&gt;-->
+<!--                          </div>-->
+<!--                          <div class="list-group" v-else>-->
+<!--                              <div class="list-group" v-if="op.correct == 1">-->
+<!--                                <span class="list-group-item list-group-item-action my-1">-->
+<!--                                    {{ tbe(op.bd_option,op.option,user.lang)}} (correct answer)-->
+<!--                                    <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+<!--                                </span>-->
+<!--                              </div>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!--		          </div>-->
+<!--		        </div>-->
+<!--		    </div>-->
+<!--		</div>-->
+<!--            <div class="d-flex justify-content-center py-2">-->
+<!--                <a class="btn btn-sm btn-info rounded border" :href="'/exams'">{{ tbe('ফিরে যান','Go Back',user.lang) }}</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-4" >-->
+<!--            <div class="card my-4 d-sm-none d-md-block" >-->
+<!--                <div class="card-header">-->
+<!--                    {{ user.lang == 'gb' ? 'Result' : 'ফলাফল' }}-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <p>Correct Answer: 0</p>-->
+<!--                    <p>Wrong Answer: 0</p>-->
+<!--&lt;!&ndash;                    <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="col">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="card-profile-stats d-flex justify-content-between">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="heading">{{ user.lang == 'gb' ? timer.hours : q2bNumber(timer.hours) }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="description">{{ user.lang == 'gb' ? (timer.hours > 1 ? 'Hours' : 'Hour') : 'ঘণ্টা' }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="heading">{{  user.lang == 'gb' ? timer.minutes :  q2bNumber(timer.minutes)}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="description">{{ user.lang == 'gb' ? (timer.minutes > 1 ? 'Minutes' : 'Minute') : 'মিনিট' }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="heading">{{ user.lang == 'gb' ? timer.seconds : q2bNumber(timer.seconds) }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="description">{{ user.lang == 'gb' ? (timer.seconds > 1 ? 'Seconds' : 'Second') : 'সেকেন্ড' }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--	</div>-->
     </div>
 </template>
 
@@ -178,7 +188,7 @@
             q2bNumber(numb) {
                 let numbString = numb.toString();
                 let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.': '.'};
                 [...numbString].forEach(n => bn += eb[n])
                 return bn
             },
@@ -324,6 +334,16 @@
                     this.screen.examSubmit = true
                 })
                 console.log(this.results)
+            },
+            totalMark(){
+                console.log(this.exam)
+                const ca = JSON.parse(this.exam.results[0].result).filter(item => item.correct ==  1).length
+                const wa = JSON.parse(this.exam.results[0].result).filter(item => item.correct ==  0).length
+                const nm = this.exam.negative_mark > 0 ? (this.exam.each_question_mark * this.exam.negative_mark)/100 : 0
+                const sub_total_mark = ca * this.exam.each_question_mark
+                const for_wrong_answer_negative_sub_total_mark = wa * nm
+                const total = sub_total_mark - for_wrong_answer_negative_sub_total_mark
+                return total > 0 ? total : 0
             }
 		},
         created(){

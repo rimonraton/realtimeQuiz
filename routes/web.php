@@ -52,6 +52,8 @@ Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::class,'search']);
 
 // Questions
+Route::get('question-list/{tid}', [QuestionController::class, 'qListByTopic']);
+Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::class, 'qListByTopicKeyword']);
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
@@ -251,7 +253,12 @@ Route::get('list-of-exam', [\App\Http\Controllers\ExamController::class, 'index'
 Route::get('exams/{id?}', [\App\Http\Controllers\ExamController::class, 'traineeExams']);
 Route::get('start-exams/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'startExam']);
 Route::get('create-exam', [\App\Http\Controllers\ExamController::class, 'createExam']);
+Route::post('save-examination', [\App\Http\Controllers\ExamController::class, 'store']);
 Route::post('mode-update', [\App\Http\Controllers\ExamController::class, 'timeModeUpdate']);
 Route::post('examPublished', [\App\Http\Controllers\ExamController::class, 'examPublished']);
-Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'showResult']);
+Route::get('show-result/{examination}/{uid}', [\App\Http\Controllers\ExamController::class, 'showUserResult']);
+Route::get('exam-result/{examination}', [\App\Http\Controllers\ExamController::class, 'showExamResult']);
+Route::post('mark-update', [\App\Http\Controllers\ExamController::class, 'markUpdate']);
+Route::post('exam-name-update', [\App\Http\Controllers\ExamController::class, 'examNameUpdate']);
+Route::post('schedule-update', [\App\Http\Controllers\ExamController::class, 'scheduleUpdate']);
 

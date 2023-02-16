@@ -3,6 +3,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('Admin/assets/libs/select2/dist/css/select2.min.css')}}">
     <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
     <style>
         .custom-select {
             display: inline-block;
@@ -65,6 +66,15 @@
             padding: 5px 10px;
             color: black;
         }
+        .bg-beige{
+            background: beige;
+        }
+        .iconPostion{
+            position: absolute;
+            right: 24px;
+            top: 11px;
+            cursor: pointer;
+        }
     </style>
 @endsection
 @section('content')
@@ -77,30 +87,32 @@
                 <div class="card-body">
                     <h4 class="card-title text-center">{{__('exam.create_exam')}}</h4>
                     <hr>
-                    <form class="form-horizontal r-separator" action="{{url('quiz/save')}}" method="POST" autocomplete="off">
+                    <form class="form-horizontal r-separator" action="{{url('save-examination')}}" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
-                        <div class="form-group row justify-content-center">
-                            <div class="btn-group" data-toggle="buttons">
+                        <input type="hidden" value="0" name="negetive_mark" id="negetive_mark">
+                        <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="btn-group" data-toggle="buttons">--}}
 
-                                @can('readOwrite',\App\Quiz::class)
-                                    <label class="btn btn-primary active">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">
-                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>
-                                        </div>
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">
-                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>
-                                        </div>
-                                    </label>
-                                @else
-                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
-                                @endcan
-                            </div>
-                        </div>
+{{--                                @can('readOwrite',\App\Quiz::class)--}}
+{{--                                    <label class="btn btn-primary active">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="qb" value="qb" name="quizCreateType" class="custom-control-input" checked="">--}}
+{{--                                            <label class="custom-control-label" for="qb">{{__('form.from_qb')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                    <label class="btn btn-primary">--}}
+{{--                                        <div class="custom-control custom-radio">--}}
+{{--                                            <input type="radio" id="cq" value="cq" name="quizCreateType" class="custom-control-input">--}}
+{{--                                            <label class="custom-control-label" for="cq">{{__('form.custom_q')}}</label>--}}
+{{--                                        </div>--}}
+{{--                                    </label>--}}
+{{--                                @else--}}
+{{--                                    <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">--}}
+{{--                                @endcan--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_name_english')}} : </label>
@@ -111,70 +123,85 @@
                             <div class="form-group row">
                                 <label for="quizName" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_name_bangla')}} :</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="{{__('exam.exam_bn_placholder')}}" name="bdquizName">
+                                    <input type="text" class="form-control" id="bdquizName" placeholder="{{__('exam.exam_bn_placholder')}}" name="bdquizName">
                                 </div>
                             </div>
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>--}}
-{{--                                <div class="col-sm-5">--}}
-{{--                                    <select class="form-control custom-select" name="game_type" required>--}}
-{{--                                        <option>{{__('form.game_mode_select')}}</option>--}}
-{{--                                        @foreach($gameType as $game)--}}
-{{--                                            <option value="{{$game->id}}">{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->--}}
-{{--                                <div class="col-sm-4">--}}
-{{--                                    <select class="form-control custom-select" name="difficulty" required>--}}
-{{--                                        <option>{{__('form.game_type')}}</option>--}}
-{{--                                        <option value="1">{{__('form.easy')}}</option>--}}
-{{--                                        <option value="2">{{__('form.intermediate')}}</option>--}}
-{{--                                        <option value="3">{{__('form.difficult')}}</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            @can('QM',\App\Question::class)--}}
-{{--                                --}}{{--                            {{auth()->user()->roleuser->role_id}}--}}
-{{--                                <div class="form-group row">--}}
-{{--                                    <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.teams')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>--}}
-{{--                                    <div class="col-sm-8">--}}
-{{--                                        <div class="row justify-content-center" id="team_load">--}}
-{{--                                            @foreach($teams as $team)--}}
-{{--                                                <div class="checkbox checkbox-info m-1 badge badge-light-info col-md-3 col-sm-12" id="team_{{$team->id}}">--}}
-{{--                                                    <input type="checkbox" name="teams[]" value="{{$team->id}}" id="chce_{{$team->id}}" class="material-inputs">--}}
-{{--                                                    <label for="chce_{{$team->id}}">--}}
-{{--                                                        @if($lang == 'gb')--}}
-{{--                                                            @if($team->name == null)--}}
-{{--                                                                {{$team->bn_name}}--}}
-{{--                                                            @else--}}
-{{--                                                                {{$team->name}}--}}
-{{--                                                            @endif--}}
-{{--                                                        @else--}}
-{{--                                                            @if($team->bn_name == null)--}}
-{{--                                                                {{$team->name}}--}}
-{{--                                                            @else--}}
-{{--                                                                {{$team->bn_name}}--}}
-{{--                                                            @endif--}}
-{{--                                                        @endif--}}
-{{--                                                    </label>--}}
-{{--                                                    <a type="button" class="text-danger text-right dlt" data-id="{{$team->id}}" style="position:absolute;right: 5px;font-size: 20px;">×</a>--}}
-{{--                                                </div>--}}
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <div class="col-sm-4">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <label class="container form-control">
+                                            <input type="radio" name="mode" value="et" id="et" checked>
+                                            {{__('exam.normal')}}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container form-control ml-3">
+                                            <input type="radio" name="mode" value="qt" id="qt">
+                                            {{__('exam.set_of_q')}}
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.exam_time_placeholder')}}" name="time" id="exam_time">
+                                </div>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="timeUnit" id="time_unit">
+                                        <option value="s">{{__('exam.second')}}</option>
+                                        <option value="m">{{__('exam.minute')}}</option>
+                                        <option value="h">{{__('exam.hour')}}</option>
+                                    </select>
+                                </div>
 
-{{--                                            @endforeach--}}
-{{--                                        </div>--}}
-{{--                                        --}}{{--                                <select class="select2 form-control" multiple="multiple" style="height: 36px;width: 100%;">--}}
-{{--                                        --}}{{--                                    @foreach($teams as $team)--}}
-{{--                                        --}}{{--                                    <option value="{{$team->id}}">{{$team->name}}</option>--}}
-{{--                                        --}}{{--                                    @endforeach--}}
-{{--                                        --}}{{--                                </select>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-sm-1">--}}
-{{--                                        <a class="btn btn-info text-white" id="addteam">{{__('form.add_team')}}</a>--}}
-{{--                                    </div>--}}
+                            </div>
+                            <div class="form-group row d-none" id="optLay">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.option_layout')}}
+                                    <span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <div class="col-sm-9">
+                                    <div class="d-flex justify-content-center align-items-center-center px-4">
+                                        <label class="container form-control">
+                                            <input type="radio" name="op_layout" value="0" checked id="togetherLayout">
+                                            {{__('exam.together')}}
+                                            <span class="checkmark"></span>
+                                            <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                        </label>
+                                        <label class="container form-control">
+                                            <input type="radio" name="op_layout" value="3" id="onebyoneLayout">
+                                            {{__('exam.one_by_one')}}
+                                            <span class="checkmark"></span>
+                                            <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.number_negative')}} :</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="each_q_number"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="select_negetive_mark" disabled="disabled">
+                                        <option value="0">{{__('exam.noNegativeMark')}}</option>
+                                        <option value="20">{{__('exam.20_p')}}</option>
+                                        <option value="25">{{__('exam.25_p')}}</option>
+                                        <option value="50">{{__('exam.50_p')}}</option>
+                                        <option value="100">{{__('exam.100_p')}}</option>
+                                        <option value="custom">{{__('exam.custom')}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 d-none" id="parent_custom_negative_number">
+                                    <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="custom_negative_number"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} :</label>
+                                <div class="col-sm-4">
+                                    <input name="schedule" type='text' class="form-control timeseconds" id="timeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}"/>
+                                    <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
+                                </div>
 
-{{--                                </div>--}}
-{{--                            @endcan--}}
+                            </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                                 <div class="col-sm-6">
@@ -200,7 +227,7 @@
                                 </div>
                                 @can('QM',\App\Question::class)
                                     <div class="col-sm-3 mt-1">
-                                        <input type="text" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ">
+                                        <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ" id="noq">
                                     </div>
                                 @endcan
                             </div>
@@ -366,8 +393,38 @@
     </div>
 @endsection
 @section('js')
+    <script src="{{asset('Admin/assets/libs/moment/moment.js')}}"></script>
+    <script src="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.js')}}"></script>
+
     <script>
         $(function() {
+            var today = new Date()
+            $('.timeseconds').daterangepicker({
+                timePicker: true,
+                singleDatePicker: true,
+                timePickerIncrement: 5,
+                timePicker24Hour: false,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                minDate:today,
+                minYear: today.getFullYear(),
+                drops: 'auto',
+                locale: {
+                    format: 'YYYY-MM-DD h:mm A'
+                }
+            });
+            $('.timeseconds').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY, h:mm A'));
+            });
+
+            $('.timeseconds').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            $(document).on('click' , '#iconDatepicker' , function(){
+                // alert('hello click')
+                $('.timeseconds').data('daterangepicker').show()
+                // $('.timeseconds').trigger('show.daterangepicker');
+            });
             $(document).on('click','.dlt',function (e){
                 // e.preventDefault();
                 Swal.fire({
@@ -408,14 +465,17 @@
             var QC;
             $(document).on('click','.chk',function (){
                 var id = $(this).val();
+                console.log($(this).parent(), 'this element')
                 if ($(this).is(':checked')) {
                     chkquestions.push(id);
+                    $(this).parent().addClass('bg-beige')
                 } else {
                     chkquestions = chkquestions.filter(function(elem){
                         return elem != id;
                     });
+                    $(this).parent().removeClass('bg-beige')
                 }
-                QC=chkquestions.length;
+                QC = chkquestions.length;
                 if (lang=='bd'){
                     QC = q2bNumber(chkquestions.length)
                 }
@@ -511,7 +571,20 @@
             //     }
             // });
             $('.smt').on('click', function(e) {
-                var cid = $('#selectedCid').val();
+                // e.preventDefault();
+                var cid = $('#selectedCid').val()
+                const en_exam = $('#quizName').val()
+                const bn_exam = $('#bdquizName').val()
+                const bn_or_en = en_exam != '' ? true : (bn_exam != '' ? true : false)
+                const exam_time = $('#exam_time').val()
+                const selectedQ = $('#selectedQ').val()
+                const noq = $('#noq').val()
+                const questionsValide = selectedQ != '' ? true : (noq != '' ? true : false)
+                const dateTime = $('#timeseconds').val()
+
+                // console.log('condition', cid, bn_or_en, exam_time, en_exam != '', bn_exam != '')
+                // return
+
                 // var paise = 0;
                 // $('input[name="ans[]"]').each(function() {
                 //     console.log($(this).val());
@@ -519,14 +592,34 @@
                 //         paise = 1;
                 //     }
                 // });
-                if (cid != '') {
+                if (cid != '' && bn_or_en && exam_time != '' && questionsValide) {
                     $('#smtform').submit();
                 } else {
+                    let lang = '{{$lang}}'
+                    let message = ''
+                    if (!bn_or_en) {
+                        message = lang == 'gb' ? 'English or Bangla exam name is required.' : 'ইংরেজি বা বাংলা পরীক্ষার নাম দিন'
+                    }
+                   else if (exam_time == '') {
+                        message = lang == 'gb' ? 'Exam duration is required.' : 'পরীক্ষার সময়কাল দিন'
+                    }
+                    else if (dateTime == '') {
+                        message = lang == 'gb' ? 'Please give the date and time when the exam will be held' : 'অনুগ্রহ করে পরীক্ষা অনুষ্ঠিত হওয়ার তারিখ ও সময় দিন '
+                    }
+                    else if(cid == ''){
+                        message = lang == 'gb' ? 'Please select the Topic.' : 'বিষয় নির্বাচন করুন'
+                    }
+                    else if (!questionsValide) {
+                        message = lang == 'gb' ? 'Please check questions or type the number of question' : 'অনুগ্রহ করে প্রশ্ন চেক করুন বা প্রশ্নের সংখ্যা টাইপ করুন'
+                    }
+                    else {
+                        message = lang == 'gb' ? 'Something went wrong!' : 'কিছু ভুল হয়েছে'
+                    }
                     e.preventDefault();
                     Swal.fire({
                         type: 'error',
-                        title: 'Oops...',
-                        text: 'Please select the Topic.',
+                        title: lang == 'gb' ? 'Oops...' : 'উফ...',
+                        text: message,
                     })
                 }
                 // if (paise == 1) {
@@ -779,6 +872,46 @@
                 })
             })
 
+            $('#each_q_number').on('keyup', function () {
+                // console.log('input value...', $(this).val())
+                if ($(this).val()) {
+                    $('#select_negetive_mark').removeAttr('disabled');
+                } else {
+                    $('#select_negetive_mark').attr('disabled', 'disabled');
+                    // $('#parent_custom_negative_number').addClass('d-none')
+                    console.log('hasclass...', $('#parent_custom_negative_number').hasClass('d-none'))
+                    $('#select_negetive_mark').val(0)
+                    if (!$('#parent_custom_negative_number').hasClass('d-none')){
+                        $('#parent_custom_negative_number').addClass('d-none')
+                        $('#custom_negative_number').val('')
+                        $('#negetive_mark').val('')
+                    }
+                }
+            })
+            $('#custom_negative_number').on('keyup', function () {
+                console.log('value', $(this).val())
+                $('#negetive_mark').val($(this).val())
+            })
+            $('#select_negetive_mark').on('change', function () {
+                if($(this).val() == 'custom'){
+                    $('#parent_custom_negative_number').removeClass('d-none')
+                } else {
+                    $('#negetive_mark').val($(this).val())
+                    $('#parent_custom_negative_number').addClass('d-none')
+                    $('#custom_negative_number').val('')
+                }
+
+            })
+
+            $('input[type=radio][name=mode]').change(function() {
+                console.log($(this).val(), 'radio value..')
+                if($(this).val() == 'qt') {
+                    $('#optLay').removeClass('d-none')
+                } else {
+                    $("#togetherLayout").prop("checked", true);
+                    $('#optLay').addClass('d-none')
+                }
+            });
 
             function questions(id) {
                 $.ajax({

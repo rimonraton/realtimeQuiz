@@ -125,7 +125,9 @@
                                 <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(challenge.exam_bn,challenge.exam_en,user.lang) }}</span>
                                 <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
                                 <span>{{user.lang == 'gb' ? 'Time per question' : 'প্রতি প্রশ্নের সময়'}} : {{ perQTime() }}</span>
-                                <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length : q2bNumber(questions.length)}}</span>
+                                <span>{{user.lang == 'gb' ? 'Marks per question' : 'প্রতি প্রশ্নের নম্বর'}} : {{ user.lang == 'gb'? challenge.each_question_mark : q2bNumber(challenge.each_question_mark) }}</span>
+                                <span>{{user.lang == 'gb' ? 'Negative mark' : 'নেগেটিভ নম্বর'}} : {{ user.lang == 'gb' ? negativeMark() :  q2bNumber(negativeMark())}}</span>
+                                <span> {{ user.lang == 'gb' ? 'Total Number' : 'মোট নম্বর' }} : {{ user.lang == 'gb' ? questions.length * challenge.each_question_mark : q2bNumber(questions.length * challenge.each_question_mark)}}</span>
                             </div>
                         </div>
                         <!--                    <div class="card-body" v-if="results.length>0">-->
@@ -151,7 +153,6 @@
 
     import waiting from '../helper/waiting'
     import result from '../helper/result'
-
     export default {
 
         props : ['challenge', 'uid', 'user', 'questions', 'gmsg','teams'],
@@ -285,6 +286,9 @@
         //     next();
         // },
         methods: {
+            negativeMark(){
+                return this.challenge.negative_mark > 0 ? (this.challenge.each_question_mark * this.challenge.negative_mark)/100 : 0
+            },
 
             // preventNav(event) {
             //   if (!this.game_start) return;

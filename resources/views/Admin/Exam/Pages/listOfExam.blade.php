@@ -1,8 +1,25 @@
 @extends('Admin.Layout.dashboard')
-@php $lang = App::getLocale(); @endphp
+<link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
+@php
+    $lang = App::getLocale();
+    $ban = new \App\Lang\Bengali();
+ @endphp
+@section('css')
+    <style>
+    .iconPostion{
+    position: absolute;
+    right: 24px;
+    top: 11px;
+    cursor: pointer;
+    }
+    </style>
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">
+            @if(session()->has('message'))
+                <p class="alert alert-success">{{ session('message') }}</p>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title text-center">{{__('exam.list_of_exam')}}</h4>
@@ -68,16 +85,18 @@
                                             <th style="width: 0px;">{{__('exam.sl')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_english')}}</th>
                                             <th style="width: 0px;">{{__('exam.exam_name_bangla')}}</th>
-                                            <th style="width: 0px;">{{__('mode')}}</th>
-                                            <th style="width: 0px;">{{__('Time')}}</th>
-                                            <th style="width: 5%;">{{__('Status')}}</th>
+                                            <th style="width: 0px;">{{__('exam.E_T_NMark')}}</th>
+                                            <th style="width: 0px;">{{__('exam.exam_type')}}</th>
+                                            <th style="width: 0px;">{{__('exam.exam_time')}}</th>
+                                            <th style="width: 5%;">{{__('exam.status')}}</th>
                                             <th style="width: 0px;">{{__('form.action')}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @php
-                                            function convert_seconds($seconds_value)
+                                              function convert_seconds($seconds_value)
                                              {
+                                                  $bengali = new \App\Lang\Bengali();
                                                  $hasHours = '';
                                                  $hasMinutes = '';
                                                  $hasSeconds = '';
@@ -99,43 +118,76 @@
                                                     return $hasHours . ' ' . $hasMinutes .' '. $hasSeconds;
                                                 } else {
                                                     if($hours > 0) {
-                                                        $hasHours = $hours . ' ঘণ্টা';
+                                                        $hasHours = $bengali->bn_number($hours) . ' ঘণ্টা';
                                                     }
                                                     if ($minutes > 0) {
-                                                        $hasMinutes = $minutes . ' মিনিট';
+                                                        $hasMinutes = $bengali->bn_number($minutes) . ' মিনিট';
                                                     }
                                                     if ($seconds > 0) {
-                                                        $hasSeconds = $seconds . ' সেকেন্ড';
+                                                        $hasSeconds = $bengali->bn_number($seconds) . ' সেকেন্ড';
                                                     }
                                                    return $hasHours . ' ' . $hasMinutes . ' ' . $hasSeconds;
+                                                }
+                                              }
+                                              function each_question_mark($value){
+                                                $bengali = new \App\Lang\Bengali();
+                                                if (App::getLocale() == 'gb'){
+                                                    return $value;
+                                                } else {
+                                                   return $bengali->bn_number($value);
                                                 }
                                               }
                                         @endphp
                                         @foreach($exam_data as $exam)
                                             <tr>
-                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                                <th>{{$exam->exam_en}}</th>
-                                                <th>{{$exam->exam_bn}}</th>
+                                                <td>{{$lang=='gb' ? $loop->iteration : $bang->bn_number($loop->iteration)}}</td>
+                                                <th>{{$exam->exam_en ? $exam->exam_en : '______' }}</th>
+                                                <th>{{$exam->exam_bn ? $exam->exam_bn : '______'}}</th>
                                                 <th class="text-center">
-                                                    <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
-                                                        {{$exam->exam_time ? 'Normal mode' : ($exam->question_time ? 'Set of question time mode' : 'No mode')}}
-                                                    </span>
-                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" title="Edit Mode">
+                                                    <span class="badge badge-info"> {{__('exam.each_question_number')}}:  {{ each_question_mark($exam->each_question_mark) }}</span>
+                                                    <span class="badge badge-cyan"> {{__('exam.total_number')}}:  {{ each_question_mark(count(explode(",",$exam->questions)) * $exam->each_question_mark) }}</span>
+                                                    <span class="badge badge-dark-danger"> {{__('exam.negative_number')}}:  {{ each_question_mark(($exam->each_question_mark * $exam->negative_mark)/100) }}</span>
+                                                    <a class="mark_edit" href="" data-id="{{$exam->id}}" data-each_question_mark="{{$exam->each_question_mark}}" data-nagetive_mark="{{$exam->negative_mark}}" title="{{__('exam.numberEdit')}}">
                                                         <i class="fas fa-pencil-alt text-warning"></i>
                                                     </a>
+                                                </th>
+                                                <th class="text-center">
+                                                    <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
+                                                        {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No mode')}}
+                                                    </span>
+                                                    <span class="badge badge-success">
+                                                        {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
+                                                    </span>
 
+                                                    <a class="mode_edit" href="" data-id="{{$exam->id}}" data-qt="{{$exam->question_time}}" data-et="{{$exam->exam_time}}" data-timeUnit="{{$exam->time_unit}}" data-layout="{{$exam->option_view_time}}" title="{{__('exam.modeEdit')}}">
+                                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                                    </a>
+                                                    @if($exam->question_time)
+                                                        <br>
+                                                        @if($exam->option_view_time > 0)
+                                                            <span>
+                                                                <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                                            </span>
+                                                        @else
+                                                            <span>
+                                                                <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                                            </span>
+                                                        @endif
+                                                    @endif
                                                 </th>
                                                 <th>
-
-                                                    {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
+                                                    {{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}
+                                                    <a class="schedule_edit" href="" data-id="{{$exam->id}}" data-schedule="{{$exam->schedule}}" data-scheduleValue="{{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}" title="{{__('exam.modeEdit')}}">
+                                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                                    </a>
                                                 </th>
                                                 <th>
                                                     <div class="bt-switch">
-                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('Published')}}" data-off-text="{{__('Not Published')}}" data-size="normal" {{$exam->is_published ==1?"checked":""}} />
+                                                        <input type="checkbox" class="chk" data-id="{{$exam->id}}" data-on-text="{{__('exam.published')}}" data-off-text="{{__('exam.not_published')}}" data-size="normal"  {{$exam->is_published ==1?"checked":""}} />
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    <a class="edit" href="" data-id="{{$exam->id}}" title="Edit">
+                                                    <a class="edit" href="" data-id="{{$exam->id}}" data-quizName="{{$exam->exam_en}}" data-bnQuizName="{{$exam->exam_bn}}" title="Edit">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </a>
                                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$exam->id}}" title="Remove">
@@ -150,9 +202,10 @@
                                             <th rowspan="1" colspan="1">{{__('exam.sl')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_english')}}</th>
                                             <th rowspan="1" colspan="1">{{__('exam.exam_name_bangla')}}</th>
-                                            <th rowspan="1">{{__('mode')}}</th>
-                                            <th rowspan="1">{{__('Time')}}</th>
-                                            <th rowspan="1">{{__('Status')}}</th>
+                                            <th rowspan="1">{{__('exam.E_T_NMark')}}</th>
+                                            <th rowspan="1">{{__('exam.exam_type')}}</th>
+                                            <th rowspan="1">{{__('exam.exam_time')}}</th>
+                                            <th rowspan="1">{{__('exam.status')}}</th>
                                             <th rowspan="1" colspan="1">{{__('form.action')}}</th>
                                         </tr>
                                         </tfoot>
@@ -181,21 +234,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('form.menu_update')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('Update')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal form-material" method="POST" action="{{url('menuUpdate')}}" autocomplete="off">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('exam-name-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="uid" name="id">
                         <div class="form-group">
                             <div class="col-md-12 m-b-20">
-                                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">
+                                <input type="text" class="form-control" id="editName" name="uquizName" placeholder="{{__('Enter quiz name in english')}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12 m-b-20">
-                                <input type="text" class="form-control" id="editbanglaName" name="bn_menu" placeholder="{{__('form.menu_placholder_bn')}}">
+                                <input type="text" class="form-control" id="editbanglaName" name="ubnquizName" placeholder="{{__('Enter quiz name in bangla')}}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -215,25 +268,43 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('Update Mode')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.update_exam_type')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal form-material" method="POST" action="{{url('mode-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="muid" name="id">
-                        <h4 class="text-center">Change Exam time mode</h4>
+                        <h4 class="text-center">{{__('exam.change_exam_type')}}</h4>
                         <div class="d-flex justify-content-center">
                                 <label class="container">
                                     <input type="radio" name="mode" value="et" id="et" checked>
-                                    Normal Mode
+                                    {{__('exam.normal')}}
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="container">
                                     <input type="radio" name="mode" value="qt" id="qt">
-                                    Secondary Mode
+                                    {{__('exam.set_of_q')}}
                                     <span class="checkmark"></span>
                                 </label>
+                        </div>
+                        <hr>
+                        <div class="d-none" id="optLayout">
+                            <h5 class="text-center">{{__('exam.option_layout')}}</h5>
+                            <div class="d-flex justify-content-center align-items-center-center px-4">
+                                <label class="container">
+                                    <input type="radio" name="op_layout" value="0" checked id="togetherLayout">
+                                    {{__('exam.together')}}
+                                    <span class="checkmark"></span>
+                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="20px">
+                                </label>
+                                <label class="container">
+                                    <input type="radio" name="op_layout" value="3" id="onebyoneLayout">
+                                    {{__('exam.one_by_one')}}
+                                    <span class="checkmark"></span>
+                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="20px">
+                                </label>
+                            </div>
                         </div>
                         <hr>
 {{--                        <div class="form-group">--}}
@@ -247,9 +318,9 @@
                             </div>
                             <div class="col-md-4 m-b-20">
                                 <select class="form-control" name="timeUnit" id="time_unit">
-                                    <option value="s">Seconds</option>
-                                    <option value="m">Minutes</option>
-                                    <option value="h">Hours</option>
+                                    <option value="s">{{__('exam.second')}}</option>
+                                    <option value="m">{{__('exam.minute')}}</option>
+                                    <option value="h">{{__('exam.hour')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -266,17 +337,176 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div id="edit-mark" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.edit_header')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('mark-update')}}" autocomplete="off">
+                        @csrf
+                        <input type="hidden" id="markuid" name="id">
+                        <input type="hidden" id="negativemarkvalue" name="negativemarkvalue">
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.each_question_mark')}} :</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="mark_each_q_number"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.negative_mark')}} :</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="mark_select_negetive_mark">
+                                    <option value="0">{{__('exam.noNegativeMark')}}</option>
+                                    <option value="20">{{__('exam.20_p')}}</option>
+                                    <option value="25">{{__('exam.25_p')}}</option>
+                                    <option value="50">{{__('exam.50_p')}}</option>
+                                    <option value="100">{{__('exam.100_p')}}</option>
+                                    <option value="custom">{{__('exam.custom')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="mark_parent_custom_negative_number">
+                            <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.custom')}} :</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" placeholder="{{__('exam.negative_mark_percent_placeholder')}}" id="mark_custom_negative_number"/>
+                            </div>
+                        </div>
+                        {{--                        <div class="form-group">--}}
+                        {{--                            <div class="col-md-12 m-b-20">--}}
+                        {{--                                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div id="edit-schedule" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.edit_header')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('schedule-update')}}" autocomplete="off">
+                        @csrf
+                        <input type="hidden" id="scheduleuid" name="id">
+{{--                        <input type="hidden" id="scheduledatetime" name="scheduledatetime">--}}
+                        <div class="form-group row">
+                            <div for="category" class="col-sm-4 text-right">{{__('exam.exam_time')}} :</div>
+                            <div class="col-sm-8" id="showSchedule">
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} :</label>
+                            <div class="col-sm-9">
+                                <input name="schedule" type='text' class="form-control timeseconds" id="edittimeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}" required/>
+                                <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 @endsection
 
 @section('js')
+    <script src="{{asset('Admin/assets/libs/moment/moment.js')}}"></script>
+    <script src="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.js')}}"></script>
     <script>
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $(function() {
+            var today = new Date()
+            // $('.timeseconds').daterangepicker({
+            //     timePicker: true,
+            //     singleDatePicker: true,
+            //     timePickerIncrement: 5,
+            //     timePicker24Hour: false,
+            //     showDropdowns: true,
+            //     autoUpdateInput: false,
+            //     minDate:today,
+            //     minYear: today.getFullYear(),
+            //     drops: 'down',
+            //     parentEl: "#edit-schedule .modal-body",
+            //     locale: {
+            //         format: 'YYYY-MM-DD h:mm A'
+            //     },
+            // });
+            $('.timeseconds').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY, h:mm A'));
+            });
+
+            $('.timeseconds').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            $(document).on('click' , '#iconDatepicker' , function(){
+                // alert('hello click')
+                $('.timeseconds').data('daterangepicker').show()
+                // $('.timeseconds').trigger('show.daterangepicker');
+            });
+            // setTimeout(()=> {
+            //
+            // }, 1000)
+            $('.schedule_edit').on('click', function (e) {
+                e.preventDefault()
+                $('#edittimeseconds').val('')
+                const id = $(this).attr('data-id')
+                const schedule = $(this).attr('data-schedule')
+                const scheduleValue = $(this).attr('data-scheduleValue')
+                $('#showSchedule').html(scheduleValue)
+                $('#scheduleuid').val(id)
+                $('#edit-schedule').modal('show')
+                setTimeout(()=>{
+                    // $('#edittimeseconds').focus()
+                    $('.timeseconds').daterangepicker({
+                        timePicker: true,
+                        singleDatePicker: true,
+                        timePickerIncrement: 5,
+                        timePicker24Hour: false,
+                        showDropdowns: true,
+                        autoUpdateInput: false,
+                        minDate:today,
+                        minYear: today.getFullYear(),
+                        drops: 'down',
+                        parentEl: "#edit-schedule .modal-body",
+                        locale: {
+                            format: 'YYYY-MM-DD h:mm A'
+                        },
+                    });
+                    $('.timeseconds').data('daterangepicker').show()
+                },1000)
+            })
+            $(".alert").delay(5000).slideUp(300);
             $(document).on('click', '.edit', function(e) {
                 e.preventDefault();
                 $('#uid').val($(this).attr('data-id'));
-                $('#editName').val($(this).attr('data-name'));
-                $('#editbanglaName').val($(this).attr('data-bnname'));
+                $('#editName').val($(this).attr('data-quizName'));
+                $('#editbanglaName').val($(this).attr('data-bnQuizName'));
                 $('#edit-category').modal('show');
             })
 
@@ -296,6 +526,7 @@
                 if($(this).attr('data-qt') > 0){
                     $("#qt").prop("checked", true);
                     $('#inp_time').val(time);
+                    $(this).attr('data-layout') > 0 ? $("#onebyoneLayout").prop("checked", true) : $("#togetherLayout").prop("checked", true)
                 } else if ($(this).attr('data-et') > 0) {
                     $("#et").prop("checked", true);
                     $('#inp_time').val(time);
@@ -303,6 +534,11 @@
                     $('#inp_time').val(time);
                 }
                 $('#time_unit').val($(this).attr('data-timeUnit'))
+                if($('#qt').is(':checked')) {
+                    $('#optLayout').removeClass('d-none')
+                } else {
+                    $('#optLayout').addClass('d-none')
+                }
                 $('#edit-mode').modal('show');
             })
 
@@ -351,7 +587,7 @@
                     },
                     success: function(data) {
                         Swal.fire({
-                            text: data,
+                            text: "{{__('exam.updated_msg')}}",
                             type: 'success',
                             timer: 1000,
                             showConfirmButton: false
@@ -371,6 +607,54 @@
 
                 }
             });
+        })
+        $('input[type=radio][name=mode]').change(function() {
+            console.log($(this).val(), 'radio value..')
+            if($(this).val() == 'qt') {
+                $('#optLayout').removeClass('d-none')
+            } else {
+                $("#togetherLayout").prop("checked", true);
+                $('#optLayout').addClass('d-none')
+            }
+        });
+        $('.mark_edit').on('click', function (e) {
+            e.preventDefault()
+            const id = $(this).attr('data-id')
+            const eachQuestionMark = $(this).attr('data-each_question_mark')
+            const negativeMark = $(this).attr('data-nagetive_mark')
+
+            var options = $('#mark_select_negetive_mark option');
+
+            var values = $.map(options , function(option) {
+                return option.value
+            });
+            const findValue = values.some(value => value == negativeMark)
+            if(findValue) {
+                $('#mark_select_negetive_mark').val(negativeMark)
+                $('#mark_parent_custom_negative_number').addClass('d-none')
+                // $('#mark_custom_negative_number').val('')
+            } else{
+                $('#mark_select_negetive_mark').val('custom')
+                $('#mark_custom_negative_number').val(negativeMark)
+                $('#mark_parent_custom_negative_number').removeClass('d-none')
+            }
+
+            $('#markuid').val(id)
+            $('#negativemarkvalue').val(negativeMark)
+            $('#mark_each_q_number').val(eachQuestionMark)
+            $('#edit-mark').modal('show')
+        })
+        $('#mark_select_negetive_mark').on('change', function () {
+            if($(this).val() == 'custom'){
+                $('#mark_parent_custom_negative_number').removeClass('d-none')
+            } else {
+                $('#negativemarkvalue').val($(this).val())
+                $('#mark_parent_custom_negative_number').addClass('d-none')
+                $('#mark_custom_negative_number').val('')
+            }
+        })
+        $('#mark_custom_negative_number').on('keyup', function () {
+            $('#negativemarkvalue').val($(this).val())
         })
     </script>
 @endsection

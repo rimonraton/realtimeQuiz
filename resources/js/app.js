@@ -57,7 +57,7 @@ const app = new Vue({
         'ExamQuestionTimeMode' : ExamQuestionTimeMode,
         'ExamTimeMode' : ExamTimeMode,
         'ExamResult' : ExamResult,
-        'ExamResultWhenEmpty' : ExamResultWhenEmpty
+        'ExamResultWhenEmpty' : ExamResultWhenEmpty,
 	}
     // router
 });

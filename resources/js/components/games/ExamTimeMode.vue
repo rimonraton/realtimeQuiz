@@ -3,8 +3,12 @@
         <div class="container">
             <div class="winner" v-if="screen.examSubmit">
 <!--                <h2 class="text-center">Quiz Game Over</h2>-->
-                <h3>Your exam is submitted. </h3>
-                <a class="btn btn-outline-primary btn-sm" :href="'/exams'">Go Exam List Page</a>
+                <h3>
+                    {{user.lang == 'gb' ? 'Your test has been submitted' : 'আপনার পরীক্ষা জমা হয়েছে'}}
+                </h3>
+                <a class="btn btn-outline-primary btn-sm" :href="'/exams'">
+                    {{user.lang == 'gb' ? 'Finish' : 'শেষ করুন'}}
+                </a>
             </div>
         </div>
 	    <div class="row justify-content-center" v-if="screen.exam">
@@ -32,84 +36,96 @@
                     </div>
                 </div>
                 <hr>
+                <div class="card my-2" >
+                    <div class="card-header">
+                        {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
+                    </div>
+                    <div class="card-body">
+                        <question-button :questiondata="questions" :results="results" @scrollToElement="scrollToElement" :user="user"></question-button>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex justify-content-between py-2">
-               <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>
-               <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
-               <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length : q2bNumber(questions.length)}}</span>
+            <div class="d-flex justify-content-between py-1">
+                <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>
+                <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
+                <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length * qid.each_question_mark : q2bNumber(questions.length * qid.each_question_mark)}}</span>
             </div>
-		    <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questiondata">
-		    <div class="card text-white" :class="index == qid ? 'bg-success' : 'bg-secondary'">
-		        <div class="card-header p-1 cursor"
-		            :class="index == qid ? 'bg-success' : 'bg-secondary'"
-		            :id="'heading'+ index"
-		            data-toggle="collapse"
-		            :data-target="'#collapse'+ index"
-		            aria-expanded="true"
-		            :aria-controls="'collapse'+ index">
-		            <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}</span>
-		              {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}
-		        </div>
-		        <div :id="'collapse'+ index" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
-		          <div class="card-body">
-		            <div class="" v-if="question.fileType=='image'||question.fileType=='video'||question.fileType=='audio'">
-                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
-                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
-                        <video
-                            v-if="question.fileType == 'video'"
-                            class="image w-100 mt-1 rounded img-thumbnail" controls>
-                            <source :src="'/'+ question.question_file_link" type="video/mp4">
-                        </video>
-                        <div class="audio" v-if="question.fileType == 'audio'">
-                            <audio controls>
-                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">
-                            </audio>
+            <div class="text-center py-1">
+                <span> {{ user.lang == 'gb' ? '[0' + qid.each_question_mark + ' mark will be given for each correct answer and ' + negativeMark() + ' mark will be deducted for each wrong answer.]' : '[প্রতিটি শুদ্ধ উত্তরের জন্য ০' + q2bNumber(qid.each_question_mark) + ' নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য ' + q2bNumber(negativeMark()) + ' নম্বর কর্তন হবে ।]' }}</span>
+            </div>
+            <div class="container-fluid p-0 overflow-auto" style="max-height:500px;">
+                <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questiondata">
+                    <div class="card text-white" :id="'question_element' + question.id">
+                        <div class="card-header p-1 cursor text-dark"
+                             :id="'heading'+ index"
+                             data-toggle="collapse"
+                             :data-target="'#collapse'+ index"
+                             aria-expanded="true"
+                             :aria-controls="'collapse'+ index">
+                            <span class="text-dark rounded-circle" :class="{qid: index == qid}">{{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}</span>
+                            {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}
                         </div>
-                        <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
-                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-<!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
-		            </div>
-<!--		            <ul class="list-group text-dark">-->
-<!--		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">-->
-<!--		                    <small>-->
-<!--		                        {{ tbe(option.bd_option,option.option,user.lang) }}-->
-<!--		                    </small>-->
-<!--		                    <span v-if="option.correct ==1">-->
-<!--		                        <i class="fa fa-check text-success" aria-hidden="true"></i>-->
-<!--		                    </span>-->
-<!--		                </li>-->
+                        <div :id="'collapse'+ index" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
+                            <div class="card-body">
+                                <div class="" v-if="question.fileType=='image'||question.fileType=='video'||question.fileType=='audio'">
+                                    <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                                         :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                                    <video
+                                        v-if="question.fileType == 'video'"
+                                        class="image w-100 mt-1 rounded img-thumbnail" controls>
+                                        <source :src="'/'+ question.question_file_link" type="video/mp4">
+                                    </video>
+                                    <div class="audio" v-if="question.fileType == 'audio'">
+                                        <audio controls>
+                                            <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                                        </audio>
+                                    </div>
+                                    <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
+                                    {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    <!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
+                                </div>
+                                <!--		            <ul class="list-group text-dark">-->
+                                <!--		                <li v-for="(option, index) in question.options" :key="option.id" class="list-group-item d-flex justify-content-between align-items-center p-1">-->
+                                <!--		                    <small>-->
+                                <!--		                        {{ tbe(option.bd_option,option.option,user.lang) }}-->
+                                <!--		                    </small>-->
+                                <!--		                    <span v-if="option.correct ==1">-->
+                                <!--		                        <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+                                <!--		                    </span>-->
+                                <!--		                </li>-->
 
-<!--		            </ul>-->
-<!--                      <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
-<!--                          <div v-for="(option, index) in question.options" :key="option.id" class="col-md-6 px-1" :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]">-->
-<!--                              <ul class="list-group" v-if="option.flag != 'img'">-->
-<!--                                  <li  class="list-group-item d-flex justify-content-between align-items-center p-1">-->
-<!--                                      <small class="text-black-50">-->
-<!--                                          {{ tbe(option.bd_option,option.option,user.lang) }}-->
-<!--                                      </small>-->
-<!--                                      <span v-if="option.correct ==1">-->
-<!--                                        <i class="fa fa-check text-success" aria-hidden="true"></i>-->
-<!--                                      </span>-->
-<!--                                  </li>-->
-<!--                              </ul>-->
-<!--                              <div v-else class="cursor my-1">-->
-<!--                                  <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">-->
-<!--                                  <span v-if="option.correct ==1" class="imgTick">-->
-<!--                                      <i class="fa fa-check text-success" aria-hidden="true"></i>-->
-<!--                                  </span>-->
-<!--                              </div>-->
-<!--                          </div>-->
-<!--                      </div>-->
-                      <option-component
-                          :options="question.options"
-                          :question="tbe(question.bd_question_text, question.question_text, user.lang)"
-                          :user="user"
-                          @answer="answer"
-                      ></option-component>
-		          </div>
-		        </div>
-		    </div>
-		</div>
+                                <!--		            </ul>-->
+                                <!--                      <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
+                                <!--                          <div v-for="(option, index) in question.options" :key="option.id" class="col-md-6 px-1" :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]">-->
+                                <!--                              <ul class="list-group" v-if="option.flag != 'img'">-->
+                                <!--                                  <li  class="list-group-item d-flex justify-content-between align-items-center p-1">-->
+                                <!--                                      <small class="text-black-50">-->
+                                <!--                                          {{ tbe(option.bd_option,option.option,user.lang) }}-->
+                                <!--                                      </small>-->
+                                <!--                                      <span v-if="option.correct ==1">-->
+                                <!--                                        <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+                                <!--                                      </span>-->
+                                <!--                                  </li>-->
+                                <!--                              </ul>-->
+                                <!--                              <div v-else class="cursor my-1">-->
+                                <!--                                  <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">-->
+                                <!--                                  <span v-if="option.correct ==1" class="imgTick">-->
+                                <!--                                      <i class="fa fa-check text-success" aria-hidden="true"></i>-->
+                                <!--                                  </span>-->
+                                <!--                              </div>-->
+                                <!--                          </div>-->
+                                <!--                      </div>-->
+                                <option-component
+                                    :options="question.options"
+                                    :question="tbe(question.bd_question_text, question.question_text, user.lang)"
+                                    :user="user"
+                                    @answer="answer"
+                                ></option-component>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="d-flex justify-content-center py-2">
                 <span class="btn btn-sm btn-info rounded border" @click="submited">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
             </div>
@@ -150,6 +166,14 @@
 <!--                            {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>-->
 <!--                        </li>-->
 <!--                    </transition-group>-->
+                </div>
+            </div>
+            <div class="card my-4 d-sm-none d-md-block" >
+                <div class="card-header">
+                    {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
+                </div>
+                <div class="card-body">
+                    <question-button :questiondata="questions" :results="results" @scrollToElement="scrollToElement" :user="user"></question-button>
                 </div>
             </div>
         </div>
@@ -193,8 +217,9 @@
 
 <script>
 	import OptionComponent from "../helper/Examination/option";
+	import QuestionButton from "../helper/Examination/QuestionButton";
     export default {
-        components: {OptionComponent},
+        components: {OptionComponent, QuestionButton},
         props: ['questions', 'qid','topics','user', 'examTime'],
         data(){
 		    return{
@@ -217,6 +242,14 @@
             }
         },
 		methods: {
+            scrollToElement(id) {
+                console.log('id....',id);
+                // this.$refs["question_element" + id].scrollIntoView({ behavior: "smooth" });
+                // let el = document.getElementById('question_element'+ id);
+                // el.scrollTop = el.innerHeight;
+                const element = document.getElementById("question_element" + id);
+                element.scrollIntoView({ behavior: 'smooth' });
+            },
             countDownTimer () {
                 if (this.countDown > 0) {
                     setTimeout(() => {
@@ -407,6 +440,9 @@
                         this.submitExam()
                     }
                 });
+            },
+            negativeMark(){
+                return this.qid.negative_mark > 0 ? (this.qid.each_question_mark * this.qid.negative_mark)/100 : 0
             }
 		},
         created(){
@@ -416,7 +452,7 @@
                     this.submitExam()
                 }
             })
-        }
+        },
 	};
 </script>
 <style>

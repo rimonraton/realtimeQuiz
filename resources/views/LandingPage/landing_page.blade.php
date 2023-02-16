@@ -141,6 +141,7 @@
                     <li><a href="{{ route('login') }}" id="login">{{__('msg.login')}}</a></li>
                     @endguest
                     @auth
+                        <li><a href="{{ url('dashboard') }}">{{__('msg.dashboard')}}</a></li>
                     <li><a href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{__('msg.logout')}}</a></li>
                     @endauth
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
