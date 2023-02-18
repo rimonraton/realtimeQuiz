@@ -1,10 +1,11 @@
 @extends('Admin.Layout.dashboard')
-<link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
+
 @php
     $lang = App::getLocale();
     $ban = new \App\Lang\Bengali();
  @endphp
 @section('css')
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
     <style>
     .iconPostion{
     position: absolute;
@@ -458,6 +459,7 @@
             //     },
             // });
             $('.timeseconds').on('apply.daterangepicker', function(ev, picker) {
+                console.log('picker...',picker)
                 $(this).val(picker.startDate.format('DD-MM-YYYY, h:mm A'));
             });
 
@@ -486,12 +488,13 @@
                     $('.timeseconds').daterangepicker({
                         timePicker: true,
                         singleDatePicker: true,
-                        timePickerIncrement: 5,
+                        timePickerIncrement: 1,
                         timePicker24Hour: false,
                         showDropdowns: true,
                         autoUpdateInput: false,
                         minDate:today,
                         minYear: today.getFullYear(),
+                        maxYear: today.getFullYear() + 1,
                         drops: 'down',
                         parentEl: "#edit-schedule .modal-body",
                         locale: {

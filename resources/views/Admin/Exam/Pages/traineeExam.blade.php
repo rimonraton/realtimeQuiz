@@ -136,6 +136,9 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            @if(session()->has('exam-message'))
+                <p class="alert alert-danger">{{ session('exam-message') }}</p>
+            @endif
             <div class="card">
                 <div class="card-body wizard-content">
                     <h4 class="card-title text-center">{{__('form.examination')}}
@@ -149,13 +152,7 @@
             <div class="col-md-4 col-sm-12 text-center mb-4 ">
                 <div class="card shadow h-100 animate-fast animate__zoomIn animate__animated animate__delay-1s">
                     <div class="d-flex justify-content-between py-1 px-2">
-{{--                        <div class="text-muted">--}}
-{{--                            <i class="fas fa-star checked"></i>--}}
-{{--                            <i class="fas fa-star checked"></i>--}}
-{{--                            <i class="fas fa-star checked"></i>--}}
-{{--                            <i class="fas fa-star checked"></i>--}}
-{{--                            <i class="fas fa-star"></i>--}}
-{{--                        </div>--}}
+                        @if(auth()->user()->roleuser->role->id > 3)
                         <div class="d-flex pointer p-2">
                             <div class="help-tippo">
                                 <p style="z-index: 999999; position: relative;">
@@ -167,6 +164,7 @@
                                 </p>
                             </div>
                         </div>
+                        @endif
                         <span class="text-muted">
                             @php
                                 $qc = count(explode(',', $exam->questions));
@@ -198,7 +196,7 @@
                                     @if(auth()->user()->roleuser->role->id > 3)
                                         <p>{{$lang == 'gb' ? 'Time left for the exam to start' : 'পরীক্ষা শুরু হতে সময় বাকী'}}: {{$lang == 'gb' ? $remainingTime : $ban->bn_human($remainingTime) }}</p>
                                     <p>
-                                        <span class="btn btn-sm btn-outline-primary rounded-lg align-self-center text-primary cursor-not-allowed">
+                                        <span class="border border-primary rounded-lg align-self-center text-primary cursor-not-allowed p-2">
                                              {{__('msg.not_published_yet')}}
                                         </span>
                                     </p>
@@ -213,7 +211,7 @@
                                             {{--                                    </a>--}}
                                             {{--                                    @endif--}}
                                             <p>
-                                    <span class="btn btn-sm btn-outline-success rounded-lg align-self-center text-success cursor-not-allowed">
+                                    <span class="border border-success rounded-lg align-self-center text-success cursor-not-allowed p-2">
                                         {{__('exam.submitted')}}
                                     </span>
                                             </p>
@@ -225,12 +223,12 @@
                                             @else
                                                 @if($futureDate < $now)
                                                     <p>
-                                                <span class="btn btn-sm btn-outline-danger rounded-lg align-self-center text-danger cursor-not-allowed">
+                                                <span class="border border-danger rounded-lg align-self-center text-danger cursor-not-allowed p-2">
                                                     {{__('exam.expired')}}
                                                 </span>
                                                     </p>
                                                 @else
-                                                    <span class="btn btn-xs btn-outline-primary align-self-center text-primary cursor-not-allowed">
+                                                    <span class="border border-primary align-self-center text-primary cursor-not-allowed p-2">
                                                         {{__('msg.not_published_yet')}}
                                                     </span>
                                                 @endif
@@ -295,5 +293,12 @@
             {{ $exams->links() }}
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        $(function () {
+            $(".alert").delay(5000).slideUp(300);
+        })
+    </script>
 @endsection
 

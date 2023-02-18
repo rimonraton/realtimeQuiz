@@ -213,8 +213,16 @@ class ExamController extends Controller
 //    }
     public function startExam(Examination $examination, $uid)
     {
+//        return $examination;
+        $now = Carbon::now();
+        $futureTime = Carbon::parse($examination->schedule);
+        if ($now > $futureTime && $examination->is_published == 0){
+            $lang = \App::getLocale();
+            $msg = $lang == 'gb' ? 'Exam is expired!' : 'পরীক্ষার মেয়াদ শেষ!' ;
+            return \Redirect::back()->with('exam-message', $msg);;
+        }
         $result = Result::where('examination_id', $examination->id)->where('user_id', $uid)->first();
-         $result_count = $result ? count(json_decode($result->result)) : 0;
+        $result_count = $result ? count(json_decode($result->result)) : 0;
         if ($result_count > 0) {
             return redirect('exams');
         }
