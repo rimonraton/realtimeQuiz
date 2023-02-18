@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" >
         <div :class="{'preventClick': preventClick}"></div>
         <div class="result-waiting" v-if="screen.resultWaiting">
             <div class="text-center bg-light">
@@ -304,31 +304,46 @@
                 });
 
             this.current = this.questions[this.qid].id
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden){
+                   let newwindow = window.open('www.google.com','name','height=200,width=150');
+                    if (window.focus) {newwindow.focus()}
+                    return false;
+                    //this.preventClick = true
+                    console.log("Browser tab is hidden")
+                } else {
+                    console.log("Browser tab is visible")
+                }
+            });
+
         },
 
-        // beforeMount() {
-        //     window.addEventListener("beforeunload", this.preventNav);
-        //     this.$once("hook:beforeDestroy", () => {
-        //       window.removeEventListener("beforeunload", this.preventNav);
-        //     });
-        //   },
+        beforeMount() {
+            console.log('beforeMount')
+            window.addEventListener("beforeunload", this.preventNav)
+            this.$once("hook:beforeDestroy", () => {
+              window.removeEventListener("beforeunload", this.preventNav);
+            });
+          },
 
-        // beforeRouteLeave(to, from, next) {
-        //     if (this.game_start) {
-        //       if (!window.confirm("Do You Realy Want to Leave This Game?")) {
-        //         return;
-        //       }
-        //     }
-        //     next();
-        // },
+        beforeRouteLeave(to, from, next) {
+            console.log('beforeRouteLeave')
+
+            if (this.game_start) {
+              if (!window.confirm("Do You Realy Want to Leave This Game?")) {
+                return;
+              }
+            }
+            next();
+        },
 
         methods: {
-            // preventNav(event) {
-            //   if (!this.game_start) return;
-            //   event.preventDefault();
-            //   // Chrome requires returnValue to be set.
-            //   event.returnValue = "";
-            // },
+            preventNav(event) {
+              if (!this.game_start) return;
+              event.preventDefault();
+              // Chrome requires returnValue to be set.
+              event.returnValue = "";
+            },
             gameStart: function () {
                 this.sqo = true
                 let ids = this.users.map(u => u.id)

@@ -15,14 +15,14 @@
     </style>
 @endsection
 @section('content')
-    <div class="row">
+    <div class="row" id="examapp">
         <div class="col-12">
             @if(session()->has('message'))
                 <p class="alert alert-success">{{ session('message') }}</p>
             @endif
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title text-center">{{__('exam.list_of_exam')}}</h4>
+                    <h4 class="card-title text-center"> {{__('exam.list_of_exam')}} </h4>
                     <hr>
                     <a href="{{url('create-exam')}}" class="btn btn-info btn-rounded m-t-10 mb-2 float-right">{{__('exam.create_exam')}}</a>
                     <!-- Add Contact Popup Model -->
