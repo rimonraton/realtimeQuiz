@@ -1,5 +1,14 @@
 @php $lang = App::getLocale(); @endphp
 <div class="card">
+    <div class="row justify-content-center">
+        <div class="input-group mb-3 col-sm-6">
+            <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" aria-label="Search" aria-describedby="basic-addon2" id="search_input_keyword">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" data-tid="{{$id[0]}}" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
+            </div>
+        </div>
+    </div>
+
     <div class="card-body">
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
@@ -17,9 +26,8 @@
 {{--            {{$questions->count()}}--}}
             @foreach($questions as $q)
             @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
-            <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
+            <div class="tab-pane {{$loop->first? 'active' : ''}}" id="home{{$q->id}}">
                 <div class="" style="overflow-x: hidden">
-
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12 pt-3">
@@ -40,7 +48,11 @@
                                         </thead>
                                         <tbody>
                                         @php
-                                            $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
+                                            if ($keyword){
+                                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->where('question_text', 'like', '%' . $keyword . '%')->orWhere('bd_question_text', 'like', '%' . $keyword . '%')->orderBy('id','desc')->paginate(10);
+                                            } else{
+                                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
+                                            }
                                         @endphp
                                             @foreach($questionCat as $qs)
                                             <tr>

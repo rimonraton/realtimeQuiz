@@ -245,8 +245,9 @@ class QuestionController extends Controller
 //        $data[$key]['img_link'] = $filename;
 //        $data[$key]['flag'] = 'img';
     }
-    public function getlist($id)
+    public function getlist($id, $keyword = '')
     {
+//        return $id;
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
 
@@ -259,7 +260,7 @@ class QuestionController extends Controller
 //            with(['questions' => function ($q) use ($id) {
 //                $q->where('category_id', $id);
 //            }, 'questions.options','questions.role.role'])
-            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users'));
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
         }
         return '';
     }

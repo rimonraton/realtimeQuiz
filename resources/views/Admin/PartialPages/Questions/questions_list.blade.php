@@ -285,10 +285,17 @@
         $('#nestable-menu').nestable();
     })
 
-    function topicwithcategory(id) {
-
+    function topicwithcategory(id, keyword = '') {
+        console.log('from function.........', keyword)
+        let url = ''
+        if(keyword) {
+            url = "{{url('question/getlist')}}/" + id + '/' + keyword
+        } else {
+            url = "{{url('question/getlist')}}/" + id
+        }
+        console.log('url.......', url)
         $.ajax({
-            url: "{{url('question/getlist')}}/" + id,
+            url: url,
             type: "GET",
             beforeSend: function() {
                 $('.loading').show();
@@ -297,7 +304,7 @@
                 console.log('BEFORE');
             },
             success: function(data) {
-                console.log('data'+data);
+                // console.log('data'+data);
                 if (data != '') {
                     $('#viewData').html(data);
                 } else {
@@ -319,6 +326,13 @@
             }
         })
     }
+    $(document).on('click', '#search_question_category', function (e) {
+        e.preventDefault()
+        const id = $(this).attr('data-tid')
+        const keyword = $('#search_input_keyword').val()
+        console.log(keyword, 'keyword.....')
+        topicwithcategory(id, keyword)
+    })
     $(document).on('click', '.edit', function() {
         var id = $(this).attr('data-id');
         // alert(id);

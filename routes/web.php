@@ -57,7 +57,7 @@ Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::cl
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', 'QuestionController@create');
 Route::post('question/save', 'QuestionController@storeQuestion');
-Route::get('question/getlist/{id}', 'QuestionController@getlist');
+Route::get('question/getlist/{id}/{keyword?}', 'QuestionController@getlist');
 Route::get('question/edit/{id}', 'QuestionController@editQuestion');
 Route::post('question/update', 'QuestionController@updateQuestion');
 Route::get('question/delete/{id}', 'QuestionController@deleteQuestion');
