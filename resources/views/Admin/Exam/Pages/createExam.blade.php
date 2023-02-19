@@ -92,6 +92,7 @@
                         <input type="hidden" name="cid" id="selectedCid" required>
                         <input type="hidden" value="0" name="negetive_mark" id="negetive_mark">
                         <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
+                        <input type="hidden" value="" name="advanceValue" id="advanceV">
 {{--                        <div class="form-group row justify-content-center">--}}
 {{--                            <div class="btn-group" data-toggle="buttons">--}}
 
@@ -204,7 +205,7 @@
                             </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                         <ol class="dd-list">
                                             <li class="dd-item" id="parentdd">
@@ -229,7 +230,16 @@
                                     <div class="col-sm-3 mt-1">
                                         <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ" id="noq">
                                     </div>
+                                    <div class="col-sm-1 mt-1 pt-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25" style="cursor: pointer" id="advance_question" data-toggle="tooltip" data-placement="top" title="Advance">
+                                            <path fill="#AB7C94" d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"/>
+                                        </svg>
+                                    </div>
                                 @endcan
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <div class="row col-sm-6 justify-content-center" id="selectedAdvanceData">
+                                </div>
                             </div>
 
                             <input type="hidden" name="selected" id="selectedQ">
@@ -391,6 +401,37 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div id="add-advance-question" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{__('Select topic & type number of question')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        @foreach($questionHasTopics as $quesHasTopic)
+                            <div class="checkbox checkbox-info col-6 py-2">
+                                <input type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" id="chcQ{{$quesHasTopic->id}}" class="material-inputs aqchk">
+                                <label for="chcQ{{$quesHasTopic->id}}">{{$quesHasTopic->name}}</label>
+                                <input type="number" class="d-none advanceNoq" data-id="{{$quesHasTopic->id}}" id="noqOfQ_{{$quesHasTopic->id}}">
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info waves-effect" id="smt_advance_btn">{{__('add')}}</button>
+                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
+                    </div>
+
+                    {{--                    </form>--}}
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 @section('js')
     <script src="{{asset('Admin/assets/libs/moment/moment.js')}}"></script>
@@ -421,6 +462,57 @@
             $('.timeseconds').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
             });
+            $('#advance_question').on('click', function (e) {
+                e.preventDefault()
+                $('#add-advance-question').modal('show')
+            })
+            var chkadvancequestions = [];
+            $('.aqchk').on('click', function () {
+                const id = $(this).val()
+                if ($(this).is(':checked')) {
+                    let obj = {}
+                    obj['id'] = $(this).val()
+                    obj['name'] = $(this).attr('data-name')
+                    obj['value'] = 0
+                    chkadvancequestions.push(obj)
+                    $('#noqOfQ_' + $(this).val()).removeClass('d-none')
+                    $('#noqOfQ_' + $(this).val()).focus()
+                } else {
+                    console.log(chkadvancequestions, 'before objarray..')
+                    $('#noqOfQ_' + $(this).val()).val('')
+                    $('#noqOfQ_' + $(this).val()).addClass('d-none')
+                    chkadvancequestions = chkadvancequestions.filter(function(elem){
+                        return elem.id != id;
+                    });
+                    console.log(chkadvancequestions, 'after objarray..')
+                }
+            })
+            $('.advanceNoq').on('keyup', function () {
+                if ($(this).val() != ''){
+                    changeDesc($(this).attr('data-id'), $(this).val())
+                } else{
+                    changeDesc($(this).attr('data-id'), 0)
+                }
+            })
+            function changeDesc( id, value ) {
+                for (var i in chkadvancequestions) {
+                    if (chkadvancequestions[i].id == id) {
+                        chkadvancequestions[i].value = value;
+                        break; //Stop this loop, we found it!
+                    }
+                }
+            }
+
+            $('#smt_advance_btn').on('click', function () {
+                $('#advanceV').val(JSON.stringify(chkadvancequestions))
+                $('#add-advance-question').modal('hide')
+                var view = '';
+                $.each(chkadvancequestions , function(index, val) {
+                    view += `<div class="p-2 mx-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
+                });
+                $('#selectedAdvanceData').html(view)
+                $('#viewData').removeClass('d-flex')
+            })
             $(document).on('click' , '#iconDatepicker' , function(){
                 // alert('hello click')
                 $('.timeseconds').data('daterangepicker').show()

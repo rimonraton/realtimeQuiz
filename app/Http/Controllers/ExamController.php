@@ -38,7 +38,8 @@ class ExamController extends Controller
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
-        return view('Admin.Exam.Pages.createExam', compact('question_topic'));
+        $questionHasTopics = Category::whereHas('questions')->get();
+        return view('Admin.Exam.Pages.createExam', compact('question_topic', 'questionHasTopics'));
     }
 
     public function store(Request $request)
@@ -49,7 +50,10 @@ class ExamController extends Controller
 //        $ban = new Bengali();
 //       return $ban->bn_date_time($banglaDate);
 
-//        return $request->all();
+//        return $request->advanceValue;
+
+//        foreach ($re)
+
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
             return redirect('list-of-exam');
@@ -70,26 +74,24 @@ class ExamController extends Controller
         } elseif ($request->timeUnit == 'h') {
             $time = $request->time * 60 * 60;
         }
-
-        if ($request->NOQ){
-            $admin = auth()->user()->admin;
-            $admin_users = $admin->users()->pluck('id');
-            $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
-            $questions =  implode(',',$q_random);
-//              return 'Number-'.$questions;
+        if ($request->advanceValue){
+            $arrData = collect();
+            foreach (json_decode($request->advanceValue) as $key=> $adv) {
+                $q_random = Question::where('category_id',$adv->id)->inRandomOrder()->limit($adv->value)->pluck('id');
+                $arrData->push($q_random);
+            }
+            $questions =  implode(',', $arrData->collapse()->all());;
+        } else{
+            if ($request->NOQ){
+                $admin = auth()->user()->admin;
+                $admin_users = $admin->users()->pluck('id');
+                $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
+                $questions =  implode(',',$q_random);
+            }
+            else{
+                $questions = $request->selected;
+            }
         }
-        else{
-            $questions = $request->selected;
-//              return 'No Number -'.$questions;
-        }
-//        $questions = array();
-//        foreach ($request->questions as $q) {
-//            $questions[] = $q;
-//        }
-//        if($request->teams){
-//            $team_id = implode(',', $request->teams);
-//        }
-//        return $team_id;
         Examination::create([
             'exam_en'           => $request->quizName,
             'exam_bn'           => $request->bdquizName,
