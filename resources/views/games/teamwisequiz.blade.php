@@ -14,14 +14,15 @@
                         </div>
                     @endif
 
-                    <team-moderator :id="{{ $id }}"
-                    :uid="{{ $uid }}"
-                    :questions="{{ $questions }}"
-                    :user="{{ $user }}"
-                    :gmsg="{{ $gmsg }}"
-                    :teams="{{$team}}"
-                    :topics="{{$topic}}"
-                    :quiz="{{$quiz}}"
+                    <team-moderator
+                        :id="{{ $id }}"
+                        :uid="{{ $uid }}"
+                        :questions="{{ $questions }}"
+                        :user="{{ $user }}"
+                        :gmsg="{{ $gmsg }}"
+                        :teams="{{$team}}"
+                        :topics="{{$topic}}"
+                        :quiz="{{$quiz}}"
                     >
                     </team-moderator>
                 </div>

@@ -1,5 +1,6 @@
 <template>
     <div class="container mt-n2">
+        <div v-if="user.id !== uid" :class="{'preventClick': preventClick}"></div>
         <div class="progress mb-3" v-if="uid == user.id">
             <div class="progress-bar"
                  v-for="(team, i) in answered_group"
@@ -122,7 +123,7 @@
                     <div class="progress-bar progress-bar-striped"
                          :style="progressWidth"
                          :class="progressClass"
-                    > {{ Math.floor(progress_count) }}
+                    > {{ Math.floor(progress) }}
                     </div>
                 </div>
                 <div class="container-fluid px-0">
@@ -201,10 +202,15 @@
                                     <div
                                         v-else
                                         @click="clickSelect(i, option)"
-                                        class="cursor my-1 imageDiv"
+                                        class="cursor my-1"
                                         :class="getOptionClass(i, quiz.quiz_time)"
                                     >
-                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                        <img
+                                            class="imageOption mt-1 rounded img-thumbnail"
+                                            :class="{'bg-success':qoption.selected == i}"
+                                            :src="'/'+ option.img_link"
+                                            alt=""
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -258,8 +264,10 @@ import groupResult from '../helper/groupResult'
 import waiting from '../helper/moderator/waiting'
 import TeamMember from '../helper/TeamMember'
 import TeamResult from '../helper/TeamResult'
+import { quizHelpers } from '../mixins/quizHelpers.js'
 
 export default {
+    mixins: [ quizHelpers ],
     props : ['id', 'uid', 'user', 'questions','teams','gmsg','topics', 'quiz'],
 
     components: { PieChart, questions, groupResult,waiting,TeamMember,TeamResult },
@@ -277,8 +285,7 @@ export default {
             answered_group:[],
             users: [],
             datacollection: null,
-            progress:{},
-            progress_count: 100,
+            progress: 100,
             qoption:{
                 selected: null,
                 id: null,
@@ -308,7 +315,8 @@ export default {
             perform:null,
             position:null,
             av: true,
-            sqo:false
+            sqo:false,
+            preventClick: true
         };
     },
 
@@ -347,10 +355,8 @@ export default {
 
     },
 
-
     created(){
         Echo.channel(this.channel)
-
             .listen('TeamResult', (data) => {
                 console.log('TeamResult..........', this.questions[this.qid])
                 if(this.questions[this.qid].fileType == 'audio' || this.questions[this.qid].fileType == 'video'){
@@ -408,8 +414,9 @@ export default {
                 this.screen.waiting = 0
                 this.user.lang = data.lang
                 this.sqo = true
-                this.QuestionTimer() // Set and Start QuestionTimer
-
+                // this.QuestionTimer() // Set and Start QuestionTimer
+                console.log('showQuestionOptions.............')
+                this.showQuestionOptions(this.questions[0].fileType)
             })
             .listen('NextQuestionEvent', (data) => {
                 this.av = true
@@ -434,7 +441,8 @@ export default {
                 if(data.qtime > 0){
                     this.TimerInit()
                     this.qt.time = data.qtime;
-                    this.QuestionTimer()
+                    // this.QuestionTimer()
+                    this.showQuestionOptions(this.questions[this.qid].fileType)
                 }
 
             })
@@ -502,7 +510,6 @@ export default {
     //     }
     // },
 
-
     methods: {
         // winner_msg(){
         //     this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
@@ -513,6 +520,19 @@ export default {
         //             return prev.perform_status < curr.perform_status ? prev : curr;
         //         });
         // },
+        gameStart: function () {
+            console.log('clicked', this.sqo)
+            console.log('clicked after', this.sqo)
+            axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel,lang:this.user.lang})
+                .then(res =>  console.log(res.data))
+            this.game_start = 1
+            this.screen.waiting = 0
+            // if(this.qt.time > 0){
+            //     this.TimerInit()
+            //     this.QuestionTimer()
+            // }
+            //this.QuestionTimer()
+        },
         onEnd() {
             this.av = true
             this.QuestionTimer()
@@ -539,7 +559,6 @@ export default {
             console.log(ids);
             axios.post(`/api/teamResult`,{channel:this.channel,qid:this.id,host:this.uid,users:ids,results:this.results}).then(this.screen.teamresult = 1)
         },
-
         deleteTeam(id){
 
             console.log(id);
@@ -579,18 +598,6 @@ export default {
             if(typeof(users !== 'undefined')) return users
             return [];
         },
-        gameStart: function () {
-            console.log('clicked', this.sqo)
-            console.log('clicked after', this.sqo)
-            axios.post(`/api/gameTeamModeratorStart`, {channel: this.channel,lang:this.user.lang}).then(res =>  console.log(res.data))
-            this.game_start = 1
-            this.screen.waiting = 0
-            // if(this.qt.time > 0){
-            //     this.TimerInit()
-            //     this.QuestionTimer()
-            // }
-            //this.QuestionTimer()
-        },
         gameReset(){
             this.questionInit()
             this.screen.waiting = 1
@@ -603,7 +610,6 @@ export default {
             this.game_start = 0
             this.current = this.questions[this.qid].id
         },
-
         nextQuestion(){
             // this.onEnd()
             // this.QuestionTimer()
@@ -619,12 +625,8 @@ export default {
             this.current = this.questions[this.qid].id
             this.fillPie()
             this.answered_group = []
-
             let next = { channel: this.channel, qid: this.qid,qtime:this.question_time }
-
             axios.post(`/api/nextQuestion`, next)
-
-
         },
         submitAnswer(){
             console.log(this.qoption);
@@ -642,7 +644,6 @@ export default {
             this.screen.result = 1
             this.TimerInit()
         },
-
         checkAnswer(q, a, rw, ai){
             this.gamedata['id'] = this.qid + 1
             this.gamedata['question'] = this.ToText(this.tbe(this.questions[this.qid].bd_question_text,this.questions[this.qid].question_text,this.user.lang))
@@ -652,19 +653,21 @@ export default {
             this.gamedata['user'] = this.user
             this.gamedata['channel'] = this.channel
             this.gamedata['team'] = this.team
-            if(!!ai) {
-                this.gamedata['img_link'] = ai
-            }
+            this.gamedata['img_link'] = ai
+            // if(!!ai) {
+            //     this.gamedata['img_link'] = ai
+            // }
             let clone = {...this.gamedata}
             console.log('GameData', clone);
             this.answered_user_data.push(clone)
             axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
             // this.showQuestionOptions()
         },
-
         QuestionTimer(){
-            let pdec = 100 / (10 * this.qt.time);
-            console.log('QuestionTimer started')
+            if(this.qid == this.questions.length) return
+            if(this.av == false) return
+            let pdec = 100 / (5 * this.qt.time);
+            // console.log('QuestionTimer started')
             this.qt.timer =
                 setInterval(() => {
                     if(this.qt.time == 0){
@@ -678,23 +681,24 @@ export default {
                     }
                     else{
                         this.qt.ms ++
-                        this.progress_count -= pdec
+                        this.progress -= pdec
 
-                        if(this.qt.ms == 10){
+                        if(this.qt.ms == 5){
                             this.qt.time --
                             this.qt.ms=0
                         }
 
                     }
 
-                }, 100);
+                }, 200);
         },
         TimerInit(){
             clearInterval(this.timer)
             clearInterval(this.qt.timer)
             this.qt.ms = 0
             this.qt.time = 0
-            this.progress_count = 100
+            this.progress = 100
+            this.preventClick = true
 
         },
         countDown(){
@@ -716,7 +720,6 @@ export default {
             }
             this.counter --
         },
-
         getResult(){
             this.results = _(this.answered_user_data).groupBy('team.name')
                 .map((answers, name) => ({
@@ -737,7 +740,6 @@ export default {
             [...numbString].forEach(n => bn += eb[n])
             return bn
         },
-
         predictAnswer(){
             if(this.qoption.option == null && this.qoption.img_link == null){
                 alert('Please select an option first!')
@@ -784,8 +786,6 @@ export default {
             })
 
         },
-
-
         getCorrectAnswertext(){
             let op = this.questions[this.qid].options.find(o => o.correct == 1)
             if (op.flag == 'img') {
@@ -797,7 +797,6 @@ export default {
             return op.bd_option
 
         },
-
         winner(){
             this.user_ranking = this.results.findIndex(w => w.name == this.user.id)
             this.screen.winner = 1
@@ -810,7 +809,6 @@ export default {
                 });
             }
         },
-
         reloadPage(){
             axios.post(`/api/pageReload`, {channel: this.channel})
                 .then((response) =>{
@@ -835,8 +833,6 @@ export default {
             }
             // console.log(this.isPredict())
         },
-
-
         fillPie() {
             this.datacollection = {
                 labels: this.questions[this.qid].options.map((o, i)=> {
@@ -850,7 +846,6 @@ export default {
                 }]
             }
         },
-
         ToText(input, i){
             if(input == null) {
                 return i;
@@ -875,7 +870,6 @@ export default {
             }
             return b;
         },
-
         answer(){
             return this.ans;
         },
@@ -914,7 +908,7 @@ export default {
         },
         showQuestionOptions (question, f) {
             console.log('first time', f);
-            let timeout = 0;
+            let timeout = 1000;
             if(this.quiz.quiz_time != 0) {
                 timeout = 3000; // this.quiz.quiz_time * 1000
                 if(f == 'first') {
@@ -925,20 +919,15 @@ export default {
                 clearInterval(this.qt.timer);
                 setTimeout(() => {
                     // this.sqo = true
+                    this.preventClick = false
                     this.QuestionTimer()
                 }, timeout)
             }
         },
-
     },
-
     computed: {
-
         isLastQuestion(){
            return  this.q_lenght > this.qid + 1;
-        },
-        channel(){
-            return `team.${this.id}.${this.uid}`
         },
         userGroup(){
             return _(this.users)
@@ -949,36 +938,43 @@ export default {
         setProgress(){
             return {'width': 100 / this.userGroup.length  + '%', }
         },
-        progressClass(){
-            return this.progress_count > 66? 'bg-success': this.progress_count > 33? 'bg-info': 'bg-danger'
-        },
-        progressWidth(){
-            return {'width':this.progress_count + '%', }
-        }
 
+        // progressClass(){
+        //     return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
+        // },
+        // progressWidth(){
+        //     return {'width':this.progress + '%', }
+        // }
     }
-
-
 };
 
 </script>
-<style>
-#ar {
-    position: absolute;
-    background: transparent;
-    width: 60%;
-    height: 50px;
-    top: 18px;
-}
-.imageOption {
-    height: 100px;
-    width: 100%;
-}
-
-@media screen and (min-width: 480px) {
+<style scoped>
+    #ar {
+        position: absolute;
+        background: transparent;
+        width: 60%;
+        height: 50px;
+        top: 18px;
+    }
     .imageOption {
-        height: 170px;
+        height: 100px;
         width: 100%;
     }
-}
+    .preventClick {
+        position: absolute;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        width: 100%;
+        z-index: 999;
+        left: 0px;
+        top: 0px;
+    }
+
+    @media screen and (min-width: 480px) {
+        .imageOption {
+            height: 170px;
+            width: 100%;
+        }
+    }
 </style>
