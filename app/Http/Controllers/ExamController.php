@@ -65,6 +65,7 @@ class ExamController extends Controller
 
     public function storeFromQB($request)
     {
+        $cid = 0;
         $questions = '';
         $time = 0;
         if($request->timeUnit == 's'){
@@ -82,6 +83,7 @@ class ExamController extends Controller
             }
             $questions =  implode(',', $arrData->collapse()->all());;
         } else{
+            $cid = $request->cid;
             if ($request->NOQ){
                 $admin = auth()->user()->admin;
                 $admin_users = $admin->users()->pluck('id');
@@ -96,7 +98,7 @@ class ExamController extends Controller
             'exam_en'           => $request->quizName,
             'exam_bn'           => $request->bdquizName,
             'questions'         => $questions,
-            'category_id'       => $request->cid,
+            'category_id'       => $cid,
             'option_view_time'  => $request->op_layout,
             'user_id'           => auth()->user()->id,
             'exam_time'         => $request->mode == 'et' ? $time : 0,
@@ -104,7 +106,8 @@ class ExamController extends Controller
             'time_unit'         => $request->timeUnit,
             'each_question_mark' => $request->each_q_number ? $request->each_q_number : 1,
             'negative_mark'     => $request->negetive_mark ? $request->negetive_mark : 0,
-            'schedule'          => \Carbon\Carbon::parse($request->schedule)
+            'schedule'          => \Carbon\Carbon::parse($request->schedule),
+            'topics'            => $request->advanceValue ? $request->advanceValue : null
         ]);
     }
 
