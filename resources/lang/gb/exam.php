@@ -52,4 +52,6 @@ return [
     'placeholder_exam_date_time' => 'Enter date and time',
     'questions_mark' => 'Marks',
     'expired' => 'Exam expired',
+    'advace_question_header' => 'Select topic & type number of question',
+    'advance_tooltip' => 'Click to give number of topics and questions as per your choice'
 ];

@@ -42,6 +42,12 @@ class ExamController extends Controller
         return view('Admin.Exam.Pages.createExam', compact('question_topic', 'questionHasTopics'));
     }
 
+    public function allTopicsHasQuestion()
+    {
+        $questionHasTopics = Category::whereHas('questions')->paginate(20);
+        return view('Admin.PartialPages.Exam.topics', compact('questionHasTopics'));
+    }
+
     public function store(Request $request)
     {
 //        $timestamp = \Carbon\Carbon::parse($request->schedule);

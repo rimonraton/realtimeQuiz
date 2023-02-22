@@ -162,7 +162,7 @@
     </style>
 @endsection
 @section('content')
-    <div class="selectedQuestionCount text-center">
+    <div class="selectedQuestionCount text-center d-none" id="selectedQuestionCountDiv">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
     </div>
     <div class="row">
@@ -325,7 +325,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-1 mt-1 pt-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25" style="cursor: pointer" id="advance_question" data-toggle="tooltip" data-placement="top" title="Advance">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25" style="cursor: pointer" id="advance_question" data-toggle="tooltip" data-placement="top" title="{{__('exam.advance_tooltip')}}">
                                             <path fill="#AB7C94" d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"/>
                                         </svg>
                                     </div>
@@ -499,21 +499,15 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('Select topic & type number of question')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.advace_question_header')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body">
-                    <div class="row justify-content-center">
-                        @foreach($questionHasTopics as $quesHasTopic)
-                            <div class="checkbox checkbox-info col-6 py-2">
-                                <input type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" id="chcQ{{$quesHasTopic->id}}" class="material-inputs aqchk">
-                                <label for="chcQ{{$quesHasTopic->id}}">{{$quesHasTopic->name}}</label>
-                                <input type="number" class="d-none advanceNoq" data-id="{{$quesHasTopic->id}}" id="noqOfQ_{{$quesHasTopic->id}}">
-                            </div>
-                        @endforeach
+                <div class="modal-body" id="topic_view">
+
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info waves-effect" id="smt_advance_btn">{{__('add')}}</button>
+                        <button type="button" class="btn btn-info waves-effect" id="smt_advance_btn">{{__('exam.add')}}</button>
                         <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
@@ -558,9 +552,29 @@
             $('#advance_question').on('click', function (e) {
                 e.preventDefault()
                 $('#add-advance-question').modal('show')
+                $.ajax({
+                    url:'{{url('all-topics-has-question')}}',
+                    type: "GET",
+                    beforeSend: function() {
+                        console.log('Before Send');
+                        $('#topic_view').html(`<div class="text-center">
+                                              <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                              </div>
+                                            </div>`);
+                    },
+                    success: function(data) {
+                        $('#topic_view').html(data);
+                        console.log('first time..')
+                        // $('#add-advance-question').modal('show')
+                    },
+                    complete: function() {
+
+                    }
+                })
             })
             var chkadvancequestions = [];
-            $('.aqchk').on('click', function () {
+            $(document).on('click', '.aqchk', function () {
                 const id = $(this).val()
                 if ($(this).is(':checked')) {
                     let obj = {}
@@ -581,7 +595,7 @@
                     console.log(chkadvancequestions, 'after objarray..')
                 }
             })
-            $('.advanceNoq').on('keyup', function () {
+            $(document).on('keyup','.advanceNoq', function () {
                 if ($(this).val() != ''){
                     changeDesc($(this).attr('data-id'), $(this).val())
                 } else{
@@ -598,15 +612,22 @@
             }
 
             $('#smt_advance_btn').on('click', function () {
+                // chkquestions  = []
                 $('#advanceV').val(JSON.stringify(chkadvancequestions))
                 $('#add-advance-question').modal('hide')
+
+                if ( !$('#selectedQuestionCountDiv').hasClass('d-none')){
+                    $('#selectedQuestionCountDiv').addClass('d-none')
+                }
                 var view = '';
                 $.each(chkadvancequestions , function(index, val) {
-                    view += `<div class="p-2 mx-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
+                    view += `<div class="p-2 m-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
                 });
-                view += `<div class="p-2 mx-1 border border-secondary rounded-lg" style="cursor: pointer" id="clear_advance_data">Clear</div>`
+                view += `<div class="p-2 m-1 border border-danger text-danger rounded-lg" style="cursor: pointer" id="clear_advance_data">Clear</div>`
                 $('#selectedAdvanceData').html(view)
                 $('#viewData').removeClass('d-flex')
+                $( "#noq" ).val( '');
+                $('#clear_noq').addClass('d-none')
                 $( "#noq" ).prop( "disabled", true );
             })
             $(document).on('click', '#clear_advance_data', function () {
@@ -679,6 +700,11 @@
                     $(this).parent().removeClass('bg-beige')
                 }
                 QC = chkquestions.length;
+                if(QC > 0){
+                    $('#selectedQuestionCountDiv').removeClass('d-none')
+                } else {
+                    $('#selectedQuestionCountDiv').addClass('d-none')
+                }
                 if (lang=='bd'){
                     QC = q2bNumber(chkquestions.length)
                 }
@@ -732,7 +758,7 @@
                 var child = $(this).attr('id');
                 $("." + child).not(this).prop('checked', this.checked);
             });
-            $('body').on('click', '.pagination a', function(e) {
+            $('body').on('click', '#question_view_pagination .pagination a', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $.ajax({
@@ -750,6 +776,42 @@
                             $('.chk').each(function(k, v) {
                                 if(value == v.value){
                                     $(this).prop('checked', true);
+                                }
+                            });
+                        })
+
+
+                    }
+                })
+            });
+
+            $(document).on('click', '#topic_pagination .pagination a', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                // console.log(url, 'url....')
+                $.ajax({
+                    url:url,
+                    type: "GET",
+                    beforeSend: function() {
+                        console.log('Before Send');
+                        $('#topic_view').html(`<div class="text-center">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                        `);
+                    },
+                    success: function(data) {
+                        $('#topic_view').html(data);
+                    },
+                    complete: function() {
+                        // console.log('Completed');
+                        $.each(chkadvancequestions,function (key,value){
+                            $('.aqchk').each(function(k, v) {
+                                if(value.id == v.value){
+                                    $(this).prop('checked', true);
+                                    $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    $('#noqOfQ_' + value.id).val(value.value)
                                 }
                             });
                         })
