@@ -263,4 +263,5 @@ Route::get('exam-result/{examination}', [\App\Http\Controllers\ExamController::c
 Route::post('mark-update', [\App\Http\Controllers\ExamController::class, 'markUpdate']);
 Route::post('exam-name-update', [\App\Http\Controllers\ExamController::class, 'examNameUpdate']);
 Route::post('schedule-update', [\App\Http\Controllers\ExamController::class, 'scheduleUpdate']);
+Route::get('all-topics-has-question', [\App\Http\Controllers\ExamController::class, 'allTopicsHasQuestion']);
 

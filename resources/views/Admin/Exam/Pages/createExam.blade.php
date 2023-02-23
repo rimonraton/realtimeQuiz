@@ -75,10 +75,94 @@
             top: 11px;
             cursor: pointer;
         }
+        .help-tippo{
+            /*position: absolute;*/
+            /*top: 50%;*/
+            /*left: 50%;*/
+            /*transform: translate(-50%, -50%);*/
+            margin: auto;
+            text-align: center;
+            border: 1px solid #444;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            /*line-height: 42px;*/
+            cursor: default;
+        }
+
+        .help-tippo:before{
+            content:'i';
+            font-family: sans-serif;
+            font-weight: normal;
+            color:#444;
+        }
+
+        .help-tippo:hover p{
+            display:block;
+            transform-origin: 100% 0%;
+            -webkit-animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* The tooltip */
+        .help-tippo p {
+            display: none;
+            font-family: sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            text-align: center;
+            background-color: #FFFFFF;
+            padding: 12px 16px;
+            width: 178px;
+            height: auto;
+            /*position: absolute;*/
+            /*left: 50%;*/
+            transform: translate(-50%, 5%);
+            border-radius: 3px;
+            /* 	border: 1px solid #E0E0E0; */
+            box-shadow: 0 0px 20px 0 rgba(0,0,0,0.1);
+            color: #37393D;
+            font-size: 12px;
+            line-height: 18px;
+            z-index: 99;
+        }
+
+        .help-tippo p a {
+            color: #067df7;
+            text-decoration: none;
+        }
+
+        .help-tippo p a:hover {
+            text-decoration: underline;
+        }
+
+        /* The pointer of the tooltip */
+        .help-tippo p:before {
+            position: absolute;
+            content: '';
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-bottom-color:#FFFFFF;
+            top: -9px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Prevents the tooltip from being hidden */
+        .help-tippo p:after {
+            width: 10px;
+            height: 40px;
+            content:'';
+            position: absolute;
+            top: -40px;
+            left: 0;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="selectedQuestionCount text-center">
+    <div class="selectedQuestionCount text-center d-none" id="selectedQuestionCountDiv">
         {{__('form.selected_question')}} <span style="color: blue" id="count"></span>
     </div>
     <div class="row">
@@ -228,10 +312,20 @@
                                 </div>
                                 @can('QM',\App\Question::class)
                                     <div class="col-sm-3 mt-1">
-                                        <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ" id="noq">
+                                        <input type="number" class="form-control"  placeholder="{{__('form.no_of_questions')}}" name="NOQ" id="noq" disabled="true">
+                                        <div class="d-flex pointer p-2">
+                                            <div class="help-tippo">
+                                                <p style="z-index: 999999; position: relative;">
+                                                    {{$lang == 'gb' ? 'That number of questions will be selected from your selected subject' : 'আপনার নির্বাচন করা বিষয় থেকে উক্ত সংখ্যক প্রশ্ন নির্বাচিত হবে'}}
+                                                </p>
+                                            </div>
+                                            <div id="clear_noq" class="d-none">
+                                                <span class="p-1 border border-danger rounded-lg text-danger" style="cursor: pointer">Clear</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-1 mt-1 pt-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25" style="cursor: pointer" id="advance_question" data-toggle="tooltip" data-placement="top" title="Advance">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25" style="cursor: pointer" id="advance_question" data-toggle="tooltip" data-placement="top" title="{{__('exam.advance_tooltip')}}">
                                             <path fill="#AB7C94" d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"/>
                                         </svg>
                                     </div>
@@ -326,7 +420,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group mb-0 text-right">
                             @can('create',App\Quiz::class)
                                 <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('exam.create_exam')}}</button>
@@ -406,21 +499,15 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">{{__('Select topic & type number of question')}}</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{__('exam.advace_question_header')}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body">
-                    <div class="row justify-content-center">
-                        @foreach($questionHasTopics as $quesHasTopic)
-                            <div class="checkbox checkbox-info col-6 py-2">
-                                <input type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" id="chcQ{{$quesHasTopic->id}}" class="material-inputs aqchk">
-                                <label for="chcQ{{$quesHasTopic->id}}">{{$quesHasTopic->name}}</label>
-                                <input type="number" class="d-none advanceNoq" data-id="{{$quesHasTopic->id}}" id="noqOfQ_{{$quesHasTopic->id}}">
-                            </div>
-                        @endforeach
+                <div class="modal-body" id="topic_view">
+
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info waves-effect" id="smt_advance_btn">{{__('add')}}</button>
+                        <button type="button" class="btn btn-info waves-effect" id="smt_advance_btn">{{__('exam.add')}}</button>
                         <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 
@@ -465,14 +552,35 @@
             $('#advance_question').on('click', function (e) {
                 e.preventDefault()
                 $('#add-advance-question').modal('show')
+                $.ajax({
+                    url:'{{url('all-topics-has-question')}}',
+                    type: "GET",
+                    beforeSend: function() {
+                        console.log('Before Send');
+                        $('#topic_view').html(`<div class="text-center">
+                                              <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                              </div>
+                                            </div>`);
+                    },
+                    success: function(data) {
+                        $('#topic_view').html(data);
+                        console.log('first time..')
+                        // $('#add-advance-question').modal('show')
+                    },
+                    complete: function() {
+
+                    }
+                })
             })
             var chkadvancequestions = [];
-            $('.aqchk').on('click', function () {
+            $(document).on('click', '.aqchk', function () {
                 const id = $(this).val()
                 if ($(this).is(':checked')) {
                     let obj = {}
                     obj['id'] = $(this).val()
                     obj['name'] = $(this).attr('data-name')
+                    obj['bn_name'] = $(this).attr('data-bnname')
                     obj['value'] = 0
                     chkadvancequestions.push(obj)
                     $('#noqOfQ_' + $(this).val()).removeClass('d-none')
@@ -487,7 +595,7 @@
                     console.log(chkadvancequestions, 'after objarray..')
                 }
             })
-            $('.advanceNoq').on('keyup', function () {
+            $(document).on('keyup','.advanceNoq', function () {
                 if ($(this).val() != ''){
                     changeDesc($(this).attr('data-id'), $(this).val())
                 } else{
@@ -504,14 +612,30 @@
             }
 
             $('#smt_advance_btn').on('click', function () {
+                // chkquestions  = []
                 $('#advanceV').val(JSON.stringify(chkadvancequestions))
                 $('#add-advance-question').modal('hide')
+
+                if ( !$('#selectedQuestionCountDiv').hasClass('d-none')){
+                    $('#selectedQuestionCountDiv').addClass('d-none')
+                }
                 var view = '';
                 $.each(chkadvancequestions , function(index, val) {
-                    view += `<div class="p-2 mx-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
+                    view += `<div class="p-2 m-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
                 });
+                view += `<div class="p-2 m-1 border border-danger text-danger rounded-lg" style="cursor: pointer" id="clear_advance_data">Clear</div>`
                 $('#selectedAdvanceData').html(view)
                 $('#viewData').removeClass('d-flex')
+                $( "#noq" ).val( '');
+                $('#clear_noq').addClass('d-none')
+                $( "#noq" ).prop( "disabled", true );
+            })
+            $(document).on('click', '#clear_advance_data', function () {
+                chkadvancequestions = []
+                $('#advanceV').val('')
+                $( "#noq" ).prop( "disabled", false );
+                $('#viewData').addClass('d-flex')
+                $('#selectedAdvanceData').empty()
             })
             $(document).on('click' , '#iconDatepicker' , function(){
                 // alert('hello click')
@@ -558,7 +682,14 @@
             var QC;
             $(document).on('click','.chk',function (){
                 var id = $(this).val();
-                console.log($(this).parent(), 'this element')
+                $('#noq').val('')
+                // alert($('input:checkbox.chk:checked').length)
+                if($('input:checkbox.chk:checked').length > 0) {
+                    $( "#noq" ).prop( "disabled", true );
+                } else{
+                    $( "#noq" ).prop( "disabled", false );
+                }
+                // console.log($(this).parent(), 'this element')
                 if ($(this).is(':checked')) {
                     chkquestions.push(id);
                     $(this).parent().addClass('bg-beige')
@@ -569,13 +700,34 @@
                     $(this).parent().removeClass('bg-beige')
                 }
                 QC = chkquestions.length;
+                if(QC > 0){
+                    $('#selectedQuestionCountDiv').removeClass('d-none')
+                } else {
+                    $('#selectedQuestionCountDiv').addClass('d-none')
+                }
                 if (lang=='bd'){
                     QC = q2bNumber(chkquestions.length)
                 }
                 $('#count').html(QC);
                 $('#selectedQ').val(chkquestions);
             })
-
+            $('#noq').on('keyup', function () {
+                // console.log('keyup value', !$(this).val())
+                if (!$(this).val()){
+                    //value null
+                    $('#viewData').addClass('d-flex')
+                    $('#clear_noq').addClass('d-none')
+                } else {
+                    //value not null
+                    $('#viewData').removeClass('d-flex')
+                    $('#clear_noq').removeClass('d-none')
+                }
+            })
+            $('#clear_noq').on('click', function () {
+                $('#noq').val('')
+                $(this).addClass('d-none')
+                $('#viewData').addClass('d-flex')
+            })
             function addarrvalue(value){
                 arrayindex.push(value);
                 $('#selectedindex').val(arrayindex);
@@ -588,7 +740,6 @@
                 $('#selectedindex').val(arrayindex);
                 // console.log(arrayindex);
             }
-
 
             $(document).on('click',".checkAll", function() {
                 if ($(this).is(':checked')){
@@ -607,7 +758,7 @@
                 var child = $(this).attr('id');
                 $("." + child).not(this).prop('checked', this.checked);
             });
-            $('body').on('click', '.pagination a', function(e) {
+            $('body').on('click', '#question_view_pagination .pagination a', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $.ajax({
@@ -625,6 +776,42 @@
                             $('.chk').each(function(k, v) {
                                 if(value == v.value){
                                     $(this).prop('checked', true);
+                                }
+                            });
+                        })
+
+
+                    }
+                })
+            });
+
+            $(document).on('click', '#topic_pagination .pagination a', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                // console.log(url, 'url....')
+                $.ajax({
+                    url:url,
+                    type: "GET",
+                    beforeSend: function() {
+                        console.log('Before Send');
+                        $('#topic_view').html(`<div class="text-center">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                        `);
+                    },
+                    success: function(data) {
+                        $('#topic_view').html(data);
+                    },
+                    complete: function() {
+                        // console.log('Completed');
+                        $.each(chkadvancequestions,function (key,value){
+                            $('.aqchk').each(function(k, v) {
+                                if(value.id == v.value){
+                                    $(this).prop('checked', true);
+                                    $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    $('#noqOfQ_' + value.id).val(value.value)
                                 }
                             });
                         })
@@ -671,9 +858,11 @@
                 const bn_or_en = en_exam != '' ? true : (bn_exam != '' ? true : false)
                 const exam_time = $('#exam_time').val()
                 const selectedQ = $('#selectedQ').val()
+                const advanceValue = $('#advanceV').val()
                 const noq = $('#noq').val()
-                const questionsValide = selectedQ != '' ? true : (noq != '' ? true : false)
+                const questionsValide = advanceValue != '' ? true : (selectedQ != '' ? true : (noq != '' ? true : false))
                 const dateTime = $('#timeseconds').val()
+                const topicOrAdvance = cid != '' ? true : ( advanceValue != '' ? true : false)
 
                 // console.log('condition', cid, bn_or_en, exam_time, en_exam != '', bn_exam != '')
                 // return
@@ -685,7 +874,8 @@
                 //         paise = 1;
                 //     }
                 // });
-                if (cid != '' && bn_or_en && exam_time != '' && questionsValide) {
+                console.log('topicOrAdvance', topicOrAdvance, advanceValue)
+                if (topicOrAdvance && bn_or_en && exam_time != '' && questionsValide) {
                     $('#smtform').submit();
                 } else {
                     let lang = '{{$lang}}'
@@ -700,7 +890,7 @@
                         message = lang == 'gb' ? 'Please give the date and time when the exam will be held' : 'অনুগ্রহ করে পরীক্ষা অনুষ্ঠিত হওয়ার তারিখ ও সময় দিন '
                     }
                     else if(cid == ''){
-                        message = lang == 'gb' ? 'Please select the Topic.' : 'বিষয় নির্বাচন করুন'
+                        message = lang == 'gb' ? 'Please select the Topic  or Select the topic and number of questions from Advanced' : 'বিষয় নির্বাচন করুন বা অ্যাডভান্সড থেকে বিষয়  এবং প্রশ্নের সংখ্যা নির্বাচন করুন'
                     }
                     else if (!questionsValide) {
                         message = lang == 'gb' ? 'Please check questions or type the number of question' : 'অনুগ্রহ করে প্রশ্ন চেক করুন বা প্রশ্নের সংখ্যা টাইপ করুন'
@@ -902,7 +1092,7 @@
             $(document).on('click', '.topicls', function() {
 
                 // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
-
+                $( "#noq" ).prop( "disabled", false );
                 if ($(this).hasClass('activeli')) {
                     $(this).removeClass('activeli');
                     $('#selectedCid').val('');

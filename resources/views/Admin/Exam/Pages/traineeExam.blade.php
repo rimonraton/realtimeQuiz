@@ -186,7 +186,16 @@
                         <div class="card-body py-0 ">
                             <h5 class="my-3 text-primary">{{$lang == 'gb' ? ($exam->exam_en ? $exam->exam_en : $exam->exam_bn)  : ($exam->exam_bn ? $exam->exam_bn : $exam->exam_en)}}</h5>
                             <p>{{$lang == 'gb' ? 'Exam Duration' : 'পরীক্ষার সময়কাল'}}: {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}</p>
+                            @if($exam->category)
                             <p>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}: {{$lang == 'gb' ? $exam->category->name : $exam->category->bn_name }}</p>
+                            @else
+                            <p>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}:
+                                @foreach(json_decode($exam->topics) as $topic)
+                                    {{$lang == 'gb' ? ( $topic->name ?  $topic->name :  $topic->bn_name)  : ($topic->bn_name ? $topic->bn_name : $topic->name)}}
+                                    {{ $loop->last ? '' : ', ' }}
+                                @endforeach
+                            </p>
+                            @endif
                             <p>{{$lang == 'gb' ? 'Exam Time' : 'পরীক্ষার সময়'}}:
                             <span class="font-14 text-danger">
                                 {{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}

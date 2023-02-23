@@ -24,9 +24,9 @@ return [
     'result_title' => 'Result of',
     'submitted' => 'Exam Submitted',
     'exam_time_placeholder' => 'Please enter the exam duration',
-    'second' => 'Second',
-    'minute' => 'Minute',
-    'hour' => 'Hour',
+    'second' => 'Seconds',
+    'minute' => 'Minutes',
+    'hour' => 'Hours',
     'number_negative' => 'Number and negative number for each question',
     'each_question_number_placeholder' => 'Enter the number of each question',
     'select_negative_mark_placeholder' => 'Please Select Negative mark',
@@ -52,4 +52,6 @@ return [
     'placeholder_exam_date_time' => 'Enter date and time',
     'questions_mark' => 'Marks',
     'expired' => 'Exam expired',
+    'advace_question_header' => 'Select topic & type number of question',
+    'advance_tooltip' => 'Click to give number of topics and questions as per your choice'
 ];

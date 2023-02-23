@@ -36,7 +36,7 @@
                                 </div>
                             @endforeach
                            </div>
-                            <div class="row mt-4 justify-content-center">
+                            <div class="row mt-4 justify-content-center" id="question_view_pagination">
                                 {{$questionCat->links()}}
                             </div>
                         </div>
@@ -110,7 +110,7 @@
 {{--                                </div>--}}
 {{--                            </div>--}}
                             <div class="row mt-2 justify-content-center">
-                                <div class="col-md-8">
+                                <div class="col-md-8" id="question_view_pagination">
                                     {{$questionCat->links()}}
                                 </div>
                                 <div class="col-md-4" >
