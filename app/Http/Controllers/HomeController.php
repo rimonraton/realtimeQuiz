@@ -164,6 +164,7 @@ class HomeController extends Controller
         $questions = Question::with('options')
             ->whereIn('id', explode(",", $challenge->question_id))->get();
         $user = Auth::user();
+//        return gettype($user);
         $user['lang'] = app()->getLocale();
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('games.challenge', compact(['challenge', 'user', 'questions', 'uid', 'gmsg']));

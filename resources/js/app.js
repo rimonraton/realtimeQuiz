@@ -18,23 +18,18 @@ Vue.prototype.__ = str => _.get(window.i18n, str)
 // Vue.component('game', require('./components/Game.vue').default);
 // Vue.component('single-game', require('./components/SingleGame.vue'));
 
-import Practice from './components/games/Practice'
-import Challenge from './components/games/Challenge'
-import TeamQuiz from './components/games/TeamQuiz'
-import Moderator from './components/games/Moderator'
-import Team from './components/games/Team'
-import TeamModerator from './components/games/TeamModerator'
-import ExamQuestionTimeMode from './components/games/ExamQuestionTimeMode'
-import ExamTimeMode from './components/games/ExamTimeMode'
-import ExamResult from './components/games/ExamResult'
-import ExamResultWhenEmpty from './components/games/ExamResultWhenSubmitEmpty'
+// import Practice from './components/games/Practice'
+// import Challenge from './components/games/Challenge'
+// import TeamQuiz from './components/games/TeamQuiz'
+// import Moderator from './components/games/Moderator'
+// import Team from './components/games/Team'
+// import TeamModerator from './components/games/TeamModerator'
+// import ExamQuestionTimeMode from './components/games/ExamQuestionTimeMode'
+// import ExamTimeMode from './components/games/ExamTimeMode'
+// import ExamResult from './components/games/ExamResult'
+// import ExamResultWhenEmpty from './components/games/ExamResultWhenSubmitEmpty'
 // import router from './router/Router.js';
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -48,16 +43,17 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const app = new Vue({
     el: '#app',
     components: {
-	    'Practice': Practice,
-	    'Challenge': Challenge,
-	    'TeamQuiz': TeamQuiz,
-	    'Moderator': Moderator,
-	    'Team': Team,
-        'TeamModerator':TeamModerator,
-        'ExamQuestionTimeMode' : ExamQuestionTimeMode,
-        'ExamTimeMode' : ExamTimeMode,
-        'ExamResult' : ExamResult,
-        'ExamResultWhenEmpty' : ExamResultWhenEmpty,
+	    'Practice': () => import('./components/games/Practice'),
+	    'Challenge': () => import('./components/games/Challenge'),
+        'SingleQuestion': () => import('./components/games/SingleQuestion'),
+	    'TeamQuiz': () => import('./components/games/TeamQuiz'),
+	    'Moderator': () => import('./components/games/Moderator'),
+	    'Team': () => import('./components/games/Team'),
+        'TeamModerator': () => import('./components/games/TeamModerator'),
+        'ExamQuestionTimeMode' : () => import('./components/games/ExamQuestionTimeMode'),
+        'ExamTimeMode' : () => import('./components/games/ExamTimeMode'),
+        'ExamResult' : () => import('./components/games/ExamResult'),
+        'ExamResultWhenEmpty' : () => import('./components/games/ExamResultWhenSubmitEmpty'),
 	}
     // router
 });

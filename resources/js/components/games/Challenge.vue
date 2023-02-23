@@ -304,17 +304,12 @@
                 });
 
             this.current = this.questions[this.qid].id
+            document.addEventListener("blur", () =>  this.preventLeave());
             document.addEventListener("visibilitychange", () => {
-                if (document.hidden){
-                   let newwindow = window.open('www.google.com','name','height=200,width=150');
-                    if (window.focus) {newwindow.focus()}
-                    return false;
-                    //this.preventClick = true
-                    console.log("Browser tab is hidden")
-                } else {
-                    console.log("Browser tab is visible")
+                if(document.hidden) {
+                    this.preventLeave()
                 }
-            });
+            })
 
         },
 
@@ -322,9 +317,9 @@
             console.log('beforeMount')
             window.addEventListener("beforeunload", this.preventNav)
             this.$once("hook:beforeDestroy", () => {
-              window.removeEventListener("beforeunload", this.preventNav);
+                window.removeEventListener("beforeunload", this.preventNav);
             });
-          },
+        },
 
         beforeRouteLeave(to, from, next) {
             console.log('beforeRouteLeave')
@@ -339,10 +334,21 @@
 
         methods: {
             preventNav(event) {
-              if (!this.game_start) return;
-              event.preventDefault();
-              // Chrome requires returnValue to be set.
-              event.returnValue = "";
+                if (!this.game_start) return;
+                event.preventDefault();
+                // Chrome requires returnValue to be set.
+                event.returnValue = "";
+            },
+            preventLeave() {
+                console.log('new notification leave from quiz. blur')
+                Notification.requestPermission().then(param => {
+                    if(param === 'granted') {
+                        new Notification('Leave from Quiz', {
+                            body: 'You should not exit this screen without completing the Exam/quiz.!',
+                            tag: 'Leave from Quiz',
+                        })
+                    }
+                })
             },
             gameStart: function () {
                 this.sqo = true
