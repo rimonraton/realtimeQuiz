@@ -55,9 +55,10 @@ Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::
 Route::get('question-list/{tid}', [QuestionController::class, 'qListByTopic']);
 Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::class, 'qListByTopicKeyword']);
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
-Route::get('question/create', 'QuestionController@create');
+Route::get('question/create', [QuestionController::class,'create']);
 Route::post('question/save', 'QuestionController@storeQuestion');
-Route::get('question/getlist/{id}/{keyword?}', 'QuestionController@getlist');
+Route::get('question/getlist/{id}/{keyword?}', [QuestionController::class, 'getlist']);
+Route::get('question/get-review-list/{id}/{keyword?}', 'QuestionController@getreviewlist');
 Route::get('question/edit/{id}', 'QuestionController@editQuestion');
 Route::post('question/update', 'QuestionController@updateQuestion');
 Route::get('question/delete/{id}', 'QuestionController@deleteQuestion');
@@ -66,6 +67,8 @@ Route::get('deleteoption/{id}','QuestionController@deleteOption');
 Route::get('question_excel',[\App\Http\Controllers\ExcelController::class,'index']);
 Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::class,'store']);
 Route::post('option-file-update',[QuestionController::class,'optionFileUpdate']);
+Route::get('review-questions', [QuestionController::class, 'reviewQuestions']);
+Route::post('verify-question-update', [QuestionController::class, 'verifyQuestionUpdate']);
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 

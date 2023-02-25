@@ -373,14 +373,21 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.questions_type')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-9">
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.questions_type_level')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <div class="col-sm-5">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
                                     <option value="">{{__('form.question_type')}}</option>
                                     @foreach($quizCategory as $qc)
                                     <option value="{{$qc->id}}" id="cat_{{$qc->id}}" {{$loop->first?'selected':''}}>{{$lang=='gb'?$qc->name:$qc->bn_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-control custom-select" name="difficulty" id="difficulty" required>
+{{--                                    <option value="">{{__('form.question_type')}}</option>--}}
+                                    @foreach($difficulty as $dc)
+                                        <option value="{{$dc->id}}" id="diff_{{$dc->id}}" {{$loop->first?'selected':''}}>{{$lang=='gb'?$dc->name:$dc->bn_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -946,11 +953,11 @@
                 const add = '{{$lang}}' == 'gb'? 'Add' : 'যুক্ত করুন'
                 const cancel = '{{$lang}}' == 'gb'? 'Cancel' : 'বাতিল করুন'
                 $('#custom_input_text').append(
-                    `<div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
-                        <span data-dismiss="modal">${add}</span>
+                    `<div class="btn col-sm-1 border border-secondary rounded-lg mx-1" data-dismiss="modal">
+                        <span >${add}</span>
                     </div>
-                     <div class="btn col-sm-1 border border-secondary rounded-lg customQ mx-1">
-                        <span id="cancel_q">${cancel}</span>
+                     <div class="btn col-sm-1 border border-secondary rounded-lg mx-1" id="cancel_q">
+                        <span>${cancel}</span>
                     </div>`
                 )
             }
@@ -974,6 +981,25 @@
         })
         $('#showQButton').on('click', function () {
             const id = $(this).attr('data-cid');
+            $('#custom_input_text').empty();
+            if ($('#bdquestion').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#bdquestion').val()}</div>`)
+            }
+            if ($('#question').val() != ''){
+                $('#custom_input_text').append(`<div data-cid='${id}' class="btn col-sm-4 border border-secondary rounded-lg customQ mx-1">${$('#question').val()}</div>`)
+            }
+            if ($('#bdquestion').val() != '' || $('#question').val() != '') {
+                const add = '{{$lang}}' == 'gb'? 'Add' : 'যুক্ত করুন'
+                const cancel = '{{$lang}}' == 'gb'? 'Cancel' : 'বাতিল করুন'
+                $('#custom_input_text').append(
+                    `<div class="btn col-sm-1 border border-secondary rounded-lg mx-1" data-dismiss="modal">
+                        <span >${add}</span>
+                    </div>
+                     <div class="btn col-sm-1 border border-secondary rounded-lg mx-1" id="cancel_q">
+                        <span>${cancel}</span>
+                    </div>`
+                )
+            }
             getAllQuestions(id)
             $('#qModal').modal('show')
         })

@@ -44,7 +44,7 @@ class ExamController extends Controller
 
     public function allTopicsHasQuestion()
     {
-        $questionHasTopics = Category::whereHas('questions')->paginate(20);
+        $questionHasTopics = Category::withCount('questions')->whereHas('questions')->paginate(20);
         return view('Admin.PartialPages.Exam.topics', compact('questionHasTopics'));
     }
 

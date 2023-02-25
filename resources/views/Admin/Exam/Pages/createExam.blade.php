@@ -263,7 +263,7 @@
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.number_negative')}} :</label>
                                 <div class="col-sm-4">
-                                    <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="each_q_number"/>
+                                    <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" min="0" step="0.01" id="each_q_number"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <select class="form-control" id="select_negetive_mark" disabled="disabled">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Difficulty;
 use App\QuestionType;
 use Illuminate\Http\Request;
 use App\Category;
@@ -102,7 +103,8 @@ class QuestionController extends Controller
         $admin_users = $admin->users()->pluck('id');
         $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         $quizCategory = QuestionType::all();
-        return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory']));
+        $difficulty = Difficulty::all();
+        return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory', 'difficulty']));
     }
     public function storeQuestion(Request $request)
     {
@@ -164,6 +166,7 @@ class QuestionController extends Controller
             'bd_answer_explanation' => $request->bdexplenation,
             'fileType' => $fileType,
             'user_id' => Auth::user()->id,
+            'level' => $request->difficulty
             // 'created_at' => Carbon::,
         ]);
 
@@ -261,6 +264,25 @@ class QuestionController extends Controller
 //                $q->where('category_id', $id);
 //            }, 'questions.options','questions.role.role'])
             return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
+        }
+        return '';
+    }
+    public function getreviewlist($id, $keyword = '')
+    {
+//        return $id;
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+
+//        return Question::where('category_id', $id)->get();
+
+        $id = explode(',',$id);
+        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
+        if ($qus) {
+            $questions = QuestionType::all();
+//            with(['questions' => function ($q) use ($id) {
+//                $q->where('category_id', $id);
+//            }, 'questions.options','questions.role.role'])
+            return view('Admin.PartialPages.Questions.review_questions_data', compact('questions', 'id','admin_users','keyword'));
         }
         return '';
     }
@@ -374,6 +396,7 @@ class QuestionController extends Controller
 //        dd($request->all());
 //        return  explode(',', $request->oid);
 //            return file_exists($request->old_file_path);
+//        return json_decode($request->bdoption);
         if ($request->file){
             $location = '';
             $imgPath = '';
@@ -429,7 +452,7 @@ class QuestionController extends Controller
 //            'bd_question_text' => $request->bdquestion,
 //        ]);
         if ($request->option || $request->bdoption){
-            foreach (explode(',', $request->option) as  $k => $o) {
+            foreach (json_decode($request->option) as  $k => $o) {
                 $oid = explode(',', $request->oid)[$k];
                 if (explode(',', $request->oid)[$k]=='new'){
                     $oid =$max_id;
@@ -438,7 +461,7 @@ class QuestionController extends Controller
                 QuestionsOption::updateOrCreate(
                     ['id' => $oid],
                     [
-                        'bd_option' => explode(',',$request->bdoption)[$k],
+                        'bd_option' => json_decode($request->bdoption)[$k],
                         'option' => $o,
                         'correct' => explode(',', $request->ans)[$k],
                         'question_id'=>$request->qid,
@@ -511,5 +534,32 @@ class QuestionController extends Controller
 
         }
         return 'success';
+    }
+
+    public function reviewQuestions()
+    {
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $catName = '';
+        $id = '';
+        if ($id) {
+            $catName = Category::find($id)->name;
+        }
+        $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        return view('Admin.PartialPages.Questions.review_questions_list', compact(['topic', 'id', 'catName']));
+    }
+
+    public function verifyQuestionUpdate(Request $request)
+    {
+
+//        return $request->ids;
+//       return gettype($request->ids);
+
+       $ids = explode(",", $request->ids);
+//      return gettype($ids);
+        Question::whereIn('id', $ids)->update([
+            'status' => 1
+        ]);
+        return Question::whereIn('id', $ids)->get();
     }
 }
