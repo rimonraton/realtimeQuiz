@@ -3,6 +3,7 @@
 use App\Http\Controllers\Game\ChallengeController;
 use App\Http\Controllers\Game\ModeController;
 use App\Http\Controllers\Game\PracticeController;
+use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewUserController;
 use App\Http\Controllers\QuestionController;
@@ -196,6 +197,7 @@ Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin']);
 Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge']);
+Route::get('SingleQuestionDisplay/{challenge}/{uid}', [SingleQuestionDisplayQuizController::class, 'Game']);
 Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team']);
 
 Route::post('createChallenge', [HomeController::class, 'createChallenge']);
