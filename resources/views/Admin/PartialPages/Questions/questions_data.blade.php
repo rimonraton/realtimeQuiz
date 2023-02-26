@@ -49,9 +49,21 @@
                                         <tbody>
                                         @php
                                             if ($keyword){
-                                                $questionCat = $q->questions()->where('category_id', $id[0])->whereIn('user_id',$admin_users)->where('question_text', 'like', '%' . $keyword . '%')->orWhere('bd_question_text', 'like', '%' . $keyword . '%')->orderBy('id','desc')->paginate(10);
+                                                $questionCat = $q->questions()
+                                                ->whereIn('user_id',$admin_users)
+                                                ->where('question_text', 'like', '%' . $keyword . '%')
+                                                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                                                ->with('difficulty')
+                                                ->where('category_id', $id[0])
+                                                ->orderBy('id','desc')
+                                                ->paginate(10);
                                             } else{
-                                                $questionCat = $q->questions()->where('category_id', $id[0])->whereIn('user_id',$admin_users)->with('difficulty')->orderBy('id','desc')->paginate(10);
+                                                $questionCat = $q->questions()
+                                                ->where('category_id', $id[0])
+                                                ->whereIn('user_id',$admin_users)
+                                                ->with('difficulty')
+                                                ->orderBy('id','desc')
+                                                ->paginate(10);
                                             }
                                         @endphp
                                             @foreach($questionCat as $qs)
