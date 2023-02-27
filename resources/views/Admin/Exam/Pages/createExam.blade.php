@@ -529,6 +529,7 @@
     <script>
         $(function() {
             var lang ='{{$lang}}';
+            var checkedTopics = [];
             var today = new Date()
             $('.timeseconds').daterangepicker({
                 timePicker: true,
@@ -572,7 +573,28 @@
                         // $('#add-advance-question').modal('show')
                     },
                     complete: function() {
-
+                        // console.log('Completed');
+                        $.each(checkedTopics,function (key,value){
+                            $('.chkparent').each(function(k, v) {
+                                // console.log('value...', v.nextElementSibling.nextElementSibling)
+                                if(value.id == v.value){
+                                    $(this).prop('checked', true);
+                                    // $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    // $('#noqOfQ_' + value.id).val(value.value)
+                                }
+                            });
+                            $('.difficulty').each(function(k, v) {
+                                console.log('value...', v.nextElementSibling.nextElementSibling)
+                                if(value.propId == v.id){
+                                    v.parentElement.parentElement.className = 'parent'
+                                    v.nextElementSibling.nextElementSibling.className = 'advanceNoQ'
+                                    $(this).prop('checked', true);
+                                    v.nextElementSibling.nextElementSibling.value = value.value
+                                    // $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    // $('#noqOfQ_' + value.id).val(value.value)
+                                }
+                            });
+                        })
                     }
                 })
             })
@@ -614,14 +636,13 @@
                 }
             }
             function changeValue( id, value ) {
-                for (var i in checkedQuestions) {
-                    if (checkedQuestions[i].propId == id) {
-                        checkedQuestions[i].value = value;
+                for (var i in checkedTopics) {
+                    if (checkedTopics[i].propId == id) {
+                        checkedTopics[i].value = value;
                         break; //Stop this loop, we found it!
                     }
                 }
             }
-            var checkedQuestions = [];
             $(document).on('click', '.chkparent', function () {
                 const id = $(this).attr('data-tid')
                 if ($(this).is(':checked')){
@@ -629,10 +650,10 @@
                 } else {
                     // console.log($(this).siblings().siblings('.parent input:checkbox'))
                     // $(this).siblings().siblings('.parent input:checkbox').prop('checked', false)
-                    checkedQuestions = checkedQuestions.filter(function(elem){
+                    checkedTopics = checkedTopics.filter(function(elem){
                         return elem.id != id
                     });
-                    console.log('checkedQuestions... parent', checkedQuestions)
+                    // console.log('checkedQuestions... parent', checkedQuestions)
                     $(this).siblings().siblings('.parent').addClass('d-none')
                     $('#easy' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
                     $('#intermediate' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
@@ -654,16 +675,16 @@
                     obj['difficulty'] = difficulty
                     obj['difficulty_value'] = difficultyValue
                     obj['propId'] = propId
-                    checkedQuestions.push(obj)
+                    checkedTopics.push(obj)
                     $(this).siblings().siblings('.advanceNoQ').removeClass('d-none').focus()
-                    console.log('checkedQuestions...', checkedQuestions)
+                    // console.log('checkedQuestions...', checkedQuestions)
                 }
                 if (!$(this).is(':checked')){
                     console.log('id diff', id, difficulty)
-                    checkedQuestions = checkedQuestions.filter(function(elem){
+                    checkedTopics = checkedTopics.filter(function(elem){
                         return elem.propId != propId
                     });
-                    console.log('unchecked checkedQuestions...', checkedQuestions)
+                    // console.log('unchecked checkedQuestions...', checkedQuestions)
                     $(this).siblings().siblings('.advanceNoQ').addClass('d-none')
                 }
             })
@@ -674,22 +695,22 @@
                         "closeButton": true
                     });
                     $(this).val($(this).attr('max'))
-                    return
-                } else {
+                    // return
+                }
                     if ($(this).val() != ''){
                         changeValue($(this).attr('data-id'), $(this).val())
                     } else{
                         changeValue($(this).attr('data-id'), 0)
                     }
-                }
-                console.log('value change', checkedQuestions)
+
+                // console.log('value change', checkedQuestions)
             })
             $('#smt_advance_btn').on('click', function () {
                 // chkquestions  = []
-                checkedQuestions = checkedQuestions.filter(function(elem){
+                checkedTopics = checkedTopics.filter(function(elem){
                     return elem.value != 0
                 });
-                    $('#advanceV').val(JSON.stringify(checkedQuestions))
+                    $('#advanceV').val(JSON.stringify(checkedTopics))
                 $('#add-advance-question').modal('hide')
 
                 if ( !$('#selectedQuestionCountDiv').hasClass('d-none')){
@@ -697,7 +718,7 @@
                 }
                 var view = '';
 
-                $.each(checkedQuestions , function(index, val) {
+                $.each(checkedTopics , function(index, val) {
                     let diff = '';
                     if (val.difficulty_value == 1) {
                         diff += `<span class='badge badge-secondary'>${val.difficulty}</span>`
@@ -738,7 +759,7 @@
             //     $( "#noq" ).prop( "disabled", true );
             // })
             $(document).on('click', '#clear_advance_data', function () {
-                chkadvancequestions = []
+                checkedTopics = []
                 $('#advanceV').val('')
                 $( "#noq" ).prop( "disabled", false );
                 $('#viewData').addClass('d-flex')
@@ -913,16 +934,36 @@
                     },
                     complete: function() {
                         // console.log('Completed');
-                        $.each(chkadvancequestions,function (key,value){
-                            $('.aqchk').each(function(k, v) {
+                        // $.each(chkadvancequestions,function (key,value){
+                        //     $('.aqchk').each(function(k, v) {
+                        //         if(value.id == v.value){
+                        //             $(this).prop('checked', true);
+                        //             $('#noqOfQ_' + value.id).removeClass('d-none')
+                        //             $('#noqOfQ_' + value.id).val(value.value)
+                        //         }
+                        //     });
+                        // })
+                        $.each(checkedTopics,function (key,value){
+                            $('.chkparent').each(function(k, v) {
+                                // console.log('value...', v.nextElementSibling.nextElementSibling)
                                 if(value.id == v.value){
                                     $(this).prop('checked', true);
-                                    $('#noqOfQ_' + value.id).removeClass('d-none')
-                                    $('#noqOfQ_' + value.id).val(value.value)
+                                    // $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    // $('#noqOfQ_' + value.id).val(value.value)
+                                }
+                            });
+                            $('.difficulty').each(function(k, v) {
+                                console.log('value...', v.nextElementSibling.nextElementSibling)
+                                if(value.propId == v.id){
+                                    v.parentElement.parentElement.className = 'parent'
+                                    v.nextElementSibling.nextElementSibling.className = 'advanceNoQ'
+                                    $(this).prop('checked', true);
+                                    v.nextElementSibling.nextElementSibling.value = value.value
+                                    // $('#noqOfQ_' + value.id).removeClass('d-none')
+                                    // $('#noqOfQ_' + value.id).val(value.value)
                                 }
                             });
                         })
-
 
                     }
                 })

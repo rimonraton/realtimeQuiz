@@ -5,9 +5,8 @@
 {{--        <input type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" id="chcQ{{$quesHasTopic->id}}" class="material-inputs aqchk">--}}
 {{--        <label for="chcQ{{$quesHasTopic->id}}">{{$lang == 'gb' ? ($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) : ($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}</label>--}}
 {{--        <input type="number" class="d-none advanceNoq" data-id="{{$quesHasTopic->id}}" id="noqOfQ_{{$quesHasTopic->id}}" max="{{$quesHasTopic->questions_count}}">--}}
-
-                <div class="form-check">
-            <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="" id="topicparent{{$quesHasTopic->id}}">
+        <div class="form-check">
+            <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="{{$quesHasTopic->id}}" id="topicparent{{$quesHasTopic->id}}">
             <label class="form-check-label" for="topicparent{{$quesHasTopic->id}}">
                 {{$quesHasTopic->name}}
             </label>
