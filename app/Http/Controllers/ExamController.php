@@ -44,7 +44,7 @@ class ExamController extends Controller
 
     public function allTopicsHasQuestion()
     {
-        $questionHasTopics = Category::withCount('questions')->whereHas('questions')->paginate(20);
+        $questionHasTopics = Category::whereHas('questions')->withCount(['questions', 'easy', 'intermidiate', 'difficult'])->paginate(20);
         return view('Admin.PartialPages.Exam.topics', compact('questionHasTopics'));
     }
 
@@ -59,6 +59,7 @@ class ExamController extends Controller
 //        return $request->advanceValue;
 
 //        foreach ($re)
+//        return $request->all();
 
         if ($request->quizCreateType == 'qb') {
             $this->storeFromQB($request);
@@ -84,7 +85,7 @@ class ExamController extends Controller
         if ($request->advanceValue){
             $arrData = collect();
             foreach (json_decode($request->advanceValue) as $key=> $adv) {
-                $q_random = Question::where('category_id',$adv->id)->inRandomOrder()->limit($adv->value)->pluck('id');
+                $q_random = Question::where('category_id',$adv->id)->where('level',$adv->difficulty_value)->inRandomOrder()->limit($adv->value)->pluck('id');
                 $arrData->push($q_random);
             }
             $questions =  implode(',', $arrData->collapse()->all());;

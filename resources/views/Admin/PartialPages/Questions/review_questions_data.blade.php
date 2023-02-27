@@ -38,14 +38,17 @@
                                     <table id="zero_config" class="table table-striped table-bordered text-center">
                                         <thead>
                                             <tr>
-                                                <th style="width: 1%;">{{__('form.sl')}}</th>
-                                                <th style="width: 12%;">{{__('form.created')}}</th>
-                                                <th style="width: 4%;">{{__('form.file')}}</th>
+                                                <th style="width: 1%;">
+                                                    <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
+                                                    <label for="alloptionverify"></label>
+                                                </th>
+                                                <th style="width: 10%;">{{__('form.created')}}</th>
+                                                <th style="width: 6%;">{{__('form.file')}}</th>
                                                 <th style="width: 30%;">{{__('form.question_en').'/'.__('form.question_bn')}}</th>
                                                 <th style="width: 30%;">{{__('form.en_options') .'/'.__('form.bn_options')}}</th>
 {{--                                                <th style="width: 10%;">{{__('form.bn_options')}}</th>--}}
                                                 <th style="width: 20%;">{{__('form.file')}}</th>
-                                                <th style="width: 3%;" class="text-center">{{__('form.action')}}</th>
+                                                <th style="width: 3%;" class="text-center">{{__('form.action') .'/'.__('form.status')}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -53,14 +56,21 @@
                                             if ($keyword){
                                                 $questionCat = $q->questions()
                                                 ->where('status', 0)
-                                                ->whereIn('user_id',$admin_users)
+                                                ->whereIn('user_id', $admin_users)
                                                 ->where('question_text', 'like', '%' . $keyword . '%')
                                                 ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
                                                 ->where('category_id', $id)
+                                                ->with('difficulty')
                                                 ->orderBy('id','desc')
                                                 ->paginate(10);
                                             } else{
-                                                $questionCat = $q->questions()->where('status', 0)->where('category_id', $id)->whereIn('user_id',$admin_users)->orderBy('id','desc')->paginate(10);
+                                                $questionCat = $q->questions()
+                                                ->where('status', 0)
+                                                ->where('category_id', $id)
+                                                ->whereIn('user_id', $admin_users)
+                                                ->with('difficulty')
+                                                ->orderBy('id','desc')
+                                                ->paginate(10);
                                             }
                                         @endphp
                                             @foreach($questionCat as $qs)
@@ -179,20 +189,32 @@
                                                         <a class="disabled"><i class="fas fa-pencil-alt"></i></a>
                                                         <a class="disabled"><i class="fas fa-trash"></i></a>
                                                     @endcan
+                                                        <hr>
+                                                    <span id="difficulty_{{$qs->id}}">
+                                                         @if($qs->difficulty)
+                                                            <span class="badge badge-pill bad {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">
+                                                                {{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}
+                                                            </span>
+                                                        @endif
+                                                    </span>
+
                                                 </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>{{__('form.sl')}}</th>
+                                                <th>
+                                                    <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
+                                                    <label for="alloptionverify"></label>
+                                                </th>
                                                 <th>{{__('form.created')}}</th>
                                                 <th>{{__('form.file')}}</th>
                                                 <th>{{__('form.question_en').'/'.__('form.question_bn')}}</th>
                                                 <th>{{__('form.en_options').'/'.__('form.bn_options')}}</th>
 {{--                                                <th>{{__('form.bn_options')}}</th>--}}
                                                 <th>{{__('form.file')}}</th>
-                                                <th>{{__('form.action')}}</th>
+                                                <th>{{__('form.action') .'/'.__('form.status')}}</th>
                                             </tr>
 
                                         </tfoot>

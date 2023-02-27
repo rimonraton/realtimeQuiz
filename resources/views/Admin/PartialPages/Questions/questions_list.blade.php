@@ -43,16 +43,16 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsList')}} <a class="btn btn-success float-right" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
+                <h4 class="card-title text-center">{{__('msg.questionsList')}} <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
                 <hr>
                 <div class="form-group row pb-3 justify-content-center">
                     <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
                                     <div class="dd-handle-new">
-                                        <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>
+                                        <strong class="selectedTopic">{{ $id ? $catName : __('form.select_topic') }}</strong>
                                     </div>
                                     <ol class="dd-list">
                                         @foreach($topic as $c)
@@ -79,11 +79,12 @@
                         </div>
 
                     </div>
-                    <div class="input-group mt-1 col-sm-5 d-none" id="search_question_box_Q">
+                    <div class="input-group mt-1 col-sm-6 d-none" id="search_question_box_Q">
                         <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" autocomplete="off" id="search_input_keyword">
                         <div>
                             <button class="btn btn-primary" type="button" id="search_question_category_Q">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
                             <button class="btn btn-info" type="button" id="search_question_category_Q_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
+                            <button class="btn btn-warning" type="button" id="search_question_category_Q_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
                         </div>
                     </div>
 
@@ -197,8 +198,6 @@
             // window.history.pushState("", "", url);
         });
 
-
-
         $('.topicls input[name="topic"]').on('click',function (e){
             e.stopPropagation();
 
@@ -219,9 +218,6 @@
             e.preventDefault();
             topicwithcategory($(this).attr('data-tid'));
         })
-
-
-
 
         var getId = "{{$id}}"
         if (getId != "") {
@@ -258,6 +254,7 @@
             if (!!$(this).attr('data-cid')){
                 $('#search_question_box_Q').removeClass('d-none')
                 $('#search_question_category_Q').attr('data-tid', $(this).attr('data-cid'))
+                $('#search_question_category_Q_refresh').attr('data-tid', $(this).attr('data-cid'))
             }
 
             if ($(this).hasClass('activeli')) {
@@ -351,6 +348,11 @@
     $(document).on('click', '#search_question_category_Q_clear', function (e) {
         e.preventDefault()
         $('#search_input_keyword').val('')
+    })
+    $(document).on('click', '#search_question_category_Q_refresh', function (e) {
+        e.preventDefault()
+        const id = $(this).attr('data-tid')
+        topicwithcategory(id)
     })
     $(document).on('click', '.edit', function() {
         var id = $(this).attr('data-id');

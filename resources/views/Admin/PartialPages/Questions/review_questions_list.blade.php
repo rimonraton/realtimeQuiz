@@ -56,11 +56,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsList')}} <a class="btn btn-success float-right" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
+                <h4 class="card-title text-center">{{__('msg.questionsList')}}
+                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>
+                </h4>
                 <hr>
                 <div class="form-group row pb-3 justify-content-center">
                     <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
@@ -96,11 +98,12 @@
 {{--                    <div class="col-sm-2 mt-1">--}}
 {{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
 {{--                    </div>--}}
-                        <div class="input-group col-sm-5 mt-1 d-none" id="search_question_box">
+                        <div class="input-group col-sm-6 mt-1 d-none" id="search_question_box">
                             <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" id="search_input_keyword" autocomplete="off">
                             <div>
                                 <button class="btn btn-primary" type="button" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
                                 <button class="btn btn-info" type="button" id="search_question_category_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
+                                <button class="btn btn-dark-warning" type="button" id="search_question_category_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
                             </div>
                         </div>
 
@@ -234,9 +237,6 @@
             topicwithcategory($(this).attr('data-tid'));
         })
 
-
-
-
         var getId = "{{$id}}"
         if (getId != "") {
             topicwithcategory(getId);
@@ -276,6 +276,7 @@
             if (!!$(this).attr('data-cid')){
                 $('#search_question_box').removeClass('d-none')
                 $('#search_question_category').attr('data-tid', $(this).attr('data-cid'))
+                $('#search_question_category_refresh').attr('data-tid', $(this).attr('data-cid'))
             }
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
@@ -368,6 +369,12 @@
         e.preventDefault()
         $('#search_input_keyword').val('')
     })
+    $(document).on('click', '#search_question_category_refresh', function (e) {
+        e.preventDefault()
+        const id = $(this).attr('data-tid')
+        topicwithcategory(id)
+    })
+
     $(document).on('click', '.edit', function() {
         var id = $(this).attr('data-id');
         // alert(id);
@@ -389,6 +396,7 @@
         } else{
             $( "#verifybtnDiv" ).addClass('d-none');
         }
+
         // console.log($(this).parent(), 'this element')
         if ($(this).is(':checked')) {
             verifydata.push(id);
@@ -397,7 +405,31 @@
                 return elem != id;
             });
         }
+        if ($('input:checkbox.verifyelement').length == verifydata.length){
+            $('.alloptionverify').prop('checked', true);
+        } else {
+            $('.alloptionverify').prop('checked', false);
+        }
     })
+    $(document).on('click','.alloptionverify', function(){
+        $('input:checkbox.verifyelement').not(this).prop('checked', this.checked);
+        $('input:checkbox.alloptionverify').not(this).prop('checked', this.checked);
+
+        if ($(this).is(':checked')) {
+            verifydata = []
+            $("input:checkbox.verifyelement:checked").each(function(){
+                verifydata.push($(this).val());
+            });
+            $( "#verifybtnDiv" ).removeClass('d-none');
+        }
+        if (!$(this).is(':checked')) {
+            verifydata = []
+            $( "#verifybtnDiv" ).addClass('d-none');
+        }
+
+        console.log('verify....',verifydata)
+
+    });
     $(document).on('click', '#verify', function () {
         // console.log('verify data...', verifydata)
         const id = $(this).attr('data-tid')
@@ -521,12 +553,15 @@
     var bdoption =[];
     var ans =[];
     function updateQuestion(){
+        // console.log('difficulty....', difficulty)
+        // return
         // alert($('#questionUpdate').val() ? $('#questionUpdate').prop('files')[0]: 'null')
         // return
         // alert($('#questionUpdate').length)
         // return
         // console.log('file input', $('#questionUpdate'))
         var fd = new FormData();
+        const difficulty = $('#difficulty_update').val()
         if($('#questionUpdate').length > 0){
             var files = $('#questionUpdate')[0].files;
             if(files.length > 0){
@@ -554,6 +589,7 @@
         fd.append('question', $('#uquestion').val());
         fd.append('bdquestion', $('#ubdquestion').val());
         fd.append('old_file_path', $('#ufile_path').val());
+        fd.append('difficulty', difficulty);
         $.ajax({
             url:"{{url('question-update')}}",
             type:"Post",
@@ -574,6 +610,21 @@
             processData: false,
             success:function (data){
                 console.log('data vlaue', data)
+                if(data.level > 0){
+                    let difficultyView = ''
+                    let name = ''
+                   name = '{{$lang}}' == 'gb' ? data.difficulty.name : data.difficulty.bn_name
+                    if(data.level == 1) {
+                        difficultyView += `<span class="badge badge-pill badge-secondary">${name}</span>`
+                    }
+                    else if(data.level == 2) {
+                        difficultyView += `<span class="badge badge-pill badge-cyan">${name}</span>`
+                    }
+                    else if(data.level == 3){
+                        difficultyView += `<span class="badge badge-pill badge-danger">${name}</span>`
+                    }
+                    $('#difficulty_' + data.id).html(difficultyView)
+                }
                 if(data.question_text != null){
                     $('#eq_'+$('#uqid').val()).html(data.question_text);
                 }else{

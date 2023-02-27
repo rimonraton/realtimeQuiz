@@ -20,6 +20,18 @@ class Category extends Model
     {
         return $this->hasMany(Question::class);
     }
+    public function easy()
+    {
+        return $this->hasMany(Question::class)->where('level', 1);
+    }
+    public function intermidiate()
+    {
+        return $this->hasMany(Question::class)->where('level', 2);
+    }
+    public function difficult()
+    {
+        return $this->hasMany(Question::class)->where('level', 3);
+    }
 
     public function childs()
     {

@@ -224,7 +224,7 @@ class QuestionController extends Controller
 
         QuestionsOption::insert($data);
 
-        return redirect('question/list/view' . '/' . $categoryid);
+        return redirect('/review-questions/' . $categoryid);
     }
 
     public function optionFile($file)
@@ -316,7 +316,8 @@ class QuestionController extends Controller
     public function editQuestion($id)
     {
          $QwithO = Question::with('options')->where('id', $id)->first();
-        return view('Admin.PartialPages.Questions.question', compact('QwithO'));
+        $difficulty = Difficulty::all();
+        return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty'));
     }
     public function updateQuestion(Request $request)
     {
@@ -394,6 +395,7 @@ class QuestionController extends Controller
     public function question_update(Request $request)
     {
 //        dd($request->all());
+//        dd($request->difficulty);
 //        return  explode(',', $request->oid);
 //            return file_exists($request->old_file_path);
 //        return json_decode($request->bdoption);
@@ -431,7 +433,8 @@ class QuestionController extends Controller
                 'question_text' => $request->question,
                 'bd_question_text' => $request->bdquestion,
                 'question_file_link' =>  $imgPath,
-                'fileType' => $fileType
+                'fileType' => $fileType,
+                'level' => $request->difficulty
             ]);
             if(file_exists($request->old_file_path))
             {
@@ -441,6 +444,7 @@ class QuestionController extends Controller
             Question::where('id', $request->qid)->update([
                 'question_text' => $request->question,
                 'bd_question_text' => $request->bdquestion,
+                'level' => $request->difficulty
             ]);
         }
 //        return $request->bdoption[3];
@@ -489,7 +493,7 @@ class QuestionController extends Controller
             }
         }
 
-       return $question = Question::with('options')->where('id',$request->qid)->first();;
+       return $question = Question::with('options', 'difficulty')->where('id',$request->qid)->first();;
         return 'Success';
     }
 
@@ -536,14 +540,14 @@ class QuestionController extends Controller
         return 'success';
     }
 
-    public function reviewQuestions()
+    public function reviewQuestions($id= '')
     {
+        $lang = \App::getLocale();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $catName = '';
-        $id = '';
         if ($id) {
-            $catName = Category::find($id)->name;
+            $catName =  $lang == 'gb' ? Category::find($id)->name : Category::find($id)->bn_name;
         }
         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
         return view('Admin.PartialPages.Questions.review_questions_list', compact(['topic', 'id', 'catName']));

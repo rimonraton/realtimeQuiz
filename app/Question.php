@@ -12,6 +12,10 @@ class Question extends Model
     {
         return $this->belongsTo(Difficulty::class, 'level', 'id');
     }
+    public function level()
+    {
+        return $this->hasMany(Difficulty::class, 'id', 'level');
+    }
     public function options()
     {
         return $this->hasMany(QuestionsOption::class)->inRandomOrder();

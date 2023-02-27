@@ -280,7 +280,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} :</label>
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('exam.exam_date_time')}} <span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                                 <div class="col-sm-4">
                                     <input name="schedule" type='text' class="form-control timeseconds" id="timeseconds" placeholder="{{__('exam.placeholder_exam_date_time')}}"/>
                                     <span class="ti-calendar iconPostion" id="iconDatepicker"></span>
@@ -288,7 +288,9 @@
 
                             </div>
                             <div class="form-group row">
-                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                                <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}
+{{--                                    <span class="text-danger" style="font-size: 1.5rem;">*</span> --}}
+                                    :</label>
                                 <div class="col-sm-5">
                                     <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
                                         <ol class="dd-list">
@@ -526,6 +528,7 @@
 
     <script>
         $(function() {
+            var lang ='{{$lang}}';
             var today = new Date()
             $('.timeseconds').daterangepicker({
                 timePicker: true,
@@ -610,18 +613,102 @@
                     }
                 }
             }
+            function changeValue( id, value ) {
+                for (var i in checkedQuestions) {
+                    if (checkedQuestions[i].propId == id) {
+                        checkedQuestions[i].value = value;
+                        break; //Stop this loop, we found it!
+                    }
+                }
+            }
+            var checkedQuestions = [];
+            $(document).on('click', '.chkparent', function () {
+                const id = $(this).attr('data-tid')
+                if ($(this).is(':checked')){
+                    $(this).siblings().siblings().removeClass('d-none')
+                } else {
+                    // console.log($(this).siblings().siblings('.parent input:checkbox'))
+                    // $(this).siblings().siblings('.parent input:checkbox').prop('checked', false)
+                    checkedQuestions = checkedQuestions.filter(function(elem){
+                        return elem.id != id
+                    });
+                    console.log('checkedQuestions... parent', checkedQuestions)
+                    $(this).siblings().siblings('.parent').addClass('d-none')
+                    $('#easy' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+                    $('#intermediate' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+                    $('#difficult' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+                }
 
+            })
+            $(document).on('click', '.difficulty', function () {
+                const id = $(this).val()
+                const difficulty = $(this).attr('data-difficulty')
+                const difficultyValue = $(this).attr('data-difficultyValue')
+                const propId = $(this).attr('id')
+                if ($(this).is(':checked')){
+                    let obj = {}
+                    obj['id'] = $(this).val()
+                    obj['name'] = $(this).attr('data-name')
+                    obj['bn_name'] = $(this).attr('data-bnname')
+                    obj['value'] = 0
+                    obj['difficulty'] = difficulty
+                    obj['difficulty_value'] = difficultyValue
+                    obj['propId'] = propId
+                    checkedQuestions.push(obj)
+                    $(this).siblings().siblings('.advanceNoQ').removeClass('d-none').focus()
+                    console.log('checkedQuestions...', checkedQuestions)
+                }
+                if (!$(this).is(':checked')){
+                    console.log('id diff', id, difficulty)
+                    checkedQuestions = checkedQuestions.filter(function(elem){
+                        return elem.propId != propId
+                    });
+                    console.log('unchecked checkedQuestions...', checkedQuestions)
+                    $(this).siblings().siblings('.advanceNoQ').addClass('d-none')
+                }
+            })
+            $(document).on('keyup','.advanceNoQ', function () {
+                // alert($(this).val(), $(this).attr('max'))
+                if ( parseInt($(this).val()) > $(this).attr('max')){
+                    toastr.success(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
+                        "closeButton": true
+                    });
+                    $(this).val($(this).attr('max'))
+                    return
+                } else {
+                    if ($(this).val() != ''){
+                        changeValue($(this).attr('data-id'), $(this).val())
+                    } else{
+                        changeValue($(this).attr('data-id'), 0)
+                    }
+                }
+                console.log('value change', checkedQuestions)
+            })
             $('#smt_advance_btn').on('click', function () {
                 // chkquestions  = []
-                $('#advanceV').val(JSON.stringify(chkadvancequestions))
+                checkedQuestions = checkedQuestions.filter(function(elem){
+                    return elem.value != 0
+                });
+                    $('#advanceV').val(JSON.stringify(checkedQuestions))
                 $('#add-advance-question').modal('hide')
 
                 if ( !$('#selectedQuestionCountDiv').hasClass('d-none')){
                     $('#selectedQuestionCountDiv').addClass('d-none')
                 }
                 var view = '';
-                $.each(chkadvancequestions , function(index, val) {
-                    view += `<div class="p-2 m-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
+
+                $.each(checkedQuestions , function(index, val) {
+                    let diff = '';
+                    if (val.difficulty_value == 1) {
+                        diff += `<span class='badge badge-secondary'>${val.difficulty}</span>`
+                    }
+                    else if(val.difficulty_value == 2) {
+                        diff += `<span class='badge badge-info'>${val.difficulty}</span>`
+                    }
+                    else {
+                        diff += `<span class='badge badge-danger'>${val.difficulty}</span>`
+                    }
+                    view += `<div class="p-2 m-1 border border-secondary rounded-lg">${val.name} - ${diff} - ${val.value}</div>`
                 });
                 view += `<div class="p-2 m-1 border border-danger text-danger rounded-lg" style="cursor: pointer" id="clear_advance_data">Clear</div>`
                 $('#selectedAdvanceData').html(view)
@@ -630,6 +717,26 @@
                 $('#clear_noq').addClass('d-none')
                 $( "#noq" ).prop( "disabled", true );
             })
+
+            // $('#smt_advance_btn').on('click', function () {
+            //     // chkquestions  = []
+            //     $('#advanceV').val(JSON.stringify(chkadvancequestions))
+            //     $('#add-advance-question').modal('hide')
+            //
+            //     if ( !$('#selectedQuestionCountDiv').hasClass('d-none')){
+            //         $('#selectedQuestionCountDiv').addClass('d-none')
+            //     }
+            //     var view = '';
+            //     $.each(chkadvancequestions , function(index, val) {
+            //         view += `<div class="p-2 m-1 border border-secondary rounded-lg">${val.name} - ${val.value}</div>`
+            //     });
+            //     view += `<div class="p-2 m-1 border border-danger text-danger rounded-lg" style="cursor: pointer" id="clear_advance_data">Clear</div>`
+            //     $('#selectedAdvanceData').html(view)
+            //     $('#viewData').removeClass('d-flex')
+            //     $( "#noq" ).val( '');
+            //     $('#clear_noq').addClass('d-none')
+            //     $( "#noq" ).prop( "disabled", true );
+            // })
             $(document).on('click', '#clear_advance_data', function () {
                 chkadvancequestions = []
                 $('#advanceV').val('')
@@ -676,7 +783,7 @@
                     }
                 })
             });
-            var lang ='{{$lang}}';
+
             var chkquestions = [];
             var arrayindex = [0]
             var QC;

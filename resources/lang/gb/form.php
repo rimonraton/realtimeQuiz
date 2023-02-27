@@ -230,5 +230,6 @@ return [
     'option_one_by_one_title' => 'One by one',
     'layout_title' => 'Option Layout',
     'examination' => 'Tests',
-    'questions_type_level' => 'Question Type & Difficulty'
+    'questions_type_level' => 'Question Type & Difficulty',
+    'difficulty' => 'Difficulty',
 ];

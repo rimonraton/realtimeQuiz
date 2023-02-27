@@ -229,5 +229,6 @@ return [
     'option_one_by_one_title' => 'একটি পর একটি',
     'layout_title' => 'অপশন বিন্যাস',
     'examination' => 'পরীক্ষা সমূহ',
-    'questions_type_level' => 'প্রশ্নের ধরন ও কঠিনতর স্তর'
+    'questions_type_level' => 'প্রশ্নের ধরন ও কঠিনতর স্তর',
+    'difficulty' => 'কঠিনতর স্তর',
 ];
