@@ -288,7 +288,6 @@
 {{--                                    <i class="fas fa-share-alt"></i> --}}
                                     <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
                                     {{ __('form.option_together_title') }}
-                                    <div class="loading{{ $ch->id }}"></div>
                                 </div>
                                 <div id="together-{{$ch->id}}-3" class="optlayout btn btn btn-xs btn-outline-info align-self-center {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
                                     <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">

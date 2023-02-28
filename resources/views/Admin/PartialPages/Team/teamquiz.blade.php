@@ -118,13 +118,11 @@
                                 <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $q->id }}">
                                     {{ __('form.layout_title') }}
                                 </div>
-                                <div id="together-{{$q->id}}-0" class="optlayout pointer small btn btn-xs btn-outline-info align-self-center {{$q->quiz_time == 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="0">
-                                    {{--                                    <i class="fas fa-share-alt"></i> --}}
+                                <div id="together-{{$q->id}}-0" class="optlayout btn btn-xs btn-outline-info align-self-center {{$q->quiz_time == 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="0">
                                     <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
                                     {{ __('form.option_together_title') }}
-                                    <div class="loading{{ $q->id }}"></div>
                                 </div>
-                                <div id="together-{{$q->id}}-3" class="optlayout btn btn btn-xs btn-outline-info align-self-center {{$q->quiz_time > 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="3">
+                                <div id="together-{{$q->id}}-3" class="optlayout btn btn-xs btn-outline-info align-self-center {{$q->quiz_time > 0 ?'bg-info text-white':''}}" data-id="{{ $q->id }}" data-value="3">
                                     <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
                                     {{__('form.option_one_by_one_title')}}
                                 </div>

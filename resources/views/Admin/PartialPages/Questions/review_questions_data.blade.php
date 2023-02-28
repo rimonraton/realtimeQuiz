@@ -10,9 +10,12 @@
 {{--    </div>--}}
 
     <div class="card-body">
+        <div class="text-center verifyButton d-none" id="verifybtnDiv">
+            <button class="p-1 border border-success rounded-lg bg-success text-white" data-tid="{{$id}}" id="verify">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
+        </div>
         <ul class="nav nav-tabs mb-3">
             @foreach($questions as $q)
-            @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
+            @if($q->questions->where('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
             <li class="nav-item">
                 <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
@@ -32,35 +35,39 @@
                         <div class="row">
                             <div class="col-sm-12 pt-3">
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered ">
+                                    <table id="zero_config" class="table table-striped table-bordered text-center">
                                         <thead>
                                             <tr>
-                                                <th style="width: 1%;">{{__('form.sl')}}</th>
-                                                <th style="width: 2%;">{{__('form.created')}}</th>
-                                                <th style="width: 4%;">{{__('form.file')}}</th>
-                                                <th style="width: 30%;">{{__('form.question_en')}}</th>
-                                                <th style="width: 30%;">{{__('form.question_bn')}}</th>
-                                                <th style="width: 10%;">{{__('form.en_options')}}</th>
-                                                <th style="width: 10%;">{{__('form.bn_options')}}</th>
-                                                <th style="width: 10%;">{{__('form.file')}}</th>
-                                                <th style="width: 3%;" class="text-center">{{__('form.status')}}</th>
+                                                <th style="width: 1%;">
+                                                    <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
+                                                    <label for="alloptionverify"></label>
+                                                </th>
+                                                <th style="width: 10%;">{{__('form.created')}}</th>
+                                                <th style="width: 6%;">{{__('form.file')}}</th>
+                                                <th style="width: 30%;">{{__('form.question_en').'/'.__('form.question_bn')}}</th>
+                                                <th style="width: 30%;">{{__('form.en_options') .'/'.__('form.bn_options')}}</th>
+{{--                                                <th style="width: 10%;">{{__('form.bn_options')}}</th>--}}
+                                                <th style="width: 20%;">{{__('form.file')}}</th>
+                                                <th style="width: 3%;" class="text-center">{{__('form.action') .'/'.__('form.status')}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         @php
                                             if ($keyword){
                                                 $questionCat = $q->questions()
-                                                ->whereIn('user_id',$admin_users)
+                                                ->where('status', 0)
+                                                ->whereIn('user_id', $admin_users)
                                                 ->where('question_text', 'like', '%' . $keyword . '%')
                                                 ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                                                ->where('category_id', $id)
                                                 ->with('difficulty')
-                                                ->where('category_id', $id[0])
                                                 ->orderBy('id','desc')
                                                 ->paginate(10);
                                             } else{
                                                 $questionCat = $q->questions()
-                                                ->where('category_id', $id[0])
-                                                ->whereIn('user_id',$admin_users)
+                                                ->where('status', 0)
+                                                ->where('category_id', $id)
+                                                ->whereIn('user_id', $admin_users)
                                                 ->with('difficulty')
                                                 ->orderBy('id','desc')
                                                 ->paginate(10);
@@ -68,7 +75,11 @@
                                         @endphp
                                             @foreach($questionCat as $qs)
                                             <tr>
-                                                <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                                                <td>
+{{--                                                    {{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}--}}
+                                                    <input type="checkbox" id="optionveri{{$qs->id}}" class="material-inputs verifyelement" name="verified" value="{{$qs->id}}">
+                                                    <label for="optionveri{{$qs->id}}"></label>
+                                                </td>
                                                 <td>
                                                     @if($qs->role)
                                                         {{$lang=='gb'?$qs->role->role->role_name:$qs->role->role->bn_role_name}}
@@ -97,92 +108,113 @@
                                                     <span>__</span>
                                                     @endif
                                                 </td>
-                                                <td id="eq_{{$qs->id}}">
-                                                    {{$qs->question_text}}
+                                                <td>
+                                                    @if($qs->question_text)
+                                                    <p id="eq_{{$qs->id}}" class="p-1 border border-success rounded-lg">{{$qs->question_text}}</p>
+                                                    @endif
+                                                    @if($qs->question_text && $qs->bd_question_text)
+                                                            <hr>
+                                                    @endif
+                                                    @if($qs->bd_question_text)
+                                                    <p id="bq_{{$qs->id}}" class="p-1 border border-primary rounded-lg">{{$qs->bd_question_text ? $qs->bd_question_text : ''}}</p>
+                                                    @endif
                                                 </td>
-                                                <td id="bq_{{$qs->id}}">{{$qs->bd_question_text}}</td>
-                                                <td class="text-center" id="eo_{{$qs->id}}">
+                                                <td class="text-center" >
+                                                    <span id="eo_{{$qs->id}}">
                                                     @foreach($qs->options as $qo)
                                                         @if($qo->option)
-                                                            @if($qo->correct)
-                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
+                                                            <span class="btn btn-sm m-1 rounded-lg" style="border: #5378e8 1px solid;">
+                                                                @if($qo->correct)
                                                                 <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                @endif
                                                                {{$qo->option}}
                                                             </span>
-                                                            @endif
-{{--                                                        @elseif($qo->flag == 'img')@if($qo->correct)--}}
-{{--                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">--}}
-{{--                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>--}}
-{{--                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">--}}
-{{--                                                            </span>--}}
-{{--                                                        @endif--}}
-
                                                         @else
                                                             -
                                                         @endif
                                                     @endforeach
-                                                </td>
-                                                <td id="bo_{{$qs->id}}">
-                                                    @foreach($qs->options as $qo)
-                                                        @if($qo->bd_option)
-                                                            @if($qo->correct)
-                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                                {{$qo->bd_option}}
+                                                        </span>
+                                                        <hr>
+                                                    <span id="bo_{{$qs->id}}">
+                                                        @foreach($qs->options as $qo)
+                                                            @if($qo->bd_option)
+                                                                <span class="btn btn-sm m-1 rounded-lg" style="border: #5378e8 1px solid;" >
+                                                                @if($qo->correct)
+                                                                        <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                                    @endif
+                                                                    {{$qo->bd_option}}
                                                             </span>
-                                                                @endif
-                                                        @else
-                                                            -
-                                                    @endif
-                                                    @endforeach
+
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        @endforeach
+                                                    </span>
                                                 </td>
+{{--                                                <td id="bo_{{$qs->id}}">--}}
+{{--                                                    @foreach($qs->options as $qo)--}}
+{{--                                                        @if($qo->bd_option)--}}
+{{--                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">--}}
+{{--                                                                @if($qo->correct)--}}
+{{--                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>--}}
+{{--                                                                @endif--}}
+{{--                                                                {{$qo->bd_option}}--}}
+{{--                                                            </span>--}}
+
+{{--                                                        @else--}}
+{{--                                                            ---}}
+{{--                                                    @endif--}}
+{{--                                                    @endforeach--}}
+{{--                                                </td>--}}
                                                 <td id="optImg_{{$qs->id}}">
 {{--                                                    {{$qs->options->first()}}--}}
                                                     @foreach($qs->options as $qo)
                                                     @if($qo->flag == 'img')
-                                                        @if($qo->correct)
-                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
-                                                               <img src="{{asset($qo->img_link)}}" alt="" width="30px">
-                                                            </span>
-                                                        @endif
+                                                        <span class="btn btn-sm m-1 rounded-lg" style="border: #5378e8 1px solid;">
+                                                            @if($qo->correct)
+                                                            <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>
+                                                            @endif
+                                                           <img src="{{asset($qo->img_link)}}" alt="" width="30px">
+                                                        </span>
                                                     @else
                                                     -
                                                     @endif
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
-{{--                                                    @can('QuestionreadOrwrite',$qs)--}}
-{{--                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>--}}
-{{--                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>--}}
-{{--                                                    @else--}}
-{{--                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>--}}
-{{--                                                        <a class="disabled"><i class="fas fa-trash"></i></a>--}}
-{{--                                                    @endcan--}}
-                                                        @if($qs->status)
-                                                        <span class="badge badge-pill badge-success">{{$lang == 'gb' ? 'Verified' : 'যাচাই করা হয়েছে' }}</span>
-                                                        @else
-                                                            <span class="badge badge-pill badge-info">{{$lang == 'gb' ? 'Pending': 'অপেক্ষমাণ'}}</span>
+                                                    @can('QuestionreadOrwrite',$qs)
+                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                    @else
+                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a class="disabled"><i class="fas fa-trash"></i></a>
+                                                    @endcan
+                                                        <hr>
+                                                    <span id="difficulty_{{$qs->id}}">
+                                                         @if($qs->difficulty)
+                                                            <span class="badge badge-pill bad {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">
+                                                                {{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}
+                                                            </span>
                                                         @endif
-                                                    @if($qs->difficulty)
-                                                        <span class="badge badge-pill bad {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">{{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}</span>
+                                                    </span>
 
-                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>{{__('form.sl')}}</th>
+                                                <th>
+                                                    <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
+                                                    <label for="alloptionverify"></label>
+                                                </th>
                                                 <th>{{__('form.created')}}</th>
                                                 <th>{{__('form.file')}}</th>
-                                                <th>{{__('form.question_en')}}</th>
-                                                <th>{{__('form.question_bn')}}</th>
-                                                <th>{{__('form.en_options')}}</th>
-                                                <th>{{__('form.bn_options')}}</th>
+                                                <th>{{__('form.question_en').'/'.__('form.question_bn')}}</th>
+                                                <th>{{__('form.en_options').'/'.__('form.bn_options')}}</th>
+{{--                                                <th>{{__('form.bn_options')}}</th>--}}
                                                 <th>{{__('form.file')}}</th>
-                                                <th>{{__('form.action')}}</th>
+                                                <th>{{__('form.action') .'/'.__('form.status')}}</th>
                                             </tr>
 
                                         </tfoot>

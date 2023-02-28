@@ -4,6 +4,7 @@
 {{-- <link rel="stylesheet" href="{{ asset('extra/css/codehim-dropdown.css') }}"> --}}
 
 <style type="text/css">
+
     .card.shadow{
         max-height: 140px ;
     }
@@ -151,19 +152,50 @@
     top: 1%;
     right: 5%;
   }
-  @media screen and ( max-width: 520px ){
-   /* li.page-item {
-      display: none;
+
+    .accordionView {
+        position: absolute;
+        top: 154px;
+        right: 258px;
+        z-index: 99999;
+        width: 20%;
+        /* padding: 12; */
+        margin-right: 5%;
     }
-    .page-item:first-child,
-    .page-item:last-child,
-    .page-item.active {
-        display: block;
-    }*/
-  }
+    @media screen and ( max-width: 520px ){
+        /* li.page-item {
+           display: none;
+         }
+         .page-item:first-child,
+         .page-item:last-child,
+         .page-item.active {
+             display: block;
+         }*/
+        .accordionView {
+            top: 163px;
+            right: 70px;
+            z-index: 99999;
+            width: 66%;
+            /* padding: 12; */
+            /* margin-right: 124%; */
+        }
+    }
+    /*@media screen and (min-width: 30em) {*/
+    /*    .accordionView {*/
+    /*        position: absolute;*/
+    /*        top: 163px;*/
+    /*        right: 70px;*/
+    /*        z-index: 99999;*/
+    /*        width: 66%;*/
+    /*        !* padding: 12; *!*/
+    /*        !* margin-right: 124%; *!*/
+    /*    }*/
+    /*}*/
 
 
 </style>
+
+
 
 @stop
 @php $lang = App::getLocale(); @endphp
@@ -194,7 +226,16 @@
           @if(count($category->childs))
             <optgroup label="{{ $lang == 'bd' ? $category->bn_name : $category->name }}">
               @foreach($category->childs as $cc)
-              <option>{{ $lang == 'bd' ? $cc->bn_name : $cc->name  }}</option>
+                    @if(count($cc->childs))
+                        <optgroup label="{{ $lang == 'bd' ? $cc->bn_name : $cc->name }}">
+                            @foreach($cc->childs as $ccs)
+                                <option>{{ $lang == 'bd' ? $ccs->bn_name : $ccs->name  }}</option>
+                            @endforeach
+                        </optgroup>
+                    @else
+                        <option>{{ $lang == 'bd' ? $cc->bn_name : $cc->name  }}</option>
+                    @endif
+
               @endforeach
             </optgroup>
           @else
@@ -202,9 +243,81 @@
           @endif
         @endforeach
       </select>
+
+{{--      <div class="border border-success rounded-lg p-2" style="cursor: pointer;z-index: 9999" >--}}
+{{--          <span id="showCat">{{ __('games.select_category') }}</span>--}}
+{{--          <div id="accordion" style="overflow-y: scroll; height: 400px; z-index: 99999" class="accordionView d-none">--}}
+{{--              @foreach($categories as $category)--}}
+{{--                  <div class="card">--}}
+{{--                      <div class="card-header d-flex justify-content-between" id="heading{{$category->id}}">--}}
+{{--                          <h5 class="mb-0">--}}
+{{--                              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{$category->id}}" aria-expanded="false" aria-controls="collapse{{$category->id}}">--}}
+{{--                                  {{ $lang == 'bd' ? $category->bn_name : $category->name }}--}}
+{{--                              </button>--}}
+{{--                          </h5>--}}
+{{--                          <h5 class="mb-0">--}}
+{{--                              <button class="btn btn-link">--}}
+{{--                                  {{count($category->childs) > 0 ? count($category->childs) : ''}}--}}
+{{--                              </button>--}}
+{{--                          </h5>--}}
+{{--                      </div>--}}
+{{--                      @if(count($category->childs))--}}
+{{--                          <div id="collapse{{$category->id}}" class="collapse" aria-labelledby="heading{{$category->id}}" data-parent="#accordion">--}}
+{{--                              <div class="card-body">--}}
+{{--                                  <!-- Level 1 - Section 1 Content Here -->--}}
+{{--                                  <!-- Level 2 - Section 1 -->--}}
+{{--                                  @foreach($category->childs as $cc)--}}
+{{--                                      <div class="card">--}}
+{{--                                          <div class="card-header d-flex justify-content-between" id="heading{{$cc->id}}">--}}
+{{--                                              <h5 class="mb-0">--}}
+{{--                                                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{$cc->id}}" aria-expanded="false" aria-controls="collapse{{$cc->id}}">--}}
+{{--                                                      {{ $lang == 'bd' ? $cc->bn_name : $cc->name }}--}}
+{{--                                                  </button>--}}
+{{--                                              </h5>--}}
+{{--                                              <h5 class="mb-0">--}}
+{{--                                                  <button class="btn btn-link">--}}
+{{--                                                      {{ count($cc->childs) > 0 ? count($cc->childs) : '' }}--}}
+{{--                                                  </button>--}}
+{{--                                              </h5>--}}
+{{--                                          </div>--}}
+{{--                                          @if(count($cc->childs))--}}
+{{--                                              <div id="collapse{{$cc->id}}" class="collapse" aria-labelledby="heading{{$cc->id}}" data-parent="#collapse{{$category->id}}">--}}
+{{--                                                  <div class="card-body">--}}
+{{--                                                      <!-- Level 2 - Section 1 Content Here -->--}}
+{{--                                                      <!-- Level 3 - Section 1 -->--}}
+{{--                                                      @foreach($cc->childs as $ccs)--}}
+{{--                                                          <div class="card">--}}
+{{--                                                              <div class="card-header" id="heading{{$ccs->id}}">--}}
+{{--                                                                  <h5 class="mb-0">--}}
+{{--                                                                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{$ccs->id}}" aria-expanded="false" aria-controls="collapse{{$ccs->id}}">--}}
+{{--                                                                          {{ $lang == 'bd' ? $ccs->bn_name : $ccs->name }}--}}
+{{--                                                                      </button>--}}
+{{--                                                                  </h5>--}}
+{{--                                                              </div>--}}
+{{--                                                              --}}{{--                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#collapseTwo">--}}
+{{--                                                              --}}{{--                                        <div class="card-body">--}}
+{{--                                                              --}}{{--                                            <!-- Level 3 - Section 1 Content Here -->--}}
+{{--                                                              --}}{{--                                        </div>--}}
+{{--                                                              --}}{{--                                    </div>--}}
+{{--                                                          </div>--}}
+{{--                                                      @endforeach--}}
+{{--                                                  </div>--}}
+{{--                                              </div>--}}
+{{--                                          @endif--}}
+{{--                                      </div>--}}
+{{--                                  @endforeach--}}
+{{--                              </div>--}}
+{{--                          </div>--}}
+{{--                      @endif--}}
+{{--                  </div>--}}
+{{--              @endforeach--}}
+{{--          </div>--}}
+{{--      </div>--}}
   </div>
 
-  <div class="row justify-content-center mt-4 " id="quizlist">
+
+
+    <div class="row justify-content-center mt-4 " id="quizlist">
     @foreach($quiz as $qz)
       @include('_quiz_card', ['qz', $qz])
     @endforeach
@@ -243,10 +356,20 @@
 
 {{-- <script src="{{ asset('extra/js/codehim.dropdown.js') }}" defer></script> --}}
 
-
+{{--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
 <script defer>
 
   document.addEventListener('DOMContentLoaded', function () {
+      $('#showCat').on('click', function () {
+          console.log($('#accordion').hasClass('d-none'))
+          if ($('#accordion').hasClass('d-none')){
+              $('#accordion').removeClass('d-none')
+          } else {
+              $('#accordion').addClass('d-none')
+          }
+
+
+      })
       $('[data-toggle="tooltip"]').tooltip();
     $('.shareBtn').on('click', function(){
       let id = $(this).attr('data-id');
@@ -336,7 +459,6 @@
           // window.history.pushState("", "", url);
       });
   });
-
 
 </script>
 

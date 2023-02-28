@@ -353,7 +353,7 @@
                         <div class="form-group row">
                             <label for="category" class="col-sm-4 text-right control-label col-form-label">{{__('exam.each_question_mark')}} :</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" id="mark_each_q_number"/>
+                                <input type="number" class="form-control" placeholder="{{__('exam.each_question_number_placeholder')}}" name="each_q_number" min="0" step="0.01" id="mark_each_q_number"/>
                             </div>
                         </div>
                         <div class="form-group row">

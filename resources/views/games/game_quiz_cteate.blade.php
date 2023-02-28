@@ -88,6 +88,7 @@
                     <form class="form-horizontal r-separator" action="{{url('game_quiz_save')}}" method="POST" autocomplete="off">
                         @csrf
                         <input type="hidden" name="cid" id="selectedCid" required>
+                        <input type="hidden" value="3" name="game_type">
                         <input type="hidden" value="qb" name="quizCreateType" class="custom-control-input">
 {{--                        <div class="form-group row justify-content-center">--}}
 {{--                            <div class="btn-group" data-toggle="buttons">--}}
@@ -125,16 +126,16 @@
                             </div>
                             <div class="form-group row">
                                 <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.game_mode')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                                <div class="col-sm-5">
-                                    <select class="form-control custom-select" name="game_type" required>
-                                        <option>{{__('form.game_mode_select')}}</option>
-                                        @foreach($gameType as $game)
-                                            <option value="{{$game->id}}" {{$game->id==3?'selected':''}}>{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+{{--                                <div class="col-sm-5">--}}
+{{--                                    <select class="form-control custom-select" name="game_type" required disabled="disabled">--}}
+{{--                                        <option>{{__('form.game_mode_select')}}</option>--}}
+{{--                                        @foreach($gameType as $game)--}}
+{{--                                            <option value="{{$game->id}}" {{$game->id==3?'selected':''}}>{{$lang=='gb'?$game->gb_game_name:$game->bd_game_name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
                                 <!-- <label for="category" class="col-sm-2 text-right control-label col-form-label">Game Type<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label> -->
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <select class="form-control custom-select" name="difficulty" required>
                                         <option>{{__('form.game_type')}}</option>
                                         <option value="1" selected>{{__('form.easy')}}</option>

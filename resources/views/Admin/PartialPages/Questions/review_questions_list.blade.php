@@ -35,6 +35,19 @@
         /* And disable the pointer events */
         pointer-events: none;
     }
+    .verifyButton {
+        /*background: rgba(0,0,0,0.2);*/
+        position: fixed;
+        /*width: 280px;*/
+        /*height: 32px;*/
+        top: 345px;
+        left: 265px;
+        z-index: 999;
+        /*border: 1px solid darkgray;*/
+        /*border-radius: 15px;*/
+        padding: 5px 10px;
+        /*color: black;*/
+    }
 </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -43,7 +56,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsList')}} <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
+                <h4 class="card-title text-center">{{__('msg.questionsList')}}
+                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>
+                </h4>
                 <hr>
                 <div class="form-group row pb-3 justify-content-center">
                     <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
@@ -52,7 +67,7 @@
                             <ol class="dd-list">
                                 <li class="dd-item" id="parentdd">
                                     <div class="dd-handle-new">
-                                        <strong class="selectedTopic">{{ $id ? $catName : __('form.select_topic') }}</strong>
+                                        <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>
                                     </div>
                                     <ol class="dd-list">
                                         @foreach($topic as $c)
@@ -79,18 +94,19 @@
                         </div>
 
                     </div>
-                    <div class="input-group mt-1 col-sm-6 d-none" id="search_question_box_Q">
-                        <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" autocomplete="off" id="search_input_keyword">
-                        <div>
-                            <button class="btn btn-primary" type="button" id="search_question_category_Q">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
-                            <button class="btn btn-info" type="button" id="search_question_category_Q_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
-                            <button class="btn btn-warning" type="button" id="search_question_category_Q_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
-                        </div>
-                    </div>
 
 {{--                    <div class="col-sm-2 mt-1">--}}
 {{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
 {{--                    </div>--}}
+                        <div class="input-group col-sm-6 mt-1 d-none" id="search_question_box">
+                            <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" id="search_input_keyword" autocomplete="off">
+                            <div>
+                                <button class="btn btn-primary" type="button" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
+                                <button class="btn btn-info" type="button" id="search_question_category_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
+                                <button class="btn btn-dark-warning" type="button" id="search_question_category_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
+                            </div>
+                        </div>
+
 
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
@@ -140,7 +156,7 @@
 {{--                    <div class="text-center"><a href="" id="add_option">{{__('form.add_option')}}</a></div>--}}
                     <div class="modal-footer">
 {{--                        <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>--}}
-                        <button type="button" class="btn btn-primary waves-effect " id="tet" >{{__('form.update')}}</button>
+                        <button type="button" class="btn btn-primary waves-effect " id="tet_review" >{{__('form.update')}}</button>
                         <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
                     </div>
 {{--                </form>--}}
@@ -198,6 +214,8 @@
             // window.history.pushState("", "", url);
         });
 
+
+
         $('.topicls input[name="topic"]').on('click',function (e){
             e.stopPropagation();
 
@@ -246,17 +264,20 @@
 
         })
         $(document).on('click', '.topicls', function() {
-            console.log( !!$('#search_input_keyword').val())
+
+            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
+            // console.log('data.......', !!$(this).attr('data-cid'))
+            // if($(this).attr('data-cid')) {
+            //
+            // }
             if (!!$('#search_input_keyword').val()) {
                 $('#search_input_keyword').val('')
             }
-            // $(this).hasClass('activeli') ? $(this).removeClass('activeli') : [$('.topicls').removeClass('activeli'), $(this).addClass('activeli'), $('#selectedCid').val($(this).attr('data-cid')), $('#selectedTopic').html($(this).text())];
             if (!!$(this).attr('data-cid')){
-                $('#search_question_box_Q').removeClass('d-none')
-                $('#search_question_category_Q').attr('data-tid', $(this).attr('data-cid'))
-                $('#search_question_category_Q_refresh').attr('data-tid', $(this).attr('data-cid'))
+                $('#search_question_box').removeClass('d-none')
+                $('#search_question_category').attr('data-tid', $(this).attr('data-cid'))
+                $('#search_question_category_refresh').attr('data-tid', $(this).attr('data-cid'))
             }
-
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
                 $('#selectedCid').val('');
@@ -300,9 +321,9 @@
         console.log('from function.........', keyword)
         let url = ''
         if(keyword) {
-            url = "{{url('question/getlist')}}/" + id + '/' + keyword
+            url = "{{url('question/get-review-list')}}/" + id + '/' + keyword
         } else {
-            url = "{{url('question/getlist')}}/" + id
+            url = "{{url('question/get-review-list')}}/" + id
         }
         console.log('url.......', url)
         $.ajax({
@@ -327,7 +348,7 @@
                     );
 
                 }
-                console.log(data);
+                // console.log(data);
             },
             complete: function() {
                 $('.loading').hide();
@@ -337,23 +358,23 @@
             }
         })
     }
-    $(document).on('click', '#search_question_category_Q', function (e) {
+    $(document).on('click', '#search_question_category', function (e) {
         e.preventDefault()
         const id = $(this).attr('data-tid')
         const keyword = $('#search_input_keyword').val()
         console.log(keyword, 'keyword.....')
         topicwithcategory(id, keyword)
-        // $('#search_input_keyword').val('')
     })
-    $(document).on('click', '#search_question_category_Q_clear', function (e) {
+    $(document).on('click', '#search_question_category_clear', function (e) {
         e.preventDefault()
         $('#search_input_keyword').val('')
     })
-    $(document).on('click', '#search_question_category_Q_refresh', function (e) {
+    $(document).on('click', '#search_question_category_refresh', function (e) {
         e.preventDefault()
         const id = $(this).attr('data-tid')
         topicwithcategory(id)
     })
+
     $(document).on('click', '.edit', function() {
         var id = $(this).attr('data-id');
         // alert(id);
@@ -366,6 +387,69 @@
                 $('#edit-questions').modal('show');
             }
         })
+    })
+    var verifydata = []
+    $(document).on('click', '.verifyelement', function () {
+        const id = $(this).val()
+        if($('input:checkbox.verifyelement:checked').length > 0) {
+            $( "#verifybtnDiv" ).removeClass('d-none');
+        } else{
+            $( "#verifybtnDiv" ).addClass('d-none');
+        }
+
+        // console.log($(this).parent(), 'this element')
+        if ($(this).is(':checked')) {
+            verifydata.push(id);
+        } else {
+            verifydata = verifydata.filter(function(elem){
+                return elem != id;
+            });
+        }
+        if ($('input:checkbox.verifyelement').length == verifydata.length){
+            $('.alloptionverify').prop('checked', true);
+        } else {
+            $('.alloptionverify').prop('checked', false);
+        }
+    })
+    $(document).on('click','.alloptionverify', function(){
+        $('input:checkbox.verifyelement').not(this).prop('checked', this.checked);
+        $('input:checkbox.alloptionverify').not(this).prop('checked', this.checked);
+
+        if ($(this).is(':checked')) {
+            verifydata = []
+            $("input:checkbox.verifyelement:checked").each(function(){
+                verifydata.push($(this).val());
+            });
+            $( "#verifybtnDiv" ).removeClass('d-none');
+        }
+        if (!$(this).is(':checked')) {
+            verifydata = []
+            $( "#verifybtnDiv" ).addClass('d-none');
+        }
+
+        console.log('verify....',verifydata)
+
+    });
+    $(document).on('click', '#verify', function () {
+        // console.log('verify data...', verifydata)
+        const id = $(this).attr('data-tid')
+        var fd = new FormData();
+        fd.append('ids', verifydata);
+
+        $.ajax({
+            url:"{{url('verify-question-update')}}",
+            type:"Post",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success:function (data){
+                toastr.success("{{__('form.upload_notification_message')}}", {
+                    "closeButton": true
+                });
+                topicwithcategory(id)
+            }
+        })
+
     })
 
     $(document).on('click','.delete_q',function (){
@@ -469,12 +553,15 @@
     var bdoption =[];
     var ans =[];
     function updateQuestion(){
+        // console.log('difficulty....', difficulty)
+        // return
         // alert($('#questionUpdate').val() ? $('#questionUpdate').prop('files')[0]: 'null')
         // return
         // alert($('#questionUpdate').length)
         // return
         // console.log('file input', $('#questionUpdate'))
         var fd = new FormData();
+        const difficulty = $('#difficulty_update').val()
         if($('#questionUpdate').length > 0){
             var files = $('#questionUpdate')[0].files;
             if(files.length > 0){
@@ -496,12 +583,13 @@
         fd.append('qid', $('#uqid').val());
         fd.append('cat_id', $('#ucat_id').val());
         fd.append('oid', oid);
-        fd.append('option', option);
-        fd.append('bdoption', bdoption);
+        fd.append('option', JSON.stringify(option));
+        fd.append('bdoption', JSON.stringify(bdoption));
         fd.append('ans', ans);
         fd.append('question', $('#uquestion').val());
         fd.append('bdquestion', $('#ubdquestion').val());
         fd.append('old_file_path', $('#ufile_path').val());
+        fd.append('difficulty', difficulty);
         $.ajax({
             url:"{{url('question-update')}}",
             type:"Post",
@@ -521,6 +609,22 @@
             contentType: false,
             processData: false,
             success:function (data){
+                console.log('data vlaue', data)
+                if(data.level > 0){
+                    let difficultyView = ''
+                    let name = ''
+                   name = '{{$lang}}' == 'gb' ? data.difficulty.name : data.difficulty.bn_name
+                    if(data.level == 1) {
+                        difficultyView += `<span class="badge badge-pill badge-secondary">${name}</span>`
+                    }
+                    else if(data.level == 2) {
+                        difficultyView += `<span class="badge badge-pill badge-cyan">${name}</span>`
+                    }
+                    else if(data.level == 3){
+                        difficultyView += `<span class="badge badge-pill badge-danger">${name}</span>`
+                    }
+                    $('#difficulty_' + data.id).html(difficultyView)
+                }
                 if(data.question_text != null){
                     $('#eq_'+$('#uqid').val()).html(data.question_text);
                 }else{
@@ -534,9 +638,13 @@
                 $('#eo_'+$('#uqid').val()).html('');
                 $('#bo_'+$('#uqid').val()).html('');
                 $.each(data.options, function(key, value) {
-                    if(value.correct == 1){
-                    console.log('english...', value.option);
-                    console.log('bangla...', value.bd_option);
+                    // if(value.correct == 1){
+                    // console.log('english...', value.option);
+                    // console.log('bangla...', value.bd_option);
+                    let icon = ''
+                    if (value.correct == 1){
+                        icon = `<i class="fa fa-check" style="color:#5378e8"></i>`
+                    }
                     if (value.flag == 'img'){
                         // var img = document.createElement("img");
                         // img.className = 'file-upload-image'
@@ -546,14 +654,14 @@
                         // img.src = '/'+ value.img_link
                         const srcImg = '/'+ value.img_link
                         $('#optImg_'+$('#uqid').val()).html(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                                ${icon}
                                                                <img src="${srcImg}" alt="" width="30px">
                                                             </span>`)
 
                     }
                         if(!!value.option){
                             $('#eo_'+$('#uqid').val()).append(`<span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                                ${icon}
                                                                 ${value.option}
                                                             </span>`)
                         }
@@ -563,7 +671,7 @@
 
                         if(!!value.bd_option){
                             $('#bo_'+$('#uqid').val()).append(` <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">
-                                                                <i class="fa fa-check" style="color:#5378e8"></i>
+                                                                ${icon}
                                                                 ${value.bd_option}
                                                             </span>`)
                         }
@@ -572,7 +680,7 @@
                         }
 
 
-                    }
+                    // }
                 });
                 if(data.fileType == 'image' || data.fileType == 'audio' || data.fileType == 'video'){
                     if (data.fileType == 'image') {
@@ -613,6 +721,7 @@
         $('.oid').each(function(i, obj) {
             oid.push($(this).val());
         });
+        console.log('oid....', oid)
        // return oid;
     }
     function geoption(){
@@ -620,6 +729,7 @@
         $('.option').each(function(i, obj) {
             option.push($(this).val());
         });
+        console.log('option....', option)
         // return oid;
     }
     function geoptionimg(){
@@ -636,6 +746,7 @@
         $('.bdoption').each(function(i, obj) {
             bdoption.push($(this).val());
         });
+        console.log('bdoption....', bdoption)
         // return oid;
     }
     function getans(){
@@ -643,12 +754,14 @@
         $('.ans').each(function(i, obj) {
             ans.push($(this).val());
         });
+        console.log('ans....', ans)
         // return oid;
     }
 
-    $('#tet').click(function (e){
+    $('#tet_review').click(function (e){
         // alert('hello');
         // geoptionimg();
+        // e.preventDefault()
         getoid();
         geoption();
         getbdoption();

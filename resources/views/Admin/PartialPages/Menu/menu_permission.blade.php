@@ -132,6 +132,18 @@
                                             <input type="checkbox" value="{{$mc->id}}" id="child{{$mc->id}}" name="menu[]" class="material-inputs child">
                                             <label for="child{{$mc->id}}">{{$lang=='gb'?$mc->name:$mc->bn_name}}</label>
                                             <!-- </div> -->
+                                            @if(count($mc->childs))
+                                                @foreach($mc->childs as $mcc)
+                                                    <ul class="list-group m-3">
+                                                        <li class="list-group-item">
+                                                            <!-- <div class="col-md-12"> -->
+                                                            <input type="checkbox" value="{{$mcc->id}}" id="child{{$mcc->id}}" name="menu[]" class="material-inputs child">
+                                                            <label for="child{{$mcc->id}}">{{$lang=='gb'?$mcc->name:$mcc->bn_name}}</label>
+                                                            <!-- </div> -->
+                                                        </li>
+                                                    </ul>
+                                                @endforeach
+                                            @endif
                                         </li>
                                     </ul>
                                     @endforeach

@@ -1,3 +1,4 @@
+@php $lang = App::getLocale(); @endphp
 <input type="hidden" id="ucat_id" value="{{$QwithO->category_id}}" name="cat_id">
 <input type="hidden" id="ufile_path" value="{{$QwithO->question_file_link}}" name="ufile_path">
 @if($QwithO->fileType == 'image' || $QwithO->fileType == 'video' || $QwithO->fileType == 'audio')
@@ -58,6 +59,19 @@
     </div>
     <div class="col-md-9">
         <input type="text" id="ubdquestion" value="{{$QwithO->bd_question_text}}" class="form-control" name="bdquestion" placeholder="{{__('form.question_placeholder')}}">
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <label class="pull-right">{{__('form.difficulty')}} :</label>
+    </div>
+    <div class="col-md-9">
+        <select class="form-control" id="difficulty_update" required>
+            {{--                                    <option value="">{{__('form.question_type')}}</option>--}}
+            @foreach($difficulty as $dc)
+                <option value="{{$dc->id}}" {{ $QwithO->level == $dc->id ? 'selected' : ($loop->first?'selected':'')}}>{{$lang=='gb'? $dc->name : $dc->bn_name}}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 @foreach($QwithO->options as $QO)
