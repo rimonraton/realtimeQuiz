@@ -14,6 +14,10 @@ use Victorybiz\GeoIPLocation\GeoIPLocation;
 |
 */
 
+//Broadcast::channel('SingleQuestionDisplay.{id}.{uid}', function ($uid) {
+//    return $uid;
+//});
+
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
@@ -22,9 +26,9 @@ Broadcast::channel('chat', function ($user) {
     return $user;
 });
 
-Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
+Broadcast::channel('Challenge.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation();
-    // $geoip->setIP('37.99.166.48');
+    if($geoip->getIp()) $geoip->setIP('27.147.187.184');
     $country = strtolower($geoip->getCountryCode());
     $user['country'] =  $country == null ? 'bd': $country;
     return $user;
@@ -37,10 +41,6 @@ Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
     $user['group'] =  $user->group;
     return $user;
 });
-
-// Broadcast::channel('game.{id}', function ($user, $id) {
-//     return $user;
-// });
 
 Broadcast::channel('emailEvent', function ($user) {
     return $user;

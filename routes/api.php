@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\APIController;
 use Illuminate\Http\Request;
@@ -26,6 +27,10 @@ Route::post('gameTeamModeratorStart', [GameController::class, 'gameTeamModerator
 Route::post('gameEndUser', [GameController::class, 'gameEndUser']);
 Route::post('gameReset', [GameController::class, 'gameReset']);
 Route::post('kickUser', [GameController::class, 'kickUser']);
+
+//SingleDisplayQuiz
+Route::post('userJoin', [SingleQuestionDisplayQuizController::class, 'userJoin']);
+
 
 //Moderator
 Route::post('nextQuestion', [GameController::class, 'nextQuestion']);

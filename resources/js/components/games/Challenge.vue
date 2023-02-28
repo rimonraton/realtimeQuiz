@@ -288,7 +288,7 @@
         // },
 
         mounted() {
-            Echo.join(`challenge.${this.challenge.id}.${this.uid}`)
+            Echo.join(this.channel)
                 .here((users) => {
                     this.users = users;
                 })

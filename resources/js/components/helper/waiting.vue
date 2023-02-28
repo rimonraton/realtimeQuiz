@@ -1,10 +1,11 @@
 <template>
 	<div class="waiting">
-	    <div class="card" style="width: 24rem; ">
+	    <div class="card" style="min-width: 24rem">
 	        <div class="card-header">
 	            <span v-if="user.id != uid" class="ml-1 text-primary">Please wait, the Quiz Host will start the game soon..</span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
+                <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">
 	            <ul class="list-group ">
 	                <li class="list-group-item"
 	                    v-for="u in users" :key="u.id"
@@ -27,9 +28,12 @@
 	            </ul>
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
-                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
-<!--                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">-->
-<!--                    </a>-->
+                    <a @click="$emit('gameStart')"
+                       v-if="user.id == uid"
+                       class="btn btn-sm btn-outline-success mt-4 pull-right">START</a>
+                    <a class="btn btn-sm btn-outline-danger mt-4 " @click="qr = !qr" >
+                        <i class="fas fa-check"></i>
+                    </a>
 
                 </div>
 	        </div>
@@ -52,7 +56,8 @@ export default{
             minutes: '',
             seconds: '',
             schedule: '',
-            timer: null
+            timer: null,
+            qr: false
         };
     },
     methods:{
@@ -91,8 +96,13 @@ export default{
     },
     created: function(){
         this.scheduledTimer()
-        console.log('scheduledTimer started')
-    }
+        // console.log('scheduledTimer started')
+    },
+    computed: {
+        getQr(){
+            return 'https://api.qrserver.com/v1/create-qr-code/?size=430x430&data='+window.location;
+        },
+    },
 
 };
 

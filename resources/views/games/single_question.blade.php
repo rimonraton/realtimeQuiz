@@ -13,12 +13,11 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
                         <single-question
                             :challenge="{{ $challenge }}"
                             :uid="{{ $uid }}"
                             :questions="{{ $questions }}"
-                            :user="{{ $user }}"
+                            :propuser="{{ json_encode($user) }}"
                             :gmsg="{{ $gmsg }}"
                         ></single-question>
                     </div>
