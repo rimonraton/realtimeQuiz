@@ -152,7 +152,7 @@ Route::get('deleteMenu/{id}','MenuController@delete');
 Route::get('selectedMenu/{role_id}','MenuController@getselectedMenu');
 
 // Menu Permession
-Route::get('menuPermission','MenuPermissionController@index');
+Route::get('menuPermission',[\App\Http\Controllers\MenuPermissionController::class,'index']);
 Route::post('savemenuPermission','MenuPermissionController@store');
 
 Auth::routes();

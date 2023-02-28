@@ -33,7 +33,8 @@ class QuestionController extends Controller
 
         $admin_users = \auth()->user()->admin->users()->pluck('id');
 //        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
-        $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
+//       return $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
+        $category_all = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->get();
         return view('Admin.PartialPages.Questions.category', compact('category_all'));
     }
     public function store(Request $request)
