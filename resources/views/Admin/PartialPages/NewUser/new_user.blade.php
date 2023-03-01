@@ -53,6 +53,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            @php $roleUsers = $rws->users->paginate(20)  @endphp
                                             @foreach($rws->users as $user)
                                                 @if($user->user)
                                                     <tr>
@@ -61,9 +62,9 @@
                                                         <th>{{$user->user->email}}</th>
                                                         <th>{{$user->user->info?$user->user->info->mobile:''}}</th>
                                                         <th>
-                                                            <a class="edit" href="" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-role="{{$user->roleuser?$user->roleuser->role->id:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                            <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                                            <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->id}}" href="" title="Send Mail">
+                                                            <a class="edit" href="" data-id="{{$user->user_id}}" data-name="{{$user->user->name}}" data-email="{{$user->user->email}}" data-role="{{$user->role_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                            <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->user_id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                            <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->user_id}}" href="" title="Send Mail">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </a>
                                                         </th>
@@ -82,6 +83,9 @@
                                             </tr>
                                             </tfoot>
                                         </table>
+{{--                                        <div class="row mt-4 justify-content-center" id="topic_pagination">--}}
+{{--                                            {{$roleUsers->links()}}--}}
+{{--                                        </div>--}}
                                         <!-- <div class="text-center">
                                             <p>
                                                 No Data Found..
@@ -386,7 +390,7 @@
                         var $this = $(this);
                         var id = $this.attr('data-id');
                         $.ajax({
-                            url: "{{url('deleteMenu')}}/" + id,
+                            url: "{{url('/user-remove')}}/" + id,
                             type: "GET",
                             success: function(data) {
                                 // $(this).parent().parent().remove();
