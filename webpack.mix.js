@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.js('resources/js/app.js', 'public/js/quizapp.js')
+mix.js('resources/js/app.js', 'public/js/quizapp.js').vue()
     .sass('resources/sass/app.scss', 'public/css')
 		.scripts([
 		    'public/Landing/assets/vendor/jquery/jquery.min.js',

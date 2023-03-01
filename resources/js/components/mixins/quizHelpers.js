@@ -1,6 +1,6 @@
 export const quizHelpers = {
     created() {
-        console.log('Mixin loaded')
+        // console.log('Mixin loaded')
     },
     mounted() {
         this.externalJS()
@@ -75,8 +75,9 @@ export const quizHelpers = {
     },
     computed: {
         channel(){
-            let path = window.location.pathname
-            return path.replaceAll('/', '_')
+            let path = window.location.pathname.split('/')
+            // console.log(path, 'path...........')
+            return `${path[1]}.${path[2]}.${path[3]}`
         },
 
         progressClass(){

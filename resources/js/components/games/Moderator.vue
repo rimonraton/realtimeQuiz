@@ -365,14 +365,14 @@
             },
 
             checkAnswer(q, a, rw){
-                this.gamedata.['id'] = this.qid + 1
-                this.gamedata.['question'] = this.ToText(this.questions[this.qid].question_text)
-                this.gamedata.['answer'] = this.ToText(this.getCorrectAnswertext())
-                this.gamedata.['selected'] = this.ToText(a)
-                this.gamedata.['isCorrect'] = rw
-                this.gamedata.['user'] = this.user
-                this.gamedata.['channel'] = this.channel
-                this.gamedata.['group'] = this.user.group.name
+                this.gamedata['id'] = this.qid + 1
+                this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text)
+                this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext())
+                this.gamedata['selected'] = this.ToText(a)
+                this.gamedata['isCorrect'] = rw
+                this.gamedata['user'] = this.user
+                this.gamedata['channel'] = this.channel
+                this.gamedata['group'] = this.user.group.name
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
                 axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )

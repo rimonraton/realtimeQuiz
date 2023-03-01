@@ -46,13 +46,21 @@
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             ></iframe>
         </div>
-
         <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule'
                  @kickingUser="kickUser($event)"
                  @gameStart="gameStart"
                  @gameReset="gameReset"
                  v-if="screen.waiting">
         </waiting>
+        <user_info
+            v-if="!au"
+            :uid='uid'
+            :users='users'
+            :user='user'
+            :time='challenge.schedule'
+             @insertUser="insertUser">
+        </user_info>
+<!--        <qrcode/>-->
 
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -188,6 +196,8 @@
 
 <script>
 
+import qrcode from '../helper/singleDisplay/Qrcode'
+import user_info from '../helper/singleDisplay/UserName'
 import waiting from '../helper/waiting'
 import result from '../helper/result'
 import { quizHelpers } from '../mixins/quizHelpers'
@@ -195,18 +205,20 @@ import { quizHelpers } from '../mixins/quizHelpers'
 export default {
     mixins: [quizHelpers],
 
-    props : ['challenge', 'uid', 'user', 'questions', 'gmsg','teams'],
+    props : ['challenge', 'uid', 'propuser', 'questions', 'gmsg','teams'],
 
-    components: { waiting, result },
+    components: { waiting, result, user_info, qrcode },
 
     data() {
         return {
+            au: false,
             qt:{
                 ms: 0,
                 time:30,
                 timer:null
             },
             users: [],
+            user: this.propuser,
             answered:0,
             end_user: 0,
             answered_user_data: [],
@@ -237,8 +249,12 @@ export default {
     },
 
     created(){
-        console.log('challenge created')
         Echo.channel(this.channel)
+            .listen('SingleDisplay.UserJoinEvent', (data) => {
+                console.log(['UserJoinEvent.............', data])
+                !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
+                this.au = true
+            })
             .listen('GameStartEvent', (data) => {
                 console.log(['GameStartEvent.............', data])
                 this.share = data.share
@@ -268,71 +284,86 @@ export default {
             .listen('KickUserEvent', (data) => {
                 console.log('KickUserEvent.............')
                 this.users = this.users.filter( u => u.id !== data.uid )
-
                 if(this.user.id == data.uid){
                     window.location.href = "/"
                 }
-
-            });
-
+            })
     },
-    // watch: {
-    //     questions: {
-    //         handler(newQuestion) {
-    //             console.log('newQuestion', newQuestion[0])
-    //             this.showQuestionOptions(newQuestion[0].fileType, '');
-    //         },
-    //         // force eager callback execution
-    //         immediate: true
-    //     },
-    // },
 
     mounted() {
-        Echo.join(`challenge.${this.challenge.id}.${this.uid}`)
-            .here((users) => {
-                this.users = users;
+        let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
+        if(SingleGameUser) {
+            this.user = SingleGameUser
+            axios.post(`/api/userJoin`, {user:this.user}).then(()=>{
+                this.isAuthUser()
             })
-            .joining((user) => {
-                this.users.push(user);
-                if(this.game_start){
-                    this.kickUser(user.id)
-                }
-            })
-            .leaving((user) => {
-                this.users = this.users.filter(u => u.id != user.id);
-                console.log(`${user.name} leaving`);
+        }
+        this.isAuthUser()
+        console.log('mounted...', SingleGameUser)
+        Echo.channel(this.channel)
+            .subscribed((data) => {
+                console.log('SingleQuestionDisplay subscribed', data)
             });
+        //     .here(() => {
+        //         console.log('SingleQuestionDisplay...join Mounted')
+        //         //this.users = users;
+        //     })
+        //     .joining(() => {
+        //         console.log( 'useruser Joining')
+        //         //this.users.push(user);
+        //         // if(this.game_start){
+        //         //     this.kickUser(user.id)
+        //         // }
+        //     })
+        //     .leaving(() => {
+        //         console.log( 'useruser leaving')
+        //         // this.users = this.users.filter(u => u.id != user.id);
+        //         // console.log(`${user.name} leaving`);
+        //     });
 
         this.current = this.questions[this.qid].id
-        document.addEventListener("blur", () =>  this.preventLeave());
-        document.addEventListener("visibilitychange", () => {
-            if(document.hidden) {
-                this.preventLeave()
-            }
-        })
+        // document.addEventListener("blur", () =>  this.preventLeave());
+        // document.addEventListener("visibilitychange", () => {
+        //     if(document.hidden) {
+        //         this.preventLeave()
+        //     }
+        // })
 
     },
 
-    beforeMount() {
-        console.log('beforeMount')
-        window.addEventListener("beforeunload", this.preventNav)
-        this.$once("hook:beforeDestroy", () => {
-            window.removeEventListener("beforeunload", this.preventNav);
-        });
-    },
-
-    beforeRouteLeave(to, from, next) {
-        console.log('beforeRouteLeave')
-
-        if (this.game_start) {
-            if (!window.confirm("Do You Realy Want to Leave This Game?")) {
-                return;
-            }
-        }
-        next();
-    },
+    // beforeMount() {
+    //     console.log('beforeMount')
+    //     window.addEventListener("beforeunload", this.preventNav)
+    //     this.$once("hook:beforeDestroy", () => {
+    //         window.removeEventListener("beforeunload", this.preventNav);
+    //     });
+    // },
+    //
+    // beforeRouteLeave(to, from, next) {
+    //     console.log('beforeRouteLeave')
+    //
+    //     if (this.game_start) {
+    //         if (!window.confirm("Do You Realy Want to Leave This Game?")) {
+    //             return;
+    //         }
+    //     }
+    //     next();
+    // },
 
     methods: {
+        isAuthUser(){
+            this.au = 'id' in this.user
+            console.log('au....', this.au)
+            return this.au
+        },
+        insertUser: function (name) {
+            this.user['name'] = name
+            this.user['id'] = Date.now()
+            this.user['channel'] = this.channel
+            this.user['avatar'] = ''
+            sessionStorage.setItem("SingleGameUser", JSON.stringify(this.user));
+            axios.post(`/api/userJoin`, {user:this.user})
+        },
         preventNav(event) {
             if (!this.game_start) return;
             event.preventDefault();
@@ -580,6 +611,7 @@ export default {
     },
 
     computed: {
+
         // channel(){
         //     return `challenge.${this.challenge.id}.${this.uid}`
         // },

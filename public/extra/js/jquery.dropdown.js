@@ -93,7 +93,7 @@
 	 *	Methods
 	 *
 	 *	================================================================ */
-	
+
 	$.extend( Dropdown.prototype, {
 
 
@@ -1511,7 +1511,7 @@
 								collision.position.y  = 'top';
 								space = collision.space.top;
 
-							}					
+							}
 
 						}
 
@@ -1631,7 +1631,7 @@
 
 				$(window).resize(function() {
 
-					if ( inst.resizeTimeout ) 
+					if ( inst.resizeTimeout )
 						clearTimeout( inst.resizeTimeout );
 
 					inst.resizeTimeout = setTimeout(function() {
@@ -1957,7 +1957,7 @@
 			    cls   = self.cls;
 
 			// Create elements
-			var names = [ 
+			var names = [
 				'menuObject', 'menuHeader', 'menuTitle', 'menuList', 'menuMask',
 				'closeButton', 'closeText', 'closeIcon',
 				'backButton', 'backText', 'backIcon'
@@ -2036,7 +2036,7 @@
 			// Create elements
 			var elems = {};
 
-			var names = [ 
+			var names = [
 				'menuItem', 'menuLink', 'menuText',
 				'menuDivider', 'menuLabel'
 			];
@@ -3025,7 +3025,7 @@
 			return supportsTransitions;
 
 		}
-		
+
 
 	} );
 

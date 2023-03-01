@@ -1,6 +1,7 @@
 require('./bootstrap');
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
+window.Vue = require('vue').default;
 Vue.prototype.__ = str => _.get(window.i18n, str)
 
 /**
@@ -43,9 +44,11 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const app = new Vue({
     el: '#app',
     components: {
-	    'Practice': () => import('./components/games/Practice'),
+        'Practice' : () => import('./components/games/Practice'),
 	    'Challenge': () => import('./components/games/Challenge'),
         'SingleQuestion': () => import('./components/games/SingleQuestion'),
+        'UserName': () => import('./components/helper/singleDisplay/UserName'),
+        'Qrcode': () => import('./components/helper/singleDisplay/Qrcode'),
 	    'TeamQuiz': () => import('./components/games/TeamQuiz'),
 	    'Moderator': () => import('./components/games/Moderator'),
 	    'Team': () => import('./components/games/Team'),

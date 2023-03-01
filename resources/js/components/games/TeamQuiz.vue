@@ -294,13 +294,13 @@
             checkAnswer(q, a, rw){
                 this.answered = 1
                 this.right_wrong = rw
-                this.gamedata.['uid'] = this.user.id
-                this.gamedata.['channel'] = this.channel
-                this.gamedata.['name'] = this.user.name
-                this.gamedata.['question'] = this.questions[this.qid].question_text
-                this.gamedata.['answer'] = this.getCorrectAnswertext()
-                this.gamedata.['selected'] = a
-                this.gamedata.['isCorrect'] = rw == 1? Math.floor(this.progress): 0
+                this.gamedata['uid'] = this.user.id
+                this.gamedata['channel'] = this.channel
+                this.gamedata['name'] = this.user.name
+                this.gamedata['question'] = this.questions[this.qid].question_text
+                this.gamedata['answer'] = this.getCorrectAnswertext()
+                this.gamedata['selected'] = a
+                this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                     axios.post(`/api/questionClick`, this.gamedata)
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
