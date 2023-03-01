@@ -128,7 +128,6 @@
 
 import resultdetails from '../helper/practice/resultdetails'
 
-
 export default {
     props: ['id', 'user', 'questions', 'gmsg', 'quiz'],
     components: {resultdetails},
@@ -326,7 +325,7 @@ export default {
             return '';
         }
     }
-}
+};
 </script>
 <style>
     #ar {
