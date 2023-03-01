@@ -2,7 +2,7 @@
     <div class="container">
         <div class="waiting" v-if="screen.waiting">
             <div class="card" style="width: 24rem; ">
-                <div class="card-header">Player Joined. 
+                <div class="card-header">Player Joined.
                     <code v-if="user.id != uid" class="ml-2">Please Wait until Game Start..</code>
                 </div>
                 <div class="card-body" style="max-height:90vh; overflow:auto">
@@ -35,7 +35,7 @@
                     <h2 class="text-center">Waiting for other user response.</h2>
 
                     <div class="progress m-2">
-                        <div class="progress-bar progress-bar-striped" 
+                        <div class="progress-bar progress-bar-striped"
                             :style="progressWidth"
                             :class="progressClass"
                             > {{ Math.floor(progress) }}
@@ -81,14 +81,14 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">Close</button>
-            
+
         </div>
 
         <div class="row justify-content-center">
-            
+
             <div class="col-md-8">
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped" 
+                    <div class="progress-bar progress-bar-striped"
                         :style="progressWidth"
                         :class="progressClass"
                         > {{ Math.floor(progress) }}
@@ -99,7 +99,7 @@
                         <span class="q_num text-right text-muted">Question {{ qid + 1 }} of {{ questions.length }}</span>
                         <p v-html="question.question_text" class="mb-2"></p>
                         <ul class="list-group" v-for="option in question.options">
-                            <li @click="checkAnswer(question.id, option.option, option.correct)" 
+                            <li @click="checkAnswer(question.id, option.option, option.correct)"
                                 class="list-group-item list-group-item-action cursor my-1">
                                 <span v-html="option.option"></span>
                             </li>
@@ -121,8 +121,8 @@
                         </ul>
                     </div>
                 </div>
-                
-            
+
+
             </div>
 
         </div>
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-    
+
     export default {
         props : ['id', 'uid', 'user', 'questions'],
 
@@ -161,7 +161,7 @@
                 user_ranking: null,
                 game_start:0,
                 progress: 100,
-            
+
             };
         },
 
@@ -187,11 +187,11 @@
                     if(this.user.id == data.uid){
                         window.location.href = "http://quiz.erendevu.net"
                     }
-                    
+
                 });
 
         },
-       
+
         mounted() {
             Echo.join(`game.${this.id}.${this.uid}`)
                 .here((users) => {
@@ -256,13 +256,13 @@
             QuestionTimer(){
                 let pdec = 100 / (10 * this.qt.time);
                 console.log('QuestionTimer started')
-                this.qt.timer = 
+                this.qt.timer =
                     setInterval(() => {
                         if(this.qt.time == 0){
                             if(!this.answered){
                                 this.checkAnswer(this.qid, 'Not Answered', 0);
                             }
-                            this.questionInit(); 
+                            this.questionInit();
                             this.resultScreen();
                         }
                         else{
@@ -275,27 +275,27 @@
                             }
 
                         }
-                        
+
                     }, 100);
             },
 
             checkAnswer(q, a, rw){
                 this.answered = 1
                 this.right_wrong = rw
-                this.gamedata.['uid'] = this.user.id
-                this.gamedata.['channel'] = this.channel
-                this.gamedata.['name'] = this.user.name
-                this.gamedata.['question'] = this.questions[this.qid].question_text
-                this.gamedata.['answer'] = this.getCorrectAnswertext()
-                this.gamedata.['selected'] = a
-                this.gamedata.['isCorrect'] = rw == 1? Math.floor(this.progress): 0
+                this.gamedata['uid'] = this.user.id
+                this.gamedata['channel'] = this.channel
+                this.gamedata['name'] = this.user.name
+                this.gamedata['question'] = this.questions[this.qid].question_text
+                this.gamedata['answer'] = this.getCorrectAnswertext()
+                this.gamedata['selected'] = a
+                this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                     axios.post(`/api/questionClick`, this.gamedata)
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
                 this.screen.loading = true
                 this.answered_user ++
                 this.loadingScreen()
-                
+
             },
 
             getCorrectAnswertext(){
@@ -304,7 +304,7 @@
 
             loadingScreen(){
                 if(this.users.length == this.answered_user){
-                    this.screen.loading = false; 
+                    this.screen.loading = false;
                     this.resultScreen();
                 }
             },
@@ -409,7 +409,7 @@
                     axios.post(`/api/kickUser`, channelUser)
 
                 }
-                
+
             },
             questionInit(){
                 clearInterval(this.timer)
@@ -445,7 +445,7 @@
 
 
 
-        
+
 
     };
-</script>    
+</script>

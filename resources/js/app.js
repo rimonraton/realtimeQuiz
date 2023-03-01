@@ -43,19 +43,19 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const app = new Vue({
     el: '#app',
     components: {
-	    'Practice': () => import('./components/games/Practice'),
-	    'Challenge': () => import('./components/games/Challenge'),
-        'SingleQuestion': () => import('./components/games/SingleQuestion'),
-        'UserName': () => import('./components/helper/singleDisplay/UserName'),
-        'Qrcode': () => import('./components/helper/singleDisplay/Qrcode'),
-	    'TeamQuiz': () => import('./components/games/TeamQuiz'),
-	    'Moderator': () => import('./components/games/Moderator'),
-	    'Team': () => import('./components/games/Team'),
-        'TeamModerator': () => import('./components/games/TeamModerator'),
-        'ExamQuestionTimeMode' : () => import('./components/games/ExamQuestionTimeMode'),
-        'ExamTimeMode' : () => import('./components/games/ExamTimeMode'),
-        'ExamResult' : () => import('./components/games/ExamResult'),
-        'ExamResultWhenEmpty' : () => import('./components/games/ExamResultWhenSubmitEmpty'),
+        'Practice' : () => import('./components/games/Practice.vue'),
+	    'Challenge': () => import('./components/games/Challenge.vue'),
+        'SingleQuestion': () => import('./components/games/SingleQuestion.vue'),
+        'UserName': () => import('./components/helper/singleDisplay/UserName.vue'),
+        'Qrcode': () => import('./components/helper/singleDisplay/Qrcode.vue'),
+	    'TeamQuiz': () => import('./components/games/TeamQuiz.vue'),
+	    'Moderator': () => import('./components/games/Moderator.vue'),
+	    'Team': () => import('./components/games/Team.vue'),
+        'TeamModerator': () => import('./components/games/TeamModerator.vue'),
+        'ExamQuestionTimeMode' : () => import('./components/games/ExamQuestionTimeMode.vue'),
+        'ExamTimeMode' : () => import('./components/games/ExamTimeMode.vue'),
+        'ExamResult' : () => import('./components/games/ExamResult.vue'),
+        'ExamResultWhenEmpty' : () => import('./components/games/ExamResultWhenSubmitEmpty.vue'),
 	}
     // router
 });
