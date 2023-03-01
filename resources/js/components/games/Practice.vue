@@ -250,26 +250,20 @@ export default {
         },
         tbe(b, e, l) {
             // console.log(b,e,l)
-            // return l === 'bd' ? (b !== null ? b : e) : (e !== null ? e : b)
-            if(l === 'bd') {
-                console.log('lang.bd')
-                if (!!b){
-                    console.log('lang.b')
-                    return b
-                } else {
-                    console.log('lang.not-b')
-                    return e
-                }
-            } else {
-                console.log('lang.gb')
-                if (!!e){
-                    console.log('lang.e')
-                    return e
-                } else {
-                    console.log('lang.not-e')
-                    return b
-                }
-            }
+            return l === 'bd' ? (!!b ? b : e) : (!!e ? e : b)
+            // if(l === 'bd') {
+            //     if (!!b){
+            //         return b
+            //     } else {
+            //         return e
+            //     }
+            // } else {
+            //     if (!!e){
+            //         return e
+            //     } else {
+            //         return b
+            //     }
+            // }
         },
         qne2b(q, qn, l) {
             if (l === 'gb')
