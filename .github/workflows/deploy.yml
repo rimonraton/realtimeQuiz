@@ -14,8 +14,8 @@ jobs:
     - name: NPM Install
       run: npm install
       
-    #- name: NPM Production
-    # run: npm run prod
+    - name: NPM Production
+      run: npm run prod
     
     # host: ${{ secrets.SSH_HOST }} 
     # username: ${{ secrets.SSH_USERNAME }}
