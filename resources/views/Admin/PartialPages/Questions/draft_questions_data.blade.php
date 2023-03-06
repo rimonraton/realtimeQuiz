@@ -1,34 +1,26 @@
 @php $lang = App::getLocale(); @endphp
 <div class="card">
-{{--    <div class="row justify-content-center">--}}
-{{--        <div class="input-group mb-3 col-sm-6">--}}
-{{--            <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" aria-label="Search" aria-describedby="basic-addon2" id="search_input_keyword">--}}
-{{--            <div class="input-group-append">--}}
-{{--                <button class="btn btn-primary" type="button" data-tid="{{$id[0]}}" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
     <div class="card-body">
         <div class="text-center verifyButton d-none" id="verifybtnDiv">
             <button class="p-1 border border-success rounded-lg bg-success text-white" data-tid="{{$id}}" id="verify">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
         </div>
-{{--        <ul class="nav nav-tabs mb-3">--}}
-{{--            @foreach($questions as $q)--}}
-{{--            @if($q->questions->where('category_id', $id)->where('status', 0)->where('isDraft', 0)->whereIn('user_id',$admin_users)->count() > 0)--}}
-{{--            <li class="nav-item">--}}
-{{--                <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">--}}
-{{--                    <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>--}}
-{{--                    <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            @endif--}}
-{{--            @endforeach--}}
-{{--        </ul>--}}
+{{--        <div class="form-group row justify-content-end">--}}
+{{--            <div class="col-sm-3">--}}
+{{--                <select data-tid="{{$id}}" class="form-control"id="qtype">--}}
+{{--                    --}}{{--                                    <option value="">{{__('form.question_type')}}</option>--}}
+{{--                    <option value="0">{{$lang == 'gb' ? 'Choose Exam Type' : 'পরীক্ষার ধরন নির্বাচন করুন'}}</option>--}}
+{{--                    @foreach($questionType as $qtype)--}}
+{{--                        <option value="{{$qtype->id}}">{{$lang == 'gb' ? $qtype->name : $qtype->bn_name }}</option>--}}
+{{--                    @endforeach--}}
+{{--                </select>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="tab-content">--}}
+{{--            <div class="tab-pane">--}}
                 <div class="" style="overflow-x: hidden">
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12 pt-3">
+                            <div class="col-sm-12 pt-1">
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered text-center">
                                         <thead>
@@ -125,7 +117,23 @@
                                                         @endforeach
                                                     </span>
                                                 </td>
+{{--                                                <td id="bo_{{$qs->id}}">--}}
+{{--                                                    @foreach($qs->options as $qo)--}}
+{{--                                                        @if($qo->bd_option)--}}
+{{--                                                            <span class="btn btn-sm m-1" style="border: #5378e8 1px solid;">--}}
+{{--                                                                @if($qo->correct)--}}
+{{--                                                                <i class="{{$qo->correct?'fa fa-check':''}}" style="color:#5378e8"></i>--}}
+{{--                                                                @endif--}}
+{{--                                                                {{$qo->bd_option}}--}}
+{{--                                                            </span>--}}
+
+{{--                                                        @else--}}
+{{--                                                            ---}}
+{{--                                                    @endif--}}
+{{--                                                    @endforeach--}}
+{{--                                                </td>--}}
                                                 <td id="optImg_{{$qs->id}}">
+{{--                                                    {{$qs->options->first()}}--}}
                                                     @foreach($qs->options as $qo)
                                                     @if($qo->flag == 'img')
                                                         <span class="btn btn-sm m-1 rounded-lg" style="border: #5378e8 1px solid;">
@@ -177,6 +185,8 @@
 
                                         </tfoot>
                                     </table>
+
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-8">
@@ -193,8 +203,11 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+{{--            </div>--}}
+{{--        </div>--}}
     </div> <!-- end card-body-->
 </div> <!-- end card-->
 <script>
