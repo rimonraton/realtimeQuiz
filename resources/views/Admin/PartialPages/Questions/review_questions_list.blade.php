@@ -56,7 +56,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.questionsList')}}
+                <h4 class="card-title text-center">{{__('msg.reviewQuestionsList')}}
 {{--                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>--}}
                 </h4>
                 <hr>
@@ -121,8 +121,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-sm-12 pt-3">
-                                <div class="form-group row justify-content-end d-none" id="qtypeParent">
+                            <div class="col-sm-12">
+                                <div class="row justify-content-end d-none" id="qtypeParent">
                                     <div class="col-sm-3">
                                         <select data-tid="{{$id}}" class="form-control"id="qtype">
                                             {{--                                    <option value="">{{__('form.question_type')}}</option>--}}

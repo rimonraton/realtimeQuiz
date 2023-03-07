@@ -98,8 +98,9 @@ class QuestionController extends Controller
         if ($id) {
             $catName = Category::find($id)->name;
         }
-         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
-        return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName']));
+        $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        $questionType = QuestionType::all();
+        return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName', 'questionType']));
     }
     public function create()
     {
@@ -264,24 +265,57 @@ class QuestionController extends Controller
 //        $data[$key]['img_link'] = $filename;
 //        $data[$key]['flag'] = 'img';
     }
-    public function getlist($id, $keyword = '')
+    public function getlist($id, $keyword = '', $qType = '')
     {
-//        return $id;
+////        return $id;
+//        $admin = auth()->user()->admin;
+//        $admin_users = $admin->users()->pluck('id');
+//
+////        return Question::where('category_id', $id)->get();
+//
+//        $id = explode(',',$id);
+//        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
+//        if ($qus) {
+//            $questions = QuestionType::all();
+////            with(['questions' => function ($q) use ($id) {
+////                $q->where('category_id', $id);
+////            }, 'questions.options','questions.role.role'])
+//            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
+//        }
+//        return '';
+
+
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
-
-//        return Question::where('category_id', $id)->get();
-
-        $id = explode(',',$id);
-        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
-        if ($qus) {
-            $questions = QuestionType::all();
-//            with(['questions' => function ($q) use ($id) {
-//                $q->where('category_id', $id);
-//            }, 'questions.options','questions.role.role'])
-            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
+        $questions = null;
+        $et = 1;
+        if ($qType){
+            $et = $qType;
+        }
+        if($keyword){
+            $questions = Question::where('status', 0)
+                ->whereIn('user_id', $admin_users)
+                ->where('question_text', 'like', '%' . $keyword . '%')
+                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                ->where('category_id', $id)
+                ->with('difficulty')
+                ->where('quizcategory_id', $et)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        } else {
+            $questions = Question::where('category_id', $id)
+                ->where('quizcategory_id', $et)
+                ->whereIn('user_id',$admin_users)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }
+//        $questionType = QuestionType::all();
+//       return count($questions);
+        if(count($questions)){
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id', 'et'));
         }
         return '';
+
     }
     public function getreviewlist($id, $keyword = '', $qType = '')
     {

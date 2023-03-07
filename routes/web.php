@@ -61,7 +61,7 @@ Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::cl
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', [QuestionController::class,'create']);
 Route::post('question/save', 'QuestionController@storeQuestion');
-Route::get('question/getlist/{id}/{keyword?}', [QuestionController::class, 'getlist']);
+Route::get('question/getlist/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getlist']);
 Route::get('question/get-review-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getreviewlist']);
 Route::get('question/get-draft-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getDraftList']);
 Route::get('question/edit/{id}', [QuestionController::class,'editQuestion']);

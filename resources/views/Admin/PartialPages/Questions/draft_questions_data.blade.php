@@ -20,7 +20,7 @@
                 <div class="" style="overflow-x: hidden">
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12 pt-1">
+                            <div class="col-sm-12">
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered text-center">
                                         <thead>
