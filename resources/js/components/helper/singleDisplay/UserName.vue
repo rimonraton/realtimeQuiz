@@ -3,18 +3,20 @@
 	    <div class="card" style="width: 24rem; ">
 	        <div class="card-header text-center">
 	            <h4 class="ml-1 text-primary">
-                    Please insert your name
+                    Please insert your name & mobile
                 </h4>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
-	            <div class="d-flex justify-content-between">
-                    <input type="text" v-model="name" class="form-control" autofocus>
+                <div class="d-flex justify-content-between">
+                    <input type="text" v-model="newUser.name" class="form-control" placeholder="Your Name" autofocus>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <a @click="$emit('insertUser', name)"
+                <div class="d-flex justify-content-between mt-2">
+                    <input type="phone" v-model="newUser.mobile" class="form-control" placeholder="Mobile No.">
+                </div>
+                <div class="d-flex justify-content-center" v-if="newUser.name.length > 2 && newUser.mobile.length == 11">
+                    <a @click="$emit('insertUser', newUser)"
                        class="btn btn-sm btn-success mt-4 pull-right"
-                       :class="{ 'disabled' : name.length < 3 }"
-                    >SUBMIT</a>
+                    >JOIN </a>
                 </div>
 	        </div>
 	    </div>
@@ -28,7 +30,10 @@ export default{
 	props:['user', 'uid', 'users', 'time'],
     data() {
         return {
-            name:'',
+            newUser: {
+                name:'',
+                mobile: '',
+            },
             days: '',
             hours: '',
             minutes: '',

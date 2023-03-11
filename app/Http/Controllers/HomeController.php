@@ -111,7 +111,7 @@ class HomeController extends Controller
     public function gameInAdmin($type,$id = null)
     {
 
-         $admin_users = auth()->user()->admin->users()->pluck('id');
+        $admin_users = auth()->user()->admin->users()->pluck('id');
         $catName = '';
         if ($id) {
             $catName = Category::find($id)->name;

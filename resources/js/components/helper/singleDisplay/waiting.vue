@@ -11,13 +11,14 @@
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
                 <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">
-	            <ul class="list-group ">
+	            <ul class="list-group " v-if="uid === user.id">
 	                <li class="list-group-item"
 	                    v-for="u in users" :key="u.id"
 	                    :class="{active : u.id == user.id}"
 	                    >
 	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
 	                    <span class="ml-5">{{ u.name }}</span>
+                        <span class="ml-1 badge badge-info">{{ u.mobile }}</span>
 	                    <span v-if="u.id == uid" class="ml-1 badge badge-info">Host</span>
 
 	                    <span class="flag" >
@@ -30,7 +31,17 @@
 	                        <span title="Kick User">&times;</span>
 	                    </button>
 	                </li>
-	            </ul>
+                </ul>
+                <ul class="list-group " v-else>
+                    <li class="list-group-item active">
+                        <img :src="getAvatar(user.avatar)" :alt="getAvatarAlt(user.name)" class="circle mr-2">
+                        <span class="ml-5">{{ user.name }}</span>
+                        <span class="ml-1 badge badge-info">{{ user.mobile }}</span>
+                        <span class="flag" >
+	                    	<img :src="getFlag(user.country)">
+	                    </span>
+                    </li>
+                </ul>
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
                     <a @click="$emit('gameStart')"
