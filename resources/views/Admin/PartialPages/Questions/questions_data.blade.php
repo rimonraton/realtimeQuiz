@@ -10,27 +10,23 @@
 {{--    </div>--}}
 
     <div class="card-body">
-        <ul class="nav nav-tabs mb-3">
-            @foreach($questions as $q)
-            @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
-            <li class="nav-item">
-                <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">
-                    <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                    <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>
-                </a>
-            </li>
-            @endif
-            @endforeach
-        </ul>
-        <div class="tab-content">
-{{--            {{$questions->count()}}--}}
-            @foreach($questions as $q)
-            @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)
-            <div class="tab-pane {{$loop->first? 'active' : ''}}" id="home{{$q->id}}">
+{{--        <ul class="nav nav-tabs mb-3">--}}
+{{--            @foreach($questions as $q)--}}
+{{--            @if($q->questions->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->count() > 0)--}}
+{{--            <li class="nav-item">--}}
+{{--                <a href="#home{{$q->id}}" data-toggle="tab" aria-expanded="true" class="nav-link {{$loop->first?'active':''}}">--}}
+{{--                    <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>--}}
+{{--                    <span class="d-none d-lg-block">{{$lang=='gb'?$q->name:$q->bn_name}}</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+{{--            @endif--}}
+{{--            @endforeach--}}
+{{--        </ul>--}}
+
                 <div class="" style="overflow-x: hidden">
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
-                            <div class="col-sm-12 pt-3">
+                            <div class="col-sm-12">
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered ">
                                         <thead>
@@ -47,26 +43,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @php
-                                            if ($keyword){
-                                                $questionCat = $q->questions()
-                                                ->whereIn('user_id',$admin_users)
-                                                ->where('question_text', 'like', '%' . $keyword . '%')
-                                                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                                                ->with('difficulty')
-                                                ->where('category_id', $id[0])
-                                                ->orderBy('id','desc')
-                                                ->paginate(10);
-                                            } else{
-                                                $questionCat = $q->questions()
-                                                ->where('category_id', $id[0])
-                                                ->whereIn('user_id',$admin_users)
-                                                ->with('difficulty')
-                                                ->orderBy('id','desc')
-                                                ->paginate(10);
-                                            }
-                                        @endphp
-                                            @foreach($questionCat as $qs)
+                                        @foreach($questions as $qs)
                                             <tr>
                                                 <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
                                                 <td>
@@ -159,13 +136,17 @@
 {{--                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>--}}
 {{--                                                        <a class="disabled"><i class="fas fa-trash"></i></a>--}}
 {{--                                                    @endcan--}}
+                                                    @if($qs->isDraft)
+                                                        <span class="badge badge-pill badge-purple">{{$lang == 'gb' ? 'Draft' : 'খসড়া' }}</span>
+                                                    @else
                                                         @if($qs->status)
                                                         <span class="badge badge-pill badge-success">{{$lang == 'gb' ? 'Verified' : 'যাচাই করা হয়েছে' }}</span>
                                                         @else
-                                                            <span class="badge badge-pill badge-info">{{$lang == 'gb' ? 'Pending': 'অপেক্ষমাণ'}}</span>
+                                                            <span class="badge badge-pill badge-info">{{$lang == 'gb' ? 'In review': 'পর্যালোচনা'}}</span>
                                                         @endif
+                                                    @endif
                                                     @if($qs->difficulty)
-                                                        <span class="badge badge-pill bad {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">{{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}</span>
+                                                        <span class="badge badge-pill {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">{{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}</span>
 
                                                     @endif
                                                 </td>
@@ -192,7 +173,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-8">
-                                        {{$questionCat->links()}}
+                                        {{$questions->links()}}
                                     </div>
                                     <div class="col-md-4" >
                                         <div class="text-center loading" style="display: block;">
@@ -205,15 +186,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-            </div>
-            @endif
-            @endforeach
-
-        </div>
     </div> <!-- end card-body-->
 </div> <!-- end card-->
 <script>

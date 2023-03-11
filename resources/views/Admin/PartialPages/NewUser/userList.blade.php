@@ -3,42 +3,31 @@
 @section('content')
 {{--    <div class="row">--}}
 {{--        <div class="col-12">--}}
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title text-center">{{__('form.user_list')}}
-                        <button type="button" class="btn btn-info btn-rounded m-t-8 mb-2 float-right add" data-toggle="modal" data-role_id="0">
-                            {{__('form.add_user')}}
-                        </button>
-                    </h4>
-                    <hr>
-                </div>
-            </div>
 <div class="row justify-content-center">
     <!-- Column -->
-    @foreach($role_wise_user as $rws)
         <div class="col-sm-12 col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="card bg-success">
-                        <div class="card-body text-white">
-                            <div class="d-flex flex-row">
-                                <div class="align-self-center display-6">
-                                    <i class="fas fa-address-card"></i>
+                    <div class="card bg-light-primary">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-sm-between">
+                                <div class="align-self-center">
+                                    <a  href="{{url('new-user')}}" class="text-danger"><i class="fas fa-arrow-left"></i> {{__('form.back')}}</a>
                                 </div>
-                                <div class="p-2 align-self-center">
-                                    <h4 class="mb-0 text-white">{{$lang=='gb'?$rws->role_name:$rws->bn_role_name}}</h4>
-                                    <!-- <span>Income</span> -->
+                                <div class="p-2 align-self-center text-center">
+                                    <h4 class="mb-0 text-black-50">
+                                        <i class="fas fa-address-card display-7"></i>
+                                        <span class="display-7"> {{$lang=='gb'?$role->role_name:$role->bn_role_name}} </span>
+                                    </h4>
                                 </div>
-                                <div class="ml-auto align-self-center">
+                                <div class="align-self-center">
                                     <!-- <h2 class="font-weight-medium mb-0 text-white">$2900</h2> -->
-                                    <a data-role_id="{{$rws->id}}" style="cursor:pointer;" class="text-white add"><i class="fas fa-plus"></i> {{__('form.add_new')}}</a>
+                                    <a data-role_id="{{$role->id}}" style="cursor:pointer;" class="add"><i class="fas fa-plus"></i> {{__('form.add_new')}}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @if($rws->users)
                         <div class="table-responsive">
-
                             <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -53,23 +42,20 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @php $roleUsers = $rws->users->paginate(15)  @endphp
-                                            @foreach($roleUsers as $user)
-                                                @if($user->user)
+                                            @foreach($users as $user)
                                                     <tr>
                                                         <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                                                        <th>{{$user->user->name}}</th>
-                                                        <th>{{$user->user->email}}</th>
-                                                        <th>{{$user->user->info?$user->user->info->mobile:''}}</th>
+                                                        <th>{{$user->name}}</th>
+                                                        <th>{{$user->email}}</th>
+                                                        <th>{{$user->info ? ($user->info->mobile ? $user->info->mobile :'---') : '---'}}</th>
                                                         <th>
-                                                            <a class="edit" href="" data-id="{{$user->user_id}}" data-name="{{$user->user->name}}" data-email="{{$user->user->email}}" data-role="{{$user->role_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                            <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->user_id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                                                            <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->user_id}}" href="" title="Send Mail">
+                                                            <a class="edit" href="" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-role="{{$role->id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                            <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                            <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->id}}" href="" title="Send Mail">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </a>
                                                         </th>
                                                     </tr>
-                                                @endif
                                             @endforeach
 
                                             </tbody>
@@ -83,9 +69,9 @@
                                             </tr>
                                             </tfoot>
                                         </table>
-{{--                                        <div class="row mt-4 justify-content-center" id="topic_pagination">--}}
-{{--                                            {{$roleUsers->links()}}--}}
-{{--                                        </div>--}}
+                                        <div class="row mt-4 justify-content-center" id="topic_pagination">
+                                            {{$users->links()}}
+                                        </div>
                                         <!-- <div class="text-center">
                                             <p>
                                                 No Data Found..
@@ -96,16 +82,9 @@
 
                             </div>
                         </div>
-                    @endif
-                    <div class="text-center">
-                        @if(count($rws->users) > 15)
-                        <a class="btn btn-warning border border-warning rounded-lg" href="{{url('role-wise-users/'. $rws->id)}}" data-role="{{$rws->id}}" data-roleName="{{ $lang== 'gb' ? $rws->role_name : $rws->bn_role_name }}">{{__('form.show_all') }}</a>
-                        @endif
-                    </div>
                 </div>
             </div>
         </div>
-    @endforeach
 </div>
 {{--        </div>--}}
 {{--    </div>--}}
@@ -121,7 +100,7 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ url('create-new-user') }}" autocomplete="off">
                         @csrf
-                        <input type="hidden" name="admin_id" id="" value="{{$admin_id}}">
+                        <input type="hidden" name="admin_id" id="" value="{{$users[0]['admin_id']}}">
                         <div class="form-group row">
                             <label for="category" class="col-md-4 text-right control-label col-form-label">{{__('form.role')}}</label>
                             <div class="col-md-6" id="options">

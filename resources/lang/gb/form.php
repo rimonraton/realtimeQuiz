@@ -232,4 +232,7 @@ return [
     'examination' => 'Tests',
     'questions_type_level' => 'Question Type & Difficulty',
     'difficulty' => 'Difficulty',
+    'show_all' => 'Show all',
+    'password_required' => 'You have not provided a password',
+    'not_right_user' => 'Sorry!You are not right user',
 ];

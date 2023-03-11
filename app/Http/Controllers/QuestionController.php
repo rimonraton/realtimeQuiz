@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Difficulty;
+use App\LogReport;
+use App\QuestionLogReport;
 use App\QuestionType;
 use Illuminate\Http\Request;
 use App\Category;
@@ -13,6 +15,7 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 class QuestionController extends Controller
 {
@@ -95,8 +98,9 @@ class QuestionController extends Controller
         if ($id) {
             $catName = Category::find($id)->name;
         }
-         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
-        return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName']));
+        $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        $questionType = QuestionType::all();
+        return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName', 'questionType']));
     }
     public function create()
     {
@@ -156,7 +160,15 @@ class QuestionController extends Controller
             $request->file->move($path, $filename);
             $imgPath = $filename;
         }
-
+        $geoip = new GeoIPLocation();
+        $userIpInfo = [
+            'user_id' => \auth()->user()->id,
+            'ip' => $geoip->getIP(),
+            'city' => $geoip->getCity(),
+            'from' => 'create',
+            'actionType' => 'insert',
+            'dateTime' => Carbon::now()
+        ];
         $question = Question::create([
             'category_id' => $categoryid,
             'quizcategory_id' => $request->questionType,
@@ -167,7 +179,8 @@ class QuestionController extends Controller
             'bd_answer_explanation' => $request->bdexplenation,
             'fileType' => $fileType,
             'user_id' => Auth::user()->id,
-            'level' => $request->difficulty
+            'level' => $request->difficulty,
+            'user_ip_info' => json_encode($userIpInfo),
             // 'created_at' => Carbon::,
         ]);
 
@@ -224,8 +237,11 @@ class QuestionController extends Controller
 
 
         QuestionsOption::insert($data);
-
-        return redirect('/review-questions/' . $categoryid);
+        QuestionLogReport::create([
+            'question_id' => $question->qid,
+            'details' => json_encode($userIpInfo)
+        ]);
+        return redirect('/draft-questions/' . $categoryid);
     }
 
     public function optionFile($file)
@@ -249,41 +265,92 @@ class QuestionController extends Controller
 //        $data[$key]['img_link'] = $filename;
 //        $data[$key]['flag'] = 'img';
     }
-    public function getlist($id, $keyword = '')
+    public function getlist($id, $keyword = '', $qType = '')
     {
-//        return $id;
+////        return $id;
+//        $admin = auth()->user()->admin;
+//        $admin_users = $admin->users()->pluck('id');
+//
+////        return Question::where('category_id', $id)->get();
+//
+//        $id = explode(',',$id);
+//        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
+//        if ($qus) {
+//            $questions = QuestionType::all();
+////            with(['questions' => function ($q) use ($id) {
+////                $q->where('category_id', $id);
+////            }, 'questions.options','questions.role.role'])
+//            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
+//        }
+//        return '';
+
+
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
-
-//        return Question::where('category_id', $id)->get();
-
-        $id = explode(',',$id);
-        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
-        if ($qus) {
-            $questions = QuestionType::all();
-//            with(['questions' => function ($q) use ($id) {
-//                $q->where('category_id', $id);
-//            }, 'questions.options','questions.role.role'])
-            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
+        $questions = null;
+        $et = 1;
+        if ($qType){
+            $et = $qType;
+        }
+        if($keyword){
+            $questions = Question::where('status', 0)
+                ->whereIn('user_id', $admin_users)
+                ->where('question_text', 'like', '%' . $keyword . '%')
+                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                ->where('category_id', $id)
+                ->with('difficulty')
+                ->where('quizcategory_id', $et)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        } else {
+            $questions = Question::where('category_id', $id)
+                ->where('quizcategory_id', $et)
+                ->whereIn('user_id',$admin_users)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }
+//        $questionType = QuestionType::all();
+//       return count($questions);
+        if(count($questions)){
+            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id', 'et'));
         }
         return '';
+
     }
-    public function getreviewlist($id, $keyword = '')
+    public function getreviewlist($id, $keyword = '', $qType = '')
     {
-//        return $id;
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
-
-//        return Question::where('category_id', $id)->get();
-
-//        $id = explode(',',$id);
-        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
-        if ($qus) {
-            $questions = QuestionType::all();
-//            with(['questions' => function ($q) use ($id) {
-//                $q->where('category_id', $id);
-//            }, 'questions.options','questions.role.role'])
-            return view('Admin.PartialPages.Questions.review_questions_data', compact('questions', 'id','admin_users','keyword'));
+        $questions = null;
+        $et = 1;
+        if ($qType){
+            $et = $qType;
+        }
+        if($keyword){
+            $questions = Question::where('status', 0)
+                ->whereIn('user_id', $admin_users)
+                ->where('question_text', 'like', '%' . $keyword . '%')
+                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                ->where('category_id', $id)
+                ->with('difficulty')
+                ->where('isDraft', 0)
+                ->where('status', 0)
+                ->where('quizcategory_id', $et)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        } else {
+            $questions = Question::where('category_id', $id)
+                ->where('isDraft', 0)
+                ->where('status', 0)
+                ->where('quizcategory_id', $et)
+                ->whereIn('user_id',$admin_users)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }
+//        $questionType = QuestionType::all();
+//       return count($questions);
+        if(count($questions)){
+            return view('Admin.PartialPages.Questions.review_questions_data', compact('questions', 'id', 'et'));
         }
         return '';
     }
@@ -400,6 +467,21 @@ class QuestionController extends Controller
 //        return  explode(',', $request->oid);
 //            return file_exists($request->old_file_path);
 //        return json_decode($request->bdoption);
+
+        $geoip = new GeoIPLocation();
+        $userIpInfo = [
+            'user_id' => \auth()->user()->id,
+            'ip' => $geoip->getIP(),
+            'city' => $geoip->getCity(),
+            'from' => $request->from,
+            'actionType' => 'update',
+            'dateTime' => Carbon::now()
+        ];
+        QuestionLogReport::create([
+            'question_id' => $request->qid,
+            'details' => json_encode($userIpInfo)
+        ]);
+
         if ($request->file){
             $location = '';
             $imgPath = '';
@@ -435,7 +517,7 @@ class QuestionController extends Controller
                 'bd_question_text' => $request->bdquestion,
                 'question_file_link' =>  $imgPath,
                 'fileType' => $fileType,
-                'level' => $request->difficulty
+                'level' => $request->difficulty,
             ]);
             if(file_exists($request->old_file_path))
             {
@@ -551,7 +633,8 @@ class QuestionController extends Controller
             $catName =  $lang == 'gb' ? Category::find($id)->name : Category::find($id)->bn_name;
         }
         $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
-        return view('Admin.PartialPages.Questions.review_questions_list', compact(['topic', 'id', 'catName']));
+        $questionType = QuestionType::all();
+        return view('Admin.PartialPages.Questions.review_questions_list', compact(['topic', 'id', 'catName','questionType']));
     }
 
     public function verifyQuestionUpdate(Request $request)
@@ -566,5 +649,68 @@ class QuestionController extends Controller
             'status' => 1
         ]);
         return Question::whereIn('id', $ids)->get();
+    }
+    public function verifyDraftQuestionUpdate(Request $request)
+    {
+
+//        return $request->ids;
+//       return gettype($request->ids);
+
+        $ids = explode(",", $request->ids);
+//      return gettype($ids);
+        Question::whereIn('id', $ids)->update([
+            'isDraft' => 0
+        ]);
+        return Question::whereIn('id', $ids)->get();
+    }
+
+    public function draftQuestions($id= '')
+    {
+        $lang = \App::getLocale();
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $catName = '';
+        if ($id) {
+            $catName =  $lang == 'gb' ? Category::find($id)->name : Category::find($id)->bn_name;
+        }
+        $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        $questionType = QuestionType::all();
+        return view('Admin.PartialPages.Questions.draft_questions_list', compact(['topic', 'id', 'catName','questionType']));
+    }
+    public function getDraftList($id, $keyword = '', $qType='')
+    {
+//        return $keyword ? 'true' : 'fale';
+        $admin = auth()->user()->admin;
+        $admin_users = $admin->users()->pluck('id');
+        $questions = null;
+        $et = 1;
+        if ($qType){
+            $et = $qType;
+        }
+        if($keyword){
+            $questions = Question::where('status', 0)
+                ->whereIn('user_id', $admin_users)
+                ->where('question_text', 'like', '%' . $keyword . '%')
+                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+                ->where('category_id', $id)
+                ->with('difficulty')
+                ->where('isDraft', 1)
+                ->where('quizcategory_id', $et)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        } else {
+            $questions = Question::where('category_id', $id)
+                ->where('isDraft', 1)
+                ->where('quizcategory_id', $et)
+                ->whereIn('user_id',$admin_users)
+                ->orderBy('id','desc')
+                ->paginate(10);
+        }
+//        $questionType = QuestionType::all();
+//       return count($questions);
+       if(count($questions)){
+            return view('Admin.PartialPages.Questions.draft_questions_data', compact('questions', 'id', 'et'));
+       }
+        return '';
     }
 }

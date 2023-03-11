@@ -78,5 +78,7 @@ return [
     'result'=>'Result',
     'delete'=>'Delete',
     'notify'=>'Notice',
-    'not_published_yet' => 'Not Published Yet'
+    'not_published_yet' => 'Not Published Yet',
+    'draftQuestionsList' => 'List of draft questions',
+    'reviewQuestionsList' => 'List of review questions',
 ];

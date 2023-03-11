@@ -52,14 +52,18 @@ Route::post('question/updatecategory', [QuestionController::class,'update']);
 Route::get('question/deletecategory/{id}', 'QuestionController@delete');
 Route::get('search_category/{keyword}',[\App\Http\Controllers\SearchController::class,'search']);
 
+//User
+Route::post('user-verify',[NewUserController::class, 'userVerify']);
+
 // Questions
 Route::get('question-list/{tid}', [QuestionController::class, 'qListByTopic']);
 Route::get('question-list-with-keyword/{tid}/{keyword}', [QuestionController::class, 'qListByTopicKeyword']);
 Route::get('question/list/{id?}', [QuestionController::class, 'list']);
 Route::get('question/create', [QuestionController::class,'create']);
 Route::post('question/save', 'QuestionController@storeQuestion');
-Route::get('question/getlist/{id}/{keyword?}', [QuestionController::class, 'getlist']);
-Route::get('question/get-review-list/{id}/{keyword?}', [QuestionController::class, 'getreviewlist']);
+Route::get('question/getlist/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getlist']);
+Route::get('question/get-review-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getreviewlist']);
+Route::get('question/get-draft-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getDraftList']);
 Route::get('question/edit/{id}', [QuestionController::class,'editQuestion']);
 Route::post('question/update', 'QuestionController@updateQuestion');
 Route::get('question/delete/{id}', 'QuestionController@deleteQuestion');
@@ -70,6 +74,8 @@ Route::post('question_store_by_excel',[\App\Http\Controllers\ExcelController::cl
 Route::post('option-file-update',[QuestionController::class,'optionFileUpdate']);
 Route::get('review-questions/{id?}', [QuestionController::class, 'reviewQuestions']);
 Route::post('verify-question-update', [QuestionController::class, 'verifyQuestionUpdate']);
+Route::post('verify-draft-question-update', [QuestionController::class, 'verifyDraftQuestionUpdate']);
+Route::get('draft-questions/{id?}', [QuestionController::class, 'draftQuestions']);
 // Question subtopic
 Route::get('question/subtopic/{id}', 'SubTopicController@index');
 
@@ -143,6 +149,7 @@ Route::post('create-new-user',[NewUserController::class,'create']);
 Route::post('update-new-user',[NewUserController::class,'update']);
 Route::get('send-email/{user}',[NewUserController::class,'sendEmail']);
 Route::get('userCredential/{token}',[UserCredential::class,'userCredential']);
+Route::get('role-wise-users/{role}',[NewUserController::class,'roleWiseUsers']);
 
 //Menu Setup
 Route::get('menu',[\App\Http\Controllers\MenuController::class,'index']);

@@ -56,7 +56,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.reviewQuestionsList')}}
+                <h4 class="card-title text-center">{{__('msg.draftQuestionsList')}}
 {{--                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>--}}
                 </h4>
                 <hr>
@@ -79,7 +79,7 @@
 {{--                                                @endif--}}
 
                                                 <span>
-                                                    {{$lang == 'gb' ? ($c->name?$c->name : $c->bn_name) : ($c->bn_name ? $c->bn_name : $c->name)}}
+                                                    {{$lang == 'gb'?($c->name?$c->name:$c->bn_name):($c->bn_name?$c->bn_name:$c->name)}}
 
                                                 </span>
                                             </div>
@@ -110,7 +110,6 @@
 
                 </div>
                 <div class="table-responsive" style="overflow-x: hidden">
-
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12 loading" style="display: none;">
@@ -179,8 +178,6 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
-
 <!-- Modal -->
 <div class="modal fade" id="verification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -194,26 +191,25 @@
             <div class="modal-body">
                 <input type="hidden" id="question_id">
                 <div class="form-group">
-{{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
+                    {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
                     <input type="password" class="form-control" placeholder="{{$lang == 'gb' ? 'Enter Your Password' : 'আপনার পাসওয়ার্ড লিখুন' }}" id="password" name="password" autocomplete="off">
                 </div>
-{{--                <div class="form-group">--}}
-{{--                    <label for="confirm-password">Confirm Password</label>--}}
-{{--                    <input type="password" class="form-control" id="confirm-password" name="confirm-password" autocomplete="none" required>--}}
-{{--                    <span id="matchPassword"></span>--}}
-{{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="confirm-password">Confirm Password</label>--}}
+                {{--                    <input type="password" class="form-control" id="confirm-password" name="confirm-password" autocomplete="none" required>--}}
+                {{--                    <span id="matchPassword"></span>--}}
+                {{--                </div>--}}
                 <div class="text-center">
                     <button type="button" class="btn btn-primary" id="verifingUser">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
                 </div>
             </div>
-{{--            <div class="modal-footer text-center">--}}
-{{--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-{{--                <button type="button" class="btn btn-primary" id="verifingUser">Verify</button>--}}
-{{--            </div>--}}
+            {{--            <div class="modal-footer text-center">--}}
+            {{--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+            {{--                <button type="button" class="btn btn-primary" id="verifingUser">Verify</button>--}}
+            {{--            </div>--}}
         </div>
     </div>
 </div>
-
 
 @endsection
 @section('js')
@@ -365,31 +361,34 @@
         $('#nestable-menu').nestable();
     })
 
-    function topicwithcategory(id, keyword = '', qtype='') {
-        console.log('from function.........', keyword)
-        let  url = "{{url('question/get-review-list')}}/" + id + '/' + keyword + '/' + qtype
-        {{--if(keyword) {--}}
-        {{--    url = "{{url('question/get-review-list')}}/" + id + '/' + keyword--}}
+    function topicwithcategory(id, keyword = '', qtype = '') {
+        // console.log('from function.........',id, keyword, qtype)
+        let url = "{{url('question/get-draft-list')}}/" + id + '/' + keyword + '/' + qtype
+        {{--if(keyword && qtype) {--}}
+        {{--    url = "{{url('question/get-draft-list')}}/" + id + '/' + keyword + '/' + qtype--}}
+        {{--} else if(qtype){--}}
+        {{--    url = "{{url('question/get-draft-list')}}/" + id + '/' + qtype--}}
         {{--} else {--}}
-        {{--    url = "{{url('question/get-review-list')}}/" + id--}}
+        {{--    url = "{{url('question/get-draft-list')}}/" + id--}}
         {{--}--}}
-        {{--console.log('url.......', url)--}}
+        // console.log('url.......', url)
         $.ajax({
             url: url,
             type: "GET",
             beforeSend: function() {
                 $('.loading').show();
                 $('#msg').hide();
-                $('#viewData').hide();
+                // $('#viewData').hide();
                 console.log('BEFORE');
             },
             success: function(data) {
-                // console.log('data'+data);
+                console.log('data......', data);
                 if (data != '') {
                     $('#qtypeParent').removeClass('d-none')
+                    console.log('data ache....')
                     $('#viewData').html(data);
                 } else {
-
+                    // $('#qtypeParent').addClass('d-none')
                     $('#viewData').html(
                         `<div class="text-center">
                             <p>{{__('form.no_data_found')}}</p>
@@ -401,12 +400,19 @@
             },
             complete: function() {
                 $('.loading').hide();
-                $('#viewData').show();
+                // $('#viewData').show();
                 console.log('COMPLETE');
 
             }
         })
     }
+    $(document).on('click', '#search_question_category', function (e) {
+        e.preventDefault()
+        const id = $(this).attr('data-tid')
+        const keyword = $('#search_input_keyword').val()
+        // console.log(keyword, 'keyword.....')
+        topicwithcategory(id, keyword)
+    })
     $(document).on('change', '#qtype', function () {
         const id = $(this).attr('data-tid')
         const value = $(this).val()
@@ -417,13 +423,6 @@
             topicwithcategory(id,0, value)
         }
     })
-    $(document).on('click', '#search_question_category', function (e) {
-        e.preventDefault()
-        const id = $(this).attr('data-tid')
-        const keyword = $('#search_input_keyword').val()
-        console.log(keyword, 'keyword.....')
-        topicwithcategory(id, keyword)
-    })
     $(document).on('click', '#search_question_category_clear', function (e) {
         e.preventDefault()
         $('#search_input_keyword').val('')
@@ -433,17 +432,6 @@
         const id = $(this).attr('data-tid')
         topicwithcategory(id)
     })
-    // $('#confirm-password').on('keyup', function () {
-    //     var password = $("#password").val();
-    //     console.log('password.length', password.length)
-    //     var confirmPassword = $(this).val();
-    //     if (password != confirmPassword) {
-    //        $('#matchPassword').html("<span class='text-danger'>Passwords do not match.<span>");
-    //         return false;
-    //     }
-    //     $('#matchPassword').html("<span class='text-success'>Passwords matched</span>");
-    //     return true;
-    // })
     $('#password').keypress(function (e) {
         var key = e.which;
         if(key == 13)  // the enter key code
@@ -499,7 +487,19 @@
         $('#verification').modal('show')
         // var id = $(this).attr('data-id');
     })
-
+    {{--$(document).on('click', '.edit', function() {--}}
+    {{--    var id = $(this).attr('data-id');--}}
+    {{--    // alert(id);--}}
+    {{--    $('#uqid').val(id);--}}
+    {{--    $.ajax({--}}
+    {{--        url: "{{url('question/edit')}}/" + id,--}}
+    {{--        type: 'GET',--}}
+    {{--        success: function(data) {--}}
+    {{--            $('#quistion_view').html(data);--}}
+    {{--            $('#edit-questions').modal('show');--}}
+    {{--        }--}}
+    {{--    })--}}
+    {{--})--}}
     var verifydata = []
     $(document).on('click', '.verifyelement', function () {
         const id = $(this).val()
@@ -549,7 +549,7 @@
         fd.append('ids', verifydata);
 
         $.ajax({
-            url:"{{url('verify-question-update')}}",
+            url:"{{url('verify-draft-question-update')}}",
             type:"Post",
             data: fd,
             contentType: false,
@@ -702,7 +702,7 @@
         fd.append('bdquestion', $('#ubdquestion').val());
         fd.append('old_file_path', $('#ufile_path').val());
         fd.append('difficulty', difficulty);
-        fd.append('from', 'review');
+        fd.append('from', 'draft');
         $.ajax({
             url:"{{url('question-update')}}",
             type:"Post",

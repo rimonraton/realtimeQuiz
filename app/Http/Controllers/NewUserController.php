@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 class NewUserController extends Controller
 {
@@ -22,9 +23,12 @@ class NewUserController extends Controller
         $this->middleware('auth');
     }
     public function index(){
+//        $geoip = new GeoIPLocation();
+//         $geoip->setIP('27.147.187.184');
+//         return $geoip->getCity();
 //        return Request()->root();
         $admin_id = auth()->user()->admin_id;
-         $role_wise_user = Role::with(['users.user'=>function ($q) use ($admin_id){
+        $role_wise_user = Role::with(['users.user'=>function ($q) use ($admin_id){
                 $q->where('admin_id',$admin_id);
         }])->get()->except(1);
         $random= Str::random(2).mt_rand(100000, 999999);
@@ -41,7 +45,6 @@ class NewUserController extends Controller
 
     public function create(Request $request){
 //        return $request->all();
-
 
         $user = User::create([
             'name' => $request->name,
@@ -82,5 +85,27 @@ class NewUserController extends Controller
 //        return redirect('new-user');
     }
 
+    public function roleWiseUsers(Role $role)
+    {
+        $admin_id = auth()->user()->admin_id;
+        $users = User::query()
+            ->select('users.*', 'role_users.role_id')
+            ->join('role_users', 'role_users.user_id', 'users.id')
+            ->where('role_id', $role->id)
+            ->where('admin_id',$admin_id)
+            ->orderBy('id','desc')
+            ->paginate(20);
+        $roles = Role::all()->except(1);
+        $random= Str::random(2).mt_rand(100000, 999999);
+       return view('Admin.PartialPages.NewUser.userList', compact('role', 'users', 'roles','random'));
+    }
+    public function userVerify(Request $request)
+    {
+//        return $request->all();
+        $user = \auth()->user();
+      return Hash::check($request->password, $user->password);
+//        Auth::loginUsingId($user->id);
+//        return redirect('profile')->with('success', 'Create Your New Password'); ;
+    }
 
 }

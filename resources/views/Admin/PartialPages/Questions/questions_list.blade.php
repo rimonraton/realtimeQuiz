@@ -105,11 +105,24 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-sm-12 pt-3" id="viewData">
-                                <div class="container">
-                                    <div class="row justify-content-md-center">
-                                        <div class="alert alert-success text-center" role="alert" id="msg">
-                                            <p class="pt-3">{{__('form.question_notify')}}.</p>
+                            <div class="col-sm-12">
+                                <div class="row justify-content-end d-none" id="qtypeParent">
+                                    <div class="col-sm-3">
+                                        <select data-tid="{{$id}}" class="form-control"id="qtype">
+                                            {{--                                    <option value="">{{__('form.question_type')}}</option>--}}
+                                            <option value="0">{{$lang == 'gb' ? 'Choose Question Type' : 'প্রশ্নের ধরন নির্বাচন করুন'}}</option>
+                                            @foreach($questionType as $qtype)
+                                                <option value="{{$qtype->id}}">{{$lang == 'gb' ? $qtype->name : $qtype->bn_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="viewData">
+                                    <div class="container">
+                                        <div class="row justify-content-md-center">
+                                            <div class="alert alert-success text-center" role="alert" id="msg">
+                                                <p class="pt-3">{{__('form.question_notify')}}.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -254,8 +267,19 @@
             if (!!$(this).attr('data-cid')){
                 $('#search_question_box_Q').removeClass('d-none')
                 $('#search_question_category_Q').attr('data-tid', $(this).attr('data-cid'))
+                $('#qtype').attr('data-tid', $(this).attr('data-cid'))
                 $('#search_question_category_Q_refresh').attr('data-tid', $(this).attr('data-cid'))
             }
+            $('#qtype').on('change', function () {
+                const id = $(this).attr('data-tid')
+                const value = $(this).val()
+                const keyword = $('#search_input_keyword').val()
+                if (!!keyword){
+                    topicwithcategory(id,keyword, value)
+                } else {
+                    topicwithcategory(id,0, value)
+                }
+            })
 
             if ($(this).hasClass('activeli')) {
                 $(this).removeClass('activeli');
@@ -296,15 +320,15 @@
         $('#nestable-menu').nestable();
     })
 
-    function topicwithcategory(id, keyword = '') {
-        console.log('from function.........', keyword)
-        let url = ''
-        if(keyword) {
-            url = "{{url('question/getlist')}}/" + id + '/' + keyword
-        } else {
-            url = "{{url('question/getlist')}}/" + id
-        }
-        console.log('url.......', url)
+    function topicwithcategory(id, keyword = '', qtype = '') {
+        // console.log('from function.........', keyword)
+        let url = "{{url('question/getlist')}}/" + id + '/' + keyword + '/' + qtype
+        {{--if(keyword) {--}}
+        {{--    url = "{{url('question/getlist')}}/" + id + '/' + keyword--}}
+        {{--} else {--}}
+        {{--    url = "{{url('question/getlist')}}/" + id--}}
+        {{--}--}}
+        {{--console.log('url.......', url)--}}
         $.ajax({
             url: url,
             type: "GET",
@@ -317,6 +341,7 @@
             success: function(data) {
                 // console.log('data'+data);
                 if (data != '') {
+                    $('#qtypeParent').removeClass('d-none')
                     $('#viewData').html(data);
                 } else {
 

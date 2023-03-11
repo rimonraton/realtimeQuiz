@@ -231,4 +231,8 @@ return [
     'examination' => 'পরীক্ষা সমূহ',
     'questions_type_level' => 'প্রশ্নের ধরন ও কঠিনতর স্তর',
     'difficulty' => 'কঠিনতর স্তর',
+    'show_all' => 'সব দেখুন',
+    'password_required' => 'আপনি পাসওয়ার্ড প্রদান করেন নিন',
+    'not_right_user' => 'দুঃখিত! আপনি সঠিক ব্যবহারকারী নন',
+
 ];

@@ -287,7 +287,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     tbe: function tbe(b, e, l) {
       // console.log(b,e,l)
-      return l === 'bd' ? b !== null ? b : e : e !== null ? e : b;
+      return l === 'bd' ? !!b ? b : e : !!e ? e : b;
+      // if(l === 'bd') {
+      //     if (!!b){
+      //         return b
+      //     } else {
+      //         return e
+      //     }
+      // } else {
+      //     if (!!e){
+      //         return e
+      //     } else {
+      //         return b
+      //     }
+      // }
     },
     qne2b: function qne2b(q, qn, l) {
       if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
@@ -505,7 +518,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\r\n    max-width: 500px !important;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\n    max-width: 500px !important;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
