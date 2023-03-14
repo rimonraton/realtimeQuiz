@@ -22,7 +22,7 @@
                         <div class="tab-pane {{$loop->first?'active':''}}" id="home{{$q->id}}">
 
                             @php
-                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->paginate(20);
+                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->where('status', 1)->paginate(20);
                                 if($page>1){
                                     $page--;
                                 }
@@ -49,7 +49,7 @@
 {{--                                </div>--}}
 {{--                            </div>--}}
                             @php
-                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->paginate(100);
+                                $questionCat = $q->questions()->whereIn('category_id', $id)->whereIn('user_id',$admin_users)->where('status', 1)->paginate(100);
                             @endphp
                             <div class="row justify-content-center" v-else>
                             @foreach($questionCat as $qq)

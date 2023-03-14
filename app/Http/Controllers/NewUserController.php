@@ -27,6 +27,8 @@ class NewUserController extends Controller
 //         $geoip->setIP('27.147.187.184');
 //         return $geoip->getCity();
 //        return Request()->root();
+
+
         $admin_id = auth()->user()->admin_id;
         $role_wise_user = Role::with(['users.user'=>function ($q) use ($admin_id){
                 $q->where('admin_id',$admin_id);
@@ -98,6 +100,18 @@ class NewUserController extends Controller
         $roles = Role::all()->except(1);
         $random= Str::random(2).mt_rand(100000, 999999);
        return view('Admin.PartialPages.NewUser.userList', compact('role', 'users', 'roles','random'));
+    }
+    public function roleUsers(Role $role)
+    {
+        $admin_id = auth()->user()->admin_id;
+        $users = User::query()
+            ->select('users.*', 'role_users.role_id')
+            ->join('role_users', 'role_users.user_id', 'users.id')
+            ->where('role_id', $role->id)
+            ->where('admin_id',$admin_id)
+            ->orderBy('id','desc')
+            ->get();
+       return view('Admin.PartialPages.NewUser._roleUsers', compact('users'));
     }
     public function userVerify(Request $request)
     {

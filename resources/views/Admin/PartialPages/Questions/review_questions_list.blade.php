@@ -134,13 +134,14 @@
                                     </div>
                                 </div>
                                 <div id="viewData">
-                                    <div class="container">
-                                        <div class="row justify-content-md-center">
-                                            <div class="alert alert-success text-center" role="alert" id="msg">
-                                                <p class="pt-3">{{__('form.question_notify')}}.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+{{--                                    <div class="container">--}}
+{{--                                        <div class="row justify-content-md-center">--}}
+{{--                                            <div class="alert alert-success text-center" role="alert" id="msg">--}}
+{{--                                                <p class="pt-3">{{__('form.question_notify')}}.</p>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+                                    @include('Admin.PartialPages.Questions.all_questions_data', ['questions'=>$questions])
                                 </div>
                             </div>
                         </div>
@@ -558,7 +559,12 @@
                 toastr.success("{{__('form.upload_notification_message')}}", {
                     "closeButton": true
                 });
-                topicwithcategory(id)
+                if (!!id){
+                    topicwithcategory(id)
+                } else{
+                    location.reload()
+                    $('input:checkbox.verifyelement').prop('checked', false);
+                }
             }
         })
 

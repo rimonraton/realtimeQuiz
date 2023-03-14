@@ -20,17 +20,21 @@ class Category extends Model
     {
         return $this->hasMany(Question::class);
     }
+    public function questioncount()
+    {
+        return $this->hasMany(Question::class)->where('status', 1);
+    }
     public function easy()
     {
-        return $this->hasMany(Question::class)->where('level', 1);
+        return $this->hasMany(Question::class)->where('level', 1)->where('status', 1);
     }
     public function intermidiate()
     {
-        return $this->hasMany(Question::class)->where('level', 2);
+        return $this->hasMany(Question::class)->where('level', 2)->where('status', 1);
     }
     public function difficult()
     {
-        return $this->hasMany(Question::class)->where('level', 3);
+        return $this->hasMany(Question::class)->where('level', 3)->where('status', 1);
     }
 
     public function childs()

@@ -108,7 +108,7 @@ class QuizController extends Controller
           if ($request->NOQ){
               $admin = auth()->user()->admin;
               $admin_users = $admin->users()->pluck('id');
-              $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
+              $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->where('status', 1)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
               $questions =  implode(',',$q_random);
 //              return 'Number-'.$questions;
           }

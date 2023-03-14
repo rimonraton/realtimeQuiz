@@ -97,9 +97,9 @@
                 <hr>
                 <form action="{{url('savemenuPermission')}}" method="POST">
                     @csrf
-                    <div class="form-group row">
-                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.role')}}</label>
-                        <div class="col-md-6 col-sm-7" id="options">
+                    <div class="form-group row justify-content-center">
+{{--                        <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.role')}}</label>--}}
+                        <div class="col-sm-5 py-1" id="options">
                             <select class="form-control" name="role_id" id="selectedrole">
                                 <option value="">{{__('form.select_role')}}</option>
                                 @foreach($roles as $role)
@@ -107,10 +107,16 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 col-sm-2">
+                        <div class="col-sm-5 py-1 d-none" id="userDiv">
+                            <select class="form-control" name="selectUser" id="selectUser">
+
+                            </select>
+                        </div>
+                        <div class="col-sm-2 py-1">
                             <button class="btn btn-success" type="submit">{{__('form.submit')}}</button>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group row justify-content-center">
                         <input type="checkbox" value="" id="child" name="menu[]" class="material-inputs checkAll">
                         <label for="child">{{__('form.check_all')}}</label>
@@ -256,7 +262,8 @@
             })
         });
 
-        $('#selectedrole').on('change',function (){
+        $('#selectedrole').on('change', function (){
+            $('.child').prop('checked', false);
             var role_id = $(this).val();
             if(role_id != ''){
                 $.ajax({
@@ -264,13 +271,14 @@
                     type:'GET',
                     success:function (data){
                         $.each(data,function (key,value){
-                            console.log(value);
+                            // console.log(value);
                             $('.child').each(function(k, v) {
                                 if(value == v.value){
                                     $(this).prop('checked', true);
                                 }
                             });
                         })
+                        getRoleWiseUser(role_id)
                     }
                 })
             }
@@ -279,11 +287,62 @@
             }
 
         })
+
+        function getRoleWiseUser(roleId) {
+            $.ajax({
+                url:"{{url('role-users')}}/" + roleId,
+                type:'GET',
+                success:function (data){
+                    $('#userDiv').removeClass('d-none')
+                    $('#selectUser').html(data)
+                }
+            })
+        }
+
+        $('#selectUser').on('change', function () {
+            $('.child').prop('checked', false);
+            let userId = $(this).val()
+            if(userId != '' || userId > 0){
+                $.ajax({
+                    url:"{{url('selectedUserMenu')}}/" + userId,
+                    type:'GET',
+                    success:function (data){
+                        console.log('data........', data)
+                        if (!!data){
+                            $.each(data,function (key,value){
+                                // console.log(value);
+                                $('.child').each(function(k, v) {
+                                    if(value == v.value){
+                                        $(this).prop('checked', true);
+                                    }
+                                });
+                            })
+                        } else{
+                            $('.child').prop('checked', false);
+                        }
+                    }
+                })
+            }
+            else{
+               let role_id = $('#selectedrole').val()
+                if(role_id != ''){
+                    $.ajax({
+                        url:"{{url('selectedMenu')}}/" + role_id,
+                        type:'GET',
+                        success:function (data){
+                            $.each(data,function (key,value){
+                                // console.log(value);
+                                $('.child').each(function(k, v) {
+                                    if(value == v.value){
+                                        $(this).prop('checked', true);
+                                    }
+                                });
+                            })
+                        }
+                    })
+                }
+            }
+        })
     })
-
-
-
-
-
 </script>
 @endsection

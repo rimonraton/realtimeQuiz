@@ -16,20 +16,23 @@ class RoleController extends Controller
     }
     public function index()
     {
-         $roles = Role::where('id','!=',1)->paginate(10);
+         $adminId = \auth()->user()->admin->id;
+         $roles = Role::where('id','!=',1)->where('admin_id', $adminId)->paginate(10);
         return view('Admin.PartialPages.Role.role_list', compact('roles'));
     }
     public function createRole(Request $request)
     {
         // return $request->all();
         // Role::insert($request->except('_token'));
+        $adminId = \auth()->user()->admin->id;
         $request->validate([
             'role_name' => 'required',
 
         ]);
         Role::create([
             'role_name' => $request->role_name,
-            'bn_role_name'=>$request->bn_role_name
+            'bn_role_name'=>$request->bn_role_name,
+            'admin_id' => $adminId
         ]);
         return redirect('rolelist');
     }
@@ -57,7 +60,7 @@ class RoleController extends Controller
     //    return Auth()->user()->roleuser->role->role_name;
 //       return $user_role = User::with('roleuser.role')->where('id',28)->get();
         $user_role = User::with('roleuser.role')->where('admin_id',\auth()->user()->admin->id)->paginate(10);
-        $roles = Role::all()->except(1);
+        $roles = Role::where('admin_id', \auth()->user()->admin->id)->get()->except(1);
         $users = User::whereNotIn('id',$user_id)->get();
         return view('Admin.PartialPages.Role.role_user', compact(['roles', 'users', 'user_role']));
     }

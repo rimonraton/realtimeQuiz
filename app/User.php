@@ -59,6 +59,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(RoleUser::class);
     }
+    public function usermenu()
+    {
+        return $this->hasOne(MenuRole::class,'user_id','id');
+    }
 
     public function progress()
     {

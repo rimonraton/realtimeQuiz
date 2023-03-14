@@ -2,7 +2,7 @@
     @foreach($menu as $m)
         @if(in_array($m->id, $menuIdArray) || $role->role_name == 'Super Admin')
         <li class="sidebar-item">
-            <a href="{{$m->action != null? url($m->action) :'javascript:void(0)'}}" class="sidebar-link {{count($m->childs)?'has-arrow':''}}">
+            <a href="{{$m->router_name != null ? route($m->router_name) :'javascript:void(0)'}}" class="sidebar-link {{count($m->childs)?'has-arrow':''}}">
                 <i class="mdi mdi-library-books"></i>
                 <span class="hide-menu"> {{$lang=='gb'?$m->name:$m->bn_name}}</span>
             </a>

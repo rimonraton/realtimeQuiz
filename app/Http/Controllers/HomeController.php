@@ -135,7 +135,7 @@ class HomeController extends Controller
     //    return $request->all();
         $is_published = $request->is_published ? 1 : 0;
         $cat = explode(',', $request->category);
-        $q_ids = Question::whereIn('category_id', $cat)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
+        $q_ids = Question::whereIn('category_id', $cat)->where('status', 1)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
         $name = $request->name;
         if($name == '' || $name == null){
             $name = 'Challenge-'. (Challenge::max('id') + 1 );

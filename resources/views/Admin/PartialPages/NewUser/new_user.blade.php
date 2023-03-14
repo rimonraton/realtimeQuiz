@@ -5,10 +5,14 @@
 {{--        <div class="col-12">--}}
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title text-center">{{__('form.user_list')}}
+                    <h4 class="card-title text-center">
+{{--                        {{ dd(Permission::can('createNewUser')) }}--}}
+                        {{__('form.user_list')}}
+                        @if(Permission::can('createNewUser'))
                         <button type="button" class="btn btn-info btn-rounded m-t-8 mb-2 float-right add" data-toggle="modal" data-role_id="0">
                             {{__('form.add_user')}}
                         </button>
+                            @endif
                     </h4>
                     <hr>
                 </div>
@@ -99,7 +103,7 @@
                     @endif
                     <div class="text-center">
                         @if(count($rws->users) > 15)
-                        <a class="btn btn-warning border border-warning rounded-lg" href="{{url('role-wise-users/'. $rws->id)}}" data-role="{{$rws->id}}" data-roleName="{{ $lang== 'gb' ? $rws->role_name : $rws->bn_role_name }}">{{__('form.show_all') }}</a>
+                        <a class="btn btn-warning border border-warning rounded-lg" href="{{route('roleWiseUsers', $rws->id)}}" data-role="{{$rws->id}}" data-roleName="{{ $lang== 'gb' ? $rws->role_name : $rws->bn_role_name }}">{{__('form.show_all') }}</a>
                         @endif
                     </div>
                 </div>

@@ -44,7 +44,7 @@ class ExamController extends Controller
 
     public function allTopicsHasQuestion()
     {
-        $questionHasTopics = Category::whereHas('questions')->withCount(['questions', 'easy', 'intermidiate', 'difficult'])->paginate(20);
+        $questionHasTopics = Category::whereHas('questioncount')->withCount(['questioncount', 'easy', 'intermidiate', 'difficult'])->paginate(20);
         return view('Admin.PartialPages.Exam.topics', compact('questionHasTopics'));
     }
 
@@ -85,7 +85,7 @@ class ExamController extends Controller
         if ($request->advanceValue){
             $arrData = collect();
             foreach (json_decode($request->advanceValue) as $key=> $adv) {
-                $q_random = Question::where('category_id',$adv->id)->where('level',$adv->difficulty_value)->inRandomOrder()->limit($adv->value)->pluck('id');
+                $q_random = Question::where('category_id',$adv->id)->where('level',$adv->difficulty_value)->where('status', 1)->inRandomOrder()->limit($adv->value)->pluck('id');
                 $arrData->push($q_random);
             }
             $questions =  implode(',', $arrData->collapse()->all());;
@@ -94,7 +94,7 @@ class ExamController extends Controller
             if ($request->NOQ){
                 $admin = auth()->user()->admin;
                 $admin_users = $admin->users()->pluck('id');
-                $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
+                $q_random = Question::where('category_id',$request->cid)->whereIn('user_id',$admin_users)->where('status', 1)->inRandomOrder()->limit($request->NOQ)->pluck('id')->toArray();
                 $questions =  implode(',',$q_random);
             }
             else{

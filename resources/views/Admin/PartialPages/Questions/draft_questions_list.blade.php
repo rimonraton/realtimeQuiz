@@ -133,13 +133,14 @@
                                     </div>
                                 </div>
                                 <div id="viewData">
-                                    <div class="container">
-                                        <div class="row justify-content-md-center">
-                                            <div class="alert alert-success text-center" role="alert" id="msg">
-                                                <p class="pt-3">{{__('form.question_notify')}}.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+{{--                                    <div class="container">--}}
+{{--                                        <div class="row justify-content-md-center">--}}
+{{--                                            <div class="alert alert-success text-center" role="alert" id="msg">--}}
+{{--                                                <p class="pt-3">{{__('form.question_notify')}}.</p>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+                                    @include('Admin.PartialPages.Questions.all_questions_data', ['questions'=>$questions])
                                 </div>
                             </div>
                         </div>
@@ -210,6 +211,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="viewQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >{{$lang == 'gb' ? 'Question info' : 'প্রশ্ন তথ্য'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="showQuestion">
+
+
+            </div>
+            {{--            <div class="modal-footer text-center">--}}
+            {{--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+            {{--                <button type="button" class="btn btn-primary" id="verifingUser">Verify</button>--}}
+            {{--            </div>--}}
+        </div>
+    </div>
+</div>
 
 @endsection
 @section('js')
@@ -220,6 +241,9 @@
         }
     });
     $(function() {
+        // if($('input:checkbox.verifyelement:checked').length > 0) {
+        //     $('input:checkbox.verifyelement').prop('checked', false);
+        // }
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -487,6 +511,18 @@
         $('#verification').modal('show')
         // var id = $(this).attr('data-id');
     })
+
+    $(document).on('click','.view', function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: "{{url('question-view')}}/" + id,
+                type: 'GET',
+                success: function(data) {
+                    $('#showQuestion').html(data);
+                    $('#viewQuestion').modal('show')
+                }
+            })
+    })
     {{--$(document).on('click', '.edit', function() {--}}
     {{--    var id = $(this).attr('data-id');--}}
     {{--    // alert(id);--}}
@@ -558,7 +594,13 @@
                 toastr.success("{{__('form.upload_notification_message')}}", {
                     "closeButton": true
                 });
+                if(!!id){
                 topicwithcategory(id)
+                } else {
+                    location.reload()
+                    $('input:checkbox.verifyelement').prop('checked', false);
+                }
+
             }
         })
 

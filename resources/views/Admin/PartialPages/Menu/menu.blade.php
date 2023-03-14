@@ -45,6 +45,12 @@
                                             <input type="text" class="form-control" name="route_name" placeholder="{{__('form.route_name')}}" require>
                                         </div>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="material-inputs" type="checkbox" value="1" id="defaultCheck1" name="actionRoute">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            Action Route
+                                        </label>
+                                    </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
                                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
@@ -136,7 +142,6 @@
 
                 </form>
             </div>
-
         </div>
         <!-- /.modal-content -->
     </div>

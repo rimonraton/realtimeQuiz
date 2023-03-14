@@ -19,12 +19,11 @@ class QuizPolicy
     public function __construct()
     {
     }
-
     public function update(User $user, Quiz $quiz)
     {
-        if ($user->roleuser->role_id === 4||$user->roleuser->role_id === 5) {
-            return false;
-        }
+//        if ($user->roleuser->role_id === 4||$user->roleuser->role_id === 5) {
+//            return false;
+//        }
         return $user->id === $quiz->user_id;
     }
 

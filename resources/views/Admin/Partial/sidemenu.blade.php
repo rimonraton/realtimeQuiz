@@ -1,17 +1,25 @@
 @php
-$rm = auth()->user()->roleuser->rolemenu;
-$role =auth()->user()->roleuser->role;
+    $findMenuUser = \App\MenuRole::where('user_id', auth()->user()->id)->count();
+    $rm = '';
+    if($findMenuUser) {
+        $rm = auth()->user()->usermenu;
+    }
+    else{
+        $rm = auth()->user()->roleuser->rolemenu;
+    }
 
-if($rm)
-{
-    $menuIdArray = explode(',', $rm->menu_id);
-}
-else
-{
-    $menuIdArray = array("1");
-}
-$menu =\App\Menu::where('parent_id',0)->get();
-$lang = App::getLocale();
+    $role = auth()->user()->roleuser->role;
+
+    if($rm)
+    {
+        $menuIdArray = explode(',', $rm->menu_id);
+    }
+    else
+    {
+        $menuIdArray = array("1");
+    }
+    $menu =\App\Menu::where('parent_id',0)->where('show_menu', 1)->get();
+    $lang = App::getLocale();
 @endphp
 <div class="scroll-sidebar">
     <!-- Sidebar navigation-->
@@ -24,12 +32,12 @@ $lang = App::getLocale();
             @foreach($menu as $m)
                 @if(in_array($m->id, $menuIdArray) || $role->role_name == 'Super Admin')
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{count($m->childs)?'has-arrow':''}} waves-effect waves-dark" href="{{$m->action? url($m->action) :'javascript:void(0)'}}" aria-expanded="false">
+                    <a class="sidebar-link {{count($m->childs->where('show_menu', 1))?'has-arrow':''}} waves-effect waves-dark" href="{{$m->router_name? route($m->router_name, ) :'javascript:void(0)'}}" aria-expanded="false">
                         <i class="{{$m->icon}}"></i>
                         <span class="hide-menu">{{$lang=='gb'?$m->name:$m->bn_name}}</span>
                     </a>
                     @if(count($m->childs))
-                    @include('Admin.Partial.__partialsidemenu',['menu'=>$m->childs,'menuIdArray'=>$menuIdArray])
+                    @include('Admin.Partial.__partialsidemenu',['menu'=>$m->childs->where('show_menu', 1),'menuIdArray'=>$menuIdArray])
                     @endif
                 </li>
                 @endif
