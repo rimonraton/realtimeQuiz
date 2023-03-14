@@ -4,7 +4,7 @@
         <div class="result-waiting" v-if="screen.resultWaiting">
             <div class="text-center bg-light">
                 <img src="/img/quiz/result-waiting.gif" alt="Waiting for game end.">
-                <p class="text-center px-5">Please wait result is processing..</p>
+                <p class="text-center px-5">Please wait for next question...</p>
             </div>
         </div>
 
@@ -46,14 +46,14 @@
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             ></iframe>
         </div>
-        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule'
+        <wait :uid='uid' :users='users' :user='user' :time='challenge.schedule'
                  @kickingUser="kickUser($event)"
                  @gameStart="gameStart"
                  @gameReset="gameReset"
                  v-if="screen.waiting">
-        </waiting>
+        </wait>
         <user_info
-            v-if="!au"
+            v-if="!user.id"
             :uid='uid'
             :users='users'
             :user='user'
@@ -63,8 +63,9 @@
 <!--        <qrcode/>-->
 
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="progress">
+            <div class="col-md-12">
+<!--                Progress Bar-->
+                <div class="progress" v-if="uid === user.id">
                     <div class="progress-bar progress-bar-striped"
                          :style="progressWidth"
                          :class="progressClass"
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
-                    <div class="card-body animate__animated animate__backInRight animate__faster">
+                    <div class="card-body pb-1 animate__animated animate__backInRight animate__faster">
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
@@ -98,36 +99,18 @@
                             </audio>
                             <div id="ar"></div>
                         </div>
-                        <!--                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">-->
-                        <!--                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"-->
-                        <!--                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">-->
-                        <!--                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>-->
-                        <div v-show="av">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex align-items-center question-title">
-                                        <h3 class="text-danger">Q.</h3>
-                                        <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
-                                    </div>
+                      <div v-show="av">
+<!--                          Question Text-->
+                            <div class="mt-2 " v-if="uid === user.id">
+                                <div class="d-flex align-items-center question-title">
+                                    <h3 class="text-danger">Q.</h3>
+                                    <h5 class="mt-1 ml-2">
+                                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    </h5>
                                 </div>
                             </div>
 
-                            <!--                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
-                            <!--                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">-->
-                            <!--                                    <ul class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(i, id.option_view_time)">-->
-                            <!--                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"-->
-                            <!--                                            class="list-group-item list-group-item-action cursor my-1"-->
-                            <!--                                            v-html="tbe(option.bd_option, option.option, user.lang)" >-->
-
-                            <!--                                        </li>-->
-                            <!--                                    </ul>-->
-                            <!--                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv" :class="getOptionClass(i, id.option_view_time)">-->
-                            <!--                                        <img  class="imageOption image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
-
-                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
+                            <div v-if="sqo && uid !==user.id" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                  :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
                                 <div v-for="(option, i) in question.options" class="col-md-6 px-1"
@@ -152,27 +135,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!--                        <ul class="list-group" v-for="option in question.options">-->
-                        <!--                            <li @click="checkAnswer(question.id, option.option, option.correct)"-->
-                        <!--                                class="list-group-item list-group-item-action cursor my-1">-->
-                        <!--                                <span v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'"></span>-->
-                        <!--                            </li>-->
-                        <!--                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
-                        <!--                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
-                        <!--                                <img  class="image mt-1 rounded img-thumbnail"-->
-                        <!--                                      :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
-
-                        <!--                            </li>-->
-                        <!--                        </ul>-->
+                      </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-12" v-if="uid === user.id">
                 <div class="card my-4" >
                     <div class="card-header">
                         Score Board
-                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>
+<!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
                     <div class="card-body" v-if="results.length>0">
@@ -198,7 +169,7 @@
 
 import qrcode from '../helper/singleDisplay/Qrcode'
 import user_info from '../helper/singleDisplay/UserName'
-import waiting from '../helper/waiting'
+import wait from '../helper/singleDisplay/waiting'
 import result from '../helper/result'
 import { quizHelpers } from '../mixins/quizHelpers'
 
@@ -207,14 +178,13 @@ export default {
 
     props : ['challenge', 'uid', 'propuser', 'questions', 'gmsg','teams'],
 
-    components: { waiting, result, user_info, qrcode },
+    components: { wait, result, user_info, qrcode },
 
     data() {
         return {
-            au: false,
             qt:{
                 ms: 0,
-                time:30,
+                time:10,
                 timer:null
             },
             users: [],
@@ -244,13 +214,19 @@ export default {
             share:null,
             pm:'',
             perform:0,
-            preventClick: true
+            preventClick: true,
+            question_time: 60
         };
     },
 
     created(){
         Echo.channel(this.channel)
             .listen('SingleDisplay.UserJoinEvent', (data) => {
+                console.log(['UserJoinEvent.............', data])
+                this.au = true
+                !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
+            })
+            .listen('SingleDisplay.UserJoinUsersEvent', (data) => {
                 console.log(['UserJoinEvent.............', data])
                 !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
                 this.au = true
@@ -288,22 +264,16 @@ export default {
                     window.location.href = "/"
                 }
             })
+            .listen('NextQuestionEvent', (data) => {
+                console.log('NextQuestionEvent.............',data)
+                this.nextQuestion()
+            })
     },
 
-    mounted() {
-        let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
-        if(SingleGameUser) {
-            this.user = SingleGameUser
-            axios.post(`/api/userJoin`, {user:this.user}).then(()=>{
-                this.isAuthUser()
-            })
-        }
-        this.isAuthUser()
-        console.log('mounted...', SingleGameUser)
-        Echo.channel(this.channel)
-            .subscribed((data) => {
-                console.log('SingleQuestionDisplay subscribed', data)
-            });
+    mounted ()  {
+        this.joinUser()
+
+        // Echo.join(this.channel)
         //     .here(() => {
         //         console.log('SingleQuestionDisplay...join Mounted')
         //         //this.users = users;
@@ -351,18 +321,28 @@ export default {
     // },
 
     methods: {
-        isAuthUser(){
-            this.au = 'id' in this.user
-            console.log('au....', this.au)
-            return this.au
+        async joinUser(){
+            let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
+            if (SingleGameUser) {
+                this.user = SingleGameUser
+                await axios.post(`/api/userJoin`, {user:this.user})
+                return
+            }
+            if('id' in this.user && this.uid !== this.user.id){
+                this.user['channel'] = this.channel
+                await axios.post(`/api/userJoin`, {user:this.user})
+            }
         },
-        insertUser: function (name) {
-            this.user['name'] = name
+        insertUser(newUser) {
+            this.user['name'] = newUser.name
+            this.user['mobile'] = newUser.mobile
             this.user['id'] = Date.now()
             this.user['channel'] = this.channel
             this.user['avatar'] = ''
             sessionStorage.setItem("SingleGameUser", JSON.stringify(this.user));
-            axios.post(`/api/userJoin`, {user:this.user})
+            this.joinUser()
+
+            // axios.post(`/api/userJoin`, {user:this.user})
         },
         preventNav(event) {
             if (!this.game_start) return;
@@ -444,10 +424,18 @@ export default {
                 this.quizEnd()
             } else {
                 console.log('resultScreen preventClick True')
-                this.preventClick = true
-                this.qid ++
-                this.current = this.questions[this.qid].id
-                this.showQuestionOptions(null)
+                if(this.isHost()) {
+                    this.preventClick = true
+                    this.qid ++
+                    this.current = this.questions[this.qid].id
+                    let next = { channel: this.channel, qid: this.qid, qtime:this.question_time }
+                    axios.post(`/api/nextQuestion`, next).then(() => {
+                        this.showQuestionOptions(this.questions[this.qid].fileType)
+                    })
+
+                } else{
+                    this.screen.resultWaiting = 1
+                }
             }
         },
         QuestionTimer(){
@@ -507,16 +495,18 @@ export default {
         },
         winner(){
             this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
+            this.questionInit()
+            this.screen.result = 1
+            this.game_start = 0
+            if(this.user_ranking === -1) return
+
             let user_score = this.results[this.user_ranking].score
             this.perform = Math.round((user_score / ((this.qid +1) * 100)) * 100)
             this.pm = this.gmsg.filter(gm => gm.perform_status >= this.perform)
                 .reduce(function (prev, curr) {
                     return prev.perform_status < curr.perform_status ? prev : curr;
                 });
-            this.questionInit()
-            this.screen.result = 1
-            this.screen.winner = 1
-            this.game_start = 0
+
             if(this.user_ranking == 0 ){
                 confetti({
                     zIndex:999999,
@@ -607,7 +597,31 @@ export default {
             })
 
         },
-
+        isHost() {
+            return this.uid === this.user.id
+        },
+        nextQuestion() {
+            this.preventClick = true
+            this.qid ++
+            this.current = this.questions[this.qid].id
+            this.screen.resultWaiting = 0
+            this.showQuestionOptions(this.questions[this.qid].fileType)
+            // this.showQuestionOptions(null)
+        },
+        // nextQuestion(){
+        //     if(this.qid + 1 == this.questions.length){
+        //         clearInterval(this.timer);
+        //         this.winner()
+        //         return
+        //     }
+        //
+        //     this.qid ++
+        //     this.current = this.questions[this.qid].id
+        //     this.fillPie()
+        //     this.answered_group = []
+        //     let next = { channel: this.channel, qid: this.qid,qtime:this.question_time }
+        //     axios.post(`/api/nextQuestion`, next)
+        // },
     },
 
     computed: {

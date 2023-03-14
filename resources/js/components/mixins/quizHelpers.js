@@ -10,7 +10,7 @@ export const quizHelpers = {
             clearInterval(this.timer)
             clearInterval(this.qt.timer)
             this.qt.ms = 0
-            this.qt.time = 30
+            this.qt.time = 10
             this.progress = 100
             this.answered = 0
             this.counter = 2

@@ -128,6 +128,7 @@
         </main>
     </div>
     <script src="{{url('lang-'. app()->getLocale().'.js')}}"></script>
+{{--    <script src="https://platform-api.sharethis.com/js/sharethis.js#property=5e896e693790270019b8aac5&product=inline-share-buttons"></script>--}}
     <script >
         document.addEventListener('DOMContentLoaded', function () {
             $('[data-toggle="tooltip"]').tooltip();

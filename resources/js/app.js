@@ -47,7 +47,6 @@ const app = new Vue({
         'Practice' : () => import('./components/games/Practice'),
 	    'Challenge': () => import('./components/games/Challenge'),
         'SingleQuestion': () => import('./components/games/SingleQuestion'),
-        'UserName': () => import('./components/helper/singleDisplay/UserName'),
         'Qrcode': () => import('./components/helper/singleDisplay/Qrcode'),
 	    'TeamQuiz': () => import('./components/games/TeamQuiz'),
 	    'Moderator': () => import('./components/games/Moderator'),
