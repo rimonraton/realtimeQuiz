@@ -164,7 +164,38 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="verification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">{{$lang == 'gb' ? 'Verify with password' : 'পাসওয়ার্ড এর মাধ্যমে যাচাই করুন'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="question_id">
+                <div class="form-group">
+                    {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
+                    <input type="password" class="form-control" placeholder="{{$lang == 'gb' ? 'Enter Your Password' : 'আপনার পাসওয়ার্ড লিখুন' }}" id="password" name="password" autocomplete="off">
+                </div>
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="confirm-password">Confirm Password</label>--}}
+                {{--                    <input type="password" class="form-control" id="confirm-password" name="confirm-password" autocomplete="none" required>--}}
+                {{--                    <span id="matchPassword"></span>--}}
+                {{--                </div>--}}
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="verifingUser">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
+                </div>
+            </div>
+            {{--            <div class="modal-footer text-center">--}}
+            {{--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+            {{--                <button type="button" class="btn btn-primary" id="verifingUser">Verify</button>--}}
+            {{--            </div>--}}
+        </div>
+    </div>
+</div>
 @endsection
 @section('js')
 <script>
@@ -379,18 +410,70 @@
         const id = $(this).attr('data-tid')
         topicwithcategory(id)
     })
-    $(document).on('click', '.edit', function() {
-        var id = $(this).attr('data-id');
-        // alert(id);
-        $('#uqid').val(id);
+    $('#password').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $('#verifingUser').click();
+            return false;
+        }
+    });
+
+    $('#verifingUser').on('click', function () {
+        const id = $('#question_id').val()
+        const password = $('#password').val()
+        if (password == '') {
+            toastr.warning("{{__('form.password_required')}}", {
+                "closeButton": true
+            });
+            return
+        }
+        // const confirmPassword = $('#confirm-password').val()
         $.ajax({
-            url: "{{url('question/edit')}}/" + id,
-            type: 'GET',
+            url: "{{url('user-verify')}}",
+            type: 'POST',
+            data:{
+                'password': password,
+                // 'confirmPassword': confirmPassword
+            },
             success: function(data) {
-                $('#quistion_view').html(data);
-                $('#edit-questions').modal('show');
+                $('#password').val('')
+                if(!!data){
+                    $('#uqid').val(id);
+                    $.ajax({
+                        url: "{{url('question/edit')}}/" + id,
+                        type: 'GET',
+                        success: function(data) {
+                            $('#verification').modal('hide')
+                            $('#quistion_view').html(data);
+                            $('#edit-questions').modal('show');
+                        }
+                    })
+                } else {
+                    toastr.error("{{__('form.not_right_user')}}", {
+                        "closeButton": true
+                    });
+                }
+
             }
         })
+
+    })
+
+    $(document).on('click', '.edit', function() {
+        // var id = $(this).attr('data-id');
+        $('#question_id').val($(this).attr('data-id'))
+        $('#verification').modal('show')
+        // alert(id);
+        {{--$('#uqid').val(id);--}}
+        {{--$.ajax({--}}
+        {{--    url: "{{url('question/edit')}}/" + id,--}}
+        {{--    type: 'GET',--}}
+        {{--    success: function(data) {--}}
+        {{--        $('#quistion_view').html(data);--}}
+        {{--        $('#edit-questions').modal('show');--}}
+        {{--    }--}}
+        {{--})--}}
     })
 
     $(document).on('click','.delete_q',function (){
@@ -500,6 +583,7 @@
         // return
         // console.log('file input', $('#questionUpdate'))
         var fd = new FormData();
+        const difficulty = $('#difficulty_update').val()
         if($('#questionUpdate').length > 0){
             var files = $('#questionUpdate')[0].files;
             if(files.length > 0){
@@ -521,12 +605,14 @@
         fd.append('qid', $('#uqid').val());
         fd.append('cat_id', $('#ucat_id').val());
         fd.append('oid', oid);
-        fd.append('option', option);
-        fd.append('bdoption', bdoption);
+        fd.append('option', JSON.stringify(option));
+        fd.append('bdoption', JSON.stringify(bdoption));
         fd.append('ans', ans);
         fd.append('question', $('#uquestion').val());
         fd.append('bdquestion', $('#ubdquestion').val());
         fd.append('old_file_path', $('#ufile_path').val());
+        fd.append('difficulty', difficulty);
+        fd.append('from', 'final');
         $.ajax({
             url:"{{url('question-update')}}",
             type:"Post",
@@ -546,6 +632,21 @@
             contentType: false,
             processData: false,
             success:function (data){
+                if(data.level > 0){
+                    let difficultyView = ''
+                    let name = ''
+                    name = '{{$lang}}' == 'gb' ? data.difficulty.name : data.difficulty.bn_name
+                    if(data.level == 1) {
+                        difficultyView += `<span class="badge badge-pill badge-secondary">${name}</span>`
+                    }
+                    else if(data.level == 2) {
+                        difficultyView += `<span class="badge badge-pill badge-cyan">${name}</span>`
+                    }
+                    else if(data.level == 3){
+                        difficultyView += `<span class="badge badge-pill badge-danger">${name}</span>`
+                    }
+                    $('#difficulty_' + data.id).html(difficultyView)
+                }
                 if(data.question_text != null){
                     $('#eq_'+$('#uqid').val()).html(data.question_text);
                 }else{

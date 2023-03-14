@@ -728,7 +728,7 @@
             contentType: false,
             processData: false,
             success:function (data){
-                console.log('data vlaue', data)
+                // console.log('data vlaue', data)
                 if(data.level > 0){
                     let difficultyView = ''
                     let name = ''

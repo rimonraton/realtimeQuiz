@@ -129,6 +129,7 @@
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
+                                                    <a class="edit text-info" style="cursor: pointer;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
 {{--                                                    @can('QuestionreadOrwrite',$qs)--}}
 {{--                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>--}}
 {{--                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>--}}
@@ -136,6 +137,9 @@
 {{--                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>--}}
 {{--                                                        <a class="disabled"><i class="fas fa-trash"></i></a>--}}
 {{--                                                    @endcan--}}
+
+
+
                                                     @if($qs->isDraft)
                                                         <span class="badge badge-pill badge-purple">{{$lang == 'gb' ? 'Draft' : 'খসড়া' }}</span>
                                                     @else
@@ -145,10 +149,12 @@
                                                             <span class="badge badge-pill badge-info">{{$lang == 'gb' ? 'In review': 'পর্যালোচনা'}}</span>
                                                         @endif
                                                     @endif
+                                                    <span id="difficulty_{{$qs->id}}">
                                                     @if($qs->difficulty)
                                                         <span class="badge badge-pill {{$qs->difficulty->id == 1 ? 'badge-secondary' :($qs->difficulty->id == 2 ? 'badge-cyan' : 'badge-danger')}}">{{$lang == 'gb' ? $qs->difficulty->name : $qs->difficulty->bn_name }}</span>
 
                                                     @endif
+                                                     </span>
                                                 </td>
                                             </tr>
                                             @endforeach
