@@ -102,11 +102,12 @@ class SearchController extends Controller
 
     public function search_role($keyword)
     {
+        $adminId = auth()->user()->admin->id;
         if ($keyword == 'all'){
-            $roles = Role::orderBy('id', 'desc')->paginate(10);
+            $roles = Role::where('admin_id', $adminId)->orderBy('id', 'desc')->paginate(10);
             return view('Admin.PartialPages.Role.partial._search_role',compact('roles'));
         }
-        $roles = Role::where(function ($query) use($keyword) {
+        $roles = Role::where('admin_id', $adminId)->where(function ($query) use($keyword) {
             $query->where('role_name', 'like', '%' . $keyword . '%')
                 ->orWhere('bn_role_name', 'like', '%' . $keyword . '%');
         })

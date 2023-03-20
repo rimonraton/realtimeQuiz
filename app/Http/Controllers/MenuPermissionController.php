@@ -17,7 +17,8 @@ class MenuPermissionController extends Controller
     }
     public function index()
     {
-        $roles = Role::all()->except(1);
+        $adminId = auth()->user()->admin->id;
+        $roles = Role::where('admin_id', $adminId)->get()->except(1);
         $menu = Menu::where('parent_id', 0)->get();
         return view('Admin.PartialPages.Menu.menu_permission', compact('roles', 'menu'));
     }
