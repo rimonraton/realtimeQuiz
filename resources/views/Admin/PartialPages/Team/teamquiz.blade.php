@@ -138,7 +138,9 @@
                                     <div class="loading{{ $q->id }}"></div>
                                 </a>
 {{--                                <a class="btn btn-outline-purple" href=""><i class="fas fa-share-alt"></i> {{ __('msg.share') }}</a>--}}
+                                @if(Permission::can('team.quiz'))
                                 <a class="btn btn-outline-inverse" href="{{url('Team/'.$q->id.'/'.auth()->user()->id)}}">{{__('msg.start')}}</a>
+                                @endif
                             </div>
                         </div>
                     </div>
