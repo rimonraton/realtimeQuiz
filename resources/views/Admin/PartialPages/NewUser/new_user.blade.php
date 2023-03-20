@@ -68,9 +68,11 @@
                                                         <th>
                                                             <a class="edit" href="" data-id="{{$user->user_id}}" data-name="{{$user->user->name}}" data-email="{{$user->user->email}}" data-role="{{$user->role_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
                                                             <a class="delete text-danger" style="cursor: pointer;" data-id="{{$user->user_id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                            @if(Permission::can('sendEmail'))
                                                             <a class="text-info send-message" style="cursor: pointer;" data-id="{{$user->user_id}}" href="" title="Send Mail">
                                                                 <i class="fas fa-paper-plane"></i>
                                                             </a>
+                                                            @endif
                                                         </th>
                                                     </tr>
                                                 @endif

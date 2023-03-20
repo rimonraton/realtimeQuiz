@@ -532,8 +532,12 @@
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
+                            @if(Permission::can('question.save'))
                             <button type="submit" class="btn btn-info waves-effect waves-light smt">{{__('msg.createQuestion')}}</button>
+                            @endif
+                            @if(Permission::can('question.list'))
                             <a class="btn btn-success waves-effect waves-light text-white" href="{{url('question/list')}}">{{__('form.goto_list')}}</a>
+                                @endif
                         </div>
                     </div>
 

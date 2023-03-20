@@ -16,8 +16,10 @@ class MenuController extends Controller
     }
     public function index()
     {
-        $menus = Menu::where('parent_id', 0)->with('childs')->paginate(10);
-        $parent_menus = Menu::where('parent_id', 0)->get();
+        $menus = Menu::where('show_menu', 1)->with('childs')->paginate(10);
+//        $menus = Menu::where('parent_id', 0)->where('show_menu')->with('childs')->paginate(10);
+        $parent_menus = Menu::where('show_menu', 1)->get();
+//        $parent_menus = Menu::where('parent_id', 0)->get();
         return view('Admin.PartialPages.Menu.menu', compact('menus', 'parent_menus'));
     }
     public function store(Request $request)

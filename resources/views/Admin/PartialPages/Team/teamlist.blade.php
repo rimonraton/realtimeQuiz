@@ -7,7 +7,9 @@
             <div class="card-body">
                 <h4 class="card-title text-center">{{__('form.team_list')}}</h4>
                 <hr>
+                @if(Permission::can('createTeam'))
                 <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_team')}}</button>
+                @endif
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -87,11 +89,18 @@
                                                     No Members
                                                 @endif
                                             </td>
-                                            <td style="text-align: center; ">
-
+                                            <td style="text-align: center;">
 {{--                                                <a class="add text-dark" href="" data-id="{{$team->id}}" title="Add"><i class="fas fa-plus"></i></a>--}}
-                                                <a class="edit" href="" data-pid="{{$team->id}}" data-id="{{$team->id}}" data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}" data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="delete text-danger" style="cursor: pointer;" data-id="{{$team->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                @if(Permission::can('updateTeam'))
+                                                    <a class="edit" href="" data-pid="{{$team->id}}" data-id="{{$team->id}}" data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}" data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                @else
+                                                    <a ><i class="fas fa-pencil-alt"></i></a>
+                                                @endif
+                                                @if(Permission::can('deleteTeam'))
+                                                    <a class="delete text-danger" style="cursor: pointer;" data-id="{{$team->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                                @else
+                                                    <a><i class="fas fa-trash"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

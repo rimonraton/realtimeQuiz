@@ -5,14 +5,18 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                @if(Permission::can('questionTypeSave'))
                 <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_new_type')}}</button>
+                @endif
                 <h4 class="card-title text-center">{{__('form.questions_type')}}</h4>
                 <hr>
+                @if(Permission::can('searchQType'))
                 <div class="col-sm-6 offset-sm-3">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="type_search">
                     </div>
                 </div>
+                    @endif
 
                 <div id="dataview">
 

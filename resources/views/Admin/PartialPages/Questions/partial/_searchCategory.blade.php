@@ -21,13 +21,23 @@
                                 <td id="name_{{$c->id}}">{{$c->name}}</td>
                                 <td id="bn_name_{{$c->id}}">{{$c->bn_name}}</td>
                                 <td class="text-center">
+                                    @if(Permission::can('categoryPublished'))
                                     <div class="bt-switch">
                                         <input type="checkbox" class="chk" data-id="{{$c->id}}"  data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" {{$c->is_published ==1?"checked":""}} />
                                     </div>
+                                    @else
+                                        <div class="bt-switch">
+                                            <input type="checkbox"  data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" disabled {{$c->is_published ==1?"checked":""}} />
+                                        </div>
+                                    @endif
                                 </td>
                                 <td style="text-align: center; ">
+                                    @if(Permission::can('question.updateCategory'))
                                     <a class="edit" id="btn_{{$c->id}}" href="" data-id="{{$c->id}}" data-name="{{$c->name}}" data-bangla="{{$c->bn_name}}" data-st="{{$c->sub_topic_id}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                    @endif
+                                    @if(Permission::can('question.deleteCategory'))
                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$c->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                        @endif
                                 </td>
                             </tr>
                         @endforeach

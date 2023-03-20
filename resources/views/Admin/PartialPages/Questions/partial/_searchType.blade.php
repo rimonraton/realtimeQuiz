@@ -21,8 +21,12 @@
                                 <td id="name_{{$qc->id}}">{{$qc->name}}</td>
                                 <td id="bn_name_{{$qc->id}}">{{$qc->bn_name}}</td>
                                 <td style="text-align: center; ">
+                                    @if(Permission::can('questionTypeUpdate'))
                                     <a class="edit" href="" id="btn_{{$qc->id}}" data-id="{{$qc->id}}" data-name="{{$qc->name}}" data-bnname="{{$qc->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                    @endif
+                                    @if(Permission::can('questionTypeDelete'))
                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$qc->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

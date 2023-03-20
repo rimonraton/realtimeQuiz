@@ -26,8 +26,13 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 1%;">
+                                                    @if(Permission::can('verifyDraftQuestionUpdate'))
                                                     <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
                                                     <label for="alloptionverify"></label>
+                                                    @else
+                                                        <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
+                                                        <label for="alloptionverify"></label>
+                                                    @endif
                                                 </th>
                                                 <th style="width: 10%;">{{__('form.created')}}</th>
                                                 <th style="width: 6%;">{{__('form.file')}}</th>
@@ -43,8 +48,13 @@
                                             <tr>
                                                 <td>
 {{--                                                    {{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}--}}
+                                                    @if(Permission::can('verifyDraftQuestionUpdate'))
                                                     <input type="checkbox" id="optionveri{{$qs->id}}" class="material-inputs verifyelement" name="verified" value="{{$qs->id}}">
                                                     <label for="optionveri{{$qs->id}}"></label>
+                                                    @else
+                                                        <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
+                                                        <label for="alloptionverify"></label>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if($qs->role)
@@ -148,13 +158,18 @@
                                                     @endforeach
                                                 </td>
                                                 <td class="text-center">
-                                                    @can('QuestionreadOrwrite',$qs)
-                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
-                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>
+{{--                                                    @can('QuestionreadOrwrite',$qs)--}}
+{{--                                                        <a class="edit" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>--}}
+{{--                                                        <a class="delete" style="cursor: pointer;color:red;" data-id="{{$qs->id}}" title="Remove"><i class="fas fa-trash"></i></a>--}}
+{{--                                                    @else--}}
+{{--                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>--}}
+{{--                                                        <a class="disabled"><i class="fas fa-trash"></i></a>--}}
+{{--                                                    @endcan--}}
+                                                    @if(Permission::can('draftQuestion.edit'))
+                                                        <a class="edit text-info" style="cursor: pointer;" data-id="{{$qs->id}}" title="edit"><i class="fas fa-pencil-alt"></i></a>
                                                     @else
-                                                        <a class="disabled"><i class="fas fa-pencil-alt"></i></a>
-                                                        <a class="disabled"><i class="fas fa-trash"></i></a>
-                                                    @endcan
+                                                        <span class="disabled"><i class="fas fa-pencil-alt"></i></span>
+                                                    @endif
                                                         <hr>
                                                     <span id="difficulty_{{$qs->id}}">
                                                          @if($qs->difficulty)
@@ -171,8 +186,13 @@
                                         <tfoot>
                                             <tr>
                                                 <th>
+                                                    @if(Permission::can('verifyDraftQuestionUpdate'))
                                                     <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
                                                     <label for="alloptionverify"></label>
+                                                    @else
+                                                        <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
+                                                        <label for="alloptionverify"></label>
+                                                    @endif
                                                 </th>
                                                 <th>{{__('form.created')}}</th>
                                                 <th>{{__('form.file')}}</th>

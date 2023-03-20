@@ -487,7 +487,7 @@
                 if(!!data){
                     $('#uqid').val(id);
                     $.ajax({
-                        url: "{{url('question/edit')}}/" + id,
+                        url: "{{url('draftQuestion/edit')}}/" + id,
                         type: 'GET',
                         success: function(data) {
                             $('#verification').modal('hide')
@@ -509,6 +509,9 @@
     $(document).on('click', '.edit', function() {
         $('#question_id').val($(this).attr('data-id'))
         $('#verification').modal('show')
+        setTimeout(()=>{
+            $('#password').focus()
+        },500)
         // var id = $(this).attr('data-id');
     })
 

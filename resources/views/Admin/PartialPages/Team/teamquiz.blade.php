@@ -50,7 +50,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                @if(Permission::can('gameQuizCreate'))
                 <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('game_quiz_create')}}" >{{__('form.create_quiz')}}</a>
+                @endif
                 <h4 class="card-title text-center">{{__('form.quiz')}}</h4>
                 <hr>
                 <div class="row justify-content-center">
@@ -114,6 +116,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if(Permission::can('teamQuizTimeUpdate'))
                             <div class="d-flex justify-content-between mx-3">
                                 <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $q->id }}">
                                     {{ __('form.layout_title') }}
@@ -127,7 +130,7 @@
                                     {{__('form.option_one_by_one_title')}}
                                 </div>
                             </div>
-
+                            @endif
                             <div class="card-footer d-flex justify-content-between">
                                 <div id="shareBtn{{ $q->id }}" class="show_share shareBtnDiv"></div>
                                 <a class="shareBtn pointer small btn btn-outline-info" data-id="{{ $q->id }}">
@@ -228,7 +231,7 @@
         let hasShow = $('#shareBtn'+id).hasClass('show_share');
         let url = "{{ url('/Team') }}/" + id + "/{{ Auth::id() }}/share";
         {{--let url = "{{ url('/Team') }}/" + id + "/{{ Auth::id() }}";--}}
-        let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+        let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'"frameborder="0" class="iframe-size"></iframe>';
 
         $('.show_share').empty();
         $('#shareBtn'+id).append(iframe);
@@ -291,7 +294,7 @@
     $('.optlayout').on('click', function () {
         var $this = $(this)
         $.ajax({
-            url: "{{url('qiiz-time-update')}}",
+            url: "{{url('team-quiz-time-update')}}",
             type: "POST",
             data: {
                 "_token": "{{ csrf_token() }}",

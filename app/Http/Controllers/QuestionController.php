@@ -361,7 +361,6 @@ class QuestionController extends Controller
         $admin_users = $admin->users()->pluck('id');
 
 //        return Question::where('category_id', $id)->get();
-
         $questions = Question::where('category_id', $tid)->whereIn('user_id',$admin_users)->get(['id','question_text', 'bd_question_text', 'fileType', 'question_file_link']);
        return view('Admin.PartialPages.Questions.partial.exists_question', compact('questions', 'tid'));
     }

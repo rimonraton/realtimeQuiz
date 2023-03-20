@@ -60,6 +60,7 @@
 {{--                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>--}}
                 </h4>
                 <hr>
+                @if(Permission::can('question.getReviewList'))
                 <div class="form-group row pb-3 justify-content-center">
                     <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                     <div class="col-sm-4">
@@ -109,6 +110,7 @@
 
 
                 </div>
+
                 <div class="table-responsive" style="overflow-x: hidden">
 
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -141,13 +143,24 @@
 {{--                                            </div>--}}
 {{--                                        </div>--}}
 {{--                                    </div>--}}
-                                    @include('Admin.PartialPages.Questions.all_questions_data', ['questions'=>$questions])
+                                    @include('Admin.PartialPages.Questions.all_review_questions_data', ['questions'=>$questions])
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
+                @else
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            <div class="text-center">
+                                <button class="btn btn-primary" type="button" disabled="">
+                                    {{$lang == 'gb' ? "You don't have permission" : 'আপনার অনুমতি নেই'}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -476,7 +489,7 @@
                 if(!!data){
                     $('#uqid').val(id);
                     $.ajax({
-                        url: "{{url('question/edit')}}/" + id,
+                        url: "{{url('reviewQuestion/edit')}}/" + id,
                         type: 'GET',
                         success: function(data) {
                             $('#verification').modal('hide')
@@ -498,6 +511,9 @@
     $(document).on('click', '.edit', function() {
         $('#question_id').val($(this).attr('data-id'))
         $('#verification').modal('show')
+        setTimeout(()=>{
+            $('#password').focus()
+        },500)
         // var id = $(this).attr('data-id');
     })
 

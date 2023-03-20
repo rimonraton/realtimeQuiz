@@ -54,11 +54,14 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title text-center">{{__('msg.quizList')}}
-                    @can('create',App\Quiz::class)
-                    <a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a>
-                    @else
-                    <a class="btn btn-secondary float-right disabled" href="" >{{__('msg.createquiz')}}</a>
-                    @endcan
+                    @if(Permission::can('practice.create'))
+                        <a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a>
+                    @endif
+{{--                    @can('create',App\Quiz::class)--}}
+{{--                    <a class="btn btn-success float-right" href="{{url('quiz/create')}}">{{__('msg.createquiz')}}</a>--}}
+{{--                    @else--}}
+{{--                    <a class="btn btn-secondary float-right disabled" href="" >{{__('msg.createquiz')}}</a>--}}
+{{--                    @endcan--}}
                 </h4>
                 <hr>
                 <div class="form-group row pb-3">

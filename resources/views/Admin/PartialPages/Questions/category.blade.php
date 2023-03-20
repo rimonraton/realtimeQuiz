@@ -24,16 +24,20 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                @if(Permission::can('question.saveCategory'))
                 <h4 class="card-title text-center">
                     {{__('msg.questionsTopics')}}
                     <button type="button" class="btn btn-info btn-rounded float-lg-right" data-toggle="modal" data-target="#add-topic">{{$lang=='gb'?'Add New Topic':'নতুন বিষয় যুক্ত করুন'}}</button>
                 </h4>
+                @endif
                 <hr>
+                    @if(Permission::can('question.searchCategory'))
                 <div class="col-sm-6 offset-sm-3">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="{{__('form.search')}}" id="category_search">
                     </div>
                 </div>
+                    @endif
                 <div id="showCategory">
 
                 </div>

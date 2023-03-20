@@ -43,8 +43,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                @if(Permission::can('question.create'))
                 <h4 class="card-title text-center">{{__('msg.questionsList')}} <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a></h4>
-                <hr>
+                @endif
+                    <hr>
                 <div class="form-group row pb-3 justify-content-center">
                     <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
                     <div class="col-sm-4">
@@ -79,6 +81,7 @@
                         </div>
 
                     </div>
+                    @if(Permission::can('questionListWithKeyword'))
                     <div class="input-group mt-1 col-sm-6 d-none" id="search_question_box_Q">
                         <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word & sentence for search' : 'শব্দ ও বাক্য দিয়ে খুজুন'}}" autocomplete="off" id="search_input_keyword">
                         <div>
@@ -87,6 +90,7 @@
                             <button class="btn btn-warning" type="button" id="search_question_category_Q_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
                         </div>
                     </div>
+                    @endif
 
 {{--                    <div class="col-sm-2 mt-1">--}}
 {{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
@@ -464,6 +468,9 @@
         // var id = $(this).attr('data-id');
         $('#question_id').val($(this).attr('data-id'))
         $('#verification').modal('show')
+        setTimeout(()=>{
+            $('#password').focus()
+        },500)
         // alert(id);
         {{--$('#uqid').val(id);--}}
         {{--$.ajax({--}}
