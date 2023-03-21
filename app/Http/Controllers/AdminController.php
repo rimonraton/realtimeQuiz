@@ -22,7 +22,9 @@ class AdminController extends Controller
         //return Auth::user()->id;
         $quiz_counts = sprintf("%02d", count(Quiz::whereIn('user_id',$admin_users)->get()));
         $quiz_publish = sprintf("%02d", count(Quiz::where('status', 1)->whereIn('user_id',$admin_users)->get()));
-        $totalQuestions = sprintf("%02d", count(Question::whereIn('user_id',$admin_users)->get()));
+        $totalQuestions = sprintf("%02d", count(Question::whereIn('user_id',$admin_users)->where('status', 1)->get()));
+        $totalInReviewQuestions = sprintf("%02d", count(Question::whereIn('user_id',$admin_users)->where('status', 0)->where('isDraft', 0)->get()));
+        $totalInDraftQuestions = sprintf("%02d", count(Question::whereIn('user_id',$admin_users)->where('status', 0)->where('isDraft', 1)->get()));
 
         // $quiz_publish = count(Quiz::where('status', 1)->get());
         // $totalQuestions = count(Question::all());

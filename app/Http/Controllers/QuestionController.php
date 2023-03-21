@@ -355,6 +355,7 @@ class QuestionController extends Controller
         return '';
     }
 
+
     public function qListByTopic($tid)
     {
         $admin = auth()->user()->admin;
@@ -699,63 +700,95 @@ class QuestionController extends Controller
 
         return view('Admin.PartialPages.Questions.draft_questions_list', compact(['topic', 'id', 'catName','questionType', 'questions']));
     }
-    public function getDraftList($id, $keyword = '', $qType='')
-    {
-//        return $keyword ? 'true' : 'fale';
-        $admin = auth()->user()->admin;
-        $admin_users = $admin->users()->pluck('id');
-        $questions = null;
-        $et = 1;
-        if ($qType){
-            $et = $qType;
-        }
-        if (auth()->user()->roleuser->role_id <= 2){
-            if($keyword){
-                $questions = Question::where('status', 0)
-                    ->whereIn('user_id', $admin_users)
-                    ->where('question_text', 'like', '%' . $keyword . '%')
-                    ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                    ->where('category_id', $id)
-                    ->with('difficulty')
-                    ->where('isDraft', 1)
-                    ->where('quizcategory_id', $et)
-                    ->orderBy('id','desc')
-                    ->paginate(10);
-            } else {
-                $questions = Question::where('category_id', $id)
-                    ->where('isDraft', 1)
-                    ->where('quizcategory_id', $et)
-                    ->whereIn('user_id',$admin_users)
-                    ->orderBy('id','desc')
-                    ->paginate(10);
-            }
-        } else{
-            if($keyword){
-                $questions = Question::where('status', 0)
-                    ->where('user_id', auth()->user()->id)
-                    ->where('question_text', 'like', '%' . $keyword . '%')
-                    ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                    ->where('category_id', $id)
-                    ->with('difficulty')
-                    ->where('isDraft', 1)
-                    ->where('quizcategory_id', $et)
-                    ->orderBy('id','desc')
-                    ->paginate(10);
-            } else {
-                $questions = Question::where('category_id', $id)
-                    ->where('isDraft', 1)
-                    ->where('quizcategory_id', $et)
-                    ->where('user_id',auth()->user()->id)
-                    ->orderBy('id','desc')
-                    ->paginate(10);
-            }
-        }
+//    public function getDraftList($id, $keyword = '', $qType='')
+//    {
+////        return $keyword ? 'true' : 'fale';
+//        $admin = auth()->user()->admin;
+//        $admin_users = $admin->users()->pluck('id');
+//        $questions = null;
+//        $et = 1;
+//        if ($qType){
+//            $et = $qType;
+//        }
+//        if (auth()->user()->roleuser->role_id <= 2){
+//            if($keyword){
+//                $questions = Question::whereIn('user_id', $admin_users)
+//                    ->where('status', 0)
+//                    ->where('question_text', 'like', '%' . $keyword . '%')
+//                    ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+//                    ->where('category_id', $id)
+//                    ->with('difficulty')
+//                    ->where('isDraft', 1)
+//                    ->where('quizcategory_id', $et)
+//                    ->orderBy('id','desc')
+//                    ->paginate(10);
+//            } else {
+//                $questions = Question::whereIn('user_id',$admin_users)
+//                    ->where('category_id', $id)
+//                    ->where('status', 0)
+//                    ->where('category_id', $id)
+//                    ->with('difficulty')
+//                    ->where('isDraft', 1)
+//                    ->where('quizcategory_id', $et)
+//                    ->orderBy('id','desc')
+//                    ->paginate(10);
+//            }
+//        } else{
+//            if($keyword){
+//                $questions = Question::where('user_id', auth()->user()->id)
+//                    -> where('status', 0)
+//                    ->where('question_text', 'like', '%' . $keyword . '%')
+//                    ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+//                    ->where('category_id', $id)
+//                    ->with('difficulty')
+//                    ->where('isDraft', 1)
+//                    ->where('quizcategory_id', $et)
+//                    ->orderBy('id','desc')
+//                    ->paginate(10);
+//            } else {
+//                $questions = Question::where('user_id',auth()->user()->id)
+//                    ->where('isDraft', 1)
+//                    ->where('category_id', $id)
+//                    ->where('quizcategory_id', $et)
+//                    ->orderBy('id','desc')
+//                    ->paginate(10);
+//            }
+//        }
+//
+////        $questionType = QuestionType::all();
+////       return count($questions);
+//       if(count($questions)){
+//            return view('Admin.PartialPages.Questions.draft_questions_data', compact('questions', 'id', 'et'));
+//       }
+//        return '';
+//    }
 
-//        $questionType = QuestionType::all();
-//       return count($questions);
-       if(count($questions)){
+    public function getDraftList($id, $keyword = '', $qType = 1)
+    {
+        $auth_user = auth()->user();
+        $admin_users = $auth_user->admin->users()->pluck('id');
+        $questions = Question::query();
+        $questions->when($auth_user->roleuser->role_id <= 2, function ($q) use($admin_users) {
+            return $q->whereIn('user_id', $admin_users);
+        });
+        $questions->when($auth_user->roleuser->role_id > 2, function ($q) use($admin_users) {
+            return $q->where('user_id', auth()->user()->id);
+        });
+        $questions->when($keyword, function ($q) use($keyword) {
+            return $q->where('question_text', 'like', '%' . $keyword . '%')
+                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%');
+        });
+        $questions->where('status', 0)
+            ->where('category_id', $id)
+            ->where('isDraft', 1)
+            ->where('quizcategory_id', $qType)
+            ->with('difficulty')
+            ->orderBy('id','desc');
+        $questions = $questions->paginate(10);
+        if(count($questions)){
+            $et = $qType;
             return view('Admin.PartialPages.Questions.draft_questions_data', compact('questions', 'id', 'et'));
-       }
+        }
         return '';
     }
 }

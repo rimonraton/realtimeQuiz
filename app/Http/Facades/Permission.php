@@ -10,7 +10,11 @@ class Permission
 {
     public function can($route)
     {
+
         $user = auth()->user();
+        if($user->roleuser->role->role_name == 'Super Admin'){
+            return true;
+        }
         $mId = $this->getMenuId($route);
         $findMenuUser = \App\MenuRole::where('user_id', $user->id)->count();
 //        $rm = '' ;
