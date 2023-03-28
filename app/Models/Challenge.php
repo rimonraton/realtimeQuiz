@@ -16,7 +16,10 @@ class Challenge extends Model
     public function getCategoryAttribute()
     {
         if (!$this->relationLoaded('category')) {
-            $category = Category::select('id', 'name', 'bn_name')->whereIn('id', explode(',', $this->cat_id))->get();
+            $category = Category::whereIn('id', explode(',', $this->cat_id))
+                ->select('id', 'name', 'bn_name')
+                ->withCount('questions')
+                ->get();
 
             $this->setRelation('category', $category);
         }
@@ -26,7 +29,7 @@ class Challenge extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'id');
+        return $this->belongsTo(User::class);
     }
 
 }
