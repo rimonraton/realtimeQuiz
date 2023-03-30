@@ -3,6 +3,8 @@
     <div class="card-body">
         <div class="text-center verifyButton d-none" id="verifybtnDiv">
             <button class="p-1 border border-success rounded-lg bg-success text-white" data-tid="{{$id}}" id="verify">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
+            <br>
+            <button class="p-1 mt-1 border border-primary rounded-lg bg-primary text-white" id="shareQ">{{ $lang == 'gb' ? 'Share' : 'শেয়ার করুন' }}</button>
         </div>
 {{--        <div class="form-group row justify-content-end">--}}
 {{--            <div class="col-sm-3">--}}
@@ -27,8 +29,10 @@
                                             <tr>
                                                 <th style="width: 1%;">
                                                     @if(Permission::can('verifyDraftQuestionUpdate'))
+                                                        @if(count($questions) > $shareQCount)
                                                     <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
                                                     <label for="alloptionverify"></label>
+                                                            @endif
                                                     @else
                                                         <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
                                                         <label for="alloptionverify"></label>
@@ -49,8 +53,10 @@
                                                 <td>
 {{--                                                    {{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}--}}
                                                     @if(Permission::can('verifyDraftQuestionUpdate'))
+                                                        @if(!$qs->shareQuestion)
                                                     <input type="checkbox" id="optionveri{{$qs->id}}" class="material-inputs verifyelement" name="verified" value="{{$qs->id}}">
                                                     <label for="optionveri{{$qs->id}}"></label>
+                                                        @endif
                                                     @else
                                                         <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
                                                         <label for="alloptionverify"></label>
@@ -178,6 +184,14 @@
                                                             </span>
                                                         @endif
                                                     </span>
+                                                    @if($qs->shareQuestion)
+                                                        <hr>
+                                                        <span>
+                                                        <span class="badge badge-pill badge-purple">
+                                                            {{ 'This question shared with '.$qs->shareQuestion->user->name }}
+                                                        </span>
+                                                    </span>
+                                                    @endif
 
                                                 </td>
                                             </tr>
@@ -187,8 +201,10 @@
                                             <tr>
                                                 <th>
                                                     @if(Permission::can('verifyDraftQuestionUpdate'))
+                                                        @if(count($questions) > $shareQCount)
                                                     <input type="checkbox" id="alloptionverify" name="allverify" class="material-inputs alloptionverify" >
                                                     <label for="alloptionverify"></label>
+                                                        @endif
                                                     @else
                                                         <input type="checkbox" id="alloptionverify"  class="material-inputs"  disabled>
                                                         <label for="alloptionverify"></label>

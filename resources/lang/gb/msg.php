@@ -81,4 +81,5 @@ return [
     'not_published_yet' => 'Not Published Yet',
     'draftQuestionsList' => 'List of draft questions',
     'reviewQuestionsList' => 'List of review questions',
+    'shareQuestion' => 'List of share questions',
 ];

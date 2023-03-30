@@ -134,9 +134,12 @@
                                 <select class="form-control" name="role_id" id="selected_role">
                                     <option value="0">{{__('form.select_role')}}</option>
                                     @foreach($roles as $role)
-                                        <option value="{{$role->id}}">{{$lang=='gb'?$role->role_name:$role->bn_role_name}}</option>
+                                        <option value="{{$role->id}}">{{$lang=='gb'? (!!$role->role_name? $role->role_name : $role->bn_role_name) : (!!$role->bn_role_name ? $role->bn_role_name : $role->role_name)}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-1 form-control" style="cursor:pointer" id="addRole">
+                               <span><i class="fas fa-plus"></i></span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -303,11 +306,92 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="newRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">{{$lang == 'gb' ? 'Create Role' : 'রোল তৈরী করুন'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
+                    <span class="text-danger">*</span>
+                    <input type="text" class="form-control" placeholder="{{$lang == 'gb' ? 'Enter Role Name in English' : 'ইংরেজিতে রোল  লিখুন' }}" id="roleValue" name="role" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
+                    <input type="text" class="form-control" placeholder="{{$lang == 'gb' ? 'Enter Role Name in Bangla' : 'বাংলায় রোল  লিখুন' }}" id="roleValueBn" name="roleBn" autocomplete="off">
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" data-lang="{{$lang}}" id="roleCreateBtn">{{$lang == 'gb' ? 'Create' : 'তৈরী করুন'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $(function() {
+
+            $('#addRole').on('click', function () {
+                $('#newRole').modal('show')
+            })
+            $('#roleCreateBtn').on('click', function () {
+                const role = $('#roleValue').val()
+                const roleBn = $('#roleValueBn').val()
+                const lang = $(this).attr('data-lang')
+                if (!!role){
+                    $.ajax({
+                        url: "{{url('storeRole')}}",
+                        type: 'POST',
+                        data:{
+                            'role': role,
+                            'bn_role_name' : roleBn
+                        },
+                        success: function(data) {
+                            toastr.success("{{__('form.createSuccess')}}", {
+                                "closeButton": true
+                            });
+                            console.log('lang', data)
+                            var roleText = ''
+                            if(lang == 'gb') {
+                                if(!!data.role_name){
+                                    roleText = data.role_name
+                                } else{
+                                    roleText = data.bn_role_name
+                                }
+                            } else {
+                                if(!!data.bn_role_name){
+                                    roleText = data.bn_role_name
+                                } else{
+                                    roleText = data.role_name
+                                }
+                            }
+                            console.log('roleText',roleText)
+
+                            $('#roleValue').val('')
+                            $('#roleValueBn').val('')
+                            $('#newRole').modal('hide')
+                            $('#selected_role').append(`<option value="${data.id}">${roleText}</option>`)
+
+                            // console.log('role data..', data)
+
+                        }
+                    })
+                }
+
+            })
             $("#password-confirm").keyup(checkPasswordMatch);
             function checkPasswordMatch() {
                 var password = $("#password").val();

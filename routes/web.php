@@ -152,6 +152,8 @@ Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::clas
 Route::get('user_cedential/{value}',[\App\Http\Controllers\Auth\LoginController::class,'user_cedential'])->name('userCedential');
 
 Route::post('question-update',[QuestionController::class,'question_update'])->name('questionUpdate');
+Route::get('search-user/{keyword}',[NewUserController::class,'search_user'])->name('searchUser');
+Route::post('shareStore',[NewUserController::class,'shareQuestionStore'])->name('shareStore');
 
 //delete Result
 Route::get('deleteresult/{id}',[\App\Http\Controllers\ShareController::class,'deleteResult'])->name('deleteResult');
@@ -184,6 +186,7 @@ Route::get('quiz/quiz/{id}', [QuizController::class,'quiz'])->name('quiz.withOpt
 Route::post('createRoleUser', 'RoleController@createRoleUser')->name('createRoleUser');
 
 
+Route::post('storeRole', [RoleController::class,'storeRole'])->name('createRolestoreRole');
 
 
 Route::middleware(['hasAccess'])->group(function () {
@@ -203,6 +206,7 @@ Route::middleware(['hasAccess'])->group(function () {
     Route::get('question/edit/{id}', [QuestionController::class,'editQuestion'])->name('question.edit');
     Route::post('user-verify',[NewUserController::class, 'userVerify'])->name('userVerify');
     Route::post('question/update', 'QuestionController@updateQuestion')->name('question.update');
+    Route::get('share-questions', [QuestionController::class,'shareQuestion'])->name('shareQuestion');
 
     //review question
     Route::get('question/get-review-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getreviewlist'])->name('question.getReviewList');
@@ -214,6 +218,10 @@ Route::middleware(['hasAccess'])->group(function () {
     Route::get('question/get-draft-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getDraftList'])->name('question.getDraftList');
     Route::get('draftQuestion/edit/{id}', [QuestionController::class,'editQuestion'])->name('draftQuestion.edit');
     Route::get('question-view/{id}', [QuestionController::class,'viewQuestion'])->name('question.view');
+
+    //share question
+    Route::post('verify-share-question-update', [QuestionController::class, 'verifyShareQuestionUpdate'])->name('verifyShareQuestionUpdate');
+    Route::get('shareQuestion/edit/{id}', [QuestionController::class,'editQuestion'])->name('shareQuestion.edit');
 
     // Menu
     Route::post('saveMenu',[MenuController::class,'store'])->name('saveMenu');

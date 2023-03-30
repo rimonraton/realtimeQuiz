@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizzesTable extends Migration
+class CreateShareQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('share_questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('shareToUser');
+            $table->unsignedBigInteger('shareFromUser');
+            $table->unsignedBigInteger('question_id');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateQuizzesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('share_questions');
     }
 }

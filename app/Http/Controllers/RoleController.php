@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Menu;
+use App\MenuRole;
 use App\Role;
 use App\RoleUser;
 use App\User;
@@ -27,14 +29,45 @@ class RoleController extends Controller
         $adminId = \auth()->user()->admin->id;
         $request->validate([
             'role_name' => 'required',
-
         ]);
-        Role::create([
+       $role = Role::create([
             'role_name' => $request->role_name,
             'bn_role_name'=>$request->bn_role_name,
             'admin_id' => $adminId
         ]);
+//       return $role->id;
+
+       $menu = Menu::where('router_name', 'dashboard')->first();
+
+       MenuRole::create([
+           'role_id' => $role->id,
+           'menu_id' => $menu->id
+       ]);
+
         return redirect('rolelist');
+    }
+
+    public function storeRole(Request $request)
+    {
+        $adminId = \auth()->user()->admin->id;
+        $request->validate([
+            'role' => 'required',
+        ]);
+        $role = Role::create([
+            'role_name' => $request->role,
+            'bn_role_name'=>$request->bn_role_name,
+            'admin_id' => $adminId
+        ]);
+//       return $role->id;
+
+        $menu = Menu::where('router_name', 'dashboard')->first();
+
+        MenuRole::create([
+            'role_id' => $role->id,
+            'menu_id' => $menu->id
+        ]);
+       return $role;
+//       return response()->json(['role' => $role]);
     }
 
     public function roleUpdate(Request $request)

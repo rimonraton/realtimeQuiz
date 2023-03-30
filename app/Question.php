@@ -8,6 +8,10 @@ class Question extends Model
 
     protected $guarded = [];
     // protected $fillable = ['question_text', 'code_snippet', 'answer_explanation', 'more_info_link', 'topic_id', 'course_id', 'exam_id'];
+    public function shareQuestion()
+    {
+        return $this->hasOne(ShareQuestion::class, 'question_id');
+    }
     public function difficulty()
     {
         return $this->belongsTo(Difficulty::class, 'level', 'id');
