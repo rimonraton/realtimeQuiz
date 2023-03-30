@@ -33,7 +33,7 @@
 	                </li>
                 </ul>
                 <ul class="list-group " v-else>
-                    <li class="list-group-item active">
+                    <li class="list-group-item active" v-if="user.name">
                         <img :src="getAvatar(user.avatar)" :alt="getAvatarAlt(user.name)" class="circle mr-2">
                         <span class="ml-5">{{ user.name }}</span>
                         <span class="ml-1 badge badge-info">{{ user.mobile }}</span>

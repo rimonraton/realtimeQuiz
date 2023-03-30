@@ -227,13 +227,14 @@ export default {
                 !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
             })
             .listen('SingleDisplay.UserJoinUsersEvent', (data) => {
-                console.log(['UserJoinEvent.............', data])
+                console.log(['UserJoinUsersEvent.............', data])
                 !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
                 this.au = true
             })
             .listen('GameStartEvent', (data) => {
                 console.log(['GameStartEvent.............', data])
                 this.share = data.share
+                // this.users = data.users
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.sqo = true

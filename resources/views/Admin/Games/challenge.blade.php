@@ -160,7 +160,7 @@
                                                                                    class="material-inputs programming">
                                                                         @endif
                                                                         <label class="" for="topic{{$c->id}}">
-                                                                            {{$lang=='gb'?$c->name:$c->bn_name}}
+                                                                            {{$lang=='gb'?$c->name:$c->bn_name }}
                                                                             @if( ! count($c->childs))
                                                                                 <span class="badge badge-pill badge-info float-right">
                                                                                     {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}
@@ -170,6 +170,7 @@
 
                                                                     </div>
                                                                     @if(count($c->childs))
+{{--                                                                        {{dd($c->childs)}}--}}
                                                                         @include('Admin.Games._subtopic', ['category'=>$c->childs])
                                                                     @endif
                                                                 </li>
@@ -306,7 +307,7 @@
 
                                     @foreach($ch->category as $clc)
                                         @php
-                                            $cqc = $questions->where('category_id', $clc->id)->count();
+                                            $cqc = $clc->questions_count;
                                             $total += $cqc;
                                             if(app()->getLocale() == 'bd'){
                                                 $qcat .= $clc->bn_name . '-'. $bang->bn_number($cqc);
@@ -329,7 +330,12 @@
                                     <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
                                     <div class="loading{{ $ch->id }}"></div>
                                 </a>
-                                <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}" class="btn btn btn-xs btn-outline-info align-self-center" >
+                                <a href="{{ url('SingleQuestionDisplay/'. $ch->id . '/' . Auth::id()) }}"
+                                   class="btn btn btn-xs btn-outline-info align-self-center" >
+                                    {{__('msg.instant')}}
+                                </a>
+                                <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}"
+                                   class="btn btn btn-xs btn-outline-info align-self-center" >
                                     {{__('msg.start')}}
                                 </a>
                             </div>

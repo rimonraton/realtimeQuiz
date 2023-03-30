@@ -1254,6 +1254,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'uid', 'users', 'time'],
@@ -2149,12 +2157,16 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "waiting" }, [
     _c("div", { staticClass: "card", staticStyle: { "min-width": "24rem" } }, [
-      _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-header text-center" }, [
         _vm.user.id != _vm.uid
           ? _c("span", { staticClass: "ml-1 text-primary" }, [
-              _vm._v("Please wait, the Quiz Host will start the game soon.."),
+              _vm._v(
+                "\n                    Please wait, the Quiz Host will start the game soon..\n                "
+              ),
             ])
-          : _vm._e(),
+          : _c("span", { staticClass: "ml-1 text-primary" }, [
+              _vm._v("\n                    Users List\n                "),
+            ]),
       ]),
       _vm._v(" "),
       _c(
@@ -2240,21 +2252,21 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v("START")]
+                  [_vm._v("START\n                    ")]
                 )
               : _vm._e(),
             _vm._v(" "),
             _c(
               "a",
               {
-                staticClass: "btn btn-sm btn-outline-danger mt-4",
+                staticClass: "btn btn-sm btn-outline-success mt-4",
                 on: {
                   click: function ($event) {
                     _vm.qr = !_vm.qr
                   },
                 },
               },
-              [_c("i", { staticClass: "fas fa-check" })]
+              [_c("i", { staticClass: "fa-solid text-dark fa-qrcode" })]
             ),
           ]),
         ]
