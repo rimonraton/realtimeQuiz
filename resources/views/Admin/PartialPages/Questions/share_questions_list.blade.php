@@ -1,5 +1,6 @@
 @extends('Admin.Layout.dashboard')
 @section('css')
+
 <style>
     .myadmin-dd .dd-list .dd-item .dd-handle-new {
         background: #fff;
@@ -56,59 +57,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('msg.draftQuestionsList')}}
+                <h4 class="card-title text-center">{{__('msg.shareQuestion')}}
 {{--                    <a class="btn btn-success float-left" href="{{url('question/create')}}">{{__('msg.createQuestion')}}</a>--}}
                 </h4>
-                <hr>
-                <div class="form-group row pb-3 justify-content-center">
-                    <label for="category" class="col-sm-2 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                    <div class="col-sm-4">
-                        <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
-                            <ol class="dd-list">
-                                <li class="dd-item" id="parentdd">
-                                    <div class="dd-handle-new">
-                                        <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>
-                                    </div>
-                                    <ol class="dd-list">
-                                        @foreach($topic as $c)
-                                        <li class="dd-item">
-                                            <div class="dd-handle-new topicls" data-cid="{{$c->id}}">
 
-{{--                                                @if(count($c->childs) == 0)--}}
-{{--                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">--}}
-{{--                                                @endif--}}
-
-                                                <span>
-                                                    {{$lang == 'gb'?($c->name?$c->name:$c->bn_name):($c->bn_name?$c->bn_name:$c->name)}}
-
-                                                </span>
-                                            </div>
-                                            @if(count($c->childs))
-                                                @include('Admin.PartialPages.Questions._subtopic', ['category'=>$c->childs])
-                                            @endif
-                                        </li>
-                                        @endforeach
-                                    </ol>
-                                </li>
-                            </ol>
-                        </div>
-
-                    </div>
-
-{{--                    <div class="col-sm-2 mt-1">--}}
-{{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
-{{--                    </div>--}}
-                        <div class="input-group col-sm-6 mt-1 d-none" id="search_question_box">
-                            <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word or sentence for search' : 'শব্দ বা বাক্য দিয়ে খুজুন'}}" id="search_input_keyword" autocomplete="off">
-                            <div>
-                                <button class="btn btn-primary" type="button" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
-                                <button class="btn btn-info" type="button" id="search_question_category_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
-                                <button class="btn btn-dark-warning" type="button" id="search_question_category_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
-                            </div>
-                        </div>
-
-
-                </div>
                 <div class="table-responsive" style="overflow-x: hidden">
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
@@ -121,17 +73,6 @@
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <div class="row justify-content-end d-none" id="qtypeParent">
-                                    <div class="col-sm-3">
-                                        <select data-tid="{{$id}}" class="form-control"id="qtype">
-                                            {{--                                    <option value="">{{__('form.question_type')}}</option>--}}
-                                            <option value="0">{{$lang == 'gb' ? 'Choose Question Type' : 'প্রশ্নের ধরন নির্বাচন করুন'}}</option>
-                                            @foreach($questionType as $qtype)
-                                                <option value="{{$qtype->id}}">{{$lang == 'gb' ? $qtype->name : $qtype->bn_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
                                 <div id="viewData">
 {{--                                    <div class="container">--}}
 {{--                                        <div class="row justify-content-md-center">--}}
@@ -140,7 +81,7 @@
 {{--                                            </div>--}}
 {{--                                        </div>--}}
 {{--                                    </div>--}}
-                                    @include('Admin.PartialPages.Questions.all_questions_data', ['questions'=>$questions, 'shareQCount' => $shareQCount])
+                                    @include('Admin.PartialPages.Questions.all_share_questions_data', ['questions'=>$shareQuestion])
                                 </div>
                             </div>
                         </div>
@@ -232,44 +173,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="shareQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >{{$lang == 'gb' ? 'Select User' : 'ইউজার নির্বাচন করুন'}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{url('shareStore')}}" method="post">
-                    @csrf
-                <input type="hidden" id="question_ids" name="questionIds">
-                <input type="hidden" id="user_id" name="userId">
-                <div class="form-group">
-                    {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
-                    <input type="text" class="form-control" placeholder="{{$lang == 'gb' ? 'Type User Name' : 'ইউজার নাম টাইপ করুন' }}" id="searchUser" name="searchUser" autocomplete="off">
-                    <div class="list-group" id="listView">
-                    </div>
-
-                </div>
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-primary" id="verifingUser">Share</button>
-                    </div>
-
-                </form>
-            </div>
-{{--            <div class="modal-footer text-center">--}}
-{{--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-{{--               --}}
-{{--            </div>--}}
-        </div>
-    </div>
-</div>
-
 @endsection
 @section('js')
-<script>
+    <script>
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -316,6 +222,8 @@
             // window.history.pushState("", "", url);
         });
 
+
+
         $('.topicls input[name="topic"]').on('click',function (e){
             e.stopPropagation();
 
@@ -337,7 +245,7 @@
             topicwithcategory($(this).attr('data-tid'));
         })
 
-        var getId = "{{$id}}"
+        {{--var getId = "{{$id}}"--}}
         if (getId != "") {
             topicwithcategory(getId);
         }
@@ -573,8 +481,10 @@
     {{--    })--}}
     {{--})--}}
     var verifydata = []
+    var shareIds = []
     $(document).on('click', '.verifyelement', function () {
         const id = $(this).val()
+        const sid = $(this).attr('data-shareId')
         if($('input:checkbox.verifyelement:checked').length > 0) {
             $( "#verifybtnDiv" ).removeClass('d-none');
         } else{
@@ -584,9 +494,13 @@
         // console.log($(this).parent(), 'this element')
         if ($(this).is(':checked')) {
             verifydata.push(id);
+            shareIds.push(sid)
         } else {
             verifydata = verifydata.filter(function(elem){
                 return elem != id;
+            });
+            shareIds = shareIds.filter(function(elem){
+                return elem != sid;
             });
         }
         if ($('input:checkbox.verifyelement').length == verifydata.length){
@@ -601,13 +515,16 @@
 
         if ($(this).is(':checked')) {
             verifydata = []
+            shareIds = []
             $("input:checkbox.verifyelement:checked").each(function(){
                 verifydata.push($(this).val());
+                shareIds.push($(this).attr('data-shareId'));
             });
             $( "#verifybtnDiv" ).removeClass('d-none');
         }
         if (!$(this).is(':checked')) {
             verifydata = []
+            shareIds = []
             $( "#verifybtnDiv" ).addClass('d-none');
         }
 
@@ -618,10 +535,11 @@
         // console.log('verify data...', verifydata)
         const id = $(this).attr('data-tid')
         var fd = new FormData();
-        fd.append('ids', verifydata);
+        fd.append('ids', JSON.stringify(verifydata));
+        fd.append('sids', JSON.stringify(shareIds));
 
         $.ajax({
-            url:"{{url('verify-draft-question-update')}}",
+            url:"{{url('verify-share-question-update')}}",
             type:"Post",
             data: fd,
             contentType: false,
@@ -630,12 +548,13 @@
                 toastr.success("{{__('form.upload_notification_message')}}", {
                     "closeButton": true
                 });
-                if(!!id){
-                topicwithcategory(id)
-                } else {
-                    location.reload()
-                    $('input:checkbox.verifyelement').prop('checked', false);
-                }
+                location.reload()
+                // if(!!id){
+                // topicwithcategory(id)
+                // } else {
+                //     location.reload()
+                //     $('input:checkbox.verifyelement').prop('checked', false);
+                // }
 
             }
         })
@@ -708,35 +627,6 @@
         })
 
     });
-
-    $(document).on('click','#shareQ', function () {
-        $('#shareQuestion').modal('show')
-    })
-
-    $('#searchUser').on('keyup', function () {
-        const keyword = $(this).val()
-        if (!!keyword){
-            $.ajax({
-                url: "{{url('search-user')}}/" + keyword,
-                type: 'GET',
-                success: function (data) {
-                    $('#listView').html(data)
-                }
-            })
-        } else {
-            $('#listView').empty()
-        }
-
-    })
-    $(document).on('click', '.userItem', function () {
-        let id = $(this).attr('data-id')
-        let name = $(this).attr('data-name')
-        $('#question_ids').val(verifydata)
-        $('#user_id').val(id)
-        $('#searchUser').val(name)
-        $('#listView').empty()
-
-    })
     {{--$('#add_option').on('click',function (e){--}}
     {{--    e.preventDefault();--}}
     {{--    var data = '';--}}

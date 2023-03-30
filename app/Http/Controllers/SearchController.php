@@ -104,7 +104,7 @@ class SearchController extends Controller
     {
         $adminId = auth()->user()->admin->id;
         if ($keyword == 'all'){
-            $roles = Role::where('admin_id', $adminId)->orderBy('id', 'desc')->paginate(10);
+            $roles = Role::where('id','!=',1)->where('admin_id', $adminId)->orderBy('id', 'desc')->paginate(10);
             return view('Admin.PartialPages.Role.partial._search_role',compact('roles'));
         }
         $roles = Role::where('admin_id', $adminId)->where(function ($query) use($keyword) {

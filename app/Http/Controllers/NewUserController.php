@@ -8,6 +8,7 @@ use App\Mail\UserCredential;
 use App\Mail\WelcomeMail;
 use App\Role;
 use App\RoleUser;
+use App\ShareQuestion;
 use App\User;
 use App\UserInfo;
 use Illuminate\Http\Request;
@@ -121,6 +122,34 @@ class NewUserController extends Controller
       return Hash::check($request->password, $user->password);
 //        Auth::loginUsingId($user->id);
 //        return redirect('profile')->with('success', 'Create Your New Password'); ;
+    }
+
+    public function search_user($keyword)
+    {
+        $admin_id = auth()->user()->admin_id;
+        $userId = auth()->user()->id;
+            $users = User::where('admin_id', $admin_id)
+                ->where('name', 'like', $keyword . '%')
+                ->orWhere('email', 'like', $keyword . '%')->get();
+        $users = $users->where('id', '!=', $userId);
+
+       return view('Admin.PartialPages.NewUser.__userList', compact('users'));
+    }
+
+    public function shareQuestionStore(Request $request)
+    {
+//        return $request->all();
+        $ids = explode(",", $request->questionIds);
+       $id = \auth()->user()->id;
+       foreach ($ids as $qid) {
+           ShareQuestion::create([
+               'shareToUser' => $request->userId,
+            'shareFromUser' => $id,
+            'question_id' => $qid
+        ]);
+       }
+       return redirect('draft-questions');
+
     }
 
 }

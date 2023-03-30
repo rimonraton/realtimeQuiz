@@ -235,4 +235,6 @@ return [
     'show_all' => 'Show all',
     'password_required' => 'You have not provided a password',
     'not_right_user' => 'Sorry!You are not right user',
+    'shareBy' => 'Shared by',
+    'createSuccess' => 'Create Successfully',
 ];

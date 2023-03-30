@@ -82,4 +82,5 @@ return [
     'not_published_yet' => 'এখনো প্রকাশিত হয়নি',
     'draftQuestionsList' => 'খসড়া প্রশ্নের তালিকা',
     'reviewQuestionsList' => 'পর্যালোচনা প্রশ্নের তালিকা',
+    'shareQuestion' => 'শেয়ারকৃত প্রশ্নের তালিকা',
 ];

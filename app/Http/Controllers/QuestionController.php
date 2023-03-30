@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Difficulty;
 use App\QuestionLogReport;
 use App\QuestionType;
+use App\ShareQuestion;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Question;
@@ -676,6 +677,7 @@ class QuestionController extends Controller
 
     public function draftQuestions($id= '')
     {
+        $shareQCount = 0;
         $lang = \App::getLocale();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
@@ -688,17 +690,29 @@ class QuestionController extends Controller
         if(auth()->user()->roleuser->role_id <= 2) {
             $questions = Question::where('isDraft', 1)
                 ->whereIn('user_id',$admin_users)
+                ->with('shareQuestion.user')
                 ->orderBy('id','desc')
                 ->paginate(10);
+            if(count($questions)) {
+                $shareQCount = $questions->pluck('shareQuestion')->filter()->count();
+            }
         } else {
             $questions = Question::where('isDraft', 1)
                 ->where('user_id', auth()->user()->id)
+                ->with('shareQuestion.user')
                 ->orderBy('id','desc')
                 ->paginate(10);
+//            return count($questions);
+
+            if(count($questions)){
+                $shareQCount = $questions->pluck('shareQuestion')->filter()->count();
+            }
+
+//           return count($array);
         }
 //        return auth()->user()->id;
 
-        return view('Admin.PartialPages.Questions.draft_questions_list', compact(['topic', 'id', 'catName','questionType', 'questions']));
+        return view('Admin.PartialPages.Questions.draft_questions_list', compact(['topic', 'id', 'catName','questionType', 'questions', 'shareQCount']));
     }
 //    public function getDraftList($id, $keyword = '', $qType='')
 //    {
@@ -774,21 +788,53 @@ class QuestionController extends Controller
         $questions->when($auth_user->roleuser->role_id > 2, function ($q) use($admin_users) {
             return $q->where('user_id', auth()->user()->id);
         });
-        $questions->when($keyword, function ($q) use($keyword) {
-            return $q->where('question_text', 'like', '%' . $keyword . '%')
-                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%');
-        });
+
         $questions->where('status', 0)
             ->where('category_id', $id)
             ->where('isDraft', 1)
             ->where('quizcategory_id', $qType)
-            ->with('difficulty')
-            ->orderBy('id','desc');
+            ->with('difficulty', 'shareQuestion')
+            ->orderBy('id','desc')
+            ->when($keyword, function ($q) use($keyword) {
+            $q->where(function ($query) use($keyword) {
+                $query->where('question_text', 'like', '%' . $keyword . '%')
+                    ->orWhere('bd_question_text', 'like', '%' . $keyword . '%');
+            });
+        });
         $questions = $questions->paginate(10);
         if(count($questions)){
+            $shareQCount = $questions->pluck('shareQuestion')->filter()->count();
             $et = $qType;
-            return view('Admin.PartialPages.Questions.draft_questions_data', compact('questions', 'id', 'et'));
+            return view('Admin.PartialPages.Questions.draft_questions_data', compact('questions', 'id', 'et', 'shareQCount'));
         }
         return '';
+    }
+
+    public function shareQuestion()
+    {
+         $user = \auth()->user()->id;
+          $shareQuestion = ShareQuestion::where('shareToUser', $user)->where('status', 1)->with('questions.options', 'questions.difficulty', 'shareFromUserData')->paginate(10);
+//        $shareQuestion->count();
+        return view('Admin.PartialPages.Questions.share_questions_list', compact('shareQuestion'));
+    }
+
+    public function verifyShareQuestionUpdate(Request $request)
+    {
+//        return $request->all();
+
+        $ids = json_decode($request->ids);
+        $sids = json_decode($request->sids);
+
+//        $ids = explode(",", $request->ids);
+//        $sids = explode(",", $request->sids);
+//      return gettype($ids);
+
+        Question::whereIn('id', $ids)->update([
+            'isDraft' => 0
+        ]);
+        ShareQuestion::whereIn('id', $sids)->update([
+            'status' => 0
+        ]);
+        return Question::whereIn('id', $ids)->get();
     }
 }
