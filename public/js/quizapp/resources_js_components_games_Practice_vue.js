@@ -147,6 +147,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -461,11 +462,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'ws', 'correct', 'wrong'],
+  props: ['results', 'ws', 'correct', 'wrong', 'lang'],
   methods: {
     reloadPage: function reloadPage() {
       window.location.reload();
@@ -479,6 +478,9 @@ __webpack_require__.r(__webpack_exports__);
       // let data = link.split('.')
       // console.log(data.length > 1)
       // return data.length > 1
+    },
+    tbe: function tbe(b, e, l) {
+      return l === 'bd' ? !!b ? b : e : !!e ? e : b;
     }
   }
 });
@@ -518,7 +520,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\r\n    max-width: 500px !important;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\n    max-width: 500px !important;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -756,7 +758,7 @@ var render = function () {
               _vm._v("Quiz Game Over"),
             ]),
             _vm._v(" "),
-            _c("h3", [_vm._v(_vm._s(_vm.pm.perform_message) + " ")]),
+            _c("h3", [_vm._v(_vm._s(_vm.pm.perform_message))]),
             _vm._v(" "),
             _c("resultdetails", {
               attrs: {
@@ -1120,7 +1122,11 @@ var render = function () {
                     },
                     [
                       _c("resultdetails", {
-                        attrs: { results: _vm.results, ws: _vm.winner_screen },
+                        attrs: {
+                          results: _vm.results,
+                          ws: _vm.winner_screen,
+                          lang: _vm.user.lang,
+                        },
                       }),
                     ],
                     1
@@ -1194,6 +1200,19 @@ var render = function () {
                       _vm._v(" "),
                       result.isCorrect != 0
                         ? _c("p", [
+                            _c("span", [
+                              _vm._v(
+                                "  " +
+                                  _vm._s(
+                                    _vm.tbe(
+                                      "আপনার উত্তরটি সঠিক হয়েছেঃ ",
+                                      "Your answer is correct: ",
+                                      _vm.lang
+                                    )
+                                  )
+                              ),
+                            ]),
+                            _vm._v(" "),
                             _vm.isImg(result.selected)
                               ? _c(
                                   "span",
@@ -1226,6 +1245,20 @@ var render = function () {
                             }),
                           ])
                         : _c("p", [
+                            _c("span", [
+                              _vm._v(
+                                " " +
+                                  _vm._s(
+                                    _vm.tbe(
+                                      "আপনার দেয়া উত্তরঃ ",
+                                      "Your answer: ",
+                                      _vm.lang
+                                    )
+                                  ) +
+                                  " "
+                              ),
+                            ]),
+                            _vm._v(" "),
                             _vm.isImg(result.selected)
                               ? _c(
                                   "span",
@@ -1258,6 +1291,18 @@ var render = function () {
                             }),
                             _vm._v(" "),
                             _c("br"),
+                            _vm._v(" "),
+                            _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.tbe(
+                                    "সঠিক উত্তরঃ ",
+                                    "Correct answer: ",
+                                    _vm.lang
+                                  )
+                                )
+                              ),
+                            ]),
                             _vm._v(" "),
                             _vm.isImg(result.answer)
                               ? _c(

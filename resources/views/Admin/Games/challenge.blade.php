@@ -277,27 +277,27 @@
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
                 <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
-                    <div class="card bg-inverse ">
-                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">
+                    <div class="card bg-white">
+{{--                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">--}}
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
-                            <div class="d-flex justify-content-between">
-                                <div class="pointer small btn btn-xs btn-outline-primary text-white align-self-center" data-id="{{ $ch->id }}">
+                            <div class="d-flex justify-content-center">
+                                <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $ch->id }}">
                                      {{ __('form.layout_title') }}
                                 </div>
-                                <div id="together-{{$ch->id}}-0" class="optlayout pointer small btn btn-xs btn-outline-info align-self-center {{$ch->option_view_time == 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="0">
+                                <div id="together-{{$ch->id}}-0" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time == 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="0">
 {{--                                    <i class="fas fa-share-alt"></i> --}}
                                     <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
-                                    {{ __('form.option_together_title') }}
+{{--                                    {{ __('form.option_together_title') }}--}}
                                 </div>
-                                <div id="together-{{$ch->id}}-3" class="optlayout btn btn btn-xs btn-outline-info align-self-center {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
+                                <div id="together-{{$ch->id}}-3" class="optlayout btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
                                     <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
-                                    {{__('form.option_one_by_one_title')}}
+{{--                                    {{__('form.option_one_by_one_title')}}--}}
                                 </div>
                             </div>
                             <div style="margin-top: 5px;">
-                                <h4 class="card-title text-white">{{ $ch->name }}</h4>
-                                <p class="card-text">
+                                <h4 class="card-title">{{ $ch->name }}</h4>
+                                <p class="card-text text-dark">
                                     @php
                                         $qc = count(explode(',', $ch->question_id));
                                         $beq = app()->getLocale() == 'bd'? ($bang->bn_number($qc) . ' টি') : ($qc .' questions ');
@@ -319,23 +319,21 @@
 
                                         @endphp
                                     @endforeach
-
                                     {{ trans('games.challeng_message', [ 'questions' => $beq, 'categories' => $qcat ])}}
-
                                 </p>
-                                {{--                            <p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
+                                {{--<p class="text-danger">{{__('games.challenge_difficulty')}}</p>--}}
                             </div>
                             <div class="d-flex justify-content-between">
-                                <a class="shareBtn pointer small btn btn-xs btn-outline-info align-self-center" data-id="{{ $ch->id }}">
+                                <a class="shareBtn btn btn-xs btn-outline-info align-self-center text-dark" data-id="{{ $ch->id }}">
                                     <i class="fas fa-share-alt"></i> {{ __('msg.share') }}
                                     <div class="loading{{ $ch->id }}"></div>
                                 </a>
                                 <a href="{{ url('SingleQuestionDisplay/'. $ch->id . '/' . Auth::id()) }}"
-                                   class="btn btn btn-xs btn-outline-info align-self-center" >
+                                   class="btn btn-xs btn-outline-info align-self-center" >
                                     {{__('msg.instant')}}
                                 </a>
                                 <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}"
-                                   class="btn btn btn-xs btn-outline-info align-self-center" >
+                                   class="btn btn-xs btn-outline-info align-self-center" >
                                     {{__('msg.start')}}
                                 </a>
                             </div>
@@ -679,29 +677,32 @@
 
         });
         $('.optlayout').on('click', function () {
+            // console.log($(this).hasClass('bg-info'))
+            // return
             var $this = $(this)
-            $.ajax({
-                url: "{{url('update-challenge-option-layout')}}",
-                type: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    'id': $(this).data('id'),
-                    'value': $(this).data('value')
-                },
-                success: function(data) {
-                    if($this.data('value') == 0){
-                        $('#together-'+$this.data('id')+'-'+3).removeClass('bg-info text-white')
-                        $this.addClass('bg-info text-white')
-                    } else {
-                        $('#together-'+$this.data('id')+'-'+0).removeClass('bg-info text-white')
-                        $this.addClass('bg-info text-white')
+            if (!$this.hasClass('bg-info')){
+                $.ajax({
+                    url: "{{url('update-challenge-option-layout')}}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': $(this).data('id'),
+                        'value': $(this).data('value')
+                    },
+                    success: function(data) {
+                        if($this.data('value') == 0){
+                            $('#together-'+$this.data('id')+'-'+3).removeClass('bg-info text-white')
+                            $this.addClass('bg-info text-white')
+                        } else {
+                            $('#together-'+$this.data('id')+'-'+0).removeClass('bg-info text-white')
+                            $this.addClass('bg-info text-white')
+                        }
+                        toastr.success("{{__('form.upload_notification_message')}}", {
+                            "closeButton": true
+                        });
                     }
-                    toastr.success("{{__('form.upload_notification_message')}}", {
-                        "closeButton": true
-                    });
-                }
-            })
-
+                })
+            }
         })
     </script>
 

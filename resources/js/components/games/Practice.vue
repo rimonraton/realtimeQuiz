@@ -1,8 +1,9 @@
 <template>
     <div class="container">
+
         <div class="winner" v-if="winner_screen">
             <h2 class="text-center">Quiz Game Over</h2>
-            <h3>{{ pm.perform_message }} </h3>
+            <h3>{{ pm.perform_message }}</h3>
             <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong"/>
         </div>
 
@@ -114,7 +115,7 @@
                             </li>
                             <li v-if="qid > 0"
                                 class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                <resultdetails :results='results' :ws="winner_screen"/>
+                                <resultdetails :results='results' :ws="winner_screen" :lang="user.lang"/>
                             </li>
                         </ul>
                     </div>

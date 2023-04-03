@@ -14,29 +14,27 @@
                         <div class="font-weight-light f-13">
                             <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
+                                <span>  {{tbe('আপনার উত্তরটি সঠিক হয়েছেঃ ', 'Your answer is correct: ', lang)}}</span>
                              <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                 <img  class="image mt-1 rounded img-thumbnail"
-                                       :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                                 <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:10vh" alt="">
                              </span>
                              <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
                             </p>
                             <p v-else>
+                                <span> {{tbe('আপনার দেয়া উত্তরঃ ', 'Your answer: ', lang)}} </span>
                                 <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                    <img  class="image mt-1 rounded img-thumbnail"
-                                          :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                                    <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:10vh" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                 <br>
-
+                                <span>{{tbe('সঠিক উত্তরঃ ','Correct answer: ', lang)}}</span>
                                 <span class="font-weight-light font-italic" v-if="isImg(result.answer)">
-                                     <img  class="image mt-1 rounded img-thumbnail"
-                                           :src="'/'+ result.answer" style="max-height:10vh" alt="">
+                                     <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.answer" style="max-height:10vh" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.answer" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
-
                             </p>
 
                         </div>
@@ -63,7 +61,7 @@
 
 <script>
     export default {
-        props: ['results', 'ws', 'correct', 'wrong'],
+        props: ['results', 'ws', 'correct', 'wrong', 'lang'],
 
         methods: {
             reloadPage(){
@@ -78,6 +76,9 @@
                 // let data = link.split('.')
                 // console.log(data.length > 1)
                 // return data.length > 1
+            },
+            tbe(b, e, l) {
+                return l === 'bd' ? (!!b ? b : e) : (!!e ? e : b)
             }
         }
 

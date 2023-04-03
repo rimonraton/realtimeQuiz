@@ -72,44 +72,47 @@
                     > {{ Math.floor(progress) }}
                     </div>
                 </div>
-                <div class="card my-4" v-for="question in questions" v-if="question.id == current">
-                    <div class="card-body pb-1 animate__animated animate__backInRight animate__faster">
-                        <span class="q_num text-right text-muted">
+                <div class="my-4" v-for="question in questions" v-if="question.id == current">
+                     <div class="text-center text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
-                        </span>
-                        <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
-                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
-                        <video
-                            v-if="question.fileType == 'video'"
-                            @ended="onEnd()"
-                            @play="onStart()"
-                            class="image w-100 mt-1 rounded img-thumbnail"
-                            autoplay
-                            controls
-                        >
-                            <source :src="'/'+ question.question_file_link" type="video/mp4">
-                        </video>
-                        <div class="audio" v-if="question.fileType == 'audio'">
-                            <audio
+                        </div>
+                    <div class="pb-1 animate__animated animate__backInRight animate__faster">
+                        <div v-if="uid ===user.id">
+                            <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
+                                 :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+                            <video
+                                v-if="question.fileType == 'video'"
                                 @ended="onEnd()"
                                 @play="onStart()"
+                                class="image w-100 mt-1 rounded img-thumbnail"
+                                autoplay
                                 controls
-                                autoplay>
-                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">
-                            </audio>
-                            <div id="ar"></div>
+                            >
+                                <source :src="'/'+ question.question_file_link" type="video/mp4">
+                            </video>
+                            <div class="audio" v-if="question.fileType == 'audio'">
+                                <audio
+                                    @ended="onEnd()"
+                                    @play="onStart()"
+                                    controls
+                                    autoplay>
+                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                                </audio>
+                                <div id="ar"></div>
+                            </div>
                         </div>
                       <div v-show="av">
 <!--                          Question Text-->
-                            <div class="mt-2 " v-if="uid === user.id">
-                                <div class="d-flex align-items-center question-title">
-                                    <h3 class="text-danger">Q.</h3>
-                                    <h5 class="mt-1 ml-2">
-                                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-                                    </h5>
+                            <div class="mt-2" v-if="uid ===user.id">
+                                <div class="question-title">
+                                    <div class="alert alert-info d-flex px-4 py-5 justify-content-center">
+<!--                                        <h3 class="text-danger">Q.</h3>-->
+                                        <h1 class="ml-1">
+                                            {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                        </h1>
+                                    </div>
                                 </div>
                             </div>
-
                             <div v-if="sqo && uid !==user.id" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                  :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
@@ -139,9 +142,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12" v-if="uid === user.id">
-                <div class="card my-4" >
-                    <div class="card-header">
+
+            <div class="col-md-12 border-bottom" v-if="uid === user.id">
+                <div class="my-4" >
+                    <div class="">
                         Score Board
 <!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
@@ -562,14 +566,14 @@ export default {
                 if(index == 0) {
                     return 'animate__animated animate__lightSpeedInRight';
                 }
-                return 'animate__animated animate__lightSpeedInRight animate__delay-' + index +'s';
+                return 'animate__animated animate__lightSpeedInRight animate__delay-' + index  +'s';
             }
 
             return '';
         },
         showQuestionOptions (question) {
             // console.log('showQuestionOptions', question)
-            let timeout = 1000;
+            let timeout = 3000;
             if(this.challenge.option_view_time != 0) {
                 timeout = 3500; // this.quiz.quiz_time * 1000
             }

@@ -189,6 +189,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -637,7 +641,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showQuestionOptions: function showQuestionOptions(question) {
       var _this9 = this;
       // console.log('showQuestionOptions', question)
-      var timeout = 1000;
+      var timeout = 3000;
       if (this.challenge.option_view_time != 0) {
         timeout = 3500; // this.quiz.quiz_time * 1000
       }
@@ -918,6 +922,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -1772,97 +1778,99 @@ var render = function () {
             _vm._v(" "),
             _vm._l(_vm.questions, function (question) {
               return question.id == _vm.current
-                ? _c("div", { staticClass: "card my-4" }, [
+                ? _c("div", { staticClass: "my-4" }, [
+                    _c("div", { staticClass: "text-center text-muted" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(
+                            _vm.qne2b(
+                              _vm.qid,
+                              _vm.questions.length,
+                              _vm.user.lang
+                            )
+                          ) +
+                          "\n                        "
+                      ),
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
                       {
                         staticClass:
-                          "card-body pb-1 animate__animated animate__backInRight animate__faster",
+                          "pb-1 animate__animated animate__backInRight animate__faster",
                       },
                       [
-                        _c(
-                          "span",
-                          { staticClass: "q_num text-right text-muted" },
-                          [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(
-                                  _vm.qne2b(
-                                    _vm.qid,
-                                    _vm.questions.length,
-                                    _vm.user.lang
-                                  )
-                                ) +
-                                "\n                        "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        question.fileType == "image"
-                          ? _c("img", {
-                              staticClass:
-                                "image w-100 mt-1 rounded img-thumbnail",
-                              staticStyle: { "max-height": "70vh" },
-                              attrs: {
-                                src: "/" + question.question_file_link,
-                                alt: "",
-                              },
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        question.fileType == "video"
-                          ? _c(
-                              "video",
-                              {
-                                staticClass:
-                                  "image w-100 mt-1 rounded img-thumbnail",
-                                attrs: { autoplay: "", controls: "" },
-                                on: {
-                                  ended: function ($event) {
-                                    return _vm.onEnd()
-                                  },
-                                  play: function ($event) {
-                                    return _vm.onStart()
-                                  },
-                                },
-                              },
-                              [
-                                _c("source", {
-                                  attrs: {
-                                    src: "/" + question.question_file_link,
-                                    type: "video/mp4",
-                                  },
-                                }),
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        question.fileType == "audio"
-                          ? _c("div", { staticClass: "audio" }, [
-                              _c(
-                                "audio",
-                                {
-                                  attrs: { controls: "", autoplay: "" },
-                                  on: {
-                                    ended: function ($event) {
-                                      return _vm.onEnd()
-                                    },
-                                    play: function ($event) {
-                                      return _vm.onStart()
-                                    },
-                                  },
-                                },
-                                [
-                                  _c("source", {
+                        _vm.uid === _vm.user.id
+                          ? _c("div", [
+                              question.fileType == "image"
+                                ? _c("img", {
+                                    staticClass:
+                                      "image w-100 mt-1 rounded img-thumbnail",
+                                    staticStyle: { "max-height": "70vh" },
                                     attrs: {
                                       src: "/" + question.question_file_link,
-                                      type: "audio/mpeg",
+                                      alt: "",
                                     },
-                                  }),
-                                ]
-                              ),
+                                  })
+                                : _vm._e(),
                               _vm._v(" "),
-                              _c("div", { attrs: { id: "ar" } }),
+                              question.fileType == "video"
+                                ? _c(
+                                    "video",
+                                    {
+                                      staticClass:
+                                        "image w-100 mt-1 rounded img-thumbnail",
+                                      attrs: { autoplay: "", controls: "" },
+                                      on: {
+                                        ended: function ($event) {
+                                          return _vm.onEnd()
+                                        },
+                                        play: function ($event) {
+                                          return _vm.onStart()
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _c("source", {
+                                        attrs: {
+                                          src:
+                                            "/" + question.question_file_link,
+                                          type: "video/mp4",
+                                        },
+                                      }),
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              question.fileType == "audio"
+                                ? _c("div", { staticClass: "audio" }, [
+                                    _c(
+                                      "audio",
+                                      {
+                                        attrs: { controls: "", autoplay: "" },
+                                        on: {
+                                          ended: function ($event) {
+                                            return _vm.onEnd()
+                                          },
+                                          play: function ($event) {
+                                            return _vm.onStart()
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("source", {
+                                          attrs: {
+                                            src:
+                                              "/" + question.question_file_link,
+                                            type: "audio/mpeg",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("div", { attrs: { id: "ar" } }),
+                                  ])
+                                : _vm._e(),
                             ])
                           : _vm._e(),
                         _vm._v(" "),
@@ -1881,32 +1889,30 @@ var render = function () {
                           [
                             _vm.uid === _vm.user.id
                               ? _c("div", { staticClass: "mt-2" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "d-flex align-items-center question-title",
-                                    },
-                                    [
-                                      _c("h3", { staticClass: "text-danger" }, [
-                                        _vm._v("Q."),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("h5", { staticClass: "mt-1 ml-2" }, [
-                                        _vm._v(
-                                          "\n                                        " +
-                                            _vm._s(
-                                              _vm.tbe(
-                                                question.bd_question_text,
-                                                question.question_text,
-                                                _vm.user.lang
-                                              )
-                                            ) +
-                                            "\n                                    "
-                                        ),
-                                      ]),
-                                    ]
-                                  ),
+                                  _c("div", { staticClass: "question-title" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "alert alert-info d-flex px-4 py-5 justify-content-center",
+                                      },
+                                      [
+                                        _c("h1", { staticClass: "ml-1" }, [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(
+                                                _vm.tbe(
+                                                  question.bd_question_text,
+                                                  question.question_text,
+                                                  _vm.user.lang
+                                                )
+                                              ) +
+                                              "\n                                        "
+                                          ),
+                                        ]),
+                                      ]
+                                    ),
+                                  ]),
                                 ])
                               : _vm._e(),
                             _vm._v(" "),
@@ -2025,9 +2031,9 @@ var render = function () {
         ),
         _vm._v(" "),
         _vm.uid === _vm.user.id
-          ? _c("div", { staticClass: "col-md-12" }, [
-              _c("div", { staticClass: "card my-4" }, [
-                _c("div", { staticClass: "card-header" }, [
+          ? _c("div", { staticClass: "col-md-12 border-bottom" }, [
+              _c("div", { staticClass: "my-4" }, [
+                _c("div", {}, [
                   _vm._v("\n                        Score Board\n"),
                   _vm._v(" "),
                   _vm.user.id == _vm.uid && _vm.qid > 0
@@ -2366,24 +2372,19 @@ var render = function () {
               ),
             ])
           : _c("span", { staticClass: "ml-1 text-primary" }, [
-              _vm._v("\n                    Users List\n                "),
+              _vm._v("\n                    User List\n                "),
             ]),
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "card-body",
-          staticStyle: { "max-height": "90vh", overflow: "auto" },
-        },
-        [
-          _vm.qr
-            ? _c("img", {
-                staticClass: "img-thumbnail",
-                attrs: { src: _vm.getQr, alt: "QR Code" },
-              })
-            : _vm._e(),
-          _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _vm.qr
+          ? _c("img", {
+              staticClass: "img-thumbnail",
+              attrs: { src: _vm.getQr, alt: "QR Code" },
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "max-height": "50vh", overflow: "auto" } }, [
           _vm.uid === _vm.user.id
             ? _c(
                 "ul",
@@ -2473,39 +2474,38 @@ var render = function () {
                     ])
                   : _vm._e(),
               ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between" }, [
-            _vm.user.id == _vm.uid
-              ? _c(
-                  "a",
-                  {
-                    staticClass:
-                      "btn btn-sm btn-outline-success mt-4 pull-right",
-                    on: {
-                      click: function ($event) {
-                        return _vm.$emit("gameStart")
-                      },
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex justify-content-between" }, [
+          _vm.user.id == _vm.uid
+            ? _c(
+                "a",
+                {
+                  staticClass: "btn btn-sm btn-outline-success mt-4 pull-right",
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("gameStart")
                     },
                   },
-                  [_vm._v("START\n                    ")]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-sm btn-outline-success mt-4",
-                on: {
-                  click: function ($event) {
-                    _vm.qr = !_vm.qr
-                  },
+                },
+                [_vm._v("START\n                    ")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-sm btn-outline-success mt-4",
+              on: {
+                click: function ($event) {
+                  _vm.qr = !_vm.qr
                 },
               },
-              [_c("i", { staticClass: "fa-solid text-dark fa-qrcode" })]
-            ),
-          ]),
-        ]
-      ),
+            },
+            [_c("i", { staticClass: "fa-solid text-dark fa-qrcode" })]
+          ),
+        ]),
+      ]),
     ]),
   ])
 }
