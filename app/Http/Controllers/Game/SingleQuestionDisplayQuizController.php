@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Game;
 
+use App\Events\SingleDisplay\AudioVideoEndEvent;
 use App\Events\SingleDisplay\UserJoinEvent;
 use App\Events\SingleDisplayJoinEvent;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,13 @@ class SingleQuestionDisplayQuizController extends Controller
     public function userJoin(Request $request): string
     {
 //        return $request->user;
-        broadcast(new UserJoinEvent($request));
+        broadcast(new UserJoinEvent($request))->toOthers();
         return 'user Join Event';
+    }
+
+    public function audioVideoEnd(Request $request): string
+    {
+        broadcast(new AudioVideoEndEvent($request))->toOthers();
+        return 'audio Video End Event';
     }
 }

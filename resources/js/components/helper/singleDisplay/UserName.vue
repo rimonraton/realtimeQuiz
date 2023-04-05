@@ -6,14 +6,15 @@
                     Please insert your name & mobile
                 </h4>
 	        </div>
-	        <div class="card-body" style="max-height:90vh; overflow:auto">
+	        <div class="card-body" style="max-height:90vh; min-height:50vh; overflow:auto">
                 <div class="d-flex justify-content-between">
                     <input type="text" v-model="newUser.name" class="form-control" placeholder="Your Name" autofocus>
                 </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <input type="phone" v-model="newUser.mobile" class="form-control" placeholder="Mobile No.">
+                <div class="d-flex justify-content-between mt-2 ">
+<!--                    <input type="phone" v-model="newUser.mobile" class="form-control" placeholder="Mobile No.">-->
+                    <vue-tel-input v-model="newUser.mobile" class="form-control"></vue-tel-input>
                 </div>
-                <div class="d-flex justify-content-center" v-if="newUser.name.length > 2 && newUser.mobile.length == 11">
+                <div class="d-flex justify-content-center" v-if="newUser.name.length > 2 && newUser.mobile.length > 11">
                     <a @click="$emit('insertUser', newUser)"
                        class="btn btn-sm btn-success mt-4 pull-right"
                     >JOIN </a>
@@ -25,9 +26,21 @@
 
 </template>
 
+
 <script>
+// import { VueTelInput } from 'vue-tel-input';
+const VueTelInput = () =>
+    Promise.all([
+        import(/* webpackChunkName: "chunk-vue-tel-input" */ 'vue-tel-input'),
+        import(/* webpackChunkName: "chunk-vue-tel-input" */ 'vue-tel-input/dist/vue-tel-input.css'),
+    ]).then(([{ VueTelInput }]) => VueTelInput);
+
+
 export default{
 	props:['user', 'uid', 'users', 'time'],
+    components: {
+        VueTelInput,
+    },
     data() {
         return {
             newUser: {
@@ -39,7 +52,8 @@ export default{
             minutes: '',
             seconds: '',
             schedule: '',
-            timer: null
+            timer: null,
+            value: ''
         };
     },
     methods:{
@@ -84,6 +98,5 @@ export default{
 };
 
 </script>
-<style>
+<style src="vue-tel-input/dist/vue-tel-input.css"></style>
 
-</style>

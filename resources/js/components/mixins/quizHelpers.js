@@ -10,7 +10,7 @@ export const quizHelpers = {
             clearInterval(this.timer)
             clearInterval(this.qt.timer)
             this.qt.ms = 0
-            this.qt.time = 10
+            this.qt.time = 15
             this.progress = 100
             this.answered = 0
             this.counter = 2
@@ -56,7 +56,10 @@ export const quizHelpers = {
         imageOption(objArray){
             return  objArray.some(a => a.flag == 'img')
         },
-        onEnd() {
+        onEnd(api) {
+            if(api == 'apiCall') {
+                axios.post(`/api/audioVideoEnd`, {channel: this.channel }).then(res => console.log('apiCallThen ..', res.data))
+            }
             this.av = true
             this.showQuestionOptions(null)
         },

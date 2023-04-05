@@ -47,10 +47,12 @@
             ></iframe>
         </div>
         <wait :uid='uid' :users='users' :user='user' :time='challenge.schedule'
-                 @kickingUser="kickUser($event)"
-                 @gameStart="gameStart"
-                 @gameReset="gameReset"
-                 v-if="screen.waiting">
+              @kickingUser="kickUser($event)"
+              @gameStart="gameStart"
+              @endAV="onEnd('apiCall')"
+              @gameReset="gameReset"
+              @onEnd="onEnd"
+              v-if="screen.waiting">
         </wait>
         <user_info
             v-if="!user.id"
@@ -81,8 +83,8 @@
                             <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                                  :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
                             <video
-                                v-if="question.fileType == 'video'"
-                                @ended="onEnd()"
+                                v-if="question.fileType == 'video' && isHost()"
+                                @ended="onEnd('apiCall')"
                                 @play="onStart()"
                                 class="image w-100 mt-1 rounded img-thumbnail"
                                 autoplay
@@ -90,9 +92,9 @@
                             >
                                 <source :src="'/'+ question.question_file_link" type="video/mp4">
                             </video>
-                            <div class="audio" v-if="question.fileType == 'audio'">
+                            <div class="audio" v-if="question.fileType == 'audio' && isHost()">
                                 <audio
-                                    @ended="onEnd()"
+                                    @ended="onEnd('apiCall')"
                                     @play="onStart()"
                                     controls
                                     autoplay>
@@ -188,7 +190,7 @@ export default {
         return {
             qt:{
                 ms: 0,
-                time:10,
+                time:15,
                 timer:null
             },
             users: [],
@@ -230,6 +232,13 @@ export default {
                 this.au = true
                 !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
             })
+            .listen('SingleDisplay.AudioVideoEndEvent', (data) => {
+                console.log(['apiCallOnEnded log.............', data])
+                if(!this.isHost()) {
+                    this.av = true
+                    this.showQuestionOptions(null)
+                }
+            })
             .listen('SingleDisplay.UserJoinUsersEvent', (data) => {
                 console.log(['UserJoinUsersEvent.............', data])
                 !this.users.some(u => u.id === data.user.id) ? this.users.push(data.user) : ''
@@ -238,7 +247,7 @@ export default {
             .listen('GameStartEvent', (data) => {
                 console.log(['GameStartEvent.............', data])
                 this.share = data.share
-                // this.users = data.users
+                this.users = data.users
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.sqo = true
@@ -260,7 +269,14 @@ export default {
             .listen('QuestionClickedEvent', (data) => {
                 console.log('QuestionClickedEvent.............')
                 this.answered_user_data.push(data)
+                this.answered ++
+
+                console.log('QuestionClickedEvent', this.answered_user_data)
                 this.getResult()
+                if (this.isHost() && this.users.length == this.answered ) {
+                    this.answered = 0
+                    this.resultScreen()
+                }
             })
             .listen('KickUserEvent', (data) => {
                 console.log('KickUserEvent.............')
@@ -330,11 +346,14 @@ export default {
             let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
             if (SingleGameUser) {
                 this.user = SingleGameUser
+                this.user['channel'] = this.channel
+                console.log(this.user, 'SingleGameUserFound')
                 await axios.post(`/api/userJoin`, {user:this.user})
                 return
             }
             if('id' in this.user && this.uid !== this.user.id){
                 this.user['channel'] = this.channel
+                console.log(this.user, 'SingleGameID')
                 await axios.post(`/api/userJoin`, {user:this.user})
             }
         },
@@ -346,8 +365,6 @@ export default {
             this.user['avatar'] = ''
             sessionStorage.setItem("SingleGameUser", JSON.stringify(this.user));
             this.joinUser()
-
-            // axios.post(`/api/userJoin`, {user:this.user})
         },
         preventNav(event) {
             if (!this.game_start) return;
@@ -573,7 +590,7 @@ export default {
         },
         showQuestionOptions (question) {
             // console.log('showQuestionOptions', question)
-            let timeout = 3000;
+            let timeout = 1000;
             if(this.challenge.option_view_time != 0) {
                 timeout = 3500; // this.quiz.quiz_time * 1000
             }

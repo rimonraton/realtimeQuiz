@@ -130,6 +130,7 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
+                    <li><button id="cam">QR</button></li>
                     <li class="active"><a href="#">{{__('msg.home')}}</a></li>
                     <li><a href="#about">{{__('msg.about')}}</a></li>
                     <li><a href="#features">{{__('msg.features')}}</a></li>
@@ -242,7 +243,7 @@
 {{--                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">--}}
 {{--                                        <i class="fas fa-user text-white"></i>--}}
 {{--                                    </a>--}}
-                                    <a href="" class="menu-item menu-blue bottom-cercle alt_notify">
+                                    <a href="#" class="menu-item menu-blue bottom-cercle alt_notify">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
 
@@ -564,10 +565,8 @@
             </div>
         </div>
     </div>
-
     <a href="#" class="back-to-top"><i class="fas fa-angle-up"></i></a>
     <div id="preloader"></div>
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -579,6 +578,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     @if($lang=='gb')
                         Coming very soon. Please try <a href="{{url('Mode/Practice')}}">Practice</a> Or <a href="{{url('game/mode/challenge')}}">Challenge.</a>
                     @else
@@ -592,8 +592,46 @@
         </div>
     </div>
 
+    <style>
+        #camScan{
+            position: absolute;
+            left: calc(50vw - 200px);
+            top: calc(50vh - 150px);
+            width: 400px;
+            height: 300px;
+            z-index: 99;
+            display: none;
+        }
+    </style>
+    <div id="camScan">
+        <div id="reader"></div>
+    </div>
     <script src="{{asset('js/theme-site.js')}}"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
+        $('#cam').click(function (){
+            $('#camScan').toggle();
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                console.log(decodedText, decodedResult)
+            };
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            // If you want to prefer front camera
+            html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+
+            // If you want to prefer back camera
+            html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+            // Select front camera or fail with `OverconstrainedError`.
+            html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
+
+            // Select back camera or fail with `OverconstrainedError`.
+            html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
+
+        });
+
+
         $(function() {
             // $('.tops').on('click', function() {
             //     var did = $(this).data('id');

@@ -1,5 +1,6 @@
 {
     "/js/quizapp.js": "/js/quizapp.js",
+    "/js/quizapp/chunk-vue-tel-input.js": "/js/quizapp/chunk-vue-tel-input.js",
     "/css/app.css": "/css/app.css",
     "/js/theme-site.js": "/js/theme-site.js",
     "/css/theme-site.css": "/css/theme-site.css",

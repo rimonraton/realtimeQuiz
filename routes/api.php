@@ -30,6 +30,8 @@ Route::post('kickUser', [GameController::class, 'kickUser']);
 
 //SingleDisplayQuiz
 Route::post('userJoin', [SingleQuestionDisplayQuizController::class, 'userJoin']);
+Route::post('audioVideoEnd', [SingleQuestionDisplayQuizController::class, 'audioVideoEnd']);
+
 
 
 //Moderator
