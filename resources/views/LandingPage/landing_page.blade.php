@@ -111,6 +111,7 @@
 
             <div class="logo mr-auto">
                 <h1 class="text-light"><a href="{{url('/')}}"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
+                <button id="cam">QR</button>
             </div>
             <div class="dropdown mr-5 d-md-none">
                 <a class="btn btn-default dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -130,7 +131,6 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li><button id="cam">QR</button></li>
                     <li class="active"><a href="#">{{__('msg.home')}}</a></li>
                     <li><a href="#about">{{__('msg.about')}}</a></li>
                     <li><a href="#features">{{__('msg.features')}}</a></li>
