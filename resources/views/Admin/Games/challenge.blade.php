@@ -290,7 +290,7 @@
                                     <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
 {{--                                    {{ __('form.option_together_title') }}--}}
                                 </div>
-                                <div id="together-{{$ch->id}}-3" class="optlayout btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
+                                <div id="together-{{$ch->id}}-3" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
                                     <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
 {{--                                    {{__('form.option_one_by_one_title')}}--}}
                                 </div>

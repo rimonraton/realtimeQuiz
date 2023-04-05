@@ -17,6 +17,10 @@ use App\Http\Controllers\SetupController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('qr-code', function () {
+    return view('QR.scanner');
+});
 Route::middleware(['hasAccess'])->group(function () {
     // dashboard
     Route::get('dashboard', [AdminController::class,'index'])->name('dashboard');
