@@ -7,15 +7,15 @@ jobs:
   laravel-build:
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: Checkout
       uses: actions/checkout@v3
-    
-    # host: ${{ secrets.SSH_HOST }} 
+
+    # host: ${{ secrets.SSH_HOST }}
     # username: ${{ secrets.SSH_USERNAME }}
     # key: ${{ secrets.SSH_PRIVATE_KEY }}
     # passphrase: ${{ secrets.SSH_PASSPHRASE }}
-    
+
     - name: Deployment
       uses: appleboy/ssh-action@master
       with:
@@ -25,14 +25,8 @@ jobs:
         port: 22
         script: |
           cd /var/www/html/gyankosh/
-          git checkout -f 
+          git checkout -f
           git pull
-          
-    - name: NPM Install
-      run: npm install
-      
-    - name: NPM Production
-      run: npm run prod
-
-
+          npm install
+          npm run prod
 
