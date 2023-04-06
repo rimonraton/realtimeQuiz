@@ -105,7 +105,7 @@
                         </div>
                       <div v-show="av">
 <!--                          Question Text-->
-                            <div class="mt-2" v-if="uid ===user.id">
+                            <div class="mt-2" v-if="uid === user.id">
                                 <div class="question-title">
                                     <div class="alert alert-info d-flex px-4 py-5 justify-content-center">
 <!--                                        <h3 class="text-danger">Q.</h3>-->
@@ -115,31 +115,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="sqo && uid !==user.id" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
-                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
-                            >
-                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
-                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
-                                >
-                                    <div class="list-group" v-if="option.flag != 'img'"
-                                         :class="getOptionClass(i, challenge.option_view_time)"
-                                    >
+                          <div v-if="sqo && uid !==user.id">
+                              <div  v-if="showOption"  class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
+                                   :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
+                              >
+                                  <div v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                       :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
+                                  >
+                                      <div class="list-group" v-if="option.flag != 'img'"
+                                           :class="getOptionClass(i, challenge.option_view_time)"
+                                      >
                                         <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                               class="list-group-item list-group-item-action cursor my-1"
                                               v-html="tbe(option.bd_option, option.option, user.lang)" >
 
                                         </span>
-                                    </div>
-                                    <div
-                                        v-else
-                                        @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                        class="cursor my-1 "
-                                        :class="getOptionClass(i, challenge.option_view_time)"
-                                    >
-                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
-                                    </div>
-                                </div>
-                            </div>
+                                      </div>
+                                      <div
+                                          v-else
+                                          @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                          class="cursor my-1 "
+                                          :class="getOptionClass(i, challenge.option_view_time)"
+                                      >
+                                          <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div v-else>
+                                  {{waitForOption}}
+                              </div>
+                          </div>
+
+
                       </div>
                     </div>
                 </div>
@@ -204,6 +211,8 @@ export default {
             current: 0,
             av: true,
             sqo:false,
+            showOption:false,
+            waitForOption: 'Please wait. You will see the options very quickly.',
             qid: 0,
             screen:{
                 waiting: 1,
@@ -251,6 +260,7 @@ export default {
                 this.game_start = 1 // Game Start from Game Owner...
                 this.screen.waiting = 0
                 this.sqo = true
+                this.showAfter()
                 this.showQuestionOptions(null)
                 // this.QuestionTimer() // Set and Start QuestionTimer
 
@@ -288,6 +298,8 @@ export default {
             .listen('NextQuestionEvent', (data) => {
                 console.log('NextQuestionEvent.............',data)
                 this.nextQuestion()
+                this.showAfter()
+                this.waitForOption = 'Please wait. You will see the options very quickly.'
             })
     },
 
@@ -342,6 +354,11 @@ export default {
     // },
 
     methods: {
+        showAfter(){
+            setTimeout(() => {
+                this.showOption = true
+            }, 2000)
+        },
         async joinUser(){
             let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
             if (SingleGameUser) {
@@ -432,6 +449,8 @@ export default {
                 })
             this.answered_user_data.push(clone)
             this.screen.loading = true
+            this.showOption = false
+            this.waitForOption = 'Processing'
         },
         getCorrectAnswertext(){
             return this.questions[this.qid].options.find(o => o.correct == 1).option

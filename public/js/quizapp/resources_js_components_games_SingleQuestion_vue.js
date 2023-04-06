@@ -195,6 +195,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -228,6 +235,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       current: 0,
       av: true,
       sqo: false,
+      showOption: false,
+      waitForOption: 'Please wait. You will see the options very quickly.',
       qid: 0,
       screen: {
         waiting: 1,
@@ -275,6 +284,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this.game_start = 1; // Game Start from Game Owner...
       _this.screen.waiting = 0;
       _this.sqo = true;
+      _this.showAfter();
       _this.showQuestionOptions(null);
       // this.QuestionTimer() // Set and Start QuestionTimer
     }).listen('GameResetEvent', function (data) {
@@ -307,6 +317,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }).listen('NextQuestionEvent', function (data) {
       console.log('NextQuestionEvent.............', data);
       _this.nextQuestion();
+      _this.showAfter();
+      _this.waitForOption = 'Please wait. You will see the options very quickly.';
     });
   },
   mounted: function mounted() {
@@ -359,8 +371,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // },
 
   methods: {
-    joinUser: function joinUser() {
+    showAfter: function showAfter() {
       var _this2 = this;
+      setTimeout(function () {
+        _this2.showOption = true;
+      }, 2000);
+    },
+    joinUser: function joinUser() {
+      var _this3 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var SingleGameUser;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -371,25 +389,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 8;
                 break;
               }
-              _this2.user = SingleGameUser;
-              _this2.user['channel'] = _this2.channel;
-              console.log(_this2.user, 'SingleGameUserFound');
+              _this3.user = SingleGameUser;
+              _this3.user['channel'] = _this3.channel;
+              console.log(_this3.user, 'SingleGameUserFound');
               _context.next = 7;
               return axios.post("/api/userJoin", {
-                user: _this2.user
+                user: _this3.user
               });
             case 7:
               return _context.abrupt("return");
             case 8:
-              if (!('id' in _this2.user && _this2.uid !== _this2.user.id)) {
+              if (!('id' in _this3.user && _this3.uid !== _this3.user.id)) {
                 _context.next = 13;
                 break;
               }
-              _this2.user['channel'] = _this2.channel;
-              console.log(_this2.user, 'SingleGameID');
+              _this3.user['channel'] = _this3.channel;
+              console.log(_this3.user, 'SingleGameID');
               _context.next = 13;
               return axios.post("/api/userJoin", {
-                user: _this2.user
+                user: _this3.user
               });
             case 13:
             case "end":
@@ -425,7 +443,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     gameStart: function gameStart() {
-      var _this3 = this;
+      var _this4 = this;
       this.sqo = true;
       var ids = this.users.map(function (u) {
         return u.id;
@@ -440,10 +458,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
       console.log(gd);
       axios.post("/api/gameStart", gd).then(function (res) {
-        _this3.share = res.data;
-        _this3.game_start = 1;
-        _this3.screen.waiting = 0;
-        _this3.showQuestionOptions(_this3.questions[0].fileType);
+        _this4.share = res.data;
+        _this4.game_start = 1;
+        _this4.screen.waiting = 0;
+        _this4.showQuestionOptions(_this4.questions[0].fileType);
       });
       // this.QuestionTimer()
     },
@@ -468,7 +486,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.current = this.questions[this.qid].id;
     },
     checkAnswer: function checkAnswer(q, a, rw) {
-      var _this4 = this;
+      var _this5 = this;
       this.answered = 1;
       this.right_wrong = rw;
       this.gamedata['uid'] = this.user.id;
@@ -482,10 +500,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.questionInit();
       console.log('this.questionInit() call.........');
       axios.post("/api/questionClick", clone).then(function (res) {
-        _this4.resultScreen();
+        _this5.resultScreen();
       });
       this.answered_user_data.push(clone);
       this.screen.loading = true;
+      this.showOption = false;
+      this.waitForOption = 'Processing';
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
       return this.questions[this.qid].options.find(function (o) {
@@ -493,7 +513,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).option;
     },
     resultScreen: function resultScreen() {
-      var _this5 = this;
+      var _this6 = this;
       // console.log('resultScreen')
       this.questionInit();
       this.getResult(); //Sorting this.results
@@ -513,7 +533,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             qtime: this.question_time
           };
           axios.post("/api/nextQuestion", next).then(function () {
-            _this5.showQuestionOptions(_this5.questions[_this5.qid].fileType);
+            _this6.showQuestionOptions(_this6.questions[_this6.qid].fileType);
           });
         } else {
           this.screen.resultWaiting = 1;
@@ -521,7 +541,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     QuestionTimer: function QuestionTimer() {
-      var _this6 = this;
+      var _this7 = this;
       if (this.qid == this.questions.length) return;
       if (this.av == false) return;
       var pdec = 100 / (5 * this.qt.time);
@@ -529,16 +549,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.preventClick = false;
       this.qt.timer = setInterval(function () {
         // console.log('this.qt.time', this.qt.time)
-        if (_this6.qt.time <= 0) {
-          _this6.questionInit();
-          _this6.checkAnswer(_this6.qid, 'Not Answered', 0);
+        if (_this7.qt.time <= 0) {
+          _this7.questionInit();
+          _this7.checkAnswer(_this7.qid, 'Not Answered', 0);
           // this.resultScreen();
         } else {
-          _this6.qt.ms++;
-          _this6.progress -= pdec;
-          if (_this6.qt.ms == 5) {
-            _this6.qt.time--;
-            _this6.qt.ms = 0;
+          _this7.qt.ms++;
+          _this7.progress -= pdec;
+          if (_this7.qt.ms == 5) {
+            _this7.qt.time--;
+            _this7.qt.ms = 0;
           }
         }
       }, 200);
@@ -556,17 +576,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getResult: function getResult() {
-      var _this7 = this;
+      var _this8 = this;
       // console.log('getResult')
       this.results = [];
       this.users.forEach(function (user) {
         var score = 0;
-        _this7.answered_user_data.filter(function (f) {
+        _this8.answered_user_data.filter(function (f) {
           return f.uid === user.id;
         }).map(function (u) {
           score += u.isCorrect;
         });
-        _this7.results.push({
+        _this8.results.push({
           id: user.id,
           name: user.name,
           score: score
@@ -577,9 +597,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     winner: function winner() {
-      var _this8 = this;
+      var _this9 = this;
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this8.user.id;
+        return w.id == _this9.user.id;
       });
       this.questionInit();
       this.screen.result = 1;
@@ -588,7 +608,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var user_score = this.results[this.user_ranking].score;
       this.perform = Math.round(user_score / ((this.qid + 1) * 100) * 100);
       this.pm = this.gmsg.filter(function (gm) {
-        return gm.perform_status >= _this8.perform;
+        return gm.perform_status >= _this9.perform;
       }).reduce(function (prev, curr) {
         return prev.perform_status < curr.perform_status ? prev : curr;
       });
@@ -654,7 +674,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return '';
     },
     showQuestionOptions: function showQuestionOptions(question) {
-      var _this9 = this;
+      var _this10 = this;
       // console.log('showQuestionOptions', question)
       var timeout = 1000;
       if (this.challenge.option_view_time != 0) {
@@ -665,13 +685,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         clearInterval(this.qt.timer);
         setTimeout(function () {
           // this.sqo = true
-          _this9.preventClick = false;
-          _this9.QuestionTimer();
+          _this10.preventClick = false;
+          _this10.QuestionTimer();
         }, timeout);
       }
     },
     quizEnd: function quizEnd() {
-      var _this10 = this;
+      var _this11 = this;
       // axios.post(`/api/gameEndUser`, {'channel': this.channel})
       var gameResult = {
         result: this.results,
@@ -679,13 +699,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'channel': this.channel
       };
       axios.post("/api/challengeResult", gameResult).then(function (res) {
-        _this10.end_user++;
-        console.log('users + end user', _this10.users.length, _this10.end_user);
-        if (_this10.users.length <= _this10.end_user) {
-          _this10.winner();
+        _this11.end_user++;
+        console.log('users + end user', _this11.users.length, _this11.end_user);
+        if (_this11.users.length <= _this11.end_user) {
+          _this11.winner();
           return;
         } else {
-          _this10.screen.resultWaiting = 1;
+          _this11.screen.resultWaiting = 1;
           return;
         }
       });
@@ -1275,7 +1295,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\r\n    height: 100px;\r\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\r\n    position: absolute;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.1);\r\n    width: 100%;\r\n    z-index: 999;\r\n    left: 0px;\r\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\r\n    max-width: -moz-fit-content;\r\n    max-width: fit-content;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -31133,107 +31153,126 @@ var render = function () {
                               : _vm._e(),
                             _vm._v(" "),
                             _vm.sqo && _vm.uid !== _vm.user.id
-                              ? _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
-                                    class: {
-                                      "row justify-content-center justify-item-center":
-                                        _vm.imageOption(question.options),
-                                    },
-                                  },
-                                  _vm._l(
-                                    question.options,
-                                    function (option, i) {
-                                      return _c(
+                              ? _c("div", [
+                                  _vm.showOption
+                                    ? _c(
                                         "div",
                                         {
-                                          staticClass: "col-md-6 px-1",
-                                          class: [
-                                            option.flag == "img"
-                                              ? "col-6"
-                                              : " col-12",
-                                          ],
+                                          staticClass:
+                                            "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
+                                          class: {
+                                            "row justify-content-center justify-item-center":
+                                              _vm.imageOption(question.options),
+                                          },
                                         },
-                                        [
-                                          option.flag != "img"
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass: "list-group",
-                                                  class: _vm.getOptionClass(
-                                                    i,
-                                                    _vm.challenge
-                                                      .option_view_time
-                                                  ),
-                                                },
-                                                [
-                                                  _c("span", {
-                                                    staticClass:
-                                                      "list-group-item list-group-item-action cursor my-1",
-                                                    domProps: {
-                                                      innerHTML: _vm._s(
-                                                        _vm.tbe(
-                                                          option.bd_option,
-                                                          option.option,
-                                                          _vm.user.lang
-                                                        )
-                                                      ),
-                                                    },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        _vm.checkAnswer(
-                                                          question.id,
-                                                          _vm.tbe(
-                                                            option.bd_option,
-                                                            option.option,
-                                                            _vm.user.lang
+                                        _vm._l(
+                                          question.options,
+                                          function (option, i) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                staticClass: "col-md-6 px-1",
+                                                class: [
+                                                  option.flag == "img"
+                                                    ? "col-6"
+                                                    : " col-12",
+                                                ],
+                                              },
+                                              [
+                                                option.flag != "img"
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "list-group",
+                                                        class:
+                                                          _vm.getOptionClass(
+                                                            i,
+                                                            _vm.challenge
+                                                              .option_view_time
                                                           ),
-                                                          option.correct
-                                                        )
                                                       },
-                                                    },
-                                                  }),
-                                                ]
-                                              )
-                                            : _c(
-                                                "div",
-                                                {
-                                                  staticClass: "cursor my-1",
-                                                  class: _vm.getOptionClass(
-                                                    i,
-                                                    _vm.challenge
-                                                      .option_view_time
-                                                  ),
-                                                  on: {
-                                                    click: function ($event) {
-                                                      return _vm.checkAnswer(
-                                                        question.id,
-                                                        option.img_link,
-                                                        option.correct
-                                                      )
-                                                    },
-                                                  },
-                                                },
-                                                [
-                                                  _c("img", {
-                                                    staticClass:
-                                                      "imageOption mt-1 rounded img-thumbnail",
-                                                    attrs: {
-                                                      src:
-                                                        "/" + option.img_link,
-                                                      alt: "",
-                                                    },
-                                                  }),
-                                                ]
-                                              ),
-                                        ]
+                                                      [
+                                                        _c("span", {
+                                                          staticClass:
+                                                            "list-group-item list-group-item-action cursor my-1",
+                                                          domProps: {
+                                                            innerHTML: _vm._s(
+                                                              _vm.tbe(
+                                                                option.bd_option,
+                                                                option.option,
+                                                                _vm.user.lang
+                                                              )
+                                                            ),
+                                                          },
+                                                          on: {
+                                                            click: function (
+                                                              $event
+                                                            ) {
+                                                              _vm.checkAnswer(
+                                                                question.id,
+                                                                _vm.tbe(
+                                                                  option.bd_option,
+                                                                  option.option,
+                                                                  _vm.user.lang
+                                                                ),
+                                                                option.correct
+                                                              )
+                                                            },
+                                                          },
+                                                        }),
+                                                      ]
+                                                    )
+                                                  : _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "cursor my-1",
+                                                        class:
+                                                          _vm.getOptionClass(
+                                                            i,
+                                                            _vm.challenge
+                                                              .option_view_time
+                                                          ),
+                                                        on: {
+                                                          click: function (
+                                                            $event
+                                                          ) {
+                                                            return _vm.checkAnswer(
+                                                              question.id,
+                                                              option.img_link,
+                                                              option.correct
+                                                            )
+                                                          },
+                                                        },
+                                                      },
+                                                      [
+                                                        _c("img", {
+                                                          staticClass:
+                                                            "imageOption mt-1 rounded img-thumbnail",
+                                                          attrs: {
+                                                            src:
+                                                              "/" +
+                                                              option.img_link,
+                                                            alt: "",
+                                                          },
+                                                        }),
+                                                      ]
+                                                    ),
+                                              ]
+                                            )
+                                          }
+                                        ),
+                                        0
                                       )
-                                    }
-                                  ),
-                                  0
-                                )
+                                    : _c("div", [
+                                        _vm._v(
+                                          "\n                                  " +
+                                            _vm._s(_vm.waitForOption) +
+                                            "\n                              "
+                                        ),
+                                      ]),
+                                ])
                               : _vm._e(),
                           ]
                         ),
