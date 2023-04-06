@@ -10,12 +10,6 @@ jobs:
     
     - name: Checkout
       uses: actions/checkout@v3
-      
-    - name: NPM Install
-      run: npm install
-      
-    - name: NPM Production
-      run: npm run prod
     
     # host: ${{ secrets.SSH_HOST }} 
     # username: ${{ secrets.SSH_USERNAME }}
@@ -33,6 +27,12 @@ jobs:
           cd /var/www/html/gyankosh/
           git checkout -f 
           git pull
+          
+    - name: NPM Install
+      run: npm install
+      
+    - name: NPM Production
+      run: npm run prod
 
 
 
