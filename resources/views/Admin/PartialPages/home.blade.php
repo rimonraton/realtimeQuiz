@@ -1,8 +1,38 @@
 @extends('Admin.Layout.dashboard')
 @php $lang = App::getLocale(); @endphp
+@section('css')
+    <style>
+        #camScan{
+            position: absolute;
+            left: calc(50vw - 200px);
+            top: calc(50vh - 150px);
+            width: 400px;
+            height: 300px;
+            z-index: 99;
+            display: none;
+        }
+    </style>
+@endsection
 @section('content')
 <div class="row justify-content-center">
     <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card" id="cam" style="cursor: pointer">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg text-white d-inline-block text-center rounded-circle bg-danger">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="ml-2 align-self-center">
+                        <h3 class="mb-0 font-weight-light">
+{{--                            <a href="{{url('challenge/resultList')}}">{{__('msg.result')}}</a>--}}
+                            <span>QR</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-3 col-md-6">
         <div class="card">
             <div class="card-body">
@@ -299,4 +329,34 @@
     </div>
 </div>
 @endif
+<div id="camScan">
+    <div id="reader"></div>
+</div>
+@endsection
+@section('js')
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        $('#cam').click(function (){
+            $('#camScan').toggle();
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                // alert(decodedText, decodedResult)
+                window.location.href = decodedText
+            };
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            // // If you want to prefer front camera
+            // html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+            //
+            // If you want to prefer back camera
+            html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+            // // Select front camera or fail with `OverconstrainedError`.
+            // html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
+            //
+            // // Select back camera or fail with `OverconstrainedError`.
+            // html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
+
+        });
+    </script>
 @endsection

@@ -111,7 +111,7 @@
 
             <div class="logo mr-auto">
                 <h1 class="text-light"><a href="{{url('/')}}"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
-                <button id="cam">QR</button>
+{{--                <button id="cam">QR</button>--}}
             </div>
             <div class="dropdown mr-5 d-md-none">
                 <a class="btn btn-default dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -613,7 +613,8 @@
             $('#camScan').toggle();
             const html5QrCode = new Html5Qrcode("reader");
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                alert(decodedText, decodedResult)
+                // alert(decodedText, decodedResult)
+                window.location.href = decodedText
             };
             const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
