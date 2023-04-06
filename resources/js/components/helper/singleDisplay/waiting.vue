@@ -21,7 +21,7 @@
 	                    >
 	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
 	                    <span class="ml-5">{{ u.name }}</span>
-                        <span class="ml-1 badge badge-info">
+                        <span class="ml-1 badge badge-info" v-if="u.mobile">
                             {{ u.mobile.substr(0, 5) + "****" + u.mobile.substr(9, 5) }}
                         </span>
 	                    <span v-if="u.id == uid" class="ml-1 badge badge-info">Host</span>
@@ -41,7 +41,7 @@
                     <li class="list-group-item active" v-if="user.name">
                         <img :src="getAvatar(user.avatar)" :alt="getAvatarAlt(user.name)" class="circle mr-2">
                         <span class="ml-5">{{ user.name }}</span>
-                        <span class="ml-1 badge badge-info">
+                        <span class="ml-1 badge badge-info" v-if="user.mobile">
                             {{ user.mobile.substr(0, 5) + "****" + user.mobile.substr(9, 5) }}
                         </span>
                         <span class="flag" >
@@ -81,7 +81,7 @@
 <script>
 import QrcodeVue from 'qrcode.vue' // Share Link
 
-import {Html5QrcodeScanner} from "html5-qrcode" //QR Code Scanner
+//import {Html5QrcodeScanner} from "html5-qrcode" //QR Code Scanner
 
 export default{
 	props:['user', 'uid', 'users', 'time'],
@@ -142,19 +142,19 @@ export default{
         decrease(){
     	    this.size -=20
         },
-        onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code matched = ${decodedText}`, decodedResult)
-        },
-        onScanFailure(error) {
-            console.warn(`Code scan error = ${error}`)
-        },
-        qrcam() {
-            let html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader",
-                { fps: 10, qrbox: {width: 250, height: 250} },
-                /* verbose= */ false);
-            html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
-        },
+        // onScanSuccess(decodedText, decodedResult) {
+        //     console.log(`Code matched = ${decodedText}`, decodedResult)
+        // },
+        // onScanFailure(error) {
+        //     console.warn(`Code scan error = ${error}`)
+        // },
+        // qrcam() {
+        //     let html5QrcodeScanner = new Html5QrcodeScanner(
+        //         "reader",
+        //         { fps: 10, qrbox: {width: 250, height: 250} },
+        //         /* verbose= */ false);
+        //     html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
+        // },
     },
 
     created: function(){
