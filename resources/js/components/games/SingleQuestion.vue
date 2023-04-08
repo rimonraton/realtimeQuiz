@@ -246,6 +246,7 @@ export default {
                 if(!this.isHost()) {
                     this.av = true
                     this.showQuestionOptions(null)
+                    this.showAfter()
                 }
             })
             .listen('SingleDisplay.UserJoinUsersEvent', (data) => {
@@ -357,7 +358,7 @@ export default {
         showAfter(){
             setTimeout(() => {
                 this.showOption = true
-            }, 2000)
+            }, 3000)
         },
         async joinUser(){
             let SingleGameUser = JSON.parse(sessionStorage.getItem("SingleGameUser"))
@@ -609,7 +610,7 @@ export default {
         },
         showQuestionOptions (question) {
             // console.log('showQuestionOptions', question)
-            let timeout = 1000;
+            let timeout = 3000;
             if(this.challenge.option_view_time != 0) {
                 timeout = 3500; // this.quiz.quiz_time * 1000
             }

@@ -1179,6 +1179,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion'],
+  mounted: function mounted() {
+    console.log('session data', sessionStorage.SingleGameUser);
+  },
   methods: {
     addImage: function addImage() {
       var random = Math.floor(Math.random() * 4) + 1;

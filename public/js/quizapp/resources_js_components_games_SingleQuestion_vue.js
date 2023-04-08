@@ -270,6 +270,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (!_this.isHost()) {
         _this.av = true;
         _this.showQuestionOptions(null);
+        _this.showAfter();
       }
     }).listen('SingleDisplay.UserJoinUsersEvent', function (data) {
       console.log(['UserJoinUsersEvent.............', data]);
@@ -375,7 +376,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
       setTimeout(function () {
         _this2.showOption = true;
-      }, 2000);
+      }, 3000);
     },
     joinUser: function joinUser() {
       var _this3 = this;
@@ -676,7 +677,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showQuestionOptions: function showQuestionOptions(question) {
       var _this10 = this;
       // console.log('showQuestionOptions', question)
-      var timeout = 1000;
+      var timeout = 3000;
       if (this.challenge.option_view_time != 0) {
         timeout = 3500; // this.quiz.quiz_time * 1000
       }
@@ -798,6 +799,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion'],
+  mounted: function mounted() {
+    console.log('session data', sessionStorage.SingleGameUser);
+  },
   methods: {
     addImage: function addImage() {
       var random = Math.floor(Math.random() * 4) + 1;

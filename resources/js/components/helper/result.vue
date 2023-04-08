@@ -37,7 +37,9 @@
 <script>
 export default{
 	props:['results', 'lastQuestion'],
-
+    mounted() {
+	    console.log('session data', sessionStorage.SingleGameUser)
+    },
     methods:{
     	addImage(){
             let random = Math.floor(Math.random() * 4)+1;
