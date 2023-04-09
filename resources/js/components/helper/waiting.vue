@@ -39,9 +39,11 @@
                        v-if="user.id == uid"
                        class="btn btn-sm btn-outline-success mt-4 pull-right">START
                     </a>
-                    <a class="btn btn-sm btn-outline-success mt-4 " @click="qr = !qr" >
-                        <i class="fa-solid text-dark fa-qrcode"></i>
-<!--                        <i class="fas fa-check"></i>-->
+                    <a
+                        class="btn btn-sm  mt-4 "
+                        :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
+                        @click="qr = !qr" >
+                        {{qr? 'Hide QR' : 'QR Code'}}
                     </a>
 
                 </div>
