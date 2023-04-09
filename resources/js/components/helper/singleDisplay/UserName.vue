@@ -12,12 +12,16 @@
                 </div>
                 <div class="d-flex justify-content-between mt-2 ">
 <!--                    <input type="phone" v-model="newUser.mobile" class="form-control" placeholder="Mobile No.">-->
-                    <vue-tel-input v-model="newUser.mobile" class="form-control"></vue-tel-input>
+                    <vue-tel-input
+                        v-model="newUser.mobile"
+                        @validate="validate"
+                        class="form-control" />
                 </div>
-                <div class="d-flex justify-content-center" v-if="newUser.name.length > 2 && newUser.mobile.length > 11">
+                <div class="d-flex justify-content-center"
+                     v-if="newUser.name.length > 2 && newUser.valid">
                     <a @click="$emit('insertUser', newUser)"
                        class="btn btn-sm btn-success mt-4 pull-right"
-                    >JOIN </a>
+                    > JOIN </a>
                 </div>
 	        </div>
 	    </div>
@@ -46,6 +50,7 @@ export default{
             newUser: {
                 name:'',
                 mobile: '',
+                valid: false
             },
             days: '',
             hours: '',
@@ -53,10 +58,17 @@ export default{
             seconds: '',
             schedule: '',
             timer: null,
-            value: ''
+            value: '',
+            dropdownOptions: {
+                disabled: true,
+            }
         };
     },
     methods:{
+        validate(phoneObject) {
+            this.newUser.valid = phoneObject.valid
+            // console.log('phoneObject', phoneObject);
+        },
     	kickingUser(id){
     		this.$emit("kickingUser", id);
         },
