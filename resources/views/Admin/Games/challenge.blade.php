@@ -117,6 +117,35 @@
                 font-size: .8rem;
             }
         }
+
+        .badgebox
+        {
+            opacity: 0;
+        }
+
+        .badgebox + .badge
+        {
+            /* Move the check mark away when unchecked */
+            text-indent: -999999px;
+            /* Makes the badge's width stay the same checked and unchecked */
+            width: 27px;
+        }
+
+        .badgebox:focus + .badge
+        {
+            /* Set something to make the badge looks focused */
+            /* This really depends on the application, in my case it was: */
+
+            /* Adding a light border */
+            box-shadow: inset 0px 0px 5px;
+            /* Taking the difference out of the padding */
+        }
+
+        .badgebox:checked + .badge
+        {
+            /* Move the check mark back when checked */
+            text-indent: 0;
+        }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -133,55 +162,91 @@
                     <hr>
                     <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle d-none">
                         @csrf
+                        <input type="hidden" id="topicwiseQ" name="topicwiseQ">
                         <!-- Step 1 -->
                             <h6>{{__('form.select_question_group')}}</h6>
                         <section class="px-0 px-md-2">
-                            <div class="card my-0">
-                                <div class="card-body my-0">
-                                    <div class="form-group row pb-3">
+                            <div class="card">
+                                <div class="card-body px-0 px-md-2">
+{{--                                    <div class="form-group row pb-3">--}}
                                         <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                                        <div class="col-sm-6 px-0 px-md-2">
-                                            <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">
-                                                <ol class="dd-list">
-                                                    <li class="dd-item" id="parentdd">
-                                                        <div class="dd-handle-new">
-                                                            <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>
+                                        <div class="row justify-content-center">
+                                            @foreach($questionHasTopics as $quesHasTopic)
+                                                <div class="checkbox checkbox-info col-md-3 py-2 mt-3 col-sm-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="{{$quesHasTopic->id}}" id="topicparent{{$quesHasTopic->id}}">
+                                                        <label class="form-check-label" for="topicparent{{$quesHasTopic->id}}">
+                                                            {{$lang == 'gb'?($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) :($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}
+                                                        </label>
+                                                        <div id="topicChild{{$quesHasTopic->id}}" class="parent pt-4 d-none">
+                                                            <div class="form-check mt-1">
+{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" id="easy{{$quesHasTopic->id}}">--}}
+{{--                                                                <label class="form-check-label" for="easy{{$quesHasTopic->id}}">--}}
+{{--                                                                    {{$lang == 'gb' ? 'Easy' : 'সহজ'}}--}}
+{{--                                                                </label>--}}
+                                                                <input type="number" class="advanceNoQ" data-id="easy{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Easy' : 'সহজ'}}" min="0" max="{{$quesHasTopic->easy_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" style="width: 120px">
+                                                            </div>
+                                                            <div class="form-check mt-1">
+{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2"  data-difficulty="intermediate" id="intermediate{{$quesHasTopic->id}}">--}}
+{{--                                                                <label class="form-check-label" for="intermediate{{$quesHasTopic->id}}">--}}
+{{--                                                                    {{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}--}}
+{{--                                                                </label>--}}
+                                                                <input type="number" class="advanceNoQ" data-id="intermediate{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}" min="0" max="{{$quesHasTopic->intermidiate_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2" data-difficulty="intermediate" style="width: 120px">
+                                                            </div>
+                                                            <div class="form-check mt-1">
+{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" id="difficult{{$quesHasTopic->id}}">--}}
+{{--                                                                <label class="form-check-label" for="difficult{{$quesHasTopic->id}}">--}}
+{{--                                                                    {{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}--}}
+{{--                                                                </label>--}}
+                                                                <input type="number" class="advanceNoQ" data-id="difficult{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}" min="0" max="{{$quesHasTopic->difficult_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" style="width: 120px">
+                                                            </div>
                                                         </div>
-                                                        <input type="hidden" name="category" id="categoryId">
-                                                        <ol class="dd-list">
-                                                            @foreach($topic as $c)
-                                                                <li class="dd-item">
-                                                                    <div class="dd-handle-new" data-cid="{{$c->id}}">
-                                                                        @if( ! count($c->childs))
-                                                                            <input type="checkbox" value="{{$c->id}}"
-                                                                                   name="topic" id="topic{{$c->id}}"
-                                                                                   data-name="{{$lang=='gb'?$c->name:$c->bn_name}}"
-                                                                                   data-qCount="{{$c->questions_count}}"
-                                                                                   class="material-inputs programming">
-                                                                        @endif
-                                                                        <label class="" for="topic{{$c->id}}">
-                                                                            {{$lang=='gb'?$c->name:$c->bn_name }}
-                                                                            @if( ! count($c->childs))
-                                                                                <span class="badge badge-pill badge-info float-right">
-                                                                                    {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}
-                                                                                </span>
-                                                                            @endif
-                                                                        </label>
-
-                                                                    </div>
-                                                                    @if(count($c->childs))
-{{--                                                                        {{dd($c->childs)}}--}}
-                                                                        @include('Admin.Games._subtopic', ['category'=>$c->childs])
-                                                                    @endif
-                                                                </li>
-                                                            @endforeach
-                                                        </ol>
-                                                    </li>
-                                                </ol>
-                                            </div>
-
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                    </div>
+{{--                                        <div class="col-sm-6 px-0 px-md-2">--}}
+{{--                                            <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">--}}
+{{--                                                <ol class="dd-list">--}}
+{{--                                                    <li class="dd-item" id="parentdd">--}}
+{{--                                                        <div class="dd-handle-new">--}}
+{{--                                                            <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>--}}
+{{--                                                        </div>--}}
+{{--                                                        <input type="hidden" name="category" id="categoryId">--}}
+{{--                                                        <ol class="dd-list">--}}
+{{--                                                            @foreach($topic as $c)--}}
+{{--                                                                <li class="dd-item">--}}
+{{--                                                                    <div class="dd-handle-new" data-cid="{{$c->id}}">--}}
+{{--                                                                        @if( ! count($c->childs))--}}
+{{--                                                                            <input type="checkbox" value="{{$c->id}}"--}}
+{{--                                                                                   name="topic" id="topic{{$c->id}}"--}}
+{{--                                                                                   data-name="{{$lang=='gb'?$c->name:$c->bn_name}}"--}}
+{{--                                                                                   data-qCount="{{$c->questions_count}}"--}}
+{{--                                                                                   class="material-inputs programming">--}}
+{{--                                                                        @endif--}}
+{{--                                                                        <label class="" for="topic{{$c->id}}">--}}
+{{--                                                                            {{$lang=='gb'?$c->name:$c->bn_name }}--}}
+{{--                                                                            @if( ! count($c->childs))--}}
+{{--                                                                                <span class="badge badge-pill badge-info float-right">--}}
+{{--                                                                                    {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}--}}
+{{--                                                                                </span>--}}
+{{--                                                                            @endif--}}
+{{--                                                                        </label>--}}
+
+{{--                                                                    </div>--}}
+{{--                                                                    @if(count($c->childs))--}}
+{{--                                                                        {{dd($c->childs)}}--}}
+{{--                                                                        @include('Admin.Games._subtopic', ['category'=>$c->childs])--}}
+{{--                                                                    @endif--}}
+{{--                                                                </li>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        </ol>--}}
+{{--                                                    </li>--}}
+{{--                                                </ol>--}}
+{{--                                            </div>--}}
+
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                 </div>
                             </div>
                         </section>
@@ -495,6 +560,129 @@
 
     <script>
         $(function() {
+            var lang ='{{$lang}}';
+            var checkedTopics = [];
+            $('.chkparent').on('click', function () {
+                const id = $(this).attr('data-tid')
+                if ($(this).is(':checked')){
+                    $(this).siblings().siblings().removeClass('d-none')
+                } else {
+                    // console.log($(this).siblings().siblings('.parent input:checkbox'))
+                    // $(this).siblings().siblings('.parent input:checkbox').prop('checked', false)
+                    checkedTopics = checkedTopics.filter(function(elem){
+                        return elem.id != id
+                    });
+                    // console.log('checkedQuestions... parent', checkedQuestions)
+                    $(this).siblings().siblings('.parent').addClass('d-none')
+                    $('#easy' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+                    $('#intermediate' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+                    $('#difficult' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
+
+                    if (checkedTopics.length > 0) {
+                        $('#topicwiseQ').val(JSON.stringify(checkedTopics))
+                    } else {
+                        $('#topicwiseQ').val('')
+                    }
+                }
+
+            })
+
+            $('.difficulty').on('click', function () {
+                const id = $(this).val()
+                const difficulty = $(this).attr('data-difficulty')
+                const difficultyValue = $(this).attr('data-difficultyValue')
+                const propId = $(this).attr('id')
+                if ($(this).is(':checked')){
+                    let obj = {}
+                    obj['id'] = $(this).val()
+                    obj['name'] = $(this).attr('data-name')
+                    obj['bn_name'] = $(this).attr('data-bnname')
+                    obj['noq'] = 0
+                    obj['difficulty'] = difficulty
+                    obj['difficulty_value'] = difficultyValue
+                    obj['propId'] = propId
+                    checkedTopics.push(obj)
+                    $(this).siblings().siblings('.advanceNoQ').removeClass('d-none').focus()
+                    // console.log('checkedQuestions...', checkedQuestions)
+                }
+                if (!$(this).is(':checked')){
+                    console.log('id diff', id, difficulty)
+                    checkedTopics = checkedTopics.filter(function(elem){
+                        return elem.propId != propId
+                    });
+                    // console.log('unchecked checkedQuestions...', checkedQuestions)
+                    $(this).siblings().siblings('.advanceNoQ').addClass('d-none')
+                }
+                $('#topicwiseQ').val(JSON.stringify(checkedTopics))
+            })
+
+            $('.advanceNoQ').on('keyup', function () {
+                const id = $(this).attr('data-qid')
+                console.log('id....', id)
+                const difficulty = $(this).attr('data-difficulty')
+                const difficultyValue = $(this).attr('data-difficultyValue')
+                const propId = $(this).attr('data-id')
+                // alert($(this).val(), $(this).attr('max'))
+                if ( parseInt($(this).val()) > $(this).attr('max')){
+                    toastr.success(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
+                        "closeButton": true,
+                        // "positionClass": "toast-bottom-full-width",
+                    });
+                    $(this).val($(this).attr('max'))
+                    // return
+                }
+                if ($(this).val() != ''){
+                    const itemExits = checkedTopics.some((el) => {
+                        return el.propId == propId
+                    })
+                    console.log('itemExits', itemExits)
+                    if (itemExits) {
+                        changeValue(propId, $(this).val())
+                    } else {
+                        let obj = {}
+                        obj['id'] = id
+                        obj['name'] = $(this).attr('data-name')
+                        obj['bn_name'] = $(this).attr('data-bnname')
+                        obj['noq'] = $(this).val()
+                        obj['difficulty'] = difficulty
+                        obj['difficulty_value'] = difficultyValue
+                        obj['propId'] = propId
+                        checkedTopics.push(obj)
+                    }
+
+                } else{
+                    // changeValue($(this).attr('data-id'), 0)
+                    checkedTopics = checkedTopics.filter(function(elem){
+                        return elem.propId != propId
+                    });
+                }
+                $('#topicwiseQ').val(JSON.stringify(checkedTopics))
+
+                // console.log('value change', checkedQuestions)
+            })
+            // function changeDesc( id, value ) {
+            //     for (var i in chkadvancequestions) {
+            //         if (chkadvancequestions[i].id == id) {
+            //             chkadvancequestions[i].value = value;
+            //             break; //Stop this loop, we found it!
+            //         }
+            //     }
+            // }
+            function changeValue( id, value ) {
+                for (var i in checkedTopics) {
+                    if (checkedTopics[i].propId == id) {
+                        checkedTopics[i].noq = value;
+                        break; //Stop this loop, we found it!
+                    }
+                }
+            }
+            function q2bNumber(numb) {
+                let numbString = numb.toString();
+                let bn = ''
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                [...numbString].forEach(n => bn += eb[n])
+                return bn
+            }
             $('input[name="topic"]').on('click',function (e){
                 let qCount =0, topics_id='';
                 e.stopPropagation();

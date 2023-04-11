@@ -178,7 +178,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-
                                 </div>
                             </div>
 {{--                            <div class="card my-0">--}}
