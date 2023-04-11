@@ -110,6 +110,7 @@ class HomeController extends Controller
 
     public function gameInAdmin($type, $id = null)
     {
+//        $questionHasTopics = Category::whereHas('questioncount')->withCount(['questioncount', 'easy', 'intermidiate', 'difficult'])->get();
         $admin_users = auth()->user()->admin->users()->pluck('id');
         $catName = '';
         if ($id) {
@@ -131,7 +132,13 @@ class HomeController extends Controller
 
     public function createChallenge(Request $request)
     {
-    //    return $request->all();
+//        return $request->all();
+//        $arrData = collect();
+//        foreach (json_decode($request->topicwiseQ) as $key=> $adv) {
+//            $q_random = Question::where('category_id',$adv->id)->where('level',$adv->difficulty_value)->where('status', 1)->inRandomOrder()->limit($adv->noq)->pluck('id');
+//            $arrData->push($q_random);
+//        }
+//       return $questions =  implode(',', $arrData->collapse()->all());;
         $is_published = $request->is_published ? 1 : 0;
         $cat = explode(',', $request->category);
         $q_ids = Question::whereIn('category_id', $cat)->where('status', 1)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
