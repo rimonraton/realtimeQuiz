@@ -276,23 +276,38 @@
     <div class="row justify-content-center mt-4 " id="quizlist">
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
-                <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
+                <div class="col-md-4 col-sm-12 text-center mb-4 d-flex align-items-stretch">
                     <div class="card bg-white">
 {{--                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">--}}
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
                             <div class="d-flex justify-content-center">
-                                <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $ch->id }}">
-                                     {{ __('form.layout_title') }}
-                                </div>
+
                                 <div id="together-{{$ch->id}}-0" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time == 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="0">
 {{--                                    <i class="fas fa-share-alt"></i> --}}
-                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
-{{--                                    {{ __('form.option_together_title') }}--}}
+{{--                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">--}}
+                                    {{ __('form.option_together_title') }}
                                 </div>
                                 <div id="together-{{$ch->id}}-3" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
-                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
-{{--                                    {{__('form.option_one_by_one_title')}}--}}
+{{--                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">--}}
+                                    {{__('form.option_one_by_one_title')}}
+                                </div>
+
+                                <div class="d-flex" >
+                                    @foreach($ch->question_type as $qt)
+                                        @switch($qt)
+                                            @case('image')
+                                            <i class="fas fa-image fa-2x text-light pr-1" data-toggle="tooltip" title="Image"></i>
+                                            @break
+
+                                            @case('audio')
+                                                <i class="fa fa-volume-up fa-2x text-light pr-1" data-toggle="tooltip" title="Audio"></i>
+                                            @break
+                                            @case('video')
+                                                <i class="fas fa-video fa-2x text-light pr-1" data-toggle="tooltip" title="Video"></i>
+                                            @break
+                                        @endswitch
+                                    @endforeach
                                 </div>
                             </div>
                             <div style="margin-top: 5px;">

@@ -10,7 +10,9 @@
                 </span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
-                <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">
+<!--                <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">-->
+                <div id="reader" width="300px"></div>
+                <qrcode-vue :value="value" :size="size" level="H" v-if="qr" class="text-center" />
 	            <ul class="list-group ">
 	                <li class="list-group-item"
 	                    v-for="u in users" :key="u.id"
@@ -37,9 +39,11 @@
                        v-if="user.id == uid"
                        class="btn btn-sm btn-outline-success mt-4 pull-right">START
                     </a>
-                    <a class="btn btn-sm btn-outline-success mt-4 " @click="qr = !qr" >
-                        <i class="fa-solid text-dark fa-qrcode"></i>
-<!--                        <i class="fas fa-check"></i>-->
+                    <a
+                        class="btn btn-sm  mt-4 "
+                        :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
+                        @click="qr = !qr" >
+                        {{qr? 'Hide QR' : 'QR Code'}}
                     </a>
 
                 </div>
@@ -55,8 +59,13 @@
 </template>
 
 <script>
+import QrcodeVue from 'qrcode.vue' // Share Link
+
 export default{
 	props:['user', 'uid', 'users', 'time'],
+    components: {
+        QrcodeVue,
+    },
     data() {
         return {
             days: '',
@@ -65,7 +74,9 @@ export default{
             seconds: '',
             schedule: '',
             timer: null,
-            qr: false
+            qr: false,
+            size: 430,
+            value: window.location.toString()
         };
     },
     methods:{
