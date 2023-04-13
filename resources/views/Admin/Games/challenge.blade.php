@@ -270,16 +270,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>
-                                                    <div class="form-group">
-                                                        <input name="qq" type="number" class="form-control" value="10">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="card">--}}
+{{--                                                <div class="card-body">--}}
+{{--                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <input name="qq" type="number" class="form-control" value="10">--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -478,7 +478,15 @@
             },
             onStepChanging: function(event, currentIndex, newIndex) {
                 console.log([event, currentIndex, newIndex]);
-                return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
+                if (!!$('#topicwiseQ').val()){
+                    return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
+                } else{
+                    const message = '{{$lang}}' == 'gb' ?'Please Select Topic with number of question!':'অনুগ্রহ করে প্রশ্ন সংখ্যা সহ বিষয় নির্বাচন করুন!'
+                    toastr.error(message , {
+                        "closeButton": true
+                    });
+                    return false
+                }
             },
             onFinishing: function(event, currentIndex) {
                 return form.validate().settings.ignore = ":disabled", form.valid()
@@ -573,6 +581,7 @@
                         return elem.id != id
                     });
                     // console.log('checkedQuestions... parent', checkedQuestions)
+
                     $(this).siblings().siblings('.parent').addClass('d-none')
                     $('#easy' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
                     $('#intermediate' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
@@ -624,7 +633,7 @@
                 const propId = $(this).attr('data-id')
                 // alert($(this).val(), $(this).attr('max'))
                 if ( parseInt($(this).val()) > $(this).attr('max')){
-                    toastr.success(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
+                    toastr.warning(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
                         "closeButton": true,
                         // "positionClass": "toast-bottom-full-width",
                     });
