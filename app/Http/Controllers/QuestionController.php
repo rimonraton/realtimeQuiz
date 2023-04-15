@@ -113,6 +113,15 @@ class QuestionController extends Controller
     }
     public function storeQuestion(Request $request)
     {
+        if ($request->shot_answer){
+            $option = $request->option[0];
+            $optionbd = $request->optionbd[0];
+            $ans = $request->ans[0];
+            $request->request->remove('option','optionbd','ans');
+            $request->request->add(['option' => [$option], 'optionbd' => [$optionbd], 'ans' => [$ans]]);
+//            return $request->all();
+
+        }
 //         return $request->all();
 //      return array_search(1, array_keys($request->optionimg));
         // $request->validate([
@@ -127,6 +136,7 @@ class QuestionController extends Controller
         $categoryid = $request->cid;
         $location = '';
         $imgPath = '';
+        $shot_ans = $request->shot_answer ? 1 : 0 ;
         $optionimglocation = 'images/option_images/';
 //        $optionimg = '';
         $fileType = '';
@@ -181,6 +191,7 @@ class QuestionController extends Controller
             'user_id' => Auth::user()->id,
             'level' => $request->difficulty,
             'user_ip_info' => json_encode($userIpInfo),
+            'short_answer' => $shot_ans
             // 'created_at' => Carbon::,
         ]);
 
@@ -204,6 +215,7 @@ class QuestionController extends Controller
 
         }
         else{
+
             foreach ($request->option as  $k => $o) {
                 $data[$k]['question_id'] = $question->id;
                 $data[$k]['option'] = $o;

@@ -237,4 +237,5 @@ return [
     'not_right_user' => 'Sorry!You are not right user',
     'shareBy' => 'Shared by',
     'createSuccess' => 'Create Successfully',
+    'short_answer' => 'Short answer',
 ];

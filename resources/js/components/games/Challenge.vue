@@ -122,8 +122,20 @@
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                  :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
-                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
-                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
+                                <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
+<!--                                    {{question.options}}-->
+                                    <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                    </form>
+
+                                </div>
+                                <div v-else v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                     :class="[option.flag == 'img' ? 'col-6' : 'col-12' ]"
                                 >
                                     <div class="list-group" v-if="option.flag != 'img'"
                                          :class="getOptionClass(i, challenge.option_view_time)"
@@ -232,7 +244,8 @@
                 share:null,
                 pm:'',
                 perform:0,
-                preventClick: true
+                preventClick: true,
+                shortAnswer: null
             };
         },
 
@@ -333,6 +346,20 @@
         },
 
         methods: {
+            smtAnswer(qid, qopt, data){
+                if (data == null) return
+                const correct = qopt.some((opt) => {
+                    return opt.option.toLowerCase() == data.toLowerCase() || opt.bd_option == data
+                })
+                // console.log(qid, qopt, data, correct)
+
+                if(correct){
+                    this.checkAnswer(qid, data, 1)
+                } else{
+                    this.checkAnswer(qid, this.tbe(qopt[0].bd_option, qopt[0].option, this.user.lang), 0)
+                }
+                this.shortAnswer = null
+            },
             preventNav(event) {
                 if (!this.game_start) return;
                 event.preventDefault();

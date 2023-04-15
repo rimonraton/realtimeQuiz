@@ -905,6 +905,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
 
 // import { VueTelInput } from 'vue-tel-input';
 var VueTelInput = function VueTelInput() {
@@ -923,7 +927,8 @@ var VueTelInput = function VueTelInput() {
     return {
       newUser: {
         name: '',
-        mobile: ''
+        mobile: '',
+        valid: false
       },
       days: '',
       hours: '',
@@ -931,10 +936,17 @@ var VueTelInput = function VueTelInput() {
       seconds: '',
       schedule: '',
       timer: null,
-      value: ''
+      value: '',
+      dropdownOptions: {
+        disabled: true
+      }
     };
   },
   methods: {
+    validate: function validate(phoneObject) {
+      this.newUser.valid = phoneObject.valid;
+      // console.log('phoneObject', phoneObject);
+    },
     kickingUser: function kickingUser(id) {
       this.$emit("kickingUser", id);
     },
@@ -3610,6 +3622,7 @@ var render = function () {
             [
               _c("vue-tel-input", {
                 staticClass: "form-control",
+                on: { validate: _vm.validate },
                 model: {
                   value: _vm.newUser.mobile,
                   callback: function ($$v) {
@@ -3622,7 +3635,7 @@ var render = function () {
             1
           ),
           _vm._v(" "),
-          _vm.newUser.name.length > 2 && _vm.newUser.mobile.length > 11
+          _vm.newUser.name.length > 2 && _vm.newUser.valid
             ? _c("div", { staticClass: "d-flex justify-content-center" }, [
                 _c(
                   "a",
@@ -3634,7 +3647,7 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v("JOIN ")]
+                  [_vm._v(" JOIN ")]
                 ),
               ])
             : _vm._e(),
