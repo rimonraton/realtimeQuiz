@@ -362,9 +362,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       if (correct) {
         this.checkAnswer(qid, data, 1);
       } else {
-        this.checkAnswer(qid, this.tbe(qopt[0].bd_option, qopt[0].option, this.user.lang), 0);
+        this.checkAnswer(qid, data, 0);
       }
-      this.shortAnswer = null;
     },
     preventNav: function preventNav(event) {
       if (!this.game_start) return;
@@ -417,6 +416,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     gameReset: function gameReset() {
       this.questionInit();
       this.screen.waiting = 1;
+      this.screen.loading = 0;
+      this.screen.result = 0;
+      this.screen.resultWaiting = 0;
+      this.screen.winner = 0;
       this.answered_user_data = [];
       this.results = [];
       this.qid = 0;
@@ -428,18 +431,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     checkAnswer: function checkAnswer(q, a, rw) {
       var _this5 = this;
+      this.shortAnswer = null;
       this.answered = 1;
       this.right_wrong = rw;
       this.gamedata['uid'] = this.user.id;
       this.gamedata['channel'] = this.channel;
       this.gamedata['name'] = this.user.name;
-      this.gamedata['question'] = this.questions[this.qid].question_text;
+      this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang);
       this.gamedata['answer'] = this.getCorrectAnswertext();
       this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw == 1 ? Math.floor(this.progress) : 0;
       var clone = _objectSpread({}, this.gamedata);
       this.questionInit();
-      console.log('this.questionInit() call.........');
+      // console.log('this.questionInit() call.........')
       axios.post("/api/questionClick", clone).then(function (res) {
         _this5.resultScreen();
       });
@@ -447,9 +451,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.screen.loading = true;
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
-      return this.questions[this.qid].options.find(function (o) {
+      var correctEngOption = this.questions[this.qid].options.find(function (o) {
         return o.correct == 1;
       }).option;
+      var correctBanOption = this.questions[this.qid].options.find(function (o) {
+        return o.correct == 1;
+      }).bd_option;
+      return this.tbe(correctBanOption, correctEngOption, this.user.lang);
     },
     resultScreen: function resultScreen() {
       // console.log('resultScreen')
@@ -696,13 +704,91 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user'],
+  data: function data() {
+    return {
+      showResult: true,
+      resultDetailData: null
+    };
+  },
   mounted: function mounted() {
-    console.log('session data', sessionStorage.SingleGameUser);
+    // console.log('session data', sessionStorage.SingleGameUser)
+    console.log('result data', this.resultDetailData);
   },
   methods: {
+    showDetail: function showDetail() {
+      var _this = this;
+      if (this.resultDetailData != null) {
+        this.showResult = !this.showResult;
+      } else {
+        this.resultDetailData = this.resultDetail.filter(function (user) {
+          return user.uid == _this.user.id;
+        });
+        this.showResult = !this.showResult;
+      }
+    },
     addImage: function addImage() {
       var random = Math.floor(Math.random() * 4) + 1;
       return "/images/gp/".concat(random, ".jpg");
@@ -2464,7 +2550,10 @@ var render = function () {
                 attrs: {
                   results: _vm.results,
                   lastQuestion: _vm.qid == _vm.questions.length,
+                  resultDetail: _vm.answered_user_data,
+                  user: _vm.user,
                 },
+                on: { playAgain: _vm.gameResetCall },
               })
             : _vm._e(),
         ],
@@ -3062,39 +3151,226 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "result" }, [
-    _c("div", { staticClass: "card mt-1", staticStyle: { width: "24rem" } }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "ul",
-          { staticClass: "list-group" },
-          _vm._l(_vm.results, function (v, i) {
-            return _c("li", { key: i, staticClass: "list-group-item" }, [
-              _c("span", { domProps: { innerHTML: _vm._s(_vm.getMedel(i)) } }),
-              _vm._v("\n                        " + _vm._s(v.name)),
+    _vm.showResult
+      ? _c(
+          "div",
+          { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
+          [
+            _c("div", { staticClass: "d-flex justify-content-between p-2" }, [
               _c(
-                "span",
+                "button",
                 {
-                  staticClass:
-                    "badge badge-primary float-right mt-1 text-white",
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("playAgain")
+                    },
+                  },
                 },
-                [_vm._v(_vm._s(v.score))]
+                [_vm._v("Play again")]
               ),
-            ])
-          }),
-          0
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "ul",
+                { staticClass: "list-group" },
+                _vm._l(_vm.results, function (v, i) {
+                  return _c("li", { key: i, staticClass: "list-group-item" }, [
+                    _c("span", {
+                      domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                    }),
+                    _vm._v("\n                        " + _vm._s(v.name)),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "badge badge-primary float-right mt-1 text-white",
+                      },
+                      [_vm._v(_vm._s(v.score))]
+                    ),
+                  ])
+                }),
+                0
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-success",
+                    on: { click: _vm.back },
+                  },
+                  [_vm._v("Dashboard")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-info",
+                    on: { click: _vm.showDetail },
+                  },
+                  [_vm._v("Show your result")]
+                ),
+              ]),
+            ]),
+          ]
+        )
+      : _c(
+          "div",
+          { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
+          [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("Result Detail"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body overflow-auto",
+                staticStyle: { height: "500px" },
+              },
+              _vm._l(_vm.resultDetailData, function (result, i) {
+                return _c("div", { key: "resD" + i }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "w-100 mb-2",
+                      attrs: { id: "accordion" + i },
+                    },
+                    [
+                      _c("div", { staticClass: "card text-white" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "card-header p-1 cursor",
+                            class: [
+                              result.isCorrect > 0 ? "bg-success" : "bg-danger",
+                            ],
+                            attrs: {
+                              id: "heading" + i,
+                              "data-toggle": "collapse",
+                              "data-target": "#collapse" + i,
+                              "aria-expanded": "true",
+                              "aria-controls": "collapse" + i,
+                            },
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "text-white rounded-circle" },
+                              [_vm._v(_vm._s(i + 1))]
+                            ),
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(result.question) +
+                                "\n                            "
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "collapse show",
+                            attrs: {
+                              id: "collapse" + i,
+                              "aria-labelledby": "heading" + i,
+                              "data-parent": "#accordion" + i,
+                            },
+                          },
+                          [
+                            _c("div", { staticClass: "card-body" }, [
+                              _c("div", { staticClass: "px-1" }, [
+                                result.isCorrect > 0
+                                  ? _c("div", { staticClass: "list-group" }, [
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "list-group-item list-group-item-action my-1",
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                              " +
+                                              _vm._s(result.selected) +
+                                              " (your answer is correct)\n                                          "
+                                          ),
+                                        ]
+                                      ),
+                                    ])
+                                  : _c("div", { staticClass: "list-group" }, [
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "list-group-item list-group-item-action my-1",
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                              " +
+                                              _vm._s(result.selected) +
+                                              " (your answer)\n                                              "
+                                          ),
+                                          _c("i", {
+                                            staticClass:
+                                              "fa fa-times text-danger",
+                                            attrs: { "aria-hidden": "true" },
+                                          }),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "list-group" }, [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "list-group-item list-group-item-action my-1",
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(result.answer) +
+                                                " (correct answer)\n                                                    "
+                                            ),
+                                            _c("i", {
+                                              staticClass:
+                                                "fa fa-check text-success",
+                                              attrs: { "aria-hidden": "true" },
+                                            }),
+                                          ]
+                                        ),
+                                      ]),
+                                    ]),
+                              ]),
+                            ]),
+                          ]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-success",
+                  on: { click: _vm.showDetail },
+                },
+                [_vm._v("Close")]
+              ),
+            ]),
+          ]
         ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-footer" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-sm btn-success", on: { click: _vm.back } },
-          [_vm._v("Dashboard")]
-        ),
-      ]),
-    ]),
   ])
 }
 var staticRenderFns = []

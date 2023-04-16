@@ -9,7 +9,7 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='qid == questions.length'
+            <result :results='results' :lastQuestion='qid == questions.length' :resultDetail="answered_user_data" @playAgain="gameResetCall" :user="user"
                     v-if="screen.result">
             </result>
         </transition>
@@ -356,9 +356,8 @@
                 if(correct){
                     this.checkAnswer(qid, data, 1)
                 } else{
-                    this.checkAnswer(qid, this.tbe(qopt[0].bd_option, qopt[0].option, this.user.lang), 0)
+                    this.checkAnswer(qid, data, 0)
                 }
-                this.shortAnswer = null
             },
             preventNav(event) {
                 if (!this.game_start) return;
@@ -398,6 +397,10 @@
             gameReset(){
                 this.questionInit()
                 this.screen.waiting = 1
+                this.screen.loading = 0
+                this.screen.result = 0
+                this.screen.resultWaiting = 0
+                this.screen.winner = 0
                 this.answered_user_data = []
                 this.results = []
                 this.qid = 0
@@ -408,18 +411,19 @@
                 this.current = this.questions[this.qid].id
             },
             checkAnswer(q, a, rw){
+                this.shortAnswer = null
                 this.answered = 1
                 this.right_wrong = rw
                 this.gamedata['uid'] = this.user.id
                 this.gamedata['channel'] = this.channel
                 this.gamedata['name'] = this.user.name
-                this.gamedata['question'] = this.questions[this.qid].question_text
+                this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
                 this.gamedata['answer'] = this.getCorrectAnswertext()
                 this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                 let clone = {...this.gamedata}
                 this.questionInit()
-                console.log('this.questionInit() call.........')
+                // console.log('this.questionInit() call.........')
                 axios.post(`/api/questionClick`, clone)
                 .then(res => {
                     this.resultScreen();
@@ -428,7 +432,9 @@
                 this.screen.loading = true
             },
             getCorrectAnswertext(){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
+                const correctEngOption = this.questions[this.qid].options.find(o => o.correct == 1).option
+                const correctBanOption = this.questions[this.qid].options.find(o => o.correct == 1).bd_option
+               return  this.tbe(correctBanOption, correctEngOption, this.user.lang)
             },
             resultScreen(){
                 // console.log('resultScreen')
