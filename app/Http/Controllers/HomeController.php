@@ -138,13 +138,19 @@ class HomeController extends Controller
 //       return $totalQ = json_decode($request->topicwiseQ)->sum('noq');
 //        return sum($totalQ);
         $arrData = collect();
+        $arrCatData = collect();
         foreach (json_decode($request->topicwiseQ) as $key=> $adv) {
             $q_random = Question::where('category_id',$adv->id)->where('level',$adv->difficulty_value)->where('status', 1)->inRandomOrder()->limit($adv->noq)->pluck('id');
             $arrData->push($q_random);
+            $arrCatData->push($adv->id);
         }
+//        return $arrCatData;
+//       return implode(',', $arrCatData->toArray());
+//        return $cat = explode(',', $arrCatData);
         $q_ids =  implode(',', $arrData->collapse()->all());
         $is_published = $request->is_published ? 1 : 0;
-        $cat = explode(',', $request->category);
+//        $cat = explode(',', $arrCatData);
+        $cat = implode(',', $arrCatData->toArray());
 //        $q_ids = Question::whereIn('category_id', $cat)->where('status', 1)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
         $name = $request->name;
         if($name == '' || $name == null){
@@ -154,10 +160,10 @@ class HomeController extends Controller
         $challenge = new Challenge();
         $challenge->name = $name;
         $challenge->user_id = auth()->user()->id;
-        $challenge->quantity = $request->qq;
+        $challenge->quantity = $arrData->collapse()->count();
 //        $challenge->question_id = implode(',', $q_ids);
         $challenge->question_id =  $q_ids;
-        $challenge->cat_id = $request->category;
+        $challenge->cat_id = $cat;
         $challenge->qt_id = implode(',', $request->question_type);
         $challenge->schedule = $request->schedule;
         $challenge->share_link = Str::random(50);

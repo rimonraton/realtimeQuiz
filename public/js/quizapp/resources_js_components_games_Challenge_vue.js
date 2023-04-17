@@ -223,7 +223,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [_mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_2__.quizHelpers],
-  props: ['challenge', 'uid', 'user', 'questions', 'gmsg', 'teams'],
+  props: ['challenge', 'hostid', 'user', 'quizquestions', 'gmsg', 'teams'],
   components: {
     waiting: _helper_waiting__WEBPACK_IMPORTED_MODULE_0__["default"],
     result: _helper_result__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -236,6 +236,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         timer: null
       },
       users: [],
+      uid: this.hostid,
+      questions: this.quizquestions,
       answered: 0,
       end_user: 0,
       answered_user_data: [],
@@ -289,6 +291,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       console.log('QuestionClickedEvent.............');
       _this.answered_user_data.push(data);
       _this.getResult();
+    }).listen('MakeHostEvent', function (data) {
+      console.log('MakeHostEvent.............', data);
+      _this.uid = data.uid;
+    }).listen('ChangeQuestionEvent', function (data) {
+      console.log('ChangeQuestionEvent.............', data);
+      _this.questions = data.questions;
     }).listen('KickUserEvent', function (data) {
       console.log('KickUserEvent.............');
       _this.users = _this.users.filter(function (u) {
@@ -352,6 +360,27 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     next();
   },
   methods: {
+    makeHost: function makeHost(uid) {
+      this.uid = uid;
+      axios.post("/api/makeHost/".concat(uid, "/").concat(this.channel)).then(function (res) {
+        console.log('result...', res);
+      });
+    },
+    newQuiz: function newQuiz() {
+      var _this4 = this;
+      var data = {
+        channel: this.channel,
+        id: this.challenge.id
+      };
+      axios.post("/api/newGameQuiz", data).then(function (res) {
+        _this4.questions = res.data;
+        console.log('result...', res);
+        // this.share = res.data
+        // this.game_start = 1
+        // this.screen.waiting = 0
+        // this.showQuestionOptions(this.questions[0].fileType)
+      });
+    },
     smtAnswer: function smtAnswer(qid, qopt, data) {
       if (data == null) return;
       var correct = qopt.some(function (opt) {
@@ -383,7 +412,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
     },
     gameStart: function gameStart() {
-      var _this4 = this;
+      var _this5 = this;
       this.sqo = true;
       var ids = this.users.map(function (u) {
         return u.id;
@@ -396,12 +425,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         users: this.users,
         host_id: this.uid
       };
-      console.log(gd);
+      // console.log(gd);
       axios.post("/api/gameStart", gd).then(function (res) {
-        _this4.share = res.data;
-        _this4.game_start = 1;
-        _this4.screen.waiting = 0;
-        _this4.showQuestionOptions(_this4.questions[0].fileType);
+        _this5.share = res.data;
+        _this5.game_start = 1;
+        _this5.screen.waiting = 0;
+        _this5.showQuestionOptions(_this5.questions[0].fileType);
       });
       // this.QuestionTimer()
     },
@@ -430,7 +459,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.current = this.questions[this.qid].id;
     },
     checkAnswer: function checkAnswer(q, a, rw) {
-      var _this5 = this;
+      var _this6 = this;
       this.shortAnswer = null;
       this.answered = 1;
       this.right_wrong = rw;
@@ -445,7 +474,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.questionInit();
       // console.log('this.questionInit() call.........')
       axios.post("/api/questionClick", clone).then(function (res) {
-        _this5.resultScreen();
+        _this6.resultScreen();
       });
       this.answered_user_data.push(clone);
       this.screen.loading = true;
@@ -476,7 +505,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     QuestionTimer: function QuestionTimer() {
-      var _this6 = this;
+      var _this7 = this;
       if (this.qid == this.questions.length) return;
       if (this.av == false) return;
       var pdec = 100 / (5 * this.qt.time);
@@ -484,16 +513,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.preventClick = false;
       this.qt.timer = setInterval(function () {
         // console.log('this.qt.time', this.qt.time)
-        if (_this6.qt.time <= 0) {
-          _this6.questionInit();
-          _this6.checkAnswer(_this6.qid, 'Not Answered', 0);
+        if (_this7.qt.time <= 0) {
+          _this7.questionInit();
+          _this7.checkAnswer(_this7.qid, 'Not Answered', 0);
           // this.resultScreen();
         } else {
-          _this6.qt.ms++;
-          _this6.progress -= pdec;
-          if (_this6.qt.ms == 5) {
-            _this6.qt.time--;
-            _this6.qt.ms = 0;
+          _this7.qt.ms++;
+          _this7.progress -= pdec;
+          if (_this7.qt.ms == 5) {
+            _this7.qt.time--;
+            _this7.qt.ms = 0;
           }
         }
       }, 200);
@@ -511,17 +540,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     getResult: function getResult() {
-      var _this7 = this;
+      var _this8 = this;
       // console.log('getResult')
       this.results = [];
       this.users.forEach(function (user) {
         var score = 0;
-        _this7.answered_user_data.filter(function (f) {
+        _this8.answered_user_data.filter(function (f) {
           return f.uid === user.id;
         }).map(function (u) {
           score += u.isCorrect;
         });
-        _this7.results.push({
+        _this8.results.push({
           id: user.id,
           name: user.name,
           score: score
@@ -532,14 +561,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
     },
     winner: function winner() {
-      var _this8 = this;
+      var _this9 = this;
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this8.user.id;
+        return w.id == _this9.user.id;
       });
       var user_score = this.results[this.user_ranking].score;
       this.perform = Math.round(user_score / ((this.qid + 1) * 100) * 100);
       this.pm = this.gmsg.filter(function (gm) {
-        return gm.perform_status >= _this8.perform;
+        return gm.perform_status >= _this9.perform;
       }).reduce(function (prev, curr) {
         return prev.perform_status < curr.perform_status ? prev : curr;
       });
@@ -609,7 +638,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       return '';
     },
     showQuestionOptions: function showQuestionOptions(question) {
-      var _this9 = this;
+      var _this10 = this;
       // console.log('showQuestionOptions', question)
       var timeout = 1000;
       if (this.challenge.option_view_time != 0) {
@@ -620,13 +649,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         clearInterval(this.qt.timer);
         setTimeout(function () {
           // this.sqo = true
-          _this9.preventClick = false;
-          _this9.QuestionTimer();
+          _this10.preventClick = false;
+          _this10.QuestionTimer();
         }, timeout);
       }
     },
     quizEnd: function quizEnd() {
-      var _this10 = this;
+      var _this11 = this;
       // axios.post(`/api/gameEndUser`, {'channel': this.channel})
       var gameResult = {
         result: this.results,
@@ -634,13 +663,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         'channel': this.channel
       };
       axios.post("/api/challengeResult", gameResult).then(function (res) {
-        _this10.end_user++;
-        console.log('users + end user', _this10.users.length, _this10.end_user);
-        if (_this10.users.length <= _this10.end_user) {
-          _this10.winner();
+        _this11.end_user++;
+        console.log('users + end user', _this11.users.length, _this11.end_user);
+        if (_this11.users.length <= _this11.end_user) {
+          _this11.winner();
           return;
         } else {
-          _this10.screen.resultWaiting = 1;
+          _this11.screen.resultWaiting = 1;
           return;
         }
       });
@@ -770,7 +799,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       showResult: true,
-      resultDetailData: null
+      resultDetailData: null,
+      makeUid: this.user.id
     };
   },
   mounted: function mounted() {
@@ -778,6 +808,10 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    selectUid: function selectUid(id) {
+      console.log('id data..', id);
+      this.makeUid = id;
+    },
     showDetail: function showDetail() {
       var _this = this;
       if (this.resultDetailData != null) {
@@ -2553,7 +2587,11 @@ var render = function () {
                   resultDetail: _vm.answered_user_data,
                   user: _vm.user,
                 },
-                on: { playAgain: _vm.gameResetCall },
+                on: {
+                  playAgain: _vm.gameResetCall,
+                  newQuiz: _vm.newQuiz,
+                  makeHost: _vm.makeHost,
+                },
               })
             : _vm._e(),
         ],
@@ -2818,7 +2856,7 @@ var render = function () {
                                       "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
                                     class: {
                                       "row justify-content-center justify-item-center":
-                                        _vm.imageOption(question.options),
+                                        _vm.imageOption(question["options"]),
                                     },
                                   },
                                   [
@@ -3170,6 +3208,34 @@ var render = function () {
                 },
                 [_vm._v("Play again")]
               ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("newQuiz")
+                    },
+                  },
+                },
+                [_vm._v("New quiz")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("makeHost", _vm.makeUid)
+                    },
+                  },
+                },
+                [_vm._v("Make host")]
+              ),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
@@ -3179,20 +3245,34 @@ var render = function () {
                 "ul",
                 { staticClass: "list-group" },
                 _vm._l(_vm.results, function (v, i) {
-                  return _c("li", { key: i, staticClass: "list-group-item" }, [
-                    _c("span", {
-                      domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
-                    }),
-                    _vm._v("\n                        " + _vm._s(v.name)),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "badge badge-primary float-right mt-1 text-white",
+                  return _c(
+                    "li",
+                    {
+                      key: i,
+                      staticClass: "list-group-item",
+                      class: [v.id == _vm.makeUid ? "bg-success" : ""],
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.selectUid(v.id)
+                        },
                       },
-                      [_vm._v(_vm._s(v.score))]
-                    ),
-                  ])
+                    },
+                    [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                      }),
+                      _vm._v("\n                        " + _vm._s(v.name)),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "badge badge-primary float-right mt-1 text-white",
+                        },
+                        [_vm._v(_vm._s(v.score))]
+                      ),
+                    ]
+                  )
                 }),
                 0
               ),

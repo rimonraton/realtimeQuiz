@@ -163,6 +163,7 @@
                     <form id="tf" action="{{url('createChallenge')}}" method="post" class="validation-wizard wizard-circle d-none">
                         @csrf
                         <input type="hidden" id="topicwiseQ" name="topicwiseQ">
+                        <input type="hidden" id="categoryData" name="category">
                         <!-- Step 1 -->
                             <h6>{{__('form.select_question_group')}}</h6>
                         <section class="px-0 px-md-2">

@@ -16,8 +16,8 @@
 
                     <challenge
                         :challenge="{{ $challenge }}"
-                        :uid="{{ $uid }}"
-                        :questions="{{ $questions }}"
+                        :hostid="{{ $uid }}"
+                        :quizquestions="{{ $questions }}"
                         :user="{{ $user }}"
                         :gmsg="{{ $gmsg }}"
                     ></challenge>

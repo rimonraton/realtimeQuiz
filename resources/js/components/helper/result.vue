@@ -6,15 +6,15 @@
         <div class="card mt-1" style="width: 24rem;" v-if="showResult">
             <div class="d-flex justify-content-between p-2">
                 <button type="button" class="btn btn-primary" @click="$emit('playAgain')">Play again</button>
-<!--                <button type="button" class="btn btn-secondary">New quiz</button>-->
-<!--                <button type="button" class="btn btn-success">Make a new host</button>-->
+                <button type="button" class="btn btn-secondary" @click="$emit('newQuiz')">New quiz</button>
+                <button type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">Make host</button>
             </div>
 
             <div class="card-header">Results</div>
             <div class="card-body">
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="(v, i) in results" :key="i">
+                    <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']" style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
                         {{v.name}}<span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
@@ -100,7 +100,8 @@ export default{
     data(){
 	    return{
             showResult:true,
-            resultDetailData: null
+            resultDetailData: null,
+            makeUid: this.user.id
         }
     },
     mounted() {
@@ -108,7 +109,10 @@ export default{
 	    console.log('result data', this.resultDetailData)
     },
     methods:{
-
+        selectUid(id){
+            console.log('id data..', id)
+            this.makeUid = id
+        },
         showDetail(){
             if (this.resultDetailData != null){
                 this.showResult = !this.showResult

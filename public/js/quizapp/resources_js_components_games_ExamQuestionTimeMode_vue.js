@@ -1242,7 +1242,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       showResult: true,
-      resultDetailData: null
+      resultDetailData: null,
+      makeUid: this.user.id
     };
   },
   mounted: function mounted() {
@@ -1250,6 +1251,10 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    selectUid: function selectUid(id) {
+      console.log('id data..', id);
+      this.makeUid = id;
+    },
     showDetail: function showDetail() {
       var _this = this;
       if (this.resultDetailData != null) {
@@ -3344,6 +3349,34 @@ var render = function () {
                 },
                 [_vm._v("Play again")]
               ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("newQuiz")
+                    },
+                  },
+                },
+                [_vm._v("New quiz")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("makeHost", _vm.makeUid)
+                    },
+                  },
+                },
+                [_vm._v("Make host")]
+              ),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
@@ -3353,20 +3386,34 @@ var render = function () {
                 "ul",
                 { staticClass: "list-group" },
                 _vm._l(_vm.results, function (v, i) {
-                  return _c("li", { key: i, staticClass: "list-group-item" }, [
-                    _c("span", {
-                      domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
-                    }),
-                    _vm._v("\n                        " + _vm._s(v.name)),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "badge badge-primary float-right mt-1 text-white",
+                  return _c(
+                    "li",
+                    {
+                      key: i,
+                      staticClass: "list-group-item",
+                      class: [v.id == _vm.makeUid ? "bg-success" : ""],
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.selectUid(v.id)
+                        },
                       },
-                      [_vm._v(_vm._s(v.score))]
-                    ),
-                  ])
+                    },
+                    [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                      }),
+                      _vm._v("\n                        " + _vm._s(v.name)),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "badge badge-primary float-right mt-1 text-white",
+                        },
+                        [_vm._v(_vm._s(v.score))]
+                      ),
+                    ]
+                  )
                 }),
                 0
               ),
