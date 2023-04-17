@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\AddQuestionEvent;
 use App\Events\AddTeamEvent;
-use App\Events\ChangeQuestionEvent;
+ use App\Events\ChangeQuestionEvent;
 use App\Events\DeleteMessageEvent;
 use App\Events\DeleteTeamEvent;
 use App\Events\GameEndUserEvent;
@@ -54,12 +54,13 @@ class GameController extends Controller
         $challenge = Challenge::find($request->id);
         $catIds = explode(',', $challenge->cat_id);
         $questions = Question::with('options')->whereIn('category_id', $catIds)->inRandomOrder()->limit($challenge->quantity)->get();
-        $data = [
-            'questions' => $questions,
-            'channel' => $request->channel,
-        ];
+//        $data = [
+//            'questions' => $questions,
+//            'channel' => $request->channel,
+//        ];
 //        $request->request->add(['questions' => $questions]);
-        broadcast(new ChangeQuestionEvent($data))->toOthers();
+        $qData = json_encode($questions);
+        broadcast(new ChangeQuestionEvent($qData, $request->channel))->toOthers();
         return $questions;
 
 //       return $questions = Question::whereIn('category_id', $catIds)->where('status', 1)->inRandomOrder()->limit($challenge->quantity);

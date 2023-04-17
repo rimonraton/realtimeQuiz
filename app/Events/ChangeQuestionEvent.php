@@ -19,10 +19,10 @@ class ChangeQuestionEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($questions, $channel)
     {
-        $this->questions = $data['questions'];
-        $this->channel = $data['channel'];
+        $this->questions = json_decode($questions);
+        $this->channel = $channel;
     }
 
     /**
