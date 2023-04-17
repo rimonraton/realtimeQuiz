@@ -53,7 +53,6 @@
 <!--	            <div v-if="user.id == uid" class="sharethis-inline-share-buttons" style="max-width: 24rem"></div>-->
 <!--	        </div>-->
 	    </div>
-
 	</div>
 
 </template>
