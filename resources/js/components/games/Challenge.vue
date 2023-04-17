@@ -13,8 +13,12 @@
                     v-if="screen.result">
             </result>
         </transition>
-        <transition name="fade">
-            <chat :channel="channel" :uid="uid" :user="user" />
+        <transition
+            name="custom-classes"
+            enter-active-class="animate__animated animate__fadeIn animate__slow"
+            leave-active-class="animate__animated animate__fadeOut animate__slow"
+        >
+            <chat :channel="channel" :uid="uid" :user="user" :challenge="challenge" />
         </transition>
 
         <div class="winner" v-if="screen.winner">
@@ -562,7 +566,7 @@
                     });
                 }
                 else{
-                    var colors = ['#bb0000', '#ffffff'];
+                    let colors = ['#bb0000', '#ffffff'];
 
                     confetti({
                         zIndex:999999,

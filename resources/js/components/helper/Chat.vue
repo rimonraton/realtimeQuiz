@@ -1,6 +1,6 @@
 <template>
-    <div class="chat" v-if="show">
-        <div class="card " style="width: 24rem; position: fixed; right: 20px; bottom: 20px; z-index: 999">
+    <div>
+        <div class="card chat" v-show="show">
             <div class="card-header msg_head">
                 <div class="btn-group" role="group" style="position: absolute; right: 5px; top: 5px">
                     <button type="button" class="btn btn-xs btn-dark px-1 py-0" @click="deleteMessage">
@@ -13,7 +13,7 @@
                 <div class="d-flex bd-highlight">
                     <div class="user_info">
                         <span>
-                            Motaharul's Challenge
+                            {{ challenge.name }}
                         </span>
                     </div>
                 </div>
@@ -61,6 +61,7 @@
             <div class="card-footer">
                 <div class="input-group">
                     <textarea
+                        ref="type_msg"
                         v-model="message"
                         @keyup.enter="sendMessage"
                         class="form-control type_msg attach_btn"
@@ -75,19 +76,21 @@
             </div>
         </div>
 
+        <div class="chat-min" v-show="!show">
+            <i class="far fa-comments fa-5x" @click="showChat"></i>
+        </div>
     </div>
-
 </template>
 
 <script>
 
 export default{
-    props:['user', 'uid', 'channel'],
+    props:['user', 'uid', 'channel', 'challenge'],
     data() {
         return {
             message: null,
             messages: [],
-            show: true
+            show: false
         };
     },
     created(){
@@ -108,7 +111,12 @@ export default{
         this.scrollToElement()
     },
     methods:{
-
+        showChat() {
+            this.show = !this.show
+            let input = this.$refs.type_msg
+            console.log('input message', input)
+            input.focus()
+        },
         scrollToElement() {
             let el = document.getElementsByClassName('msg_card_body')
             if (el) {
@@ -169,10 +177,18 @@ export default{
 
 </script>
 <style scoped>
-
+.chat-min{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
 .chat{
-    margin-top: auto;
-    margin-bottom: auto;
+    width: 24rem;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999
 }
 .card{
     height: 500px;
