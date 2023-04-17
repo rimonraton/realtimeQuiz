@@ -221,10 +221,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -232,7 +228,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [_mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_3__.quizHelpers],
-  props: ['challenge', 'uid', 'user', 'questions', 'gmsg', 'teams'],
+  props: ['challenge', 'hostid', 'user', 'quizquestions', 'gmsg', 'teams'],
   components: {
     waiting: _helper_waiting__WEBPACK_IMPORTED_MODULE_0__["default"],
     result: _helper_result__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -246,6 +242,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         timer: null
       },
       users: [],
+      uid: this.hostid,
+      questions: this.quizquestions,
       answered: 0,
       end_user: 0,
       answered_user_data: [],
@@ -299,6 +297,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       console.log('QuestionClickedEvent.............');
       _this.answered_user_data.push(data);
       _this.getResult();
+    }).listen('MakeHostEvent', function (data) {
+      console.log('MakeHostEvent.............', data);
+      _this.uid = data.uid;
+    }).listen('ChangeQuestionEvent', function (data) {
+      console.log('ChangeQuestionEvent.............', data);
+      _this.questions = data.questions;
     }).listen('KickUserEvent', function (data) {
       console.log('KickUserEvent.............');
       _this.users = _this.users.filter(function (u) {
@@ -364,6 +368,27 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   // },
 
   methods: {
+    makeHost: function makeHost(uid) {
+      this.uid = uid;
+      axios.post("/api/makeHost/".concat(uid, "/").concat(this.channel)).then(function (res) {
+        console.log('result...', res);
+      });
+    },
+    newQuiz: function newQuiz() {
+      var _this3 = this;
+      var data = {
+        channel: this.channel,
+        id: this.challenge.id
+      };
+      axios.post("/api/newGameQuiz", data).then(function (res) {
+        _this3.questions = res.data;
+        console.log('result...', res);
+        // this.share = res.data
+        // this.game_start = 1
+        // this.screen.waiting = 0
+        // this.showQuestionOptions(this.questions[0].fileType)
+      });
+    },
     smtAnswer: function smtAnswer(qid, qopt, data) {
       if (data == null) return;
       var correct = qopt.some(function (opt) {
@@ -395,7 +420,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
     },
     gameStart: function gameStart() {
-      var _this3 = this;
+      var _this4 = this;
       this.sqo = true;
       var ids = this.users.map(function (u) {
         return u.id;
@@ -408,12 +433,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         users: this.users,
         host_id: this.uid
       };
-      console.log(gd);
+      // console.log(gd);
       axios.post("/api/gameStart", gd).then(function (res) {
-        _this3.share = res.data;
-        _this3.game_start = 1;
-        _this3.screen.waiting = 0;
-        _this3.showQuestionOptions(_this3.questions[0].fileType);
+        _this4.share = res.data;
+        _this4.game_start = 1;
+        _this4.screen.waiting = 0;
+        _this4.showQuestionOptions(_this4.questions[0].fileType);
       });
       // this.QuestionTimer()
     },
@@ -442,7 +467,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.current = this.questions[this.qid].id;
     },
     checkAnswer: function checkAnswer(q, a, rw) {
-      var _this4 = this;
+      var _this5 = this;
       this.shortAnswer = null;
       this.answered = 1;
       this.right_wrong = rw;
@@ -457,7 +482,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.questionInit();
       // console.log('this.questionInit() call.........')
       axios.post("/api/questionClick", clone).then(function (res) {
-        _this4.resultScreen();
+        _this5.resultScreen();
       });
       this.answered_user_data.push(clone);
       this.screen.loading = true;
@@ -488,7 +513,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     QuestionTimer: function QuestionTimer() {
-      var _this5 = this;
+      var _this6 = this;
       if (this.qid == this.questions.length) return;
       if (this.av == false) return;
       var pdec = 100 / (5 * this.qt.time);
@@ -496,16 +521,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.preventClick = false;
       this.qt.timer = setInterval(function () {
         // console.log('this.qt.time', this.qt.time)
-        if (_this5.qt.time <= 0) {
-          _this5.questionInit();
-          _this5.checkAnswer(_this5.qid, 'Not Answered', 0);
+        if (_this6.qt.time <= 0) {
+          _this6.questionInit();
+          _this6.checkAnswer(_this6.qid, 'Not Answered', 0);
           // this.resultScreen();
         } else {
-          _this5.qt.ms++;
-          _this5.progress -= pdec;
-          if (_this5.qt.ms == 5) {
-            _this5.qt.time--;
-            _this5.qt.ms = 0;
+          _this6.qt.ms++;
+          _this6.progress -= pdec;
+          if (_this6.qt.ms == 5) {
+            _this6.qt.time--;
+            _this6.qt.ms = 0;
           }
         }
       }, 200);
@@ -523,17 +548,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     getResult: function getResult() {
-      var _this6 = this;
+      var _this7 = this;
       // console.log('getResult')
       this.results = [];
       this.users.forEach(function (user) {
         var score = 0;
-        _this6.answered_user_data.filter(function (f) {
+        _this7.answered_user_data.filter(function (f) {
           return f.uid === user.id;
         }).map(function (u) {
           score += u.isCorrect;
         });
-        _this6.results.push({
+        _this7.results.push({
           id: user.id,
           name: user.name,
           score: score
@@ -544,14 +569,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
     },
     winner: function winner() {
-      var _this7 = this;
+      var _this8 = this;
       this.user_ranking = this.results.findIndex(function (w) {
-        return w.id == _this7.user.id;
+        return w.id == _this8.user.id;
       });
       var user_score = this.results[this.user_ranking].score;
       this.perform = Math.round(user_score / ((this.qid + 1) * 100) * 100);
       this.pm = this.gmsg.filter(function (gm) {
-        return gm.perform_status >= _this7.perform;
+        return gm.perform_status >= _this8.perform;
       }).reduce(function (prev, curr) {
         return prev.perform_status < curr.perform_status ? prev : curr;
       });
@@ -621,7 +646,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       return '';
     },
     showQuestionOptions: function showQuestionOptions(question) {
-      var _this8 = this;
+      var _this9 = this;
       // console.log('showQuestionOptions', question)
       var timeout = 1000;
       if (this.challenge.option_view_time != 0) {
@@ -632,13 +657,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         clearInterval(this.qt.timer);
         setTimeout(function () {
           // this.sqo = true
-          _this8.preventClick = false;
-          _this8.QuestionTimer();
+          _this9.preventClick = false;
+          _this9.QuestionTimer();
         }, timeout);
       }
     },
     quizEnd: function quizEnd() {
-      var _this9 = this;
+      var _this10 = this;
       // axios.post(`/api/gameEndUser`, {'channel': this.channel})
       var gameResult = {
         result: this.results,
@@ -646,13 +671,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         'channel': this.channel
       };
       axios.post("/api/challengeResult", gameResult).then(function (res) {
-        _this9.end_user++;
-        console.log('users + end user', _this9.users.length, _this9.end_user);
-        if (_this9.users.length <= _this9.end_user) {
-          _this9.winner();
+        _this10.end_user++;
+        console.log('users + end user', _this10.users.length, _this10.end_user);
+        if (_this10.users.length <= _this10.end_user) {
+          _this10.winner();
           return;
         } else {
-          _this9.screen.resultWaiting = 1;
+          _this10.screen.resultWaiting = 1;
           return;
         }
       });
@@ -767,17 +792,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'uid', 'channel', 'challenge'],
+  props: ['user', 'uid', 'channel'],
   data: function data() {
     return {
       message: null,
       messages: [],
-      show: false
+      show: true
     };
   },
   created: function created() {
@@ -797,12 +819,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.scrollToElement();
   },
   methods: {
-    showChat: function showChat() {
-      this.show = !this.show;
-      var input = this.$refs.type_msg;
-      console.log('input message', input);
-      input.focus();
-    },
     scrollToElement: function scrollToElement() {
       var el = document.getElementsByClassName('msg_card_body');
       if (el) {
@@ -976,7 +992,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       showResult: true,
-      resultDetailData: null
+      resultDetailData: null,
+      makeUid: this.user.id
     };
   },
   mounted: function mounted() {
@@ -984,6 +1001,10 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    selectUid: function selectUid(id) {
+      console.log('id data..', id);
+      this.makeUid = id;
+    },
     showDetail: function showDetail() {
       var _this = this;
       if (this.resultDetailData != null) {
@@ -1311,7 +1332,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\n    position: fixed;\n    bottom: 20px;\n    right: 20px;\n    cursor: pointer;\n}\n.chat[data-v-4c9c3884]{\n    width: 24rem;\n    position: fixed;\n    right: 20px;\n    bottom: 20px;\n    z-index: 999\n}\n.card[data-v-4c9c3884]{\n    height: 500px;\n    border-radius: 15px !important;\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\n    padding: 8px;\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\n    border-radius: 15px 15px 0 0 !important;\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\n    border-radius: 0 0 15px 15px !important;\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n    height: 60px !important;\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\n    box-shadow:none !important;\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\n    width: 100% !important;\n    padding: 5px 10px;\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n    background: gray;\n    color: white;\n    font-size: 1.2rem;\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\n    font-size: 20px;\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\n    font-size: 10px;\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 10px;\n    border-radius: 25px;\n    background-color: #82ccdd;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-right: 10px;\n    border-radius: 25px;\n    background-color: #78e08f;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\n    position: absolute;\n    left: 0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\n    position: absolute;\n    right:0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\n        margin-bottom: 15px !important;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.chat[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\n}\n.card[data-v-4c9c3884]{\r\n    height: 500px;\r\n    border-radius: 15px !important;\r\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\r\n    padding: 8px;\r\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\r\n    border-radius: 15px 15px 0 0 !important;\r\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\r\n    border-radius: 0 0 15px 15px !important;\r\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color:white !important;\r\n    height: 60px !important;\r\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\r\n    box-shadow:none !important;\r\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\r\n    border-radius: 15px 0 0 15px !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\r\n    border-radius: 0 15px 15px 0 !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\r\n    width: 100% !important;\r\n    padding: 5px 10px;\r\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\r\n    background: gray;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\r\n    font-size: 20px;\r\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\r\n    font-size: 10px;\r\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 10px;\r\n    border-radius: 25px;\r\n    background-color: #82ccdd;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-right: 10px;\r\n    border-radius: 25px;\r\n    background-color: #78e08f;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\r\n    position: absolute;\r\n    right:0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\r\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\r\n        margin-bottom: 15px !important;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -2881,7 +2902,11 @@ var render = function () {
                   resultDetail: _vm.answered_user_data,
                   user: _vm.user,
                 },
-                on: { playAgain: _vm.gameResetCall },
+                on: {
+                  playAgain: _vm.gameResetCall,
+                  newQuiz: _vm.newQuiz,
+                  makeHost: _vm.makeHost,
+                },
               })
             : _vm._e(),
         ],
@@ -2890,23 +2915,10 @@ var render = function () {
       _vm._v(" "),
       _c(
         "transition",
-        {
-          attrs: {
-            name: "custom-classes",
-            "enter-active-class":
-              "animate__animated animate__fadeIn animate__slow",
-            "leave-active-class":
-              "animate__animated animate__fadeOut animate__slow",
-          },
-        },
+        { attrs: { name: "fade" } },
         [
           _c("chat", {
-            attrs: {
-              channel: _vm.channel,
-              uid: _vm.uid,
-              user: _vm.user,
-              challenge: _vm.challenge,
-            },
+            attrs: { channel: _vm.channel, uid: _vm.uid, user: _vm.user },
           }),
         ],
         1
@@ -3170,7 +3182,7 @@ var render = function () {
                                       "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
                                     class: {
                                       "row justify-content-center justify-item-center":
-                                        _vm.imageOption(question.options),
+                                        _vm.imageOption(question["options"]),
                                     },
                                   },
                                   [
@@ -3502,236 +3514,232 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.show,
-            expression: "show",
-          },
-        ],
-        staticClass: "card chat",
-      },
-      [
-        _c("div", { staticClass: "card-header msg_head" }, [
-          _c(
-            "div",
-            {
-              staticClass: "btn-group",
-              staticStyle: { position: "absolute", right: "5px", top: "5px" },
-              attrs: { role: "group" },
-            },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-dark px-1 py-0",
-                  attrs: { type: "button" },
-                  on: { click: _vm.deleteMessage },
-                },
-                [_c("i", { staticClass: "fa fa-trash-alt" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-dark px-1 py-0",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      _vm.show = !_vm.show
-                    },
-                  },
-                },
-                [_c("i", { staticClass: "fa fa-minus fa-lg" })]
-              ),
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex bd-highlight" }, [
-            _c("div", { staticClass: "user_info" }, [
-              _c("span", [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s(_vm.challenge.name) +
-                    "\n                    "
-                ),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
+  return _vm.show
+    ? _c("div", { staticClass: "chat" }, [
         _c(
           "div",
-          { staticClass: "card-body msg_card_body" },
-          _vm._l(_vm.messages, function (message) {
-            return _c(
-              "div",
-              { key: message.id, attrs: { id: "chatMessage" } },
-              [
-                message.user.id !== _vm.user.id
-                  ? _c(
-                      "div",
-                      { staticClass: "d-flex justify-content-start mb-4" },
-                      [
-                        _c("div", { staticClass: "img_cont_msg" }, [
-                          _vm.hasAvatar(message.user.avatar)
-                            ? _c("img", {
-                                staticClass: "rounded-circle user_img_msg",
-                                attrs: {
-                                  src: _vm.getAvatar(message.user.avatar),
-                                  alt: _vm.getAvatarAlt(message.user.name),
-                                },
-                              })
-                            : _c(
-                                "div",
-                                { staticClass: "rounded-circle user_img_msg" },
-                                [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(
-                                        _vm.getAvatarAlt(message.user.name)
-                                      ) +
-                                      "\n                        "
-                                  ),
-                                ]
-                              ),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "msg_cotainer" }, [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(message.message) +
-                              "\n                        "
-                          ),
-                          _c("span", { staticClass: "msg_time" }, [
-                            _vm._v(_vm._s(message.time)),
-                          ]),
-                        ]),
-                      ]
-                    )
-                  : _c(
-                      "div",
-                      { staticClass: "d-flex justify-content-end mb-4" },
-                      [
-                        _c("div", { staticClass: "msg_cotainer_send" }, [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(message.message) +
-                              "\n                        "
-                          ),
-                          _c("span", { staticClass: "msg_time_send" }, [
-                            _vm._v(_vm._s(message.time ? message.time : "")),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "img_cont_msg" }, [
-                          _vm.hasAvatar(message.user.avatar)
-                            ? _c("img", {
-                                staticClass: "rounded-circle user_img_msg",
-                                attrs: {
-                                  src: _vm.getAvatar(message.user.avatar),
-                                  alt: _vm.getAvatarAlt(message.user.name),
-                                },
-                              })
-                            : _c(
-                                "div",
-                                { staticClass: "rounded-circle user_img_msg" },
-                                [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(
-                                        _vm.getAvatarAlt(message.user.name)
-                                      ) +
-                                      "\n                        "
-                                  ),
-                                ]
-                              ),
-                        ]),
-                      ]
-                    ),
-              ]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-footer" }, [
-          _c("div", { staticClass: "input-group" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.message,
-                  expression: "message",
-                },
-              ],
-              ref: "type_msg",
-              staticClass: "form-control type_msg attach_btn",
-              attrs: { placeholder: "Type your message..." },
-              domProps: { value: _vm.message },
-              on: {
-                keyup: function ($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
-                  }
-                  return _vm.sendMessage.apply(null, arguments)
-                },
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.message = $event.target.value
-                },
-              },
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group-append" }, [
-              _c(
-                "span",
-                {
-                  staticClass: "input-group-text send_btn",
-                  on: { click: _vm.sendMessage },
-                },
-                [_c("i", { staticClass: "fas fa-location-arrow" })]
-              ),
-            ]),
-          ]),
-        ]),
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
           {
-            name: "show",
-            rawName: "v-show",
-            value: !_vm.show,
-            expression: "!show",
+            staticClass: "card",
+            staticStyle: {
+              width: "24rem",
+              position: "fixed",
+              right: "20px",
+              bottom: "20px",
+              "z-index": "999",
+            },
           },
-        ],
-        staticClass: "chat-min",
-      },
-      [
-        _c("i", {
-          staticClass: "far fa-comments fa-5x",
-          on: { click: _vm.showChat },
-        }),
-      ]
-    ),
-  ])
+          [
+            _c("div", { staticClass: "card-header msg_head" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "btn-group",
+                  staticStyle: {
+                    position: "absolute",
+                    right: "5px",
+                    top: "5px",
+                  },
+                  attrs: { role: "group" },
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-xs btn-dark px-1 py-0",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteMessage },
+                    },
+                    [_c("i", { staticClass: "fa fa-trash-alt" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-xs btn-dark px-1 py-0",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          _vm.show = !_vm.show
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fa fa-minus fa-lg" })]
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(0),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body msg_card_body" },
+              _vm._l(_vm.messages, function (message) {
+                return _c(
+                  "div",
+                  { key: message.id, attrs: { id: "chatMessage" } },
+                  [
+                    message.user.id !== _vm.user.id
+                      ? _c(
+                          "div",
+                          { staticClass: "d-flex justify-content-start mb-4" },
+                          [
+                            _c("div", { staticClass: "img_cont_msg" }, [
+                              _vm.hasAvatar(message.user.avatar)
+                                ? _c("img", {
+                                    staticClass: "rounded-circle user_img_msg",
+                                    attrs: {
+                                      src: _vm.getAvatar(message.user.avatar),
+                                      alt: _vm.getAvatarAlt(message.user.name),
+                                    },
+                                  })
+                                : _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "rounded-circle user_img_msg",
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(
+                                            _vm.getAvatarAlt(message.user.name)
+                                          ) +
+                                          "\n                        "
+                                      ),
+                                    ]
+                                  ),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "msg_cotainer" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(message.message) +
+                                  "\n                        "
+                              ),
+                              _c("span", { staticClass: "msg_time" }, [
+                                _vm._v(_vm._s(message.time)),
+                              ]),
+                            ]),
+                          ]
+                        )
+                      : _c(
+                          "div",
+                          { staticClass: "d-flex justify-content-end mb-4" },
+                          [
+                            _c("div", { staticClass: "msg_cotainer_send" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(message.message) +
+                                  "\n                        "
+                              ),
+                              _c("span", { staticClass: "msg_time_send" }, [
+                                _vm._v(
+                                  _vm._s(message.time ? message.time : "")
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "img_cont_msg" }, [
+                              _vm.hasAvatar(message.user.avatar)
+                                ? _c("img", {
+                                    staticClass: "rounded-circle user_img_msg",
+                                    attrs: {
+                                      src: _vm.getAvatar(message.user.avatar),
+                                      alt: _vm.getAvatarAlt(message.user.name),
+                                    },
+                                  })
+                                : _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "rounded-circle user_img_msg",
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(
+                                            _vm.getAvatarAlt(message.user.name)
+                                          ) +
+                                          "\n                        "
+                                      ),
+                                    ]
+                                  ),
+                            ]),
+                          ]
+                        ),
+                  ]
+                )
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.message,
+                      expression: "message",
+                    },
+                  ],
+                  staticClass: "form-control type_msg attach_btn",
+                  attrs: { placeholder: "Type your message..." },
+                  domProps: { value: _vm.message },
+                  on: {
+                    keyup: function ($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.sendMessage.apply(null, arguments)
+                    },
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.message = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group-append" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "input-group-text send_btn",
+                      on: { click: _vm.sendMessage },
+                    },
+                    [_c("i", { staticClass: "fas fa-location-arrow" })]
+                  ),
+                ]),
+              ]),
+            ]),
+          ]
+        ),
+      ])
+    : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex bd-highlight" }, [
+      _c("div", { staticClass: "user_info" }, [
+        _c("span", [
+          _vm._v(
+            "\n                        Motaharul's Challenge\n                    "
+          ),
+        ]),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -3773,6 +3781,34 @@ var render = function () {
                 },
                 [_vm._v("Play again")]
               ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("newQuiz")
+                    },
+                  },
+                },
+                [_vm._v("New quiz")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit("makeHost", _vm.makeUid)
+                    },
+                  },
+                },
+                [_vm._v("Make host")]
+              ),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
@@ -3782,20 +3818,34 @@ var render = function () {
                 "ul",
                 { staticClass: "list-group" },
                 _vm._l(_vm.results, function (v, i) {
-                  return _c("li", { key: i, staticClass: "list-group-item" }, [
-                    _c("span", {
-                      domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
-                    }),
-                    _vm._v("\n                        " + _vm._s(v.name)),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "badge badge-primary float-right mt-1 text-white",
+                  return _c(
+                    "li",
+                    {
+                      key: i,
+                      staticClass: "list-group-item",
+                      class: [v.id == _vm.makeUid ? "bg-success" : ""],
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.selectUid(v.id)
+                        },
                       },
-                      [_vm._v(_vm._s(v.score))]
-                    ),
-                  ])
+                    },
+                    [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                      }),
+                      _vm._v("\n                        " + _vm._s(v.name)),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "badge badge-primary float-right mt-1 text-white",
+                        },
+                        [_vm._v(_vm._s(v.score))]
+                      ),
+                    ]
+                  )
                 }),
                 0
               ),

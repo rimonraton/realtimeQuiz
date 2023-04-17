@@ -9,7 +9,7 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='qid == questions.length' :resultDetail="answered_user_data" @playAgain="gameResetCall" :user="user"
+            <result :results='results' :lastQuestion='qid == questions.length' :resultDetail="answered_user_data" @playAgain="gameResetCall" :user="user" @newQuiz="newQuiz" @makeHost="makeHost"
                     v-if="screen.result">
             </result>
         </transition>
@@ -127,7 +127,7 @@
 <!--                            </div>-->
 
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
-                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
+                                 :class="{'row justify-content-center justify-item-center': imageOption(question['options'])}"
                             >
                                 <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
 <!--                                    {{question.options}}-->
@@ -215,7 +215,7 @@
     export default {
         mixins: [quizHelpers],
 
-        props : ['challenge', 'uid', 'user', 'questions', 'gmsg','teams'],
+        props : ['challenge', 'hostid', 'user', 'quizquestions', 'gmsg','teams'],
 
         components: { waiting, result, chat },
 
@@ -227,6 +227,8 @@
                     timer:null
                 },
                 users: [],
+                uid: this.hostid,
+                questions: this.quizquestions,
                 answered:0,
                 end_user: 0,
                 answered_user_data: [],
@@ -272,6 +274,7 @@
                 })
                 .listen('GameResetEvent', (data) => {
                     console.log(['GameResetEvent.............', data])
+
                     this.gameReset()
                 })
                 .listen('GameEndUserEvent', (data) => {
@@ -285,6 +288,14 @@
                     console.log('QuestionClickedEvent.............')
                     this.answered_user_data.push(data)
                     this.getResult()
+                })
+                .listen('MakeHostEvent', (data) => {
+                    console.log('MakeHostEvent.............', data)
+                    this.uid = data.uid
+                })
+                .listen('ChangeQuestionEvent', (data) => {
+                    console.log('ChangeQuestionEvent.............', data)
+                    this.questions = data.questions
                 })
                 .listen('KickUserEvent', (data) => {
                     console.log('KickUserEvent.............')
@@ -354,6 +365,25 @@
         // },
 
         methods: {
+            makeHost(uid){
+                this.uid = uid
+                axios.post(`/api/makeHost/${uid}/${this.channel}`)
+                    .then(res => {
+                        console.log('result...', res)
+                    })
+            },
+            newQuiz(){
+                let data = { channel: this.channel, id:this.challenge.id}
+                axios.post(`/api/newGameQuiz`, data)
+                    .then(res => {
+                        this.questions = res.data
+                        console.log('result...', res)
+                        // this.share = res.data
+                        // this.game_start = 1
+                        // this.screen.waiting = 0
+                        // this.showQuestionOptions(this.questions[0].fileType)
+                    })
+            },
             smtAnswer(qid, qopt, data){
                 if (data == null) return
                 const correct = qopt.some((opt) => {
@@ -388,7 +418,7 @@
                 this.sqo = true
                 let ids = this.users.map(u => u.id)
                 let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.challenge.id, users:this.users,host_id:this.uid}
-                console.log(gd);
+                // console.log(gd);
                 axios.post(`/api/gameStart`, gd)
                     .then(res => {
                         this.share = res.data

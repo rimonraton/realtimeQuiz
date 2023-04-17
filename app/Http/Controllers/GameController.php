@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Events\AddQuestionEvent;
 use App\Events\AddTeamEvent;
+use App\Events\ChangeQuestionEvent;
 use App\Events\DeleteMessageEvent;
 use App\Events\DeleteTeamEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Events\GameTeamModeratorStartEvent;
+use App\Events\MakeHostEvent;
 use App\Events\SendMessageEvent;
 use App\Events\TeamJoin;
 use App\Message;
@@ -34,11 +36,33 @@ use Illuminate\Support\Str;
 
 class GameController extends Controller
 {
+    public function makeHost($uid, $channel)
+    {
+        broadcast(new MakeHostEvent($uid, $channel))->toOthers();
+        return [$uid, $channel];
+    }
 	public function questionClick(Request $request): Request
     {
 		//$gameId 	= $request->gameId;
 	    broadcast(new QuestionClickedEvent($request))->toOthers();
 	    return $request;
+	}
+
+    public function newGameQuiz(Request $request)
+    {
+//        return $request->all();
+        $challenge = Challenge::find($request->id);
+        $catIds = explode(',', $challenge->cat_id);
+        $questions = Question::with('options')->whereIn('category_id', $catIds)->inRandomOrder()->limit($challenge->quantity)->get();
+        $data = [
+            'questions' => $questions,
+            'channel' => $request->channel,
+        ];
+//        $request->request->add(['questions' => $questions]);
+        broadcast(new ChangeQuestionEvent($data))->toOthers();
+        return $questions;
+
+//       return $questions = Question::whereIn('category_id', $catIds)->where('status', 1)->inRandomOrder()->limit($challenge->quantity);
 	}
 
     public function gameStart(Request $request)
