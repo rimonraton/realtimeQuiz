@@ -13,6 +13,9 @@
                     v-if="screen.result">
             </result>
         </transition>
+        <transition name="fade">
+            <chat :channel="channel" :uid="uid" :user="user" />
+        </transition>
 
         <div class="winner" v-if="screen.winner">
             <div v-if="user_ranking == 0">
@@ -202,6 +205,7 @@
 
     import waiting from '../helper/waiting'
     import result from '../helper/result'
+    import chat from '../helper/Chat'
     import { quizHelpers } from '../mixins/quizHelpers'
 
     export default {
@@ -209,7 +213,7 @@
 
         props : ['challenge', 'hostid', 'user', 'quizquestions', 'gmsg','teams'],
 
-        components: { waiting, result },
+        components: { waiting, result, chat },
 
         data() {
             return {
@@ -337,24 +341,24 @@
 
         },
 
-        beforeMount() {
-            console.log('beforeMount')
-            window.addEventListener("beforeunload", this.preventNav)
-            this.$once("hook:beforeDestroy", () => {
-                window.removeEventListener("beforeunload", this.preventNav);
-            });
-        },
-
-        beforeRouteLeave(to, from, next) {
-            console.log('beforeRouteLeave')
-
-            if (this.game_start) {
-              if (!window.confirm("Do You Realy Want to Leave This Game?")) {
-                return;
-              }
-            }
-            next();
-        },
+        // beforeMount() {
+        //     console.log('beforeMount')
+        //     window.addEventListener("beforeunload", this.preventNav)
+        //     this.$once("hook:beforeDestroy", () => {
+        //         window.removeEventListener("beforeunload", this.preventNav);
+        //     });
+        // },
+        //
+        // beforeRouteLeave(to, from, next) {
+        //     console.log('beforeRouteLeave')
+        //
+        //     if (this.game_start) {
+        //       if (!window.confirm("Do You Realy Want to Leave This Game?")) {
+        //         return;
+        //       }
+        //     }
+        //     next();
+        // },
 
         methods: {
             makeHost(uid){

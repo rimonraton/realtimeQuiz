@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Events\AddQuestionEvent;
 use App\Events\AddTeamEvent;
 use App\Events\ChangeQuestionEvent;
+use App\Events\DeleteMessageEvent;
 use App\Events\DeleteTeamEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Events\GameTeamModeratorStartEvent;
 use App\Events\MakeHostEvent;
+use App\Events\SendMessageEvent;
 use App\Events\TeamJoin;
+use App\Message;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
 use App\Events\PageReloadEvent;
@@ -186,6 +189,28 @@ class GameController extends Controller
         $team_result->save();
         broadcast(new \App\Events\TeamResult($request))->toOthers();
         return $team_result;
+    }
+
+    public function getMessage(Request $request)
+    {
+        return Message::with('user')->where('channel_id', $request->channel)->get();
+    }
+
+    public function sendMessage(Request $request)
+    {
+        broadcast(new SendMessageEvent($request))->toOthers();
+        return Message::create([
+            'user_id' => $request->user['id'],
+            'channel_id' => $request->channel,
+            'message' => $request->message,
+        ]);
+    }
+
+    public function deleteMessage($channel)
+    {
+        Message::where('channel_id', $channel)->delete();
+        broadcast(new DeleteMessageEvent($channel))->toOthers();
+        return 'success';
     }
 
 }

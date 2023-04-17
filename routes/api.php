@@ -63,4 +63,9 @@ Route::get('get-questions/{quizId}', [APIController::class, 'getQuestions']);
 //result
 Route::post('save-results', [APIController::class, 'saveResults']);
 
+//Chat
+Route::post('getMessage', [GameController::class, 'getMessage']);
+Route::post('sendMessage', [GameController::class, 'sendMessage']);
+Route::post('deleteMessage/{channel}', [GameController::class, 'deleteMessage']);
+
 
