@@ -8,27 +8,27 @@
         <div class="form-check">
             <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="{{$quesHasTopic->id}}" id="topicparent{{$quesHasTopic->id}}">
             <label class="form-check-label" for="topicparent{{$quesHasTopic->id}}">
-                {{$quesHasTopic->name}}
+                {{$lang == 'gb'?($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) :($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}
             </label>
             <div id="topicChild{{$quesHasTopic->id}}" class="d-none parent">
                 <div class="form-check py-1">
                     <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" id="easy{{$quesHasTopic->id}}">
                     <label class="form-check-label" for="easy{{$quesHasTopic->id}}">
-                        Easy
+                        {{$lang == 'gb' ? 'Easy' : 'সহজ'}}
                     </label>
                     <input type="number" class="advanceNoQ d-none" data-id="easy{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->easy_count}}">
                 </div>
                 <div class="form-check py-1">
                     <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2"  data-difficulty="intermediate" id="intermediate{{$quesHasTopic->id}}">
                     <label class="form-check-label" for="intermediate{{$quesHasTopic->id}}">
-                        Intermediate
+                        {{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}
                     </label>
                     <input type="number" class="advanceNoQ d-none" data-id="intermediate{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->intermidiate_count}}">
                 </div>
                 <div class="form-check py-1">
                     <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" id="difficult{{$quesHasTopic->id}}">
                     <label class="form-check-label" for="difficult{{$quesHasTopic->id}}">
-                        Difficult
+                        {{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}
                     </label>
                     <input type="number" class="advanceNoQ d-none" data-id="difficult{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->difficult_count}}">
                 </div>

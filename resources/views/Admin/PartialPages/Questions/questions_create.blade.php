@@ -375,7 +375,7 @@
                         </div>
                         <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.questions_type_level')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-3">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
                                     <option value="">{{__('form.question_type')}}</option>
                                     @foreach($quizCategory as $qc)
@@ -383,13 +383,19 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <select class="form-control custom-select" name="difficulty" id="difficulty" required>
 {{--                                    <option value="">{{__('form.question_type')}}</option>--}}
                                     @foreach($difficulty as $dc)
                                         <option value="{{$dc->id}}" id="diff_{{$dc->id}}" {{$loop->first?'selected':''}}>{{$lang=='gb'?$dc->name:$dc->bn_name}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group row  pb-3 pl-5 col-sm-3">
+                                <label class="text-right control-label col-form-label">
+                                    <input type="checkbox" class="filled-in chk-col-indigo material-inputs" id="shot_ans" name="shot_answer">
+                                    <label style="font-size: .9rem;" for="shot_ans">{{__('form.short_answer')}}</label>
+                                </label>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
@@ -481,7 +487,7 @@
                                 <input type="checkbox" class="chk" name="answer[]" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />
                             </div>
                         </div>
-                        <div class="form-group row pb-3">
+                        <div class="form-group row pb-3" id="opt2">
                             <label for="option1" class="col-sm-3 text-right control-label col-form-label optionTitle"> {{__('form.option')}} {{$lang=='gb'? '2' : '২' }} :</label>
                             <div class="col-sm-3 optdiv">
                                 <input type="text" class="form-control inpoption" name="option[]" placeholder="{{__('form.option_en_placholder')}}">
@@ -892,6 +898,20 @@
             }
             if (!this.checked) {
                 $('.exl').hide();
+                // alert('Unchecked');
+            }
+        });
+        $("#shot_ans").click(function() {
+            if (this.checked) {
+                // $('.exl').show();
+                $('#opt2').hide()
+                $('#createNew').hide()
+                // alert('checked');
+            }
+            if (!this.checked) {
+                // $('.exl').hide();
+                $('#opt2').show()
+                $('#createNew').show()
                 // alert('Unchecked');
             }
         });

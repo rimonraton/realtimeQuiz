@@ -117,35 +117,6 @@
                 font-size: .8rem;
             }
         }
-
-        .badgebox
-        {
-            opacity: 0;
-        }
-
-        .badgebox + .badge
-        {
-            /* Move the check mark away when unchecked */
-            text-indent: -999999px;
-            /* Makes the badge's width stay the same checked and unchecked */
-            width: 27px;
-        }
-
-        .badgebox:focus + .badge
-        {
-            /* Set something to make the badge looks focused */
-            /* This really depends on the application, in my case it was: */
-
-            /* Adding a light border */
-            box-shadow: inset 0px 0px 5px;
-            /* Taking the difference out of the padding */
-        }
-
-        .badgebox:checked + .badge
-        {
-            /* Move the check mark back when checked */
-            text-indent: 0;
-        }
     </style>
 @endsection
 @php $lang = App::getLocale(); @endphp
@@ -168,43 +139,51 @@
                         <section class="px-0 px-md-2">
                             <div class="card">
                                 <div class="card-body px-0 px-md-2">
-{{--                                    <div class="form-group row pb-3">--}}
-                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>
-                                        <div class="row justify-content-center">
-                                            @foreach($questionHasTopics as $quesHasTopic)
-                                                <div class="checkbox checkbox-info col-md-3 py-2 mt-3 col-sm-12">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="{{$quesHasTopic->id}}" id="topicparent{{$quesHasTopic->id}}">
-                                                        <label class="form-check-label" for="topicparent{{$quesHasTopic->id}}">
-                                                            {{$lang == 'gb'?($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) :($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}
-                                                        </label>
-                                                        <div id="topicChild{{$quesHasTopic->id}}" class="parent pt-4 d-none">
-                                                            <div class="form-check mt-1">
-{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" id="easy{{$quesHasTopic->id}}">--}}
-{{--                                                                <label class="form-check-label" for="easy{{$quesHasTopic->id}}">--}}
-{{--                                                                    {{$lang == 'gb' ? 'Easy' : 'সহজ'}}--}}
-{{--                                                                </label>--}}
-                                                                <input type="number" class="advanceNoQ" data-id="easy{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Easy' : 'সহজ'}}" min="0" max="{{$quesHasTopic->easy_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" style="width: 120px">
-                                                            </div>
-                                                            <div class="form-check mt-1">
-{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2"  data-difficulty="intermediate" id="intermediate{{$quesHasTopic->id}}">--}}
-{{--                                                                <label class="form-check-label" for="intermediate{{$quesHasTopic->id}}">--}}
-{{--                                                                    {{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}--}}
-{{--                                                                </label>--}}
-                                                                <input type="number" class="advanceNoQ" data-id="intermediate{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}" min="0" max="{{$quesHasTopic->intermidiate_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2" data-difficulty="intermediate" style="width: 120px">
-                                                            </div>
-                                                            <div class="form-check mt-1">
-{{--                                                                <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" id="difficult{{$quesHasTopic->id}}">--}}
-{{--                                                                <label class="form-check-label" for="difficult{{$quesHasTopic->id}}">--}}
-{{--                                                                    {{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}--}}
-{{--                                                                </label>--}}
-                                                                <input type="number" class="advanceNoQ" data-id="difficult{{$quesHasTopic->id}}" placeholder="{{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}" min="0" max="{{$quesHasTopic->difficult_count}}" data-qid="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" style="width: 120px">
-                                                            </div>
+                                    <h4 class="card-title text-center text-info border border-bottom py-2 rounded-lg">{{__('form.topic')}}</h4>
+                                    <div class="row justify-content-center" >
+                                        @foreach($questionHasTopics as $quesHasTopic)
+                                            <div class="checkbox checkbox-info col-3 py-2 mt-3">
+                                                {{--        <input type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" id="chcQ{{$quesHasTopic->id}}" class="material-inputs aqchk">--}}
+                                                {{--        <label for="chcQ{{$quesHasTopic->id}}">{{$lang == 'gb' ? ($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) : ($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}</label>--}}
+                                                {{--        <input type="number" class="d-none advanceNoq" data-id="{{$quesHasTopic->id}}" id="noqOfQ_{{$quesHasTopic->id}}" max="{{$quesHasTopic->questions_count}}">--}}
+                                                <div class="form-check">
+                                                    <input class="form-check-input material-inputs chkparent" type="checkbox" data-tid="{{$quesHasTopic->id}}" value="{{$quesHasTopic->id}}" id="topicparent{{$quesHasTopic->id}}">
+                                                    <label class="form-check-label" for="topicparent{{$quesHasTopic->id}}">
+                                                        {{$lang == 'gb'?($quesHasTopic->name ? $quesHasTopic->name : $quesHasTopic->bn_name) :($quesHasTopic->bn_name ? $quesHasTopic->bn_name : $quesHasTopic->name)}}
+                                                    </label>
+                                                    <div id="topicChild{{$quesHasTopic->id}}" class="parent pt-3 d-none">
+                                                        <div class="form-check py-2 mt-2">
+                                                            <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="1" data-difficulty="easy" id="easy{{$quesHasTopic->id}}">
+                                                            <label class="form-check-label" for="easy{{$quesHasTopic->id}}">
+                                                                {{$lang == 'gb' ? 'Easy' : 'সহজ'}}
+                                                            </label>
+                                                            <input type="number" class="advanceNoQ d-none float-right" data-id="easy{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->easy_count}}" style="width: 120px">
+                                                        </div>
+                                                        <div class="form-check py-2 mt-2">
+                                                            <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="2"  data-difficulty="intermediate" id="intermediate{{$quesHasTopic->id}}">
+                                                            <label class="form-check-label" for="intermediate{{$quesHasTopic->id}}">
+                                                                {{$lang == 'gb' ? 'Intermediate' : 'মর্ধবর্তী'}}
+                                                            </label>
+                                                            <input type="number" class="advanceNoQ d-none float-right" data-id="intermediate{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->intermidiate_count}}" style="width: 120px">
+                                                        </div>
+                                                        <div class="form-check py-2 mt-2">
+                                                            <input class="form-check-input material-inputs difficulty" type="checkbox" value="{{$quesHasTopic->id}}" data-name="{{$quesHasTopic->name}}" data-bnname="{{$quesHasTopic->bn_name}}" data-difficultyValue="3" data-difficulty="difficult" id="difficult{{$quesHasTopic->id}}">
+                                                            <label class="form-check-label" for="difficult{{$quesHasTopic->id}}">
+                                                                {{$lang == 'gb' ? 'Difficult' : 'কঠিন'}}
+                                                            </label>
+                                                            <input type="number" class="advanceNoQ d-none float-right" data-id="difficult{{$quesHasTopic->id}}" min="0" max="{{$quesHasTopic->difficult_count}}" style="width: 120px">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+{{--                            <div class="card my-0">--}}
+{{--                                <div class="card-body my-0">--}}
+{{--                                    <div class="form-group row pb-3">--}}
+{{--                                        <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}} :</label>--}}
 {{--                                        <div class="col-sm-6 px-0 px-md-2">--}}
 {{--                                            <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">--}}
 {{--                                                <ol class="dd-list">--}}
@@ -247,8 +226,8 @@
 
 {{--                                        </div>--}}
 {{--                                    </div>--}}
-                                </div>
-                            </div>
+{{--                                </div>--}}
+{{--                            </div>--}}
                         </section>
                         <!-- Step 2 -->
                             <h6>{{__('form.question_type_number')}}</h6>
@@ -270,16 +249,16 @@
                                                 </div>
                                             </div>
                                         </div>
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="card">--}}
-{{--                                                <div class="card-body">--}}
-{{--                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>--}}
-{{--                                                    <div class="form-group">--}}
-{{--                                                        <input name="qq" type="number" class="form-control" value="10">--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>
+                                                    <div class="form-group">
+                                                        <input name="qq" type="number" class="form-control" value="10">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -341,38 +320,23 @@
     <div class="row justify-content-center mt-4 " id="quizlist">
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
-                <div class="col-md-4 col-sm-12 text-center mb-4 d-flex align-items-stretch">
+                <div class="col-md-3 col-sm-12 text-center mb-4 d-flex align-items-stretch">
                     <div class="card bg-white">
 {{--                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">--}}
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>
                             <div class="d-flex justify-content-center">
-
+                                <div class="pointer small btn btn-xs btn-outline-primary align-self-center" data-id="{{ $ch->id }}">
+                                     {{ __('form.layout_title') }}
+                                </div>
                                 <div id="together-{{$ch->id}}-0" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time == 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="0">
 {{--                                    <i class="fas fa-share-alt"></i> --}}
-{{--                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">--}}
-                                    {{ __('form.option_together_title') }}
+                                    <img src="{{asset('img/layout/together.gif')}}" alt="" width="15px">
+{{--                                    {{ __('form.option_together_title') }}--}}
                                 </div>
                                 <div id="together-{{$ch->id}}-3" class="optlayout btn btn-xs btn-outline-info align-self-center px-2 mx-1 border rounded-lg {{$ch->option_view_time > 0 ?'bg-info text-white':''}}" data-id="{{ $ch->id }}" data-value="3">
-{{--                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">--}}
-                                    {{__('form.option_one_by_one_title')}}
-                                </div>
-
-                                <div class="d-flex" >
-                                    @foreach($ch->question_type as $qt)
-                                        @switch($qt)
-                                            @case('image')
-                                            <i class="fas fa-image fa-2x text-light pr-1" data-toggle="tooltip" title="Image"></i>
-                                            @break
-
-                                            @case('audio')
-                                                <i class="fa fa-volume-up fa-2x text-light pr-1" data-toggle="tooltip" title="Audio"></i>
-                                            @break
-                                            @case('video')
-                                                <i class="fas fa-video fa-2x text-light pr-1" data-toggle="tooltip" title="Video"></i>
-                                            @break
-                                        @endswitch
-                                    @endforeach
+                                    <img src="{{asset('img/layout/onebyone.gif')}}" alt="" width="15px">
+{{--                                    {{__('form.option_one_by_one_title')}}--}}
                                 </div>
                             </div>
                             <div style="margin-top: 5px;">
@@ -478,15 +442,7 @@
             },
             onStepChanging: function(event, currentIndex, newIndex) {
                 console.log([event, currentIndex, newIndex]);
-                if (!!$('#topicwiseQ').val()){
-                    return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
-                } else{
-                    const message = '{{$lang}}' == 'gb' ?'Please Select Topic with number of question!':'অনুগ্রহ করে প্রশ্ন সংখ্যা সহ বিষয় নির্বাচন করুন!'
-                    toastr.error(message , {
-                        "closeButton": true
-                    });
-                    return false
-                }
+                return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
             },
             onFinishing: function(event, currentIndex) {
                 return form.validate().settings.ignore = ":disabled", form.valid()
@@ -581,7 +537,6 @@
                         return elem.id != id
                     });
                     // console.log('checkedQuestions... parent', checkedQuestions)
-
                     $(this).siblings().siblings('.parent').addClass('d-none')
                     $('#easy' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
                     $('#intermediate' + id).prop('checked', false).siblings().siblings('.advanceNoQ').val('').addClass('d-none')
@@ -626,14 +581,9 @@
             })
 
             $('.advanceNoQ').on('keyup', function () {
-                const id = $(this).attr('data-qid')
-                console.log('id....', id)
-                const difficulty = $(this).attr('data-difficulty')
-                const difficultyValue = $(this).attr('data-difficultyValue')
-                const propId = $(this).attr('data-id')
                 // alert($(this).val(), $(this).attr('max'))
                 if ( parseInt($(this).val()) > $(this).attr('max')){
-                    toastr.warning(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
+                    toastr.success(lang == 'gb' ? `There are ${$(this).attr('max')} questions in this category on the subject so you cannot enter more than ${$(this).attr('max')} questions`: `উক্ত বিষয়ে এই কেটেগরিতে ${q2bNumber($(this).attr('max'))} টি প্রশ্ন রয়েছে তাই সর্বোচ্চ  ${q2bNumber($(this).attr('max'))} টির বেশি প্রবেশ করতে পারবেন না`, {
                         "closeButton": true,
                         // "positionClass": "toast-bottom-full-width",
                     });
@@ -641,29 +591,9 @@
                     // return
                 }
                 if ($(this).val() != ''){
-                    const itemExits = checkedTopics.some((el) => {
-                        return el.propId == propId
-                    })
-                    console.log('itemExits', itemExits)
-                    if (itemExits) {
-                        changeValue(propId, $(this).val())
-                    } else {
-                        let obj = {}
-                        obj['id'] = id
-                        obj['name'] = $(this).attr('data-name')
-                        obj['bn_name'] = $(this).attr('data-bnname')
-                        obj['noq'] = $(this).val()
-                        obj['difficulty'] = difficulty
-                        obj['difficulty_value'] = difficultyValue
-                        obj['propId'] = propId
-                        checkedTopics.push(obj)
-                    }
-
+                    changeValue($(this).attr('data-id'), $(this).val())
                 } else{
-                    // changeValue($(this).attr('data-id'), 0)
-                    checkedTopics = checkedTopics.filter(function(elem){
-                        return elem.propId != propId
-                    });
+                    changeValue($(this).attr('data-id'), 0)
                 }
                 $('#topicwiseQ').val(JSON.stringify(checkedTopics))
 

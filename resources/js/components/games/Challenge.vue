@@ -9,7 +9,7 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='qid == questions.length'
+            <result :results='results' :lastQuestion='qid == questions.length' :resultDetail="answered_user_data" @playAgain="gameResetCall" :user="user"
                     v-if="screen.result">
             </result>
         </transition>
@@ -125,8 +125,20 @@
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                  :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
-                                <div v-for="(option, i) in question.options" class="col-md-6 px-1"
-                                     :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
+                                <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
+<!--                                    {{question.options}}-->
+                                    <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                    </form>
+
+                                </div>
+                                <div v-else v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                     :class="[option.flag == 'img' ? 'col-6' : 'col-12' ]"
                                 >
                                     <div class="list-group" v-if="option.flag != 'img'"
                                          :class="getOptionClass(i, challenge.option_view_time)"
@@ -236,7 +248,8 @@
                 share:null,
                 pm:'',
                 perform:0,
-                preventClick: true
+                preventClick: true,
+                shortAnswer: null
             };
         },
 
@@ -337,6 +350,19 @@
         // },
 
         methods: {
+            smtAnswer(qid, qopt, data){
+                if (data == null) return
+                const correct = qopt.some((opt) => {
+                    return opt.option.toLowerCase() == data.toLowerCase() || opt.bd_option == data
+                })
+                // console.log(qid, qopt, data, correct)
+
+                if(correct){
+                    this.checkAnswer(qid, data, 1)
+                } else{
+                    this.checkAnswer(qid, data, 0)
+                }
+            },
             preventNav(event) {
                 if (!this.game_start) return;
                 event.preventDefault();
@@ -375,6 +401,10 @@
             gameReset(){
                 this.questionInit()
                 this.screen.waiting = 1
+                this.screen.loading = 0
+                this.screen.result = 0
+                this.screen.resultWaiting = 0
+                this.screen.winner = 0
                 this.answered_user_data = []
                 this.results = []
                 this.qid = 0
@@ -385,18 +415,19 @@
                 this.current = this.questions[this.qid].id
             },
             checkAnswer(q, a, rw){
+                this.shortAnswer = null
                 this.answered = 1
                 this.right_wrong = rw
                 this.gamedata['uid'] = this.user.id
                 this.gamedata['channel'] = this.channel
                 this.gamedata['name'] = this.user.name
-                this.gamedata['question'] = this.questions[this.qid].question_text
+                this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
                 this.gamedata['answer'] = this.getCorrectAnswertext()
                 this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                 let clone = {...this.gamedata}
                 this.questionInit()
-                console.log('this.questionInit() call.........')
+                // console.log('this.questionInit() call.........')
                 axios.post(`/api/questionClick`, clone)
                 .then(res => {
                     this.resultScreen();
@@ -405,7 +436,9 @@
                 this.screen.loading = true
             },
             getCorrectAnswertext(){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
+                const correctEngOption = this.questions[this.qid].options.find(o => o.correct == 1).option
+                const correctBanOption = this.questions[this.qid].options.find(o => o.correct == 1).bd_option
+               return  this.tbe(correctBanOption, correctEngOption, this.user.lang)
             },
             resultScreen(){
                 // console.log('resultScreen')
