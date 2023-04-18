@@ -97,7 +97,7 @@ export default{
             schedule: '',
             timer: null,
             qr: false,
-            size: 430,
+            size: 300,
             value: window.location.toString()
         };
     },

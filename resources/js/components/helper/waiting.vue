@@ -1,13 +1,19 @@
 <template>
 	<div class="waiting">
 	    <div class="card" style="min-width: 24rem">
-	        <div class="card-header text-center">
+	        <div class="d-flex justify-content-between card-header text-center">
 	            <span v-if="user.id != uid" class="ml-1 text-primary">
                     Please wait, the Quiz Host will start the game soon..
                 </span>
                 <span v-else class="ml-1 text-primary">
-                    Users List
+                    User List
                 </span>
+                <a
+                    class="btn btn-sm "
+                    :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
+                    @click="qr = !qr" >
+                    {{qr? 'Hide QR' : 'QR Code'}}
+                </a>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
 <!--                <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">-->
@@ -39,12 +45,7 @@
                        v-if="user.id == uid"
                        class="btn btn-sm btn-outline-success mt-4 pull-right">START
                     </a>
-                    <a
-                        class="btn btn-sm  mt-4 "
-                        :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
-                        @click="qr = !qr" >
-                        {{qr? 'Hide QR' : 'QR Code'}}
-                    </a>
+
 
                 </div>
 	        </div>
@@ -74,7 +75,7 @@ export default{
             schedule: '',
             timer: null,
             qr: false,
-            size: 430,
+            size: 300,
             value: window.location.toString()
         };
     },
