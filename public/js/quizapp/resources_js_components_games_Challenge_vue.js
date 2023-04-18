@@ -221,6 +221,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -382,6 +390,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       };
       axios.post("/api/newGameQuiz", data).then(function (res) {
         _this3.questions = res.data;
+        _this3.gameResetCall(true);
         console.log('result...', res);
         // this.share = res.data
         // this.game_start = 1
@@ -443,12 +452,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       // this.QuestionTimer()
     },
     gameResetCall: function gameResetCall() {
+      var isStart = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      console.log('isStart....', isStart);
       axios.post("/api/gameReset", {
         channel: this.channel
       }).then(function (res) {
         return console.log(res.data);
       });
       this.gameReset();
+      this.screen.waiting = 0;
+      if (isStart) this.gameStart();
     },
     gameReset: function gameReset() {
       this.questionInit();
@@ -457,6 +470,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.screen.result = 0;
       this.screen.resultWaiting = 0;
       this.screen.winner = 0;
+      this.end_user = 0;
       this.answered_user_data = [];
       this.results = [];
       this.qid = 0;
@@ -792,14 +806,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'uid', 'channel'],
+  props: ['user', 'uid', 'channel', 'challenge'],
   data: function data() {
     return {
       message: null,
       messages: [],
-      show: true
+      show: false
     };
   },
   created: function created() {
@@ -819,6 +836,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.scrollToElement();
   },
   methods: {
+    showChat: function showChat() {
+      this.show = !this.show;
+      var input = this.$refs.type_msg;
+      console.log('input message', input);
+      input.focus();
+    },
     scrollToElement: function scrollToElement() {
       var el = document.getElementsByClassName('msg_card_body');
       if (el) {
@@ -988,7 +1011,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion', 'resultDetail', 'user'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
   data: function data() {
     return {
       showResult: true,
@@ -1332,7 +1355,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.chat[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\n}\n.card[data-v-4c9c3884]{\r\n    height: 500px;\r\n    border-radius: 15px !important;\r\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\r\n    padding: 8px;\r\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\r\n    border-radius: 15px 15px 0 0 !important;\r\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\r\n    border-radius: 0 0 15px 15px !important;\r\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color:white !important;\r\n    height: 60px !important;\r\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\r\n    box-shadow:none !important;\r\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\r\n    border-radius: 15px 0 0 15px !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\r\n    border-radius: 0 15px 15px 0 !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\r\n    width: 100% !important;\r\n    padding: 5px 10px;\r\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\r\n    background: gray;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\r\n    font-size: 20px;\r\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\r\n    font-size: 10px;\r\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 10px;\r\n    border-radius: 25px;\r\n    background-color: #82ccdd;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-right: 10px;\r\n    border-radius: 25px;\r\n    background-color: #78e08f;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\r\n    position: absolute;\r\n    right:0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\r\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\r\n        margin-bottom: 15px !important;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\r\n    position: fixed;\r\n    bottom: 20px;\r\n    right: 20px;\r\n    cursor: pointer;\n}\n.chat[data-v-4c9c3884]{\r\n    width: 24rem;\r\n    position: fixed;\r\n    right: 20px;\r\n    bottom: 20px;\r\n    z-index: 999\n}\n.card[data-v-4c9c3884]{\r\n    height: 500px;\r\n    border-radius: 15px !important;\r\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\r\n    padding: 8px;\r\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\r\n    border-radius: 15px 15px 0 0 !important;\r\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\r\n    border-radius: 0 0 15px 15px !important;\r\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color:white !important;\r\n    height: 60px !important;\r\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\r\n    box-shadow:none !important;\r\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\r\n    border-radius: 15px 0 0 15px !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\r\n    border-radius: 0 15px 15px 0 !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\r\n    width: 100% !important;\r\n    padding: 5px 10px;\r\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\r\n    background: gray;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\r\n    font-size: 20px;\r\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\r\n    font-size: 10px;\r\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 10px;\r\n    border-radius: 25px;\r\n    background-color: #82ccdd;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-right: 10px;\r\n    border-radius: 25px;\r\n    background-color: #78e08f;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\r\n    position: absolute;\r\n    right:0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\r\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\r\n        margin-bottom: 15px !important;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -2901,6 +2924,7 @@ var render = function () {
                   lastQuestion: _vm.qid == _vm.questions.length,
                   resultDetail: _vm.answered_user_data,
                   user: _vm.user,
+                  uid: _vm.uid,
                 },
                 on: {
                   playAgain: _vm.gameResetCall,
@@ -2915,10 +2939,23 @@ var render = function () {
       _vm._v(" "),
       _c(
         "transition",
-        { attrs: { name: "fade" } },
+        {
+          attrs: {
+            name: "custom-classes",
+            "enter-active-class":
+              "animate__animated animate__fadeIn animate__slow",
+            "leave-active-class":
+              "animate__animated animate__fadeOut animate__slow",
+          },
+        },
         [
           _c("chat", {
-            attrs: { channel: _vm.channel, uid: _vm.uid, user: _vm.user },
+            attrs: {
+              channel: _vm.channel,
+              uid: _vm.uid,
+              user: _vm.user,
+              challenge: _vm.challenge,
+            },
           }),
         ],
         1
@@ -2967,31 +3004,6 @@ var render = function () {
               },
               [_vm._v("More Result")]
             ),
-            _vm._v(" "),
-            _c("div", { staticClass: "px-2" }, [
-              _c("img", {
-                staticClass:
-                  "card-img img-responsive my-3 lazy share-result-image",
-                attrs: {
-                  src: _vm.getUrl("challengeShareResult/" + _vm.share.link),
-                  type: "image/png",
-                },
-              }),
-            ]),
-            _vm._v(" "),
-            _c("iframe", {
-              staticStyle: { border: "none", overflow: "hidden" },
-              attrs: {
-                src: _vm.getShareLink("challengeShareResult/" + _vm.share.link),
-                width: "77",
-                height: "28",
-                scrolling: "no",
-                frameborder: "0",
-                allowfullscreen: "true",
-                allow:
-                  "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share",
-              },
-            }),
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -3514,232 +3526,236 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.show
-    ? _c("div", { staticClass: "chat" }, [
-        _c(
-          "div",
+  return _c("div", [
+    _c(
+      "div",
+      {
+        directives: [
           {
-            staticClass: "card",
-            staticStyle: {
-              width: "24rem",
-              position: "fixed",
-              right: "20px",
-              bottom: "20px",
-              "z-index": "999",
-            },
+            name: "show",
+            rawName: "v-show",
+            value: _vm.show,
+            expression: "show",
           },
-          [
-            _c("div", { staticClass: "card-header msg_head" }, [
+        ],
+        staticClass: "card chat",
+      },
+      [
+        _c("div", { staticClass: "card-header msg_head" }, [
+          _c(
+            "div",
+            {
+              staticClass: "btn-group",
+              staticStyle: { position: "absolute", right: "5px", top: "5px" },
+              attrs: { role: "group" },
+            },
+            [
               _c(
-                "div",
+                "button",
                 {
-                  staticClass: "btn-group",
-                  staticStyle: {
-                    position: "absolute",
-                    right: "5px",
-                    top: "5px",
-                  },
-                  attrs: { role: "group" },
+                  staticClass: "btn btn-xs btn-dark px-1 py-0",
+                  attrs: { type: "button" },
+                  on: { click: _vm.deleteMessage },
                 },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-xs btn-dark px-1 py-0",
-                      attrs: { type: "button" },
-                      on: { click: _vm.deleteMessage },
-                    },
-                    [_c("i", { staticClass: "fa fa-trash-alt" })]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-xs btn-dark px-1 py-0",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function ($event) {
-                          _vm.show = !_vm.show
-                        },
-                      },
-                    },
-                    [_c("i", { staticClass: "fa fa-minus fa-lg" })]
-                  ),
-                ]
+                [_c("i", { staticClass: "fa fa-trash-alt" })]
               ),
               _vm._v(" "),
-              _vm._m(0),
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "card-body msg_card_body" },
-              _vm._l(_vm.messages, function (message) {
-                return _c(
-                  "div",
-                  { key: message.id, attrs: { id: "chatMessage" } },
-                  [
-                    message.user.id !== _vm.user.id
-                      ? _c(
-                          "div",
-                          { staticClass: "d-flex justify-content-start mb-4" },
-                          [
-                            _c("div", { staticClass: "img_cont_msg" }, [
-                              _vm.hasAvatar(message.user.avatar)
-                                ? _c("img", {
-                                    staticClass: "rounded-circle user_img_msg",
-                                    attrs: {
-                                      src: _vm.getAvatar(message.user.avatar),
-                                      alt: _vm.getAvatarAlt(message.user.name),
-                                    },
-                                  })
-                                : _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "rounded-circle user_img_msg",
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                            " +
-                                          _vm._s(
-                                            _vm.getAvatarAlt(message.user.name)
-                                          ) +
-                                          "\n                        "
-                                      ),
-                                    ]
-                                  ),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "msg_cotainer" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(message.message) +
-                                  "\n                        "
-                              ),
-                              _c("span", { staticClass: "msg_time" }, [
-                                _vm._v(_vm._s(message.time)),
-                              ]),
-                            ]),
-                          ]
-                        )
-                      : _c(
-                          "div",
-                          { staticClass: "d-flex justify-content-end mb-4" },
-                          [
-                            _c("div", { staticClass: "msg_cotainer_send" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(message.message) +
-                                  "\n                        "
-                              ),
-                              _c("span", { staticClass: "msg_time_send" }, [
-                                _vm._v(
-                                  _vm._s(message.time ? message.time : "")
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "img_cont_msg" }, [
-                              _vm.hasAvatar(message.user.avatar)
-                                ? _c("img", {
-                                    staticClass: "rounded-circle user_img_msg",
-                                    attrs: {
-                                      src: _vm.getAvatar(message.user.avatar),
-                                      alt: _vm.getAvatarAlt(message.user.name),
-                                    },
-                                  })
-                                : _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "rounded-circle user_img_msg",
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                            " +
-                                          _vm._s(
-                                            _vm.getAvatarAlt(message.user.name)
-                                          ) +
-                                          "\n                        "
-                                      ),
-                                    ]
-                                  ),
-                            ]),
-                          ]
-                        ),
-                  ]
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-footer" }, [
-              _c("div", { staticClass: "input-group" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.message,
-                      expression: "message",
-                    },
-                  ],
-                  staticClass: "form-control type_msg attach_btn",
-                  attrs: { placeholder: "Type your message..." },
-                  domProps: { value: _vm.message },
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-xs btn-dark px-1 py-0",
+                  attrs: { type: "button" },
                   on: {
-                    keyup: function ($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.sendMessage.apply(null, arguments)
-                    },
-                    input: function ($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.message = $event.target.value
+                    click: function ($event) {
+                      _vm.show = !_vm.show
                     },
                   },
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-group-append" }, [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "input-group-text send_btn",
-                      on: { click: _vm.sendMessage },
-                    },
-                    [_c("i", { staticClass: "fas fa-location-arrow" })]
-                  ),
-                ]),
+                },
+                [_c("i", { staticClass: "fa fa-minus fa-lg" })]
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex bd-highlight" }, [
+            _c("div", { staticClass: "user_info" }, [
+              _c("span", [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(_vm.challenge.name) +
+                    "\n                    "
+                ),
               ]),
             ]),
-          ]
-        ),
-      ])
-    : _vm._e()
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex bd-highlight" }, [
-      _c("div", { staticClass: "user_info" }, [
-        _c("span", [
-          _vm._v(
-            "\n                        Motaharul's Challenge\n                    "
-          ),
+          ]),
         ]),
-      ]),
-    ])
-  },
-]
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body msg_card_body" },
+          _vm._l(_vm.messages, function (message) {
+            return _c(
+              "div",
+              { key: message.id, attrs: { id: "chatMessage" } },
+              [
+                message.user.id !== _vm.user.id
+                  ? _c(
+                      "div",
+                      { staticClass: "d-flex justify-content-start mb-4" },
+                      [
+                        _c("div", { staticClass: "img_cont_msg" }, [
+                          _vm.hasAvatar(message.user.avatar)
+                            ? _c("img", {
+                                staticClass: "rounded-circle user_img_msg",
+                                attrs: {
+                                  src: _vm.getAvatar(message.user.avatar),
+                                  alt: _vm.getAvatarAlt(message.user.name),
+                                },
+                              })
+                            : _c(
+                                "div",
+                                { staticClass: "rounded-circle user_img_msg" },
+                                [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.getAvatarAlt(message.user.name)
+                                      ) +
+                                      "\n                        "
+                                  ),
+                                ]
+                              ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "msg_cotainer" }, [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(message.message) +
+                              "\n                        "
+                          ),
+                          _c("span", { staticClass: "msg_time" }, [
+                            _vm._v(_vm._s(message.time)),
+                          ]),
+                        ]),
+                      ]
+                    )
+                  : _c(
+                      "div",
+                      { staticClass: "d-flex justify-content-end mb-4" },
+                      [
+                        _c("div", { staticClass: "msg_cotainer_send" }, [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(message.message) +
+                              "\n                        "
+                          ),
+                          _c("span", { staticClass: "msg_time_send" }, [
+                            _vm._v(_vm._s(message.time ? message.time : "")),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "img_cont_msg" }, [
+                          _vm.hasAvatar(message.user.avatar)
+                            ? _c("img", {
+                                staticClass: "rounded-circle user_img_msg",
+                                attrs: {
+                                  src: _vm.getAvatar(message.user.avatar),
+                                  alt: _vm.getAvatarAlt(message.user.name),
+                                },
+                              })
+                            : _c(
+                                "div",
+                                { staticClass: "rounded-circle user_img_msg" },
+                                [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(
+                                        _vm.getAvatarAlt(message.user.name)
+                                      ) +
+                                      "\n                        "
+                                  ),
+                                ]
+                              ),
+                        ]),
+                      ]
+                    ),
+              ]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.message,
+                  expression: "message",
+                },
+              ],
+              ref: "type_msg",
+              staticClass: "form-control type_msg attach_btn",
+              attrs: { placeholder: "Type your message..." },
+              domProps: { value: _vm.message },
+              on: {
+                keyup: function ($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.sendMessage.apply(null, arguments)
+                },
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.message = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "span",
+                {
+                  staticClass: "input-group-text send_btn",
+                  on: { click: _vm.sendMessage },
+                },
+                [_c("i", { staticClass: "fas fa-location-arrow" })]
+              ),
+            ]),
+          ]),
+        ]),
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: !_vm.show,
+            expression: "!show",
+          },
+        ],
+        staticClass: "chat-min",
+      },
+      [
+        _c("i", {
+          staticClass: "far fa-comments fa-5x",
+          on: { click: _vm.showChat },
+        }),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3775,7 +3791,7 @@ var render = function () {
                   attrs: { type: "button" },
                   on: {
                     click: function ($event) {
-                      return _vm.$emit("playAgain")
+                      return _vm.$emit("playAgain", true)
                     },
                   },
                 },
@@ -3836,6 +3852,12 @@ var render = function () {
                         domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
                       }),
                       _vm._v("\n                        " + _vm._s(v.name)),
+                      v.id == _vm.uid
+                        ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
+                            _vm._v("Host"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
                         "span",
                         {

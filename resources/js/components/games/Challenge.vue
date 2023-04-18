@@ -9,7 +9,13 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='qid == questions.length' :resultDetail="answered_user_data" @playAgain="gameResetCall" :user="user" @newQuiz="newQuiz" @makeHost="makeHost"
+            <result :results='results'
+                    :lastQuestion='qid == questions.length'
+                    :resultDetail="answered_user_data"
+                    @playAgain="gameResetCall" :user="user"
+                    @newQuiz="newQuiz"
+                    @makeHost="makeHost"
+                    :uid="uid"
                     v-if="screen.result">
             </result>
         </transition>
@@ -35,23 +41,23 @@
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
 
-            <div class="px-2">
-                <img
-                    class="card-img img-responsive my-3 lazy share-result-image"
-                    :src="getUrl('challengeShareResult/'+share.link)"
-                    type="image/png"
-                >
-            </div>
+<!--            <div class="px-2">-->
+<!--                <img-->
+<!--                    class="card-img img-responsive my-3 lazy share-result-image"-->
+<!--                    :src="getUrl('challengeShareResult/'+share.link)"-->
+<!--                    type="image/png"-->
+<!--                >-->
+<!--            </div>-->
 
-            <iframe
-                :src="getShareLink('challengeShareResult/'+share.link)"
-                width="77" height="28"
-                style="border:none; overflow:hidden"
-                scrolling="no"
-                frameborder="0"
-                allowfullscreen="true"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            ></iframe>
+<!--            <iframe-->
+<!--                :src="getShareLink('challengeShareResult/'+share.link)"-->
+<!--                width="77" height="28"-->
+<!--                style="border:none; overflow:hidden"-->
+<!--                scrolling="no"-->
+<!--                frameborder="0"-->
+<!--                allowfullscreen="true"-->
+<!--                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"-->
+<!--            ></iframe>-->
         </div>
 
         <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule'
@@ -196,8 +202,6 @@
                                 {{ res.name }} <span class="badge badge-dark float-right mt-1">{{ res.score}}</span>
                             </li>
                         </transition-group>
-
-
                     </div>
                 </div>
             </div>
@@ -274,7 +278,6 @@
                 })
                 .listen('GameResetEvent', (data) => {
                     console.log(['GameResetEvent.............', data])
-
                     this.gameReset()
                 })
                 .listen('GameEndUserEvent', (data) => {
@@ -377,6 +380,7 @@
                 axios.post(`/api/newGameQuiz`, data)
                     .then(res => {
                         this.questions = res.data
+                        this.gameResetCall(true)
                         console.log('result...', res)
                         // this.share = res.data
                         // this.game_start = 1
@@ -428,9 +432,13 @@
                     })
                 // this.QuestionTimer()
             },
-            gameResetCall() {
+            gameResetCall(isStart = false) {
+                console.log('isStart....', isStart)
                 axios.post(`/api/gameReset`, {channel: this.channel }).then(res => console.log(res.data))
                 this.gameReset()
+                this.screen.waiting = 0
+                if (isStart) this.gameStart();
+
             },
             gameReset(){
                 this.questionInit()
@@ -439,6 +447,7 @@
                 this.screen.result = 0
                 this.screen.resultWaiting = 0
                 this.screen.winner = 0
+                this.end_user = 0
                 this.answered_user_data = []
                 this.results = []
                 this.qid = 0

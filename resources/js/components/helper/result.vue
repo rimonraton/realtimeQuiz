@@ -5,7 +5,7 @@
 <!--        </div>-->
         <div class="card mt-1" style="width: 24rem;" v-if="showResult">
             <div class="d-flex justify-content-between p-2">
-                <button type="button" class="btn btn-primary" @click="$emit('playAgain')">Play again</button>
+                <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
                 <button type="button" class="btn btn-secondary" @click="$emit('newQuiz')">New quiz</button>
                 <button type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">Make host</button>
             </div>
@@ -17,8 +17,8 @@
                     <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']" style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
-                        {{v.name}}<span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
-
+                        {{v.name}}<span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
+                        <span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
                     </li>
                 </ul>
 <!--                <ul class="list-group ">-->
@@ -96,7 +96,7 @@
 
 <script>
 export default{
-	props:['results', 'lastQuestion', 'resultDetail', 'user'],
+	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
     data(){
 	    return{
             showResult:true,
