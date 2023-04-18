@@ -3633,7 +3633,7 @@ var render = function () {
           _vm.user.id != _vm.uid
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
-                  "\n                    Please wait, the Quiz Host will start the game soon..\n                "
+                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
@@ -3654,7 +3654,7 @@ var render = function () {
             [
               _vm._v(
                 "\n                    " +
-                  _vm._s(_vm.qr ? "Hide QR" : "QR Code") +
+                  _vm._s(_vm.qr ? "QR" : "QR") +
                   "\n                "
               ),
             ]

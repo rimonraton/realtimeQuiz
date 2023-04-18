@@ -1125,6 +1125,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
  // Share Link
 
@@ -1142,7 +1143,7 @@ __webpack_require__.r(__webpack_exports__);
       schedule: '',
       timer: null,
       qr: false,
-      size: 430,
+      size: 300,
       value: window.location.toString()
     };
   },
@@ -1355,7 +1356,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\r\n    position: fixed;\r\n    bottom: 20px;\r\n    right: 20px;\r\n    cursor: pointer;\n}\n.chat[data-v-4c9c3884]{\r\n    width: 24rem;\r\n    position: fixed;\r\n    right: 20px;\r\n    bottom: 20px;\r\n    z-index: 999\n}\n.card[data-v-4c9c3884]{\r\n    height: 500px;\r\n    border-radius: 15px !important;\r\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\r\n    padding: 8px;\r\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\r\n    border-radius: 15px 15px 0 0 !important;\r\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\r\n    border-radius: 0 0 15px 15px !important;\r\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color:white !important;\r\n    height: 60px !important;\r\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\r\n    box-shadow:none !important;\r\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\r\n    border-radius: 15px 0 0 15px !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\r\n    border-radius: 0 15px 15px 0 !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\r\n    width: 100% !important;\r\n    padding: 5px 10px;\r\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\r\n    background: gray;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\r\n    font-size: 20px;\r\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\r\n    font-size: 10px;\r\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 10px;\r\n    border-radius: 25px;\r\n    background-color: #82ccdd;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-right: 10px;\r\n    border-radius: 25px;\r\n    background-color: #78e08f;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\r\n    position: absolute;\r\n    right:0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\r\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\r\n        margin-bottom: 15px !important;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\n    position: fixed;\n    bottom: 20px;\n    right: 20px;\n    cursor: pointer;\n    z-index: 999;\n}\n.chat[data-v-4c9c3884]{\n    width: 24rem;\n    position: fixed;\n    right: 20px;\n    bottom: 20px;\n    z-index: 999\n}\n.card[data-v-4c9c3884]{\n    height: 500px;\n    border-radius: 15px !important;\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\n    padding: 8px;\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\n    border-radius: 15px 15px 0 0 !important;\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\n    border-radius: 0 0 15px 15px !important;\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n    height: 60px !important;\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\n    box-shadow:none !important;\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\n    width: 100% !important;\n    padding: 5px 10px;\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n    background: gray;\n    color: white;\n    font-size: 1.2rem;\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\n    font-size: 20px;\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\n    font-size: 10px;\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 10px;\n    border-radius: 25px;\n    background-color: #82ccdd;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-right: 10px;\n    border-radius: 25px;\n    background-color: #78e08f;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\n    position: absolute;\n    left: 0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\n    position: absolute;\n    right:0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\n        margin-bottom: 15px !important;\n}\n.fa-5x[data-v-4c9c3884] {\n        font-size: 3em;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -3406,34 +3407,24 @@ var render = function () {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "card my-4" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v(
-                "\n                        Score Board\n                        "
-              ),
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-sm btn-danger float-left",
-                  on: { click: _vm.stop },
-                },
-                [_vm._v("STOP")]
-              ),
-              _vm._v(" "),
-              _vm.user.id == _vm.uid && _vm.qid > 0
-                ? _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-sm btn-danger float-right",
-                      on: { click: _vm.gameResetCall },
-                    },
-                    [_vm._v("RESET")]
-                  )
-                : _vm._e(),
-            ]),
-            _vm._v(" "),
-            _vm.results.length > 0
-              ? _c(
+          _vm.results.length > 0
+            ? _c("div", { staticClass: "card my-4" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v("\n                        Score Board\n"),
+                  _vm._v(" "),
+                  _vm.user.id == _vm.uid && _vm.qid > 0
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-sm btn-danger float-right",
+                          on: { click: _vm.gameResetCall },
+                        },
+                        [_vm._v("RESET")]
+                      )
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c(
                   "div",
                   { staticClass: "card-body" },
                   [
@@ -3477,9 +3468,9 @@ var render = function () {
                     ),
                   ],
                   1
-                )
-              : _vm._e(),
-          ]),
+                ),
+              ])
+            : _vm._e(),
         ]),
       ]),
     ],
@@ -3550,15 +3541,17 @@ var render = function () {
               attrs: { role: "group" },
             },
             [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-dark px-1 py-0",
-                  attrs: { type: "button" },
-                  on: { click: _vm.deleteMessage },
-                },
-                [_c("i", { staticClass: "fa fa-trash-alt" })]
-              ),
+              _vm.uid === _vm.user.id
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-xs btn-dark px-1 py-0",
+                      attrs: { type: "button" },
+                      on: { click: _vm.deleteMessage },
+                    },
+                    [_c("i", { staticClass: "fa fa-trash-alt" })]
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "button",
@@ -4072,17 +4065,43 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "waiting" }, [
     _c("div", { staticClass: "card", staticStyle: { "min-width": "24rem" } }, [
-      _c("div", { staticClass: "card-header text-center" }, [
-        _vm.user.id != _vm.uid
-          ? _c("span", { staticClass: "ml-1 text-primary" }, [
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between card-header text-center",
+        },
+        [
+          _vm.user.id != _vm.uid
+            ? _c("span", { staticClass: "ml-1 text-primary" }, [
+                _vm._v(
+                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
+                ),
+              ])
+            : _c("span", { staticClass: "ml-1 text-primary" }, [
+                _vm._v("\n                    User List\n                "),
+              ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-sm",
+              class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
+              on: {
+                click: function ($event) {
+                  _vm.qr = !_vm.qr
+                },
+              },
+            },
+            [
               _vm._v(
-                "\n                    Please wait, the Quiz Host will start the game soon..\n                "
+                "\n                    " +
+                  _vm._s(_vm.qr ? "QR" : "QR") +
+                  "\n                "
               ),
-            ])
-          : _c("span", { staticClass: "ml-1 text-primary" }, [
-              _vm._v("\n                    Users List\n                "),
-            ]),
-      ]),
+            ]
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -4172,26 +4191,6 @@ var render = function () {
                   [_vm._v("START\n                    ")]
                 )
               : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-sm mt-4",
-                class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
-                on: {
-                  click: function ($event) {
-                    _vm.qr = !_vm.qr
-                  },
-                },
-              },
-              [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s(_vm.qr ? "Hide QR" : "QR Code") +
-                    "\n                    "
-                ),
-              ]
-            ),
           ]),
         ],
         1

@@ -3,7 +3,7 @@
 	    <div class="card" style="min-width: 24rem">
 	        <div class="d-flex justify-content-between card-header text-center">
 	            <span v-if="user.id != uid" class="ml-1 text-primary">
-                    Please wait, the Quiz Host will start the game soon..
+                    Please wait, the Quiz Host will start the game soon.
                 </span>
                 <span v-else class="ml-1 text-primary">
                     User List
@@ -12,7 +12,7 @@
                     class="btn btn-sm "
                     :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
                     @click="qr = !qr" >
-                    {{qr? 'Hide QR' : 'QR Code'}}
+                    {{qr? 'QR' : 'QR'}}
                 </a>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">

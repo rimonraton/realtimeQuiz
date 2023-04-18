@@ -186,13 +186,13 @@
                 </div>
             </div>
             <div class="col-md-4" >
-                <div class="card my-4" >
+                <div class="card my-4" v-if="results.length>0">
                     <div class="card-header">
                         Score Board
-                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>
+<!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
-                    <div class="card-body" v-if="results.length>0">
+                    <div class="card-body" >
                         <transition-group name="slide-up" class="list-group" tag="ul" appear>
                             <li class="list-group-item user-list"
                                 v-for="(res, index) in results" :key="res.id"

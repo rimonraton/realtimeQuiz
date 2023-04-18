@@ -3,7 +3,7 @@
         <div class="card chat" v-show="show">
             <div class="card-header msg_head">
                 <div class="btn-group" role="group" style="position: absolute; right: 5px; top: 5px">
-                    <button type="button" class="btn btn-xs btn-dark px-1 py-0" @click="deleteMessage">
+                    <button v-if="uid === user.id" type="button" class="btn btn-xs btn-dark px-1 py-0" @click="deleteMessage">
                         <i class="fa fa-trash-alt" ></i>
                     </button>
                     <button type="button" class="btn btn-xs btn-dark px-1 py-0" @click="show = !show">
@@ -182,6 +182,7 @@ export default{
     bottom: 20px;
     right: 20px;
     cursor: pointer;
+    z-index: 999;
 }
 .chat{
     width: 24rem;
@@ -309,6 +310,9 @@ export default{
 @media(max-width: 576px){
     .contacts_card{
         margin-bottom: 15px !important;
+    }
+    .fa-5x {
+        font-size: 3em;
     }
 }
 </style>
