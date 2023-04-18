@@ -957,7 +957,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion', 'resultDetail', 'user'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
   data: function data() {
     return {
       showResult: true,
@@ -2235,7 +2235,7 @@ var render = function () {
                   attrs: { type: "button" },
                   on: {
                     click: function ($event) {
-                      return _vm.$emit("playAgain")
+                      return _vm.$emit("playAgain", true)
                     },
                   },
                 },
@@ -2296,6 +2296,12 @@ var render = function () {
                         domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
                       }),
                       _vm._v("\n                        " + _vm._s(v.name)),
+                      v.id == _vm.uid
+                        ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
+                            _vm._v("Host"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
                         "span",
                         {
