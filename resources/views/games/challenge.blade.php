@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12 pxs-0">
             <div class="card">
                 {{-- <div class="card-header">{{ $type }}</div> --}}
 
-                <div class="card-body">
+                <div class="card-body pxs-0">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}

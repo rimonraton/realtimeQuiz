@@ -3029,7 +3029,7 @@ var render = function () {
       _c("div", { staticClass: "row justify-content-center" }, [
         _c(
           "div",
-          { staticClass: "col-md-8" },
+          { staticClass: "col-md-8 pxs-0" },
           [
             _c("div", { staticClass: "progress" }, [
               _c(

@@ -68,7 +68,7 @@
         </waiting>
 
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-8 pxs-0">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped"
                         :style="progressWidth"

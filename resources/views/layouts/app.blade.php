@@ -39,6 +39,13 @@
             color: #00A988;
         }
 
+        @media only screen and (max-width: 500px) {
+            .pxs-0 {
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+        }
+
     </style>
     @yield('css')
 </head>
