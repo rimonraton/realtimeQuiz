@@ -25,10 +25,22 @@ class APIController extends Controller
     public function getQuestions($quizId)
     {
         $q = Quiz::find($quizId);
-       return $questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
-        $collection = collect($q);
-        $merged = $collection->merge(['q' => $questions]);
-        return $merged->all();
+        $questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
+        foreach ($questions as $key => $question){
+            $optData = [];
+
+//            dd($question->options);
+
+            foreach ($question->options as $k => $option){
+                $optData[$k] = $option->bd_option;
+            }
+            $questions[$key]['optionsValue'] = $optData;
+        }
+        return $questions;
+
+//        $collection = collect($q);
+//        $merged = $collection->merge(['q' => $questions]);
+//        return $merged->all();
     }
     public function saveResults(Request $request)
     {
