@@ -28,13 +28,18 @@ class APIController extends Controller
         $questions = Question::with('options')->whereIn('id', explode(",", $q->questions))->get();
         foreach ($questions as $key => $question){
             $optData = [];
+//            $correctAnswer = '';
 
 //            dd($question->options);
 
             foreach ($question->options as $k => $option){
                 $optData[$k] = $option->bd_option;
+                if($option->correct == 1){
+                    $correctAnswer = $k;
+                }
             }
             $questions[$key]['optionsValue'] = $optData;
+            $questions[$key]['answer'] = $correctAnswer;
         }
         return $questions;
 
