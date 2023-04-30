@@ -368,25 +368,32 @@
         // },
 
         methods: {
-            makeHost(uid){
+           async makeHost(uid){
+
                 this.uid = uid
-                axios.post(`/api/makeHost/${uid}/${this.channel}`)
-                    .then(res => {
-                        console.log('result...', res)
-                    })
+               return await  axios.post(`/api/makeHost/${uid}/${this.channel}`)
+                    // .then(res => {
+                    //     console.log('result...', res.status)
+                    //     status = res.status
+                    // })
+
             },
-            newQuiz(){
-                let data = { channel: this.channel, id:this.challenge.id}
-                axios.post(`/api/newGameQuiz`, data)
-                    .then(res => {
-                        this.questions = res.data
-                        this.gameResetCall(true)
-                        console.log('result...', res)
-                        // this.share = res.data
-                        // this.game_start = 1
-                        // this.screen.waiting = 0
-                        // this.showQuestionOptions(this.questions[0].fileType)
-                    })
+           async newQuiz(uid){
+              let makeHostStatus = await this.makeHost(uid)
+                console.log('makeHostStatus..', makeHostStatus.status)
+                if(makeHostStatus.status === 200){
+                    let data = { channel: this.channel, id:this.challenge.id}
+                    axios.post(`/api/newGameQuiz`, data)
+                        .then(res => {
+                            this.questions = res.data
+                            this.gameResetCall(true)
+                            // console.log('result...', res)
+                            // this.share = res.data
+                            // this.game_start = 1
+                            // this.screen.waiting = 0
+                            // this.showQuestionOptions(this.questions[0].fileType)
+                        })
+                }
             },
             smtAnswer(qid, qopt, data){
                 if (data == null) return

@@ -6,7 +6,7 @@
         <div class="card mt-1" style="width: 24rem;" v-if="showResult">
             <div class="d-flex justify-content-between p-2">
                 <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
-                <button type="button" class="btn btn-secondary" @click="$emit('newQuiz')">New quiz</button>
+                <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
                 <button type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">Make host</button>
             </div>
 

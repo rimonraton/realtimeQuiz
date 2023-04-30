@@ -3357,7 +3357,7 @@ var render = function () {
                   attrs: { type: "button" },
                   on: {
                     click: function ($event) {
-                      return _vm.$emit("newQuiz")
+                      return _vm.$emit("newQuiz", _vm.makeUid)
                     },
                   },
                 },
