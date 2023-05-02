@@ -1236,6 +1236,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
@@ -1251,6 +1272,9 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    checkURL: function checkURL(url) {
+      return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    },
     selectUid: function selectUid(id) {
       console.log('id data..', id);
       this.makeUid = id;
@@ -3516,63 +3540,168 @@ var render = function () {
                               _c("div", { staticClass: "px-1" }, [
                                 result.isCorrect > 0
                                   ? _c("div", { staticClass: "list-group" }, [
-                                      _c(
-                                        "span",
-                                        {
-                                          staticClass:
-                                            "list-group-item list-group-item-action my-1",
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                              " +
-                                              _vm._s(result.selected) +
-                                              " (your answer is correct)\n                                          "
+                                      _vm.checkURL(result.selected)
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _c("img", {
+                                                staticClass:
+                                                  "imageOption mt-1 rounded img-thumbnail",
+                                                attrs: {
+                                                  src: "/" + result.selected,
+                                                  alt: "",
+                                                },
+                                              }),
+                                              _vm._v(
+                                                "\n                                              (your answer is correct)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-check text-success",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                              " +
+                                                  _vm._s(result.selected) +
+                                                  " (your answer is correct)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-check text-success",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
                                           ),
-                                        ]
-                                      ),
                                     ])
                                   : _c("div", { staticClass: "list-group" }, [
-                                      _c(
-                                        "span",
-                                        {
-                                          staticClass:
-                                            "list-group-item list-group-item-action my-1",
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                              " +
-                                              _vm._s(result.selected) +
-                                              " (your answer)\n                                              "
-                                          ),
-                                          _c("i", {
-                                            staticClass:
-                                              "fa fa-times text-danger",
-                                            attrs: { "aria-hidden": "true" },
-                                          }),
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "list-group" }, [
-                                        _c(
-                                          "span",
-                                          {
-                                            staticClass:
-                                              "list-group-item list-group-item-action my-1",
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(result.answer) +
-                                                " (correct answer)\n                                                    "
-                                            ),
-                                            _c("i", {
+                                      _vm.checkURL(result.selected)
+                                        ? _c(
+                                            "span",
+                                            {
                                               staticClass:
-                                                "fa fa-check text-success",
-                                              attrs: { "aria-hidden": "true" },
-                                            }),
-                                          ]
-                                        ),
-                                      ]),
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _c("img", {
+                                                staticClass:
+                                                  "imageOption mt-1 rounded img-thumbnail",
+                                                attrs: {
+                                                  src: "/" + result.selected,
+                                                  alt: "",
+                                                },
+                                              }),
+                                              _vm._v(
+                                                "\n                                              (your answer)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-times text-danger",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                              " +
+                                                  _vm._s(result.selected) +
+                                                  " (your answer)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-times text-danger",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          ),
+                                      _vm._v(" "),
+                                      _vm.checkURL(result.answer)
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "list-group" },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "list-group-item list-group-item-action my-1",
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    staticClass:
+                                                      "imageOption mt-1 rounded img-thumbnail",
+                                                    attrs: {
+                                                      src: "/" + result.answer,
+                                                      alt: "",
+                                                    },
+                                                  }),
+                                                  _vm._v(
+                                                    "\n                                                    (correct answer)\n                                                    "
+                                                  ),
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "fa fa-check text-success",
+                                                    attrs: {
+                                                      "aria-hidden": "true",
+                                                    },
+                                                  }),
+                                                ]
+                                              ),
+                                            ]
+                                          )
+                                        : _c(
+                                            "div",
+                                            { staticClass: "list-group" },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "list-group-item list-group-item-action my-1",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                                    " +
+                                                      _vm._s(result.answer) +
+                                                      " (correct answer)\n                                                    "
+                                                  ),
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "fa fa-check text-success",
+                                                    attrs: {
+                                                      "aria-hidden": "true",
+                                                    },
+                                                  }),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
                                     ]),
                               ]),
                             ]),

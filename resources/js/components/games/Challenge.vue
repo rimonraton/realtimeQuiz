@@ -369,8 +369,7 @@
 
         methods: {
            async makeHost(uid){
-
-                this.uid = uid
+               this.uid = uid
                return await  axios.post(`/api/makeHost/${uid}/${this.channel}`)
                     // .then(res => {
                     //     console.log('result...', res.status)
@@ -382,6 +381,7 @@
               let makeHostStatus = await this.makeHost(uid)
                 console.log('makeHostStatus..', makeHostStatus.status)
                 if(makeHostStatus.status === 200){
+                console.log('inside..', makeHostStatus.status)
                     let data = { channel: this.channel, id:this.challenge.id}
                     axios.post(`/api/newGameQuiz`, data)
                         .then(res => {
@@ -393,6 +393,8 @@
                             // this.screen.waiting = 0
                             // this.showQuestionOptions(this.questions[0].fileType)
                         })
+                } else{
+                    console.log('makeHostStatus status is not 200')
                 }
             },
             smtAnswer(qid, qopt, data){
@@ -486,9 +488,15 @@
                 this.screen.loading = true
             },
             getCorrectAnswertext(){
-                const correctEngOption = this.questions[this.qid].options.find(o => o.correct == 1).option
-                const correctBanOption = this.questions[this.qid].options.find(o => o.correct == 1).bd_option
-               return  this.tbe(correctBanOption, correctEngOption, this.user.lang)
+               const correctOption = this.questions[this.qid].options.find(o => o.correct == 1)
+                // console.log('correctOption....', correctOption)
+                if(correctOption.flag == 'img') {
+                    return correctOption.img_link
+                } else{
+                    const correctEngOption = correctOption.option
+                    const correctBanOption = correctOption.bd_option
+                    return  this.tbe(correctBanOption, correctEngOption, this.user.lang)
+                }
             },
             resultScreen(){
                 // console.log('resultScreen')

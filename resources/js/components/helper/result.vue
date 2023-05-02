@@ -61,17 +61,38 @@
                             <div :id="'collapse' + i" :aria-labelledby="'heading'+ i" :data-parent="'#accordion' + i" class="collapse show" style="">
                                 <div class="card-body">
                                     <div class="px-1">
+
+<!--                                        {{ checkURL(result.selected) }}-->
+
                                         <div class="list-group" v-if="result.isCorrect > 0">
-                                          <span class="list-group-item list-group-item-action my-1">
+                                          <span class="list-group-item list-group-item-action my-1" v-if="checkURL(result.selected)">
+                                               <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.selected" alt="">
+                                              (your answer is correct)
+                                              <i aria-hidden="true" class="fa fa-check text-success"></i>
+                                          </span>
+                                            <span class="list-group-item list-group-item-action my-1" v-else>
                                               {{result.selected}} (your answer is correct)
+                                              <i aria-hidden="true" class="fa fa-check text-success"></i>
                                           </span>
                                         </div>
                                         <div class="list-group" v-else>
-                                          <span class="list-group-item list-group-item-action my-1">
+                                          <span class="list-group-item list-group-item-action my-1" v-if="checkURL(result.selected)">
+                                             <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.selected" alt="">
+                                              (your answer)
+                                              <i aria-hidden="true" class="fa fa-times text-danger"></i>
+                                          </span>
+                                            <span class="list-group-item list-group-item-action my-1" v-else>
                                               {{result.selected}} (your answer)
                                               <i aria-hidden="true" class="fa fa-times text-danger"></i>
                                           </span>
-                                            <div class="list-group">
+                                            <div class="list-group" v-if="checkURL(result.answer)">
+                                                <span class="list-group-item list-group-item-action my-1">
+                                                    <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ result.answer" alt="">
+                                                    (correct answer)
+                                                    <i aria-hidden="true" class="fa fa-check text-success"></i>
+                                                </span>
+                                            </div>
+                                            <div class="list-group" v-else>
                                                 <span class="list-group-item list-group-item-action my-1">
                                                     {{result.answer}} (correct answer)
                                                     <i aria-hidden="true" class="fa fa-check text-success"></i>
@@ -87,7 +108,7 @@
             </div>
             <div class="card-footer">
                     <button @click="showDetail" class="btn btn-sm btn-success">Close</button>
-                <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
+                <!--<a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>
         </div>
     </div>
@@ -109,6 +130,9 @@ export default{
 	    console.log('result data', this.resultDetailData)
     },
     methods:{
+        checkURL(url) {
+            return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+        },
         selectUid(id){
             console.log('id data..', id)
             this.makeUid = id
