@@ -65,23 +65,6 @@ class GameController extends Controller
 
 //       return $questions = Question::whereIn('category_id', $catIds)->where('status', 1)->inRandomOrder()->limit($challenge->quantity);
 	}
-	public function getNewGameQuiz( $id)
-    {
-        return $id;
-        $challenge = Challenge::find($id);
-        $catIds = explode(',', $challenge->cat_id);
-       return $questions = Question::with('options')->whereIn('category_id', $catIds)->inRandomOrder()->limit($challenge->quantity)->get();
-//        $data = [
-//            'questions' => $questions,
-//            'channel' => $request->channel,
-//        ];
-//        $request->request->add(['questions' => $questions]);
-//        $qData = json_encode($questions);
-//        broadcast(new ChangeQuestionEvent($qData, $request->channel))->toOthers();
-//        return $questions;
-
-//       return $questions = Question::whereIn('category_id', $catIds)->where('status', 1)->inRandomOrder()->limit($challenge->quantity);
-	}
 
     public function gameStart(Request $request)
     {

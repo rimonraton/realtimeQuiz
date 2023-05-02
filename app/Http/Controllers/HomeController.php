@@ -144,13 +144,17 @@ class HomeController extends Controller
             $arrData->push($q_random);
             $arrCatData->push($adv->id);
         }
+//        $numbers = collect($arrCatData)->unique()->toArray();
+
+//        $uniqueNumbers = $numbers->unique()->toArray();
+//       return $arrCatData;
 //        return $arrCatData;
 //       return implode(',', $arrCatData->toArray());
 //        return $cat = explode(',', $arrCatData);
         $q_ids =  implode(',', $arrData->collapse()->all());
         $is_published = $request->is_published ? 1 : 0;
 //        $cat = explode(',', $arrCatData);
-        $cat = implode(',', $arrCatData->toArray());
+        $cat = implode(',', collect($arrCatData)->unique()->toArray());
 //        $q_ids = Question::whereIn('category_id', $cat)->where('status', 1)->inRandomOrder()->limit($request->qq)->pluck('id')->toArray();
         $name = $request->name;
         if($name == '' || $name == null){
