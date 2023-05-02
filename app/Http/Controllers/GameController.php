@@ -67,7 +67,7 @@ class GameController extends Controller
 	}
 	public function getNewGameQuiz( $id)
     {
-//        return $request->all();
+        return $id;
         $challenge = Challenge::find($id);
         $catIds = explode(',', $challenge->cat_id);
        return $questions = Question::with('options')->whereIn('category_id', $catIds)->inRandomOrder()->limit($challenge->quantity)->get();
