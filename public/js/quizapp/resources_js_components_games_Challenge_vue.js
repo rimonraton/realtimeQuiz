@@ -233,6 +233,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -3155,34 +3156,24 @@ var render = function () {
                           : _vm._e(),
                         _vm._v(" "),
                         question.fileType == "video"
-                          ? _c(
-                              "video",
-                              {
-                                staticClass:
-                                  "image w-100 mt-1 rounded img-thumbnail",
-                                attrs: {
-                                  autoplay: "",
-                                  controls: "",
-                                  playsinline: "",
+                          ? _c("video", {
+                              staticClass:
+                                "image w-100 mt-1 rounded img-thumbnail",
+                              attrs: {
+                                src: "/" + question.question_file_link,
+                                controls: "controls",
+                                playsinline: "true",
+                                autoplay: "",
+                              },
+                              on: {
+                                ended: function ($event) {
+                                  return _vm.onEnd()
                                 },
-                                on: {
-                                  ended: function ($event) {
-                                    return _vm.onEnd()
-                                  },
-                                  play: function ($event) {
-                                    return _vm.onStart()
-                                  },
+                                play: function ($event) {
+                                  return _vm.onStart()
                                 },
                               },
-                              [
-                                _c("source", {
-                                  attrs: {
-                                    src: "/" + question.question_file_link,
-                                    type: "video/mp4",
-                                  },
-                                }),
-                              ]
-                            )
+                            })
                           : _vm._e(),
                         _vm._v(" "),
                         question.fileType == "audio"

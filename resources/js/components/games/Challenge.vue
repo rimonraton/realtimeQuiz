@@ -85,14 +85,15 @@
                              :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
                         <video
                             v-if="question.fileType == 'video'"
+                            :src="'/'+ question.question_file_link"
                             @ended="onEnd()"
                             @play="onStart()"
                             class="image w-100 mt-1 rounded img-thumbnail"
+                            controls="controls"
+                            playsinline="true"
                             autoplay
-                            controls
-                            playsinline
                         >
-                            <source :src="'/'+ question.question_file_link" type="video/mp4">
+
                         </video>
                         <div class="audio" v-if="question.fileType == 'audio'">
                             <audio
