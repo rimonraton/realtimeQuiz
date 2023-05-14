@@ -90,6 +90,7 @@
                             class="image w-100 mt-1 rounded img-thumbnail"
                             autoplay
                             controls
+                            playsinline
                         >
                             <source :src="'/'+ question.question_file_link" type="video/mp4">
                         </video>
