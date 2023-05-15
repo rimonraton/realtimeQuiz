@@ -23,6 +23,7 @@ use App\Question;
 use App\Quiz;
 use App\Team;
 use App\TeamResult;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\QuestionClickedEvent;
@@ -36,10 +37,10 @@ use Illuminate\Support\Str;
 
 class GameController extends Controller
 {
-    public function makeHost($uid, $channel)
+    public function makeHost(User $user, $channel, $status = null)
     {
-        broadcast(new MakeHostEvent($uid, $channel))->toOthers();
-        return [$uid, $channel];
+        broadcast(new MakeHostEvent($user, $channel, $status))->toOthers();
+        return [$user, $channel, $status];
     }
 	public function questionClick(Request $request): Request
     {

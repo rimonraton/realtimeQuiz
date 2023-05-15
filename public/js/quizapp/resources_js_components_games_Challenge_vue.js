@@ -232,6 +232,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -281,7 +284,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       pm: '',
       perform: 0,
       preventClick: true,
-      shortAnswer: null
+      shortAnswer: null,
+      requestHost: false,
+      requestHostUser: null
     };
   },
   created: function created() {
@@ -310,7 +315,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this.getResult();
     }).listen('MakeHostEvent', function (data) {
       console.log('MakeHostEvent.............', data);
-      _this.uid = data.uid;
+      if (data.status == 'accept') {
+        _this.uid = data.user.id;
+        _this.requestHostUser = null;
+      } else if (data.status == 'deny') {
+        _this.requestHostUser = null;
+      } else {
+        _this.requestHostUser = data.user;
+      }
     }).listen('ChangeQuestionEvent', function (data) {
       console.log('ChangeQuestionEvent.............', data);
       _this.questions = data.questions;
@@ -380,17 +392,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
   methods: {
     makeHost: function makeHost(uid) {
-      var _this3 = this;
+      var _arguments = arguments,
+        _this3 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var status;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              _this3.uid = uid;
-              _context.next = 3;
-              return axios.post("/api/makeHost/".concat(uid, "/").concat(_this3.channel));
-            case 3:
-              return _context.abrupt("return", _context.sent);
+              status = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : null;
+              if (status == 'accept') {
+                _this3.uid = uid;
+                _this3.requestHostUser = null;
+              } else if (status == 'deny') {
+                _this3.requestHostUser = null;
+              } else {
+                _this3.requestHostUser = _this3.user;
+              }
+              _context.next = 4;
+              return axios.post("/api/makeHost/".concat(uid, "/").concat(_this3.channel, "/").concat(status));
             case 4:
+              return _context.abrupt("return", _context.sent);
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -647,29 +669,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             y: 0.6
           }
         });
-      } else {
-        var colors = ['#bb0000', '#ffffff'];
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 60,
-          spread: 55,
-          origin: {
-            x: 0
-          },
-          colors: colors
-        });
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 120,
-          spread: 55,
-          origin: {
-            x: 1
-          },
-          colors: colors
-        });
       }
+      // else{
+      //     let colors = ['#bb0000', '#ffffff'];
+      //
+      //     confetti({
+      //         zIndex:999999,
+      //         particleCount: 100,
+      //         angle: 60,
+      //         spread: 55,
+      //         origin: { x: 0 },
+      //         colors: colors
+      //     });
+      //     confetti({
+      //         zIndex:999999,
+      //         particleCount: 100,
+      //         angle: 120,
+      //         spread: 55,
+      //         origin: { x: 1 },
+      //         colors: colors
+      //     });
+      //
+      // }
     },
     kickUser: function kickUser(id) {
       if (id != this.uid) {
@@ -1070,9 +1091,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
   data: function data() {
     return {
       showResult: true,
@@ -1085,12 +1124,22 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    isDisabledHost: function isDisabledHost() {
+      return this.uid == this.makeUid;
+    },
+    isDisabled: function isDisabled() {
+      // you can  check your form is filled or not here.
+      return this.requestHostUser != null;
+      // return this.requestHostUser != null ? (this.user.id == this.requestHostUser.id) : false
+    },
     checkURL: function checkURL(url) {
       return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
     },
     selectUid: function selectUid(id) {
       console.log('id data..', id);
-      this.makeUid = id;
+      if (this.uid == this.user.id) {
+        this.makeUid = id;
+      }
     },
     showDetail: function showDetail() {
       var _this = this;
@@ -1366,6 +1415,9 @@ var quizHelpers = {
       var confetti = document.createElement('script');
       confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js');
       document.head.appendChild(confetti);
+    },
+    isHost: function isHost() {
+      return this.uid === this.user.id;
     }
   },
   computed: {
@@ -1400,7 +1452,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-6a184f0c] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-6a184f0c] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-6a184f0c] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-6a184f0c] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-6a184f0c] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-6a184f0c] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-6a184f0c] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n.col-md-6.col-6[data-v-6a184f0c]:hover {\n    background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-6a184f0c] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -2988,8 +3040,9 @@ var render = function () {
                   results: _vm.results,
                   lastQuestion: _vm.qid == _vm.questions.length,
                   resultDetail: _vm.answered_user_data,
-                  user: _vm.user,
+                  requestHostUser: _vm.requestHostUser,
                   uid: _vm.uid,
+                  user: _vm.user,
                 },
                 on: {
                   playAgain: _vm.gameResetCall,
@@ -3835,54 +3888,146 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "result" }, [
+    !!_vm.requestHostUser && _vm.uid == _vm.user.id
+      ? _c("div", { staticClass: "d-flex px-2" }, [
+          _c(
+            "div",
+            {
+              staticClass: "alert alert-success page-alert text-center",
+              attrs: { id: "alert-1" },
+            },
+            [
+              _c("strong", [_vm._v(_vm._s(_vm.requestHostUser.name))]),
+              _vm._v(" requested to host the quiz.\n        "),
+              _c("hr"),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-success",
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit(
+                        "makeHost",
+                        _vm.requestHostUser.id,
+                        "accept"
+                      )
+                    },
+                  },
+                },
+                [_vm._v("Accept")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-danger",
+                  on: {
+                    click: function ($event) {
+                      return _vm.$emit(
+                        "makeHost",
+                        _vm.requestHostUser.id,
+                        "deny"
+                      )
+                    },
+                  },
+                },
+                [_vm._v("Deny")]
+              ),
+            ]
+          ),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _vm.showResult
       ? _c(
           "div",
           { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
           [
-            _c("div", { staticClass: "d-flex justify-content-between p-2" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.$emit("playAgain", true)
-                    },
-                  },
-                },
-                [_vm._v("Play again")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.$emit("newQuiz", _vm.makeUid)
-                    },
-                  },
-                },
-                [_vm._v("New quiz")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-success",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function ($event) {
-                      return _vm.$emit("makeHost", _vm.makeUid)
-                    },
-                  },
-                },
-                [_vm._v("Make host")]
-              ),
-            ]),
+            _vm.uid == _vm.user.id
+              ? _c(
+                  "div",
+                  { staticClass: "d-flex justify-content-between p-2" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.$emit("playAgain", true)
+                          },
+                        },
+                      },
+                      [_vm._v("Play again")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.$emit("newQuiz", _vm.makeUid)
+                          },
+                        },
+                      },
+                      [_vm._v("New quiz")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn",
+                        class: [
+                          _vm.isDisabledHost()
+                            ? "btn-secondary disabled"
+                            : "btn-success",
+                        ],
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.$emit("makeHost", _vm.makeUid)
+                          },
+                        },
+                      },
+                      [_vm._v("Make host")]
+                    ),
+                  ]
+                )
+              : _c(
+                  "div",
+                  { staticClass: "d-flex justify-content-between p-2" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn",
+                        class: [
+                          _vm.isDisabled()
+                            ? "btn-secondary disabled"
+                            : "btn-success",
+                        ],
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.$emit("makeHost", _vm.makeUid)
+                          },
+                        },
+                      },
+                      [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.isDisabled() ? "Request Pending" : "Make host"
+                            )
+                        ),
+                      ]
+                    ),
+                  ]
+                ),
             _vm._v(" "),
             _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
             _vm._v(" "),
@@ -3908,11 +4053,31 @@ var render = function () {
                       _c("span", {
                         domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
                       }),
-                      _vm._v("\n                        " + _vm._s(v.name)),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(v.name) +
+                          "\n                      "
+                      ),
                       v.id == _vm.uid
                         ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
                             _vm._v("Host"),
                           ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.requestHostUser
+                        ? _c(
+                            "span",
+                            { staticClass: "ml-1 badge badge-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  v.id == _vm.requestHostUser.id
+                                    ? "Requested"
+                                    : ""
+                                )
+                              ),
+                            ]
+                          )
                         : _vm._e(),
                       _vm._v(" "),
                       _c(

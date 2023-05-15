@@ -13,16 +13,17 @@ use Illuminate\Queue\SerializesModels;
 class MakeHostEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $uid, $channel;
+    public $user, $channel,$status;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($uid,$channel)
+    public function __construct($user,$channel,$status)
     {
-        $this->uid = $uid;
+        $this->user = $user;
         $this->channel = $channel;
+        $this->status = $status;
     }
 
     /**

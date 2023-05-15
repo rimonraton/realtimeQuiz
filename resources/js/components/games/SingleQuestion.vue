@@ -639,9 +639,9 @@ export default {
             })
 
         },
-        isHost() {
-            return this.uid === this.user.id
-        },
+        // isHost() {
+        //     return this.uid === this.user.id
+        // },
         nextQuestion() {
             this.preventClick = true
             this.qid ++

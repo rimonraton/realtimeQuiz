@@ -9,14 +9,17 @@
         </div>
 
         <transition name="fade">
-            <result :results='results'
+            <result v-if="screen.result"
+                    :results='results'
                     :lastQuestion='qid == questions.length'
                     :resultDetail="answered_user_data"
-                    @playAgain="gameResetCall" :user="user"
+                    :requestHostUser="requestHostUser"
+                    :uid="uid"
+                    :user="user"
+                    @playAgain="gameResetCall"
                     @newQuiz="newQuiz"
                     @makeHost="makeHost"
-                    :uid="uid"
-                    v-if="screen.result">
+                    >
             </result>
         </transition>
         <transition
@@ -259,7 +262,9 @@
                 pm:'',
                 perform:0,
                 preventClick: true,
-                shortAnswer: null
+                shortAnswer: null,
+                requestHost: false,
+                requestHostUser: null
             };
         },
 
@@ -294,7 +299,15 @@
                 })
                 .listen('MakeHostEvent', (data) => {
                     console.log('MakeHostEvent.............', data)
-                    this.uid = data.uid
+                    if (data.status == 'accept'){
+                        this.uid = data.user.id
+                        this.requestHostUser = null
+                    } else if (data.status == 'deny'){
+                        this.requestHostUser = null
+                    } else{
+                        this.requestHostUser = data.user
+                    }
+
                 })
                 .listen('ChangeQuestionEvent', (data) => {
                     console.log('ChangeQuestionEvent.............', data)
@@ -323,7 +336,7 @@
         // },
 
         mounted() {
-            Echo.join(this.channel)
+                Echo.join(this.channel)
                 .here((users) => {
                     this.users = users;
                 })
@@ -368,9 +381,17 @@
         // },
 
         methods: {
-           async makeHost(uid){
-               this.uid = uid
-               return await  axios.post(`/api/makeHost/${uid}/${this.channel}`)
+            async makeHost(uid, status = null){
+                if (status == 'accept'){
+                    this.uid = uid
+                    this.requestHostUser = null
+                } else if (status == 'deny'){
+                    this.requestHostUser = null
+                } else {
+                    this.requestHostUser = this.user
+                }
+
+                return await  axios.post(`/api/makeHost/${uid}/${this.channel}/${status}`)
                     // .then(res => {
                     //     console.log('result...', res.status)
                     //     status = res.status
@@ -589,27 +610,27 @@
                         origin: { y: 0.6 }
                     });
                 }
-                else{
-                    let colors = ['#bb0000', '#ffffff'];
-
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 100,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 },
-                        colors: colors
-                    });
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 100,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 },
-                        colors: colors
-                    });
-
-                }
+                // else{
+                //     let colors = ['#bb0000', '#ffffff'];
+                //
+                //     confetti({
+                //         zIndex:999999,
+                //         particleCount: 100,
+                //         angle: 60,
+                //         spread: 55,
+                //         origin: { x: 0 },
+                //         colors: colors
+                //     });
+                //     confetti({
+                //         zIndex:999999,
+                //         particleCount: 100,
+                //         angle: 120,
+                //         spread: 55,
+                //         origin: { x: 1 },
+                //         colors: colors
+                //     });
+                //
+                // }
             },
             kickUser(id){
                 if(id != this.uid){
@@ -704,6 +725,9 @@
     }
     .share-result-image {
         max-width: fit-content;
+    }
+    .col-md-6.col-6:hover {
+        background-color: #38c172 !important;
     }
 
     @media screen and (min-width: 480px) {

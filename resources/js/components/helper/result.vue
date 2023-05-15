@@ -3,12 +3,28 @@
 <!--        <div class="card bg-dark text-white">-->
 <!--          <img class="card-img" :src="addImage()">-->
 <!--        </div>-->
+    <div class="d-flex px-2" v-if="!!requestHostUser && uid == user.id">
+      <div class="alert alert-success page-alert text-center" id="alert-1">
+<!--        <button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
+        <strong>{{ requestHostUser.name }}</strong> requested to host the quiz.
+        <hr>
+        <button class="btn btn-sm btn-success" @click="$emit('makeHost', requestHostUser.id, 'accept')">Accept</button>
+        <button class="btn btn-sm btn-danger" @click="$emit('makeHost', requestHostUser.id, 'deny')">Deny</button>
+      </div>
+    </div>
         <div class="card mt-1" style="width: 24rem;" v-if="showResult">
-            <div class="d-flex justify-content-between p-2">
+            <div class="d-flex justify-content-between p-2" v-if="uid == user.id">
                 <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
                 <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
-                <button type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">Make host</button>
+                <button type="button" class="btn" :class="[isDisabledHost() ? 'btn-secondary disabled' : 'btn-success']" @click="$emit('makeHost', makeUid)">Make host</button>
             </div>
+
+          <div class="d-flex justify-content-between p-2" v-else>
+<!--            <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>-->
+<!--            <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>-->
+            <button type="button" class="btn " :class="[isDisabled() ? 'btn-secondary disabled' : 'btn-success']" @click="$emit('makeHost', makeUid)" >
+              {{ isDisabled() ? 'Request Pending' : 'Make host' }}</button>
+          </div>
 
             <div class="card-header">Results</div>
             <div class="card-body">
@@ -17,7 +33,9 @@
                     <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']" style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
-                        {{v.name}}<span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
+                        {{v.name}}
+                      <span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
+                      <span v-if="requestHostUser" class="ml-1 badge badge-danger">{{ v.id == requestHostUser.id ? 'Requested' : '' }}</span>
                         <span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
                     </li>
                 </ul>
@@ -117,12 +135,13 @@
 
 <script>
 export default{
-	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
+	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
     data(){
 	    return{
             showResult:true,
             resultDetailData: null,
-            makeUid: this.user.id
+            makeUid: this.user.id,
+
         }
     },
     mounted() {
@@ -130,12 +149,22 @@ export default{
 	    console.log('result data', this.resultDetailData)
     },
     methods:{
+      isDisabledHost(){
+        return this.uid == this.makeUid
+      },
+      isDisabled() {
+        // you can  check your form is filled or not here.
+        return this.requestHostUser != null
+        // return this.requestHostUser != null ? (this.user.id == this.requestHostUser.id) : false
+      },
         checkURL(url) {
             return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
         },
         selectUid(id){
             console.log('id data..', id)
-            this.makeUid = id
+            if(this.uid == this.user.id) {
+              this.makeUid = id
+            }
         },
         showDetail(){
             if (this.resultDetailData != null){

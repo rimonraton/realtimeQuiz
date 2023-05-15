@@ -75,6 +75,9 @@ export const quizHelpers = {
             confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
             document.head.appendChild(confetti)
         },
+        isHost() {
+            return this.uid === this.user.id
+        },
     },
     computed: {
         channel(){

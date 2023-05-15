@@ -28,7 +28,7 @@ Route::post('gameEndUser', [GameController::class, 'gameEndUser']);
 Route::post('gameReset', [GameController::class, 'gameReset']);
 Route::post('kickUser', [GameController::class, 'kickUser']);
 Route::post('newGameQuiz', [GameController::class, 'newGameQuiz']);
-Route::post('makeHost/{uid}/{channel}', [GameController::class, 'makeHost']);
+Route::post('makeHost/{user}/{channel}/{status?}', [GameController::class, 'makeHost']);
 
 //SingleDisplayQuiz
 Route::post('userJoin', [SingleQuestionDisplayQuizController::class, 'userJoin']);
