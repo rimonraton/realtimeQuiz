@@ -704,7 +704,8 @@ class QuestionController extends Controller
                 ->whereIn('user_id',$admin_users)
                 ->with('shareQuestion.user')
                 ->orderBy('id','desc')
-                ->paginate(10);
+                ->get();
+//                ->paginate(10);
             if(count($questions)) {
                 $shareQCount = $questions->pluck('shareQuestion')->filter()->count();
             }
@@ -713,7 +714,8 @@ class QuestionController extends Controller
                 ->where('user_id', auth()->user()->id)
                 ->with('shareQuestion.user')
                 ->orderBy('id','desc')
-                ->paginate(10);
+                ->get();
+//                ->paginate(10);
 //            return count($questions);
 
             if(count($questions)){
@@ -723,7 +725,7 @@ class QuestionController extends Controller
 //           return count($array);
         }
 //        return auth()->user()->id;
-
+//        return $questions;
         return view('Admin.PartialPages.Questions.draft_questions_list', compact(['topic', 'id', 'catName','questionType', 'questions', 'shareQCount']));
     }
 //    public function getDraftList($id, $keyword = '', $qType='')

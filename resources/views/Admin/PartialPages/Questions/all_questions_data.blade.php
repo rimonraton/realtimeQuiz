@@ -2,9 +2,13 @@
 <div class="card">
     <div class="card-body">
         <div class="text-center verifyButton d-none" id="verifybtnDiv">
-            <button class="p-1 border border-success rounded-lg bg-success text-white" data-tid="{{$id}}" id="verify">{{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}</button>
+            <button class="p-1 border border-success rounded-lg bg-success text-white" data-tid="{{$id}}" id="verify">
+                {{$lang == 'gb' ? 'Verify' : 'যাচাই করুন'}}
+            </button>
             <br>
-            <button class="p-1 mt-1 border border-primary rounded-lg bg-primary text-white" id="shareQ">{{ $lang == 'gb' ? 'Share' : 'শেয়ার করুন' }}</button>
+            <button class="p-1 mt-1 border border-primary rounded-lg bg-primary text-white" id="shareQ">
+                {{ $lang == 'gb' ? 'Share' : 'শেয়ার করুন' }}
+            </button>
         </div>
                 @if(count($questions) > 0)
                 <div class="" style="overflow-x: hidden">
@@ -202,9 +206,9 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-8">
-                                        {{$questions->links()}}
-                                    </div>
+{{--                                    <div class="col-md-8">--}}
+{{--                                        {{$questions->links()}}--}}
+{{--                                    </div>--}}
 {{--                                    <div class="col-md-4" >--}}
 {{--                                        <div class="text-center loading" style="display: block;">--}}
 {{--                                            <button class="btn btn-primary" type="button" disabled="">--}}
