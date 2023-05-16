@@ -40,7 +40,7 @@ class APIController extends Controller
                 }
                 if($option->correct == 1){
                     $correctAnswer = $k;
-                    $optionType = $option->flag;
+                    $optionType = $option->flag ? $option->flag : 'text';
                 }
             }
             $questions[$key]['optionsValue'] = $optData;
