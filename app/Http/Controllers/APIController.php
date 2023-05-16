@@ -33,13 +33,19 @@ class APIController extends Controller
 //            dd($question->options);
 
             foreach ($question->options as $k => $option){
-                $optData[$k] = $option->bd_option;
+                if ($option->flag == 'img'){
+                    $optData[$k] = $option->img_link;
+                } else{
+                    $optData[$k] = $option->bd_option;
+                }
                 if($option->correct == 1){
                     $correctAnswer = $k;
+                    $optionType = $option->flag;
                 }
             }
             $questions[$key]['optionsValue'] = $optData;
             $questions[$key]['answer'] = $correctAnswer;
+            $questions[$key]['optionType'] = $optionType;
         }
         return $questions;
 
