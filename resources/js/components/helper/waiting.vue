@@ -2,14 +2,15 @@
 	<div class="waiting">
 	    <div class="card" style="min-width: 24rem">
 	        <div class="d-flex justify-content-between card-header text-center">
+            <span class="btn btn-sm btn-danger align-self-start" @click="back">Back</span>
 	            <span v-if="user.id != uid" class="ml-1 text-primary">
                     Please wait, the Quiz Host will start the game soon.
                 </span>
                 <span v-else class="ml-1 text-primary">
-                    User List
+                  <span>User List</span>
                 </span>
                 <a
-                    class="btn btn-sm "
+                    class="btn btn-sm align-self-start"
                     :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
                     @click="qr = !qr" >
                     {{qr? 'QR' : 'QR'}}
@@ -80,6 +81,10 @@ export default{
         };
     },
     methods:{
+      back(){
+        // window.history.back()
+        window.location = '/game/mode/challenge';
+      },
     	kickingUser(id){
     		this.$emit("kickingUser", id);
         },

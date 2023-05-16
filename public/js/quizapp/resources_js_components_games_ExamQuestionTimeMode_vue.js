@@ -1405,6 +1405,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
  // Share Link
 
@@ -1427,6 +1428,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    back: function back() {
+      // window.history.back()
+      window.location = '/game/mode/challenge';
+    },
     kickingUser: function kickingUser(id) {
       this.$emit("kickingUser", id);
     },
@@ -3899,6 +3904,15 @@ var render = function () {
           staticClass: "d-flex justify-content-between card-header text-center",
         },
         [
+          _c(
+            "span",
+            {
+              staticClass: "btn btn-sm btn-danger align-self-start",
+              on: { click: _vm.back },
+            },
+            [_vm._v("Back")]
+          ),
+          _vm._v(" "),
           _vm.user.id != _vm.uid
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
@@ -3906,13 +3920,13 @@ var render = function () {
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
-                _vm._v("\n                    User List\n                "),
+                _c("span", [_vm._v("User List")]),
               ]),
           _vm._v(" "),
           _c(
             "a",
             {
-              staticClass: "btn btn-sm",
+              staticClass: "btn btn-sm align-self-start",
               class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
               on: {
                 click: function ($event) {

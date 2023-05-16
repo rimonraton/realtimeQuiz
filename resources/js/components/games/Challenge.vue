@@ -93,7 +93,7 @@
                             @play="onStart()"
                             class="image w-100 mt-1 rounded img-thumbnail"
                             controls="controls"
-                            playsinline="true"
+                            playsinline
                             autoplay
                         >
 
