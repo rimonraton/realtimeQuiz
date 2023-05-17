@@ -1275,6 +1275,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
@@ -1406,6 +1408,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
  // Share Link
 
@@ -1424,6 +1430,7 @@ __webpack_require__.r(__webpack_exports__);
       timer: null,
       qr: false,
       size: 300,
+      defaultTime: 30,
       value: window.location.toString()
     };
   },
@@ -3521,7 +3528,8 @@ var render = function () {
                           "\n              " +
                             _vm._s(
                               _vm.isDisabled() ? "Request Pending" : "Make host"
-                            )
+                            ) +
+                            "\n            "
                         ),
                       ]
                     ),
@@ -4017,23 +4025,63 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between" }, [
-            _vm.user.id == _vm.uid
-              ? _c(
+          _vm.user.id == _vm.uid
+            ? _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _c(
                   "a",
                   {
                     staticClass:
                       "btn btn-sm btn-outline-success mt-4 pull-right",
                     on: {
                       click: function ($event) {
-                        return _vm.$emit("gameStart")
+                        return _vm.$emit("gameStart", _vm.defaultTime)
                       },
                     },
                   },
                   [_vm._v("START\n                    ")]
-                )
-              : _vm._e(),
-          ]),
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-4" }, [
+                  _c("div", { staticStyle: { position: "relative" } }, [
+                    _c(
+                      "span",
+                      {
+                        staticStyle: {
+                          position: "absolute",
+                          left: "32px",
+                          "font-size": "11px",
+                          "padding-top": "7px",
+                          color: "gray",
+                        },
+                      },
+                      [_vm._v("Seconds")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.defaultTime,
+                          expression: "defaultTime",
+                        },
+                      ],
+                      staticStyle: { width: "100px" },
+                      attrs: { type: "number" },
+                      domProps: { value: _vm.defaultTime },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.defaultTime = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+              ])
+            : _vm._e(),
         ],
         1
       ),

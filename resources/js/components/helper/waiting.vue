@@ -41,13 +41,17 @@
 	                </li>
 	            </ul>
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
-	            <div class="d-flex justify-content-between">
-                    <a @click="$emit('gameStart')"
-                       v-if="user.id == uid"
+	            <div v-if="user.id == uid"
+                     class="d-flex justify-content-between">
+                    <a @click="$emit('gameStart', defaultTime)"
                        class="btn btn-sm btn-outline-success mt-4 pull-right">START
                     </a>
-
-
+                    <div class="mt-4">
+                        <div style="position: relative">
+                            <span style="position: absolute; left: 32px; font-size: 11px; padding-top: 7px; color: gray">Seconds</span>
+                            <input v-model="defaultTime" type="number" style="width: 100px;">
+                        </div>
+                    </div>
                 </div>
 	        </div>
 <!--             Uncomment share.js in app.blade.php file -->
@@ -77,6 +81,7 @@ export default{
             timer: null,
             qr: false,
             size: 300,
+            defaultTime: 30,
             value: window.location.toString()
         };
     },

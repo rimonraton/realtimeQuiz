@@ -220,23 +220,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -254,6 +237,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       qt: {
         ms: 0,
+        defaultTime: 30,
         time: 30,
         timer: null
       },
@@ -288,7 +272,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       preventClick: true,
       shortAnswer: null,
       requestHost: false,
-      requestHostUser: null
+      requestHostUser: null,
+      endAVWait: false
     };
   },
   created: function created() {
@@ -301,7 +286,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this.screen.waiting = 0;
       _this.sqo = true;
       _this.showQuestionOptions(null);
-      // this.QuestionTimer() // Set and Start QuestionTimer
+      _this.qt.defaultTime = data.defaultTime;
+      _this.qt.time = data.defaultTime;
     }).listen('GameResetEvent', function (data) {
       console.log(['GameResetEvent.............', data]);
       _this.gameReset();
@@ -488,7 +474,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     },
-    gameStart: function gameStart() {
+    gameStart: function gameStart(defaultTime) {
       var _this5 = this;
       this.sqo = true;
       var ids = this.users.map(function (u) {
@@ -500,8 +486,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         uid: ids,
         id: this.challenge.id,
         users: this.users,
-        host_id: this.uid
+        host_id: this.uid,
+        defaultTime: defaultTime
       };
+      this.qt.defaultTime = defaultTime;
+      this.qt.time = defaultTime;
       // console.log(gd);
       axios.post("/api/gameStart", gd).then(function (res) {
         _this5.share = res.data;
@@ -524,7 +513,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (isStart) this.gameStart();
     },
     gameReset: function gameReset() {
-      this.questionInit();
+      this.questionInit(this.qt.defaultTime);
       this.screen.waiting = 1;
       this.screen.loading = 0;
       this.screen.result = 0;
@@ -539,6 +528,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.user_ranking = null;
       this.game_start = 0;
       this.current = this.questions[this.qid].id;
+      this.endAVWait = false;
     },
     checkAnswer: function checkAnswer(q, a, rw) {
       var _this6 = this;
@@ -553,8 +543,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw == 1 ? Math.floor(this.progress) : 0;
       var clone = _objectSpread({}, this.gamedata);
-      this.questionInit();
-      // console.log('this.questionInit() call.........')
+      this.questionInit(this.qt.defaultTime);
       axios.post("/api/questionClick", clone).then(function (res) {
         _this6.resultScreen();
       });
@@ -576,7 +565,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     resultScreen: function resultScreen() {
       // console.log('resultScreen')
-      this.questionInit();
+      this.questionInit(this.qt.defaultTime);
       this.getResult(); //Sorting this.results
       this.countDown();
       if (this.qid + 1 == this.questions.length) {
@@ -600,7 +589,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.qt.timer = setInterval(function () {
         // console.log('this.qt.time', this.qt.time)
         if (_this7.qt.time <= 0) {
-          _this7.questionInit();
+          _this7.questionInit(_this7.qt.defaultTime);
           _this7.checkAnswer(_this7.qid, 'Not Answered', 0);
           // this.resultScreen();
         } else {
@@ -616,7 +605,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     countDown: function countDown() {
       // console.log('countDown')
       if (this.counter <= 0) {
-        // this.questionInit()
         this.qid++;
         this.current = this.questions[this.qid].id;
         this.showQuestionOptions(null);
@@ -658,7 +646,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).reduce(function (prev, curr) {
         return prev.perform_status < curr.perform_status ? prev : curr;
       });
-      this.questionInit();
+      this.questionInit(this.qt.defaultTime);
       this.screen.result = 1;
       this.screen.winner = 1;
       this.game_start = 0;
@@ -724,20 +712,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     showQuestionOptions: function showQuestionOptions(question) {
       var _this10 = this;
-      // console.log('showQuestionOptions', question)
       var timeout = 1000;
       if (this.challenge.option_view_time != 0) {
-        timeout = 3500; // this.quiz.quiz_time * 1000
+        // this.quiz.quiz_time * 1000
+        timeout = 3500;
       }
-
-      if (question == null || question == 'image') {
-        clearInterval(this.qt.timer);
-        setTimeout(function () {
-          // this.sqo = true
-          _this10.preventClick = false;
-          _this10.QuestionTimer();
-        }, timeout);
+      if (question !== 'onEnd') {
+        if (this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+          timeout += 3000;
+          this.av = false;
+          setTimeout(function () {
+            _this10.endAVWait = true;
+          }, 3000);
+        }
       }
+      clearInterval(this.qt.timer);
+      setTimeout(function () {
+        // this.sqo = true
+        _this10.preventClick = false;
+        _this10.QuestionTimer();
+      }, timeout);
     },
     quizEnd: function quizEnd() {
       var _this11 = this;
@@ -770,6 +764,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // progressWidth(){
     //     return {'width':this.progress + '%', }
     // }
+    currentQuestionType: function currentQuestionType() {
+      return this.quizquestions[this.qid].fileType;
+    }
   }
 });
 
@@ -872,6 +869,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'uid', 'channel', 'challenge'],
@@ -889,6 +887,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       _this.messages.push(data);
       console.log('SendMessageEvent.............', data);
       _this.scrollToElement();
+      _this.show = true;
     }).listen('DeleteMessageEvent', function (data) {
       _this.messages = {};
       console.log('DeleteMessageEvent.............', data);
@@ -976,6 +975,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -1242,6 +1243,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
  // Share Link
 
@@ -1260,6 +1265,7 @@ __webpack_require__.r(__webpack_exports__);
       timer: null,
       qr: false,
       size: 300,
+      defaultTime: 30,
       value: window.location.toString()
     };
   },
@@ -1338,10 +1344,11 @@ var quizHelpers = {
   },
   methods: {
     questionInit: function questionInit() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
       clearInterval(this.timer);
       clearInterval(this.qt.timer);
       this.qt.ms = 0;
-      this.qt.time = 15;
+      this.qt.time = time;
       this.progress = 100;
       this.answered = 0;
       this.counter = 2;
@@ -1349,6 +1356,7 @@ var quizHelpers = {
       this.screen.loading = 0;
       this.screen.result = 0;
       this.screen.winner = 0;
+      this.endAVWait = false;
     },
     tbe: function tbe(b, e, l) {
       if (b !== null && e !== null) {
@@ -1409,7 +1417,7 @@ var quizHelpers = {
         });
       }
       this.av = true;
-      this.showQuestionOptions(null);
+      this.showQuestionOptions('onEnd');
     },
     onStart: function onStart() {
       this.av = false;
@@ -1479,7 +1487,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\r\n    position: fixed;\r\n    bottom: 20px;\r\n    right: 20px;\r\n    cursor: pointer;\r\n    z-index: 999;\n}\n.chat[data-v-4c9c3884]{\r\n    width: 24rem;\r\n    position: fixed;\r\n    right: 20px;\r\n    bottom: 20px;\r\n    z-index: 999\n}\n.card[data-v-4c9c3884]{\r\n    height: 500px;\r\n    border-radius: 15px !important;\r\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\r\n    padding: 8px;\r\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\r\n    border-radius: 15px 15px 0 0 !important;\r\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\r\n    border-radius: 0 0 15px 15px !important;\r\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color:white !important;\r\n    height: 60px !important;\r\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\r\n    box-shadow:none !important;\r\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\r\n    border-radius: 15px 0 0 15px !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\r\n    border-radius: 0 15px 15px 0 !important;\r\n    background-color: rgba(0,0,0,0.3) !important;\r\n    border:0 !important;\r\n    color: white !important;\r\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\r\n    width: 100% !important;\r\n    padding: 5px 10px;\r\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\r\n    background: gray;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\r\n    height: 40px;\r\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\r\n    font-size: 20px;\r\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\r\n    font-size: 10px;\r\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-left: 10px;\r\n    border-radius: 25px;\r\n    background-color: #82ccdd;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\r\n    margin-top: auto;\r\n    margin-bottom: auto;\r\n    margin-right: 10px;\r\n    border-radius: 25px;\r\n    background-color: #78e08f;\r\n    padding: 10px;\r\n    position: relative;\r\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\r\n    position: absolute;\r\n    right:0;\r\n    bottom: -15px;\r\n    color: rgba(255,255,255,0.5);\r\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\r\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\r\n        margin-bottom: 15px !important;\n}\n.fa-5x[data-v-4c9c3884] {\r\n        font-size: 3em;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.chat-min[data-v-4c9c3884]{\n    position: fixed;\n    bottom: 20px;\n    right: 20px;\n    cursor: pointer;\n    z-index: 99999;\n}\n.chat[data-v-4c9c3884]{\n    width: 24rem;\n    position: fixed;\n    right: 20px;\n    bottom: 20px;\n    z-index: 99999\n}\n.card[data-v-4c9c3884]{\n    height: 500px;\n    border-radius: 15px !important;\n    background-color: rgba(0,0,0,0.8) !important;\n}\n.msg_card_body[data-v-4c9c3884]{\n    padding: 8px;\n    overflow-y: auto;\n}\n.card-header[data-v-4c9c3884]{\n    border-radius: 15px 15px 0 0 !important;\n    border-bottom: 0 !important;\n}\n.card-footer[data-v-4c9c3884]{\n    border-radius: 0 0 15px 15px !important;\n    border-top: 0 !important;\n}\n.type_msg[data-v-4c9c3884]{\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color:white !important;\n    height: 60px !important;\n    overflow-y: auto;\n}\n.type_msg[data-v-4c9c3884]:focus{\n    box-shadow:none !important;\n    outline:0px !important;\n}\n.attach_btn[data-v-4c9c3884]{\n    border-radius: 15px 0 0 15px !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.send_btn[data-v-4c9c3884]{\n    border-radius: 0 15px 15px 0 !important;\n    background-color: rgba(0,0,0,0.3) !important;\n    border:0 !important;\n    color: white !important;\n    cursor: pointer;\n}\n.contacts li[data-v-4c9c3884]{\n    width: 100% !important;\n    padding: 5px 10px;\n    margin-bottom: 15px !important;\n}\n.user_img_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n    background: gray;\n    color: white;\n    font-size: 1.2rem;\n    padding: 5px;\n}\n.img_cont_msg[data-v-4c9c3884]{\n    height: 40px;\n    width: 40px;\n}\n.user_info[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 15px;\n}\n.user_info span[data-v-4c9c3884]{\n    font-size: 20px;\n    color: white;\n}\n.user_info p[data-v-4c9c3884]{\n    font-size: 10px;\n    color: rgba(255,255,255,0.6);\n}\n.msg_cotainer[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-left: 10px;\n    border-radius: 25px;\n    background-color: #82ccdd;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_cotainer_send[data-v-4c9c3884]{\n    margin-top: auto;\n    margin-bottom: auto;\n    margin-right: 10px;\n    border-radius: 25px;\n    background-color: #78e08f;\n    padding: 10px;\n    position: relative;\n    min-width: 100px;\n}\n.msg_time[data-v-4c9c3884]{\n    position: absolute;\n    left: 0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_time_send[data-v-4c9c3884]{\n    position: absolute;\n    right:0;\n    bottom: -15px;\n    color: rgba(255,255,255,0.5);\n    font-size: 10px;\n}\n.msg_head[data-v-4c9c3884]{\n    position: relative;\n}\n@media(max-width: 576px){\n.contacts_card[data-v-4c9c3884]{\n        margin-bottom: 15px !important;\n}\n.fa-5x[data-v-4c9c3884] {\n        font-size: 3em;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -3213,308 +3221,331 @@ var render = function () {
                             })
                           : _vm._e(),
                         _vm._v(" "),
-                        question.fileType == "video"
-                          ? _c("video", {
-                              staticClass:
-                                "image w-100 mt-1 rounded img-thumbnail",
-                              attrs: {
-                                src: "/" + question.question_file_link,
-                                controls: "controls",
-                                playsinline: "",
-                                autoplay: "",
-                              },
-                              on: {
-                                ended: function ($event) {
-                                  return _vm.onEnd()
-                                },
-                                play: function ($event) {
-                                  return _vm.onStart()
-                                },
-                              },
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        question.fileType == "audio"
-                          ? _c("div", { staticClass: "audio" }, [
-                              _c(
-                                "audio",
-                                {
-                                  attrs: { controls: "", autoplay: "" },
-                                  on: {
-                                    ended: function ($event) {
-                                      return _vm.onEnd()
-                                    },
-                                    play: function ($event) {
-                                      return _vm.onStart()
-                                    },
-                                  },
-                                },
-                                [
-                                  _c("source", {
-                                    attrs: {
-                                      src: "/" + question.question_file_link,
-                                      type: "audio/mpeg",
-                                    },
-                                  }),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div", { attrs: { id: "ar" } }),
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.av,
-                                expression: "av",
-                              },
-                            ],
-                          },
-                          [
-                            _c("div", { staticClass: "card" }, [
-                              _c("div", { staticClass: "card-header" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "d-flex align-items-center question-title",
-                                  },
-                                  [
-                                    _c("h3", { staticClass: "text-danger" }, [
-                                      _vm._v("Q."),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("h5", { staticClass: "mt-1 ml-2" }, [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm.tbe(
-                                            question.bd_question_text,
-                                            question.question_text,
-                                            _vm.user.lang
-                                          )
-                                        )
+                        _c("div", [
+                          _vm.endAVWait
+                            ? _c("div", [
+                                question.fileType == "video"
+                                  ? _c("video", {
+                                      staticClass:
+                                        "image w-100 mt-1 rounded img-thumbnail",
+                                      attrs: {
+                                        src: "/" + question.question_file_link,
+                                        controls: "controls",
+                                        playsinline: "",
+                                        autoplay: "",
+                                      },
+                                      on: {
+                                        ended: function ($event) {
+                                          return _vm.onEnd()
+                                        },
+                                        play: function ($event) {
+                                          return _vm.onStart()
+                                        },
+                                      },
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                question.fileType == "audio"
+                                  ? _c("div", { staticClass: "audio" }, [
+                                      _c(
+                                        "audio",
+                                        {
+                                          attrs: { controls: "", autoplay: "" },
+                                          on: {
+                                            ended: function ($event) {
+                                              return _vm.onEnd()
+                                            },
+                                            play: function ($event) {
+                                              return _vm.onStart()
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _c("source", {
+                                            attrs: {
+                                              src:
+                                                "/" +
+                                                question.question_file_link,
+                                              type: "audio/mpeg",
+                                            },
+                                          }),
+                                        ]
                                       ),
-                                    ]),
-                                  ]
-                                ),
+                                      _vm._v(" "),
+                                      _c("div", { attrs: { id: "ar" } }),
+                                    ])
+                                  : _vm._e(),
+                              ])
+                            : _c("div", [
+                                _vm.currentQuestionType == "audio"
+                                  ? _c("div", [
+                                      _c("h1", [_vm._v("Audio Question... ")]),
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.currentQuestionType == "video"
+                                  ? _c("div", [
+                                      _c("h1", [_vm._v("Video Question... ")]),
+                                    ])
+                                  : _vm._e(),
                               ]),
-                            ]),
-                            _vm._v(" "),
-                            _vm.sqo
-                              ? _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
-                                    class: {
-                                      "row justify-content-center justify-item-center":
-                                        _vm.imageOption(question["options"]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.av,
+                                  expression: "av",
+                                },
+                              ],
+                            },
+                            [
+                              _c("div", { staticClass: "card" }, [
+                                _c("div", { staticClass: "card-header" }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "d-flex align-items-center question-title",
                                     },
-                                  },
-                                  [
-                                    question.short_answer > 0
-                                      ? _c(
-                                          "div",
-                                          { staticClass: "col-md-12 mt-4" },
-                                          [
-                                            _c(
-                                              "form",
-                                              {
-                                                on: {
-                                                  submit: function ($event) {
-                                                    $event.preventDefault()
-                                                    return _vm.smtAnswer(
-                                                      question.id,
-                                                      question.options,
-                                                      _vm.shortAnswer
-                                                    )
+                                    [
+                                      _c("h3", { staticClass: "text-danger" }, [
+                                        _vm._v("Q."),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("h5", { staticClass: "mt-1 ml-2" }, [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.tbe(
+                                              question.bd_question_text,
+                                              question.question_text,
+                                              _vm.user.lang
+                                            )
+                                          )
+                                        ),
+                                      ]),
+                                    ]
+                                  ),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _vm.sqo
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
+                                      class: {
+                                        "row justify-content-center justify-item-center":
+                                          _vm.imageOption(question["options"]),
+                                      },
+                                    },
+                                    [
+                                      question.short_answer > 0
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "col-md-12 mt-4" },
+                                            [
+                                              _c(
+                                                "form",
+                                                {
+                                                  on: {
+                                                    submit: function ($event) {
+                                                      $event.preventDefault()
+                                                      return _vm.smtAnswer(
+                                                        question.id,
+                                                        question.options,
+                                                        _vm.shortAnswer
+                                                      )
+                                                    },
                                                   },
                                                 },
-                                              },
-                                              [
-                                                _c(
-                                                  "div",
-                                                  {
-                                                    staticClass: "input-group",
-                                                  },
-                                                  [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "input-group",
+                                                    },
+                                                    [
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              _vm.shortAnswer,
+                                                            expression:
+                                                              "shortAnswer",
+                                                          },
+                                                        ],
+                                                        staticClass:
+                                                          "form-control",
+                                                        attrs: {
+                                                          type: "text",
+                                                          placeholder:
+                                                            "Type Your Answer",
+                                                        },
+                                                        domProps: {
                                                           value:
                                                             _vm.shortAnswer,
-                                                          expression:
-                                                            "shortAnswer",
                                                         },
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: {
-                                                        type: "text",
-                                                        placeholder:
-                                                          "Type Your Answer",
-                                                      },
-                                                      domProps: {
-                                                        value: _vm.shortAnswer,
-                                                      },
-                                                      on: {
-                                                        input: function (
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
+                                                        on: {
+                                                          input: function (
+                                                            $event
                                                           ) {
-                                                            return
-                                                          }
-                                                          _vm.shortAnswer =
-                                                            $event.target.value
-                                                        },
-                                                      },
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "input-group-append",
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "button",
-                                                          {
-                                                            staticClass:
-                                                              "btn btn-primary",
-                                                            attrs: {
-                                                              disabled:
-                                                                _vm.shortAnswer !=
-                                                                null
-                                                                  ? false
-                                                                  : true,
-                                                              type: "submit",
-                                                            },
-                                                          },
-                                                          [_vm._v("Submit")]
-                                                        ),
-                                                      ]
-                                                    ),
-                                                  ]
-                                                ),
-                                              ]
-                                            ),
-                                          ]
-                                        )
-                                      : _vm._l(
-                                          question.options,
-                                          function (option, i) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                staticClass: "col-md-6 px-1",
-                                                class: [
-                                                  option.flag == "img"
-                                                    ? "col-6"
-                                                    : "col-12",
-                                                ],
-                                              },
-                                              [
-                                                option.flag != "img"
-                                                  ? _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "list-group",
-                                                        class:
-                                                          _vm.getOptionClass(
-                                                            i,
-                                                            _vm.challenge
-                                                              .option_view_time
-                                                          ),
-                                                      },
-                                                      [
-                                                        _c("span", {
-                                                          staticClass:
-                                                            "list-group-item list-group-item-action cursor my-1",
-                                                          domProps: {
-                                                            innerHTML: _vm._s(
-                                                              _vm.tbe(
-                                                                option.bd_option,
-                                                                option.option,
-                                                                _vm.user.lang
-                                                              )
-                                                            ),
-                                                          },
-                                                          on: {
-                                                            click: function (
-                                                              $event
+                                                            if (
+                                                              $event.target
+                                                                .composing
                                                             ) {
-                                                              _vm.checkAnswer(
-                                                                question.id,
+                                                              return
+                                                            }
+                                                            _vm.shortAnswer =
+                                                              $event.target.value
+                                                          },
+                                                        },
+                                                      }),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "input-group-append",
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "button",
+                                                            {
+                                                              staticClass:
+                                                                "btn btn-primary",
+                                                              attrs: {
+                                                                disabled:
+                                                                  _vm.shortAnswer !=
+                                                                  null
+                                                                    ? false
+                                                                    : true,
+                                                                type: "submit",
+                                                              },
+                                                            },
+                                                            [_vm._v("Submit")]
+                                                          ),
+                                                        ]
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          )
+                                        : _vm._l(
+                                            question.options,
+                                            function (option, i) {
+                                              return _c(
+                                                "div",
+                                                {
+                                                  staticClass: "col-md-6 px-1",
+                                                  class: [
+                                                    option.flag == "img"
+                                                      ? "col-6"
+                                                      : "col-12",
+                                                  ],
+                                                },
+                                                [
+                                                  option.flag != "img"
+                                                    ? _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "list-group",
+                                                          class:
+                                                            _vm.getOptionClass(
+                                                              i,
+                                                              _vm.challenge
+                                                                .option_view_time
+                                                            ),
+                                                        },
+                                                        [
+                                                          _c("span", {
+                                                            staticClass:
+                                                              "list-group-item list-group-item-action cursor my-1",
+                                                            domProps: {
+                                                              innerHTML: _vm._s(
                                                                 _vm.tbe(
                                                                   option.bd_option,
                                                                   option.option,
                                                                   _vm.user.lang
-                                                                ),
+                                                                )
+                                                              ),
+                                                            },
+                                                            on: {
+                                                              click: function (
+                                                                $event
+                                                              ) {
+                                                                _vm.checkAnswer(
+                                                                  question.id,
+                                                                  _vm.tbe(
+                                                                    option.bd_option,
+                                                                    option.option,
+                                                                    _vm.user
+                                                                      .lang
+                                                                  ),
+                                                                  option.correct
+                                                                )
+                                                              },
+                                                            },
+                                                          }),
+                                                        ]
+                                                      )
+                                                    : _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "cursor my-1",
+                                                          class:
+                                                            _vm.getOptionClass(
+                                                              i,
+                                                              _vm.challenge
+                                                                .option_view_time
+                                                            ),
+                                                          on: {
+                                                            click: function (
+                                                              $event
+                                                            ) {
+                                                              return _vm.checkAnswer(
+                                                                question.id,
+                                                                option.img_link,
                                                                 option.correct
                                                               )
                                                             },
                                                           },
-                                                        }),
-                                                      ]
-                                                    )
-                                                  : _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "cursor my-1",
-                                                        class:
-                                                          _vm.getOptionClass(
-                                                            i,
-                                                            _vm.challenge
-                                                              .option_view_time
-                                                          ),
-                                                        on: {
-                                                          click: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.checkAnswer(
-                                                              question.id,
-                                                              option.img_link,
-                                                              option.correct
-                                                            )
-                                                          },
                                                         },
-                                                      },
-                                                      [
-                                                        _c("img", {
-                                                          staticClass:
-                                                            "imageOption mt-1 rounded img-thumbnail",
-                                                          attrs: {
-                                                            src:
-                                                              "/" +
-                                                              option.img_link,
-                                                            alt: "",
-                                                          },
-                                                        }),
-                                                      ]
-                                                    ),
-                                              ]
-                                            )
-                                          }
-                                        ),
-                                  ],
-                                  2
-                                )
-                              : _vm._e(),
-                          ]
-                        ),
+                                                        [
+                                                          _c("img", {
+                                                            staticClass:
+                                                              "imageOption mt-1 rounded img-thumbnail",
+                                                            attrs: {
+                                                              src:
+                                                                "/" +
+                                                                option.img_link,
+                                                              alt: "",
+                                                            },
+                                                          }),
+                                                        ]
+                                                      ),
+                                                ]
+                                              )
+                                            }
+                                          ),
+                                    ],
+                                    2
+                                  )
+                                : _vm._e(),
+                            ]
+                          ),
+                        ]),
                       ]
                     ),
                   ])
@@ -3528,7 +3559,17 @@ var render = function () {
           _vm.results.length > 0
             ? _c("div", { staticClass: "card my-4" }, [
                 _c("div", { staticClass: "card-header" }, [
-                  _vm._v("\n                        Score Board\n"),
+                  _vm._v(
+                    "\n                        Score Board\n                        "
+                  ),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-sm btn-danger float-left",
+                      on: { click: _vm.stop },
+                    },
+                    [_vm._v("STOP")]
+                  ),
                   _vm._v(" "),
                   _vm.user.id == _vm.uid && _vm.qid > 0
                     ? _c(
@@ -3808,7 +3849,7 @@ var render = function () {
               ],
               ref: "type_msg",
               staticClass: "form-control type_msg attach_btn",
-              attrs: { placeholder: "Type your message..." },
+              attrs: { id: "type_msg", placeholder: "Type your message..." },
               domProps: { value: _vm.message },
               on: {
                 keyup: function ($event) {
@@ -4023,7 +4064,8 @@ var render = function () {
                           "\n              " +
                             _vm._s(
                               _vm.isDisabled() ? "Request Pending" : "Make host"
-                            )
+                            ) +
+                            "\n            "
                         ),
                       ]
                     ),
@@ -4519,23 +4561,63 @@ var render = function () {
             0
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between" }, [
-            _vm.user.id == _vm.uid
-              ? _c(
+          _vm.user.id == _vm.uid
+            ? _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _c(
                   "a",
                   {
                     staticClass:
                       "btn btn-sm btn-outline-success mt-4 pull-right",
                     on: {
                       click: function ($event) {
-                        return _vm.$emit("gameStart")
+                        return _vm.$emit("gameStart", _vm.defaultTime)
                       },
                     },
                   },
                   [_vm._v("START\n                    ")]
-                )
-              : _vm._e(),
-          ]),
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-4" }, [
+                  _c("div", { staticStyle: { position: "relative" } }, [
+                    _c(
+                      "span",
+                      {
+                        staticStyle: {
+                          position: "absolute",
+                          left: "32px",
+                          "font-size": "11px",
+                          "padding-top": "7px",
+                          color: "gray",
+                        },
+                      },
+                      [_vm._v("Seconds")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.defaultTime,
+                          expression: "defaultTime",
+                        },
+                      ],
+                      staticStyle: { width: "100px" },
+                      attrs: { type: "number" },
+                      domProps: { value: _vm.defaultTime },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.defaultTime = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+              ])
+            : _vm._e(),
         ],
         1
       ),

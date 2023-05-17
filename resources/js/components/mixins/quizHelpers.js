@@ -6,11 +6,11 @@ export const quizHelpers = {
         this.externalJS()
     },
     methods: {
-        questionInit(){
+        questionInit(time = 30){
             clearInterval(this.timer)
             clearInterval(this.qt.timer)
             this.qt.ms = 0
-            this.qt.time = 15
+            this.qt.time = time
             this.progress = 100
             this.answered = 0
             this.counter = 2
@@ -18,6 +18,7 @@ export const quizHelpers = {
             this.screen.loading = 0
             this.screen.result = 0
             this.screen.winner = 0
+            this.endAVWait = false
         },
         tbe(b, e, l) {
             if(b !== null && e !== null){
@@ -61,7 +62,7 @@ export const quizHelpers = {
                 axios.post(`/api/audioVideoEnd`, {channel: this.channel }).then(res => console.log('apiCallThen ..', res.data))
             }
             this.av = true
-            this.showQuestionOptions(null)
+            this.showQuestionOptions('onEnd')
         },
         onStart() {
             this.av = false
