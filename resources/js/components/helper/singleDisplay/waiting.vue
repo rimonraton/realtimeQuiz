@@ -2,14 +2,19 @@
 	<div class="waiting">
 	    <div class="card" style="min-width: 24rem">
 	        <div class="card-header text-center">
-	            <span v-if="user.id != uid" class="ml-1 text-primary">
-                    Please wait, the Quiz Host will start the game soon..
+                <span class="btn btn-sm btn-danger align-self-start" @click="back">Back</span>
+                <span v-if="user.id != uid" class="ml-1 text-primary">
+                    Please wait, the Quiz Host will start the game soon.
                 </span>
                 <span v-else class="ml-1 text-primary">
-                    Users List
+                  <span>User List</span>
                 </span>
-                <button @click="decrease" class="btn btn-xs btn-outline-light" style="position: absolute; left: 5px; top: 5px">-</button>
-                <button @click="increase" class="btn btn-xs btn-outline-light" style="position: absolute; right: 5px; top: 5px">+</button>
+                <a
+                    class="btn btn-sm align-self-start"
+                    :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
+                    @click="qr = !qr" >
+                    {{qr? 'QR' : 'QR'}}
+                </a>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
                 <div id="reader" width="300px"></div>
@@ -59,12 +64,12 @@
 <!--                        @click="$emit('onEnd','apiCall')"-->
 <!--                       class="btn btn-sm btn-outline-success mt-4 pull-right">AV Test-->
 <!--                    </a>-->
-                    <a
-                        class="btn btn-sm  mt-4 "
-                        :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
-                        @click="qr = !qr" >
-                        {{qr? 'Hide QR' : 'QR Code'}}
-                    </a>
+<!--                    <a-->
+<!--                        class="btn btn-sm  mt-4 "-->
+<!--                        :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"-->
+<!--                        @click="qr = !qr" >-->
+<!--                        {{qr? 'Hide QR' : 'QR Code'}}-->
+<!--                    </a>-->
 
                 </div>
 	        </div>
@@ -102,6 +107,10 @@ export default{
         };
     },
     methods:{
+        back(){
+            // window.history.back()
+            window.location = '/game/mode/challenge';
+        },
     	kickingUser(id){
     		this.$emit("kickingUser", id);
         },

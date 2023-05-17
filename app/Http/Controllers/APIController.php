@@ -36,7 +36,7 @@ class APIController extends Controller
                 if ($option->flag == 'img'){
                     $optData[$k] = $option->img_link;
                 } else{
-                    $optData[$k] = $option->bd_option;
+                    $optData[$k] = $option->bd_option ? $option->bd_option : $option->option;
                 }
                 if($option->correct == 1){
                     $correctAnswer = $k;

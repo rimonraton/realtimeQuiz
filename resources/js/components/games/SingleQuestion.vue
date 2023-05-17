@@ -9,9 +9,11 @@
         </div>
 
         <transition name="fade">
-            <result :results='results' :lastQuestion='qid == questions.length'
-                    v-if="screen.result">
-            </result>
+            <single-result  v-if="screen.result"
+                :results='results'
+                :lastQuestion='qid == questions.length'
+                >
+            </single-result>
         </transition>
 
         <div class="winner" v-if="screen.winner">
@@ -185,13 +187,14 @@ import user_info from '../helper/singleDisplay/UserName'
 import wait from '../helper/singleDisplay/waiting'
 import result from '../helper/result'
 import { quizHelpers } from '../mixins/quizHelpers'
+import SingleResult from "../helper/singleResult";
 
 export default {
     mixins: [quizHelpers],
 
     props : ['challenge', 'uid', 'propuser', 'questions', 'gmsg','teams'],
 
-    components: { wait, result, user_info, qrcode },
+    components: {SingleResult, wait, result, user_info, qrcode },
 
     data() {
         return {

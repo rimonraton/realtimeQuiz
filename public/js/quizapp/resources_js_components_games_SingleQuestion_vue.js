@@ -13,6 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_singleDisplay_waiting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/singleDisplay/waiting */ "./resources/js/components/helper/singleDisplay/waiting.vue");
 /* harmony import */ var _helper_result__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helper/result */ "./resources/js/components/helper/result.vue");
 /* harmony import */ var _mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/quizHelpers */ "./resources/js/components/mixins/quizHelpers.js");
+/* harmony import */ var _helper_singleResult__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../helper/singleResult */ "./resources/js/components/helper/singleResult.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -202,6 +203,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+
 
 
 
@@ -212,6 +216,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mixins: [_mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_4__.quizHelpers],
   props: ['challenge', 'uid', 'propuser', 'questions', 'gmsg', 'teams'],
   components: {
+    SingleResult: _helper_singleResult__WEBPACK_IMPORTED_MODULE_5__["default"],
     wait: _helper_singleDisplay_waiting__WEBPACK_IMPORTED_MODULE_2__["default"],
     result: _helper_result__WEBPACK_IMPORTED_MODULE_3__["default"],
     user_info: _helper_singleDisplay_UserName__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -1209,6 +1214,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
  // Share Link
 
@@ -1233,6 +1243,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    back: function back() {
+      // window.history.back()
+      window.location = '/game/mode/challenge';
+    },
     kickingUser: function kickingUser(id) {
       this.$emit("kickingUser", id);
     },
@@ -1287,6 +1301,210 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.scheduledTimer();
     // console.log('scheduledTimer started')
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['results', 'lastQuestion', 'resultDetail'],
+  data: function data() {
+    return {
+      showResult: true,
+      resultDetailData: null
+      // makeUid: this.user.id,
+    };
+  },
+  mounted: function mounted() {
+    // console.log('session data', sessionStorage.SingleGameUser)
+    console.log('result data', this.resultDetailData);
+  },
+  methods: {
+    isDisabledHost: function isDisabledHost() {
+      return this.uid == this.makeUid;
+    },
+    isDisabled: function isDisabled() {
+      // you can  check your form is filled or not here.
+      return this.requestHostUser != null;
+      // return this.requestHostUser != null ? (this.user.id == this.requestHostUser.id) : false
+    },
+    checkURL: function checkURL(url) {
+      return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    },
+    selectUid: function selectUid(id) {
+      console.log('id data..', id);
+      if (this.uid == this.user.id) {
+        this.makeUid = id;
+      }
+    },
+    showDetail: function showDetail() {
+      var _this = this;
+      if (this.resultDetailData != null) {
+        this.showResult = !this.showResult;
+      } else {
+        this.resultDetailData = this.resultDetail.filter(function (user) {
+          return user.uid == _this.user.id;
+        });
+        this.showResult = !this.showResult;
+      }
+    },
+    addImage: function addImage() {
+      var random = Math.floor(Math.random() * 4) + 1;
+      return "/images/gp/".concat(random, ".jpg");
+    },
+    back: function back() {
+      // window.history.back()
+      window.location = '/game/mode/challenge';
+    },
+    getMedel: function getMedel(index) {
+      if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';
+      if (index == 1) return '<span class="badge badge-primary m-1">2<sup>nd</sup></span><i class="fas fa-award ml-1" style="color: silver"></i>';
+      if (index == 2) return '<span class="badge badge-info m-1">3<sup>rd</sup></span><i class="fas fa-award fa-sm ml-1" style="color: #CD7F32"></i>';
+      if (index > 2) return "<span class=\"badge badge-secondary m-1\">".concat(index + 1, "</span>");
+    }
   }
 });
 
@@ -2878,6 +3096,41 @@ component.options.__file = "resources/js/components/helper/singleDisplay/waiting
 
 /***/ }),
 
+/***/ "./resources/js/components/helper/singleResult.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/helper/singleResult.vue ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./singleResult.vue?vue&type=template&id=7caae24b& */ "./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b&");
+/* harmony import */ var _singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./singleResult.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__.render,
+  _singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/singleResult.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/games/SingleQuestion.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/games/SingleQuestion.vue?vue&type=script&lang=js& ***!
@@ -2935,6 +3188,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./waiting.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleDisplay/waiting.vue?vue&type=script&lang=js&");
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./singleResult.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3054,6 +3319,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b& ***!
+  \****************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_template_id_7caae24b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./singleResult.vue?vue&type=template&id=7caae24b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b&");
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/games/SingleQuestion.vue?vue&type=template&id=5d74a772&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/games/SingleQuestion.vue?vue&type=template&id=5d74a772&scoped=true& ***!
@@ -3084,7 +3365,7 @@ var render = function () {
         { attrs: { name: "fade" } },
         [
           _vm.screen.result
-            ? _c("result", {
+            ? _c("single-result", {
                 attrs: {
                   results: _vm.results,
                   lastQuestion: _vm.qid == _vm.questions.length,
@@ -4284,34 +4565,43 @@ var render = function () {
   return _c("div", { staticClass: "waiting" }, [
     _c("div", { staticClass: "card", staticStyle: { "min-width": "24rem" } }, [
       _c("div", { staticClass: "card-header text-center" }, [
+        _c(
+          "span",
+          {
+            staticClass: "btn btn-sm btn-danger align-self-start",
+            on: { click: _vm.back },
+          },
+          [_vm._v("Back")]
+        ),
+        _vm._v(" "),
         _vm.user.id != _vm.uid
           ? _c("span", { staticClass: "ml-1 text-primary" }, [
               _vm._v(
-                "\n                    Please wait, the Quiz Host will start the game soon..\n                "
+                "\n                    Please wait, the Quiz Host will start the game soon.\n                "
               ),
             ])
           : _c("span", { staticClass: "ml-1 text-primary" }, [
-              _vm._v("\n                    Users List\n                "),
+              _c("span", [_vm._v("User List")]),
             ]),
         _vm._v(" "),
         _c(
-          "button",
+          "a",
           {
-            staticClass: "btn btn-xs btn-outline-light",
-            staticStyle: { position: "absolute", left: "5px", top: "5px" },
-            on: { click: _vm.decrease },
+            staticClass: "btn btn-sm align-self-start",
+            class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
+            on: {
+              click: function ($event) {
+                _vm.qr = !_vm.qr
+              },
+            },
           },
-          [_vm._v("-")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-xs btn-outline-light",
-            staticStyle: { position: "absolute", right: "5px", top: "5px" },
-            on: { click: _vm.increase },
-          },
-          [_vm._v("+")]
+          [
+            _vm._v(
+              "\n                    " +
+                _vm._s(_vm.qr ? "QR" : "QR") +
+                "\n                "
+            ),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -4457,31 +4747,369 @@ var render = function () {
                   [_vm._v("START\n                    ")]
                 )
               : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-sm mt-4",
-                class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
-                on: {
-                  click: function ($event) {
-                    _vm.qr = !_vm.qr
-                  },
-                },
-              },
-              [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s(_vm.qr ? "Hide QR" : "QR Code") +
-                    "\n                    "
-                ),
-              ]
-            ),
           ]),
         ],
         1
       ),
     ]),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=template&id=7caae24b& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* binding */ render; },
+/* harmony export */   "staticRenderFns": function() { return /* binding */ staticRenderFns; }
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "result" }, [
+    _vm.showResult
+      ? _c(
+          "div",
+          { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
+          [
+            _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "ul",
+                { staticClass: "list-group" },
+                _vm._l(_vm.results, function (v, i) {
+                  return _c(
+                    "li",
+                    {
+                      key: i,
+                      staticClass: "list-group-item",
+                      class: [v.id == _vm.makeUid ? "bg-success" : ""],
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.selectUid(v.id)
+                        },
+                      },
+                    },
+                    [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                      }),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(v.name) +
+                          "\n                      "
+                      ),
+                      v.id == _vm.uid
+                        ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
+                            _vm._v("Host"),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "badge badge-primary float-right mt-1 text-white",
+                        },
+                        [_vm._v(_vm._s(v.score))]
+                      ),
+                    ]
+                  )
+                }),
+                0
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-success",
+                    on: { click: _vm.back },
+                  },
+                  [_vm._v("Dashboard")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-info",
+                    on: { click: _vm.showDetail },
+                  },
+                  [_vm._v("Show your result")]
+                ),
+              ]),
+            ]),
+          ]
+        )
+      : _c(
+          "div",
+          { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
+          [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("Result Detail"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body overflow-auto",
+                staticStyle: { height: "500px" },
+              },
+              _vm._l(_vm.resultDetailData, function (result, i) {
+                return _c("div", { key: "resD" + i }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "w-100 mb-2",
+                      attrs: { id: "accordion" + i },
+                    },
+                    [
+                      _c("div", { staticClass: "card text-white" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "card-header p-1 cursor",
+                            class: [
+                              result.isCorrect > 0 ? "bg-success" : "bg-danger",
+                            ],
+                            attrs: {
+                              id: "heading" + i,
+                              "data-toggle": "collapse",
+                              "data-target": "#collapse" + i,
+                              "aria-expanded": "true",
+                              "aria-controls": "collapse" + i,
+                            },
+                          },
+                          [
+                            _c(
+                              "span",
+                              { staticClass: "text-white rounded-circle" },
+                              [_vm._v(_vm._s(i + 1))]
+                            ),
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(result.question) +
+                                "\n                            "
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "collapse show",
+                            attrs: {
+                              id: "collapse" + i,
+                              "aria-labelledby": "heading" + i,
+                              "data-parent": "#accordion" + i,
+                            },
+                          },
+                          [
+                            _c("div", { staticClass: "card-body" }, [
+                              _c("div", { staticClass: "px-1" }, [
+                                result.isCorrect > 0
+                                  ? _c("div", { staticClass: "list-group" }, [
+                                      _vm.checkURL(result.selected)
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _c("img", {
+                                                staticClass:
+                                                  "imageOption mt-1 rounded img-thumbnail",
+                                                attrs: {
+                                                  src: "/" + result.selected,
+                                                  alt: "",
+                                                },
+                                              }),
+                                              _vm._v(
+                                                "\n                                              (your answer is correct)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-check text-success",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                              " +
+                                                  _vm._s(result.selected) +
+                                                  " (your answer is correct)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-check text-success",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          ),
+                                    ])
+                                  : _c("div", { staticClass: "list-group" }, [
+                                      _vm.checkURL(result.selected)
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _c("img", {
+                                                staticClass:
+                                                  "imageOption mt-1 rounded img-thumbnail",
+                                                attrs: {
+                                                  src: "/" + result.selected,
+                                                  alt: "",
+                                                },
+                                              }),
+                                              _vm._v(
+                                                "\n                                              (your answer)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-times text-danger",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          )
+                                        : _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "list-group-item list-group-item-action my-1",
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                              " +
+                                                  _vm._s(result.selected) +
+                                                  " (your answer)\n                                              "
+                                              ),
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa fa-times text-danger",
+                                                attrs: {
+                                                  "aria-hidden": "true",
+                                                },
+                                              }),
+                                            ]
+                                          ),
+                                      _vm._v(" "),
+                                      _vm.checkURL(result.answer)
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "list-group" },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "list-group-item list-group-item-action my-1",
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    staticClass:
+                                                      "imageOption mt-1 rounded img-thumbnail",
+                                                    attrs: {
+                                                      src: "/" + result.answer,
+                                                      alt: "",
+                                                    },
+                                                  }),
+                                                  _vm._v(
+                                                    "\n                                                    (correct answer)\n                                                    "
+                                                  ),
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "fa fa-check text-success",
+                                                    attrs: {
+                                                      "aria-hidden": "true",
+                                                    },
+                                                  }),
+                                                ]
+                                              ),
+                                            ]
+                                          )
+                                        : _c(
+                                            "div",
+                                            { staticClass: "list-group" },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "list-group-item list-group-item-action my-1",
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                                    " +
+                                                      _vm._s(result.answer) +
+                                                      " (correct answer)\n                                                    "
+                                                  ),
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "fa fa-check text-success",
+                                                    attrs: {
+                                                      "aria-hidden": "true",
+                                                    },
+                                                  }),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
+                                    ]),
+                              ]),
+                            ]),
+                          ]
+                        ),
+                      ]),
+                    ]
+                  ),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-success",
+                  on: { click: _vm.showDetail },
+                },
+                [_vm._v("Close")]
+              ),
+            ]),
+          ]
+        ),
   ])
 }
 var staticRenderFns = []
