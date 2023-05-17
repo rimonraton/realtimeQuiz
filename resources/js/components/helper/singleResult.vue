@@ -30,11 +30,11 @@
             <div class="card-body">
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
-                    <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']" style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
+                    <li class="list-group-item" v-for="(v, i) in results" :key="i">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
                         {{v.name}}
-                      <span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
+                      <span v-if="v.id == user.id" class="ml-1 badge badge-info">You</span>
 <!--                      <span v-if="requestHostUser" class="ml-1 badge badge-danger">{{ v.id == requestHostUser.id ? 'Requested' : '' }}</span>-->
                         <span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
                     </li>
@@ -52,7 +52,7 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
                     <button @click="back" class="btn btn-sm btn-success">Dashboard</button>
-                    <button class="btn btn-sm btn-info" @click="showDetail">Show your result</button>
+                    <button class="btn btn-sm btn-info" @click="showDetail" v-if="uid !== user.id">Show your result</button>
                 </div>
 <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>
@@ -135,7 +135,7 @@
 
 <script>
 export default{
-	props:['results', 'lastQuestion', 'resultDetail'],
+	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
     data(){
 	    return{
             showResult:true,

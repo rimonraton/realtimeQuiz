@@ -12,6 +12,9 @@
             <single-result  v-if="screen.result"
                 :results='results'
                 :lastQuestion='qid == questions.length'
+                :resultDetail="answered_user_data"
+                :uid="uid"
+                :user="user"
                 >
             </single-result>
         </transition>
@@ -121,7 +124,19 @@
                               <div  v-if="showOption"  class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                    :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                               >
-                                  <div v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                  <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
+                                      <!--                                    {{question.options}}-->
+                                      <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
+                                          <div class="input-group">
+                                              <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
+                                              <div class="input-group-append">
+                                                  <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                                              </div>
+                                          </div>
+                                      </form>
+
+                                  </div>
+                                  <div v-else v-for="(option, i) in question.options" class="col-md-6 px-1"
                                        :class="[option.flag == 'img' ? 'col-6' : ' col-12' ]"
                                   >
                                       <div class="list-group" v-if="option.flag != 'img'"
@@ -233,6 +248,7 @@ export default {
             pm:'',
             perform:0,
             preventClick: true,
+            shortAnswer: null,
             question_time: 60
         };
     },
@@ -358,6 +374,19 @@ export default {
     // },
 
     methods: {
+        smtAnswer(qid, qopt, data){
+            if (data == null) return
+            const correct = qopt.some((opt) => {
+                return opt.option.toLowerCase() == data.toLowerCase() || opt.bd_option == data
+            })
+            // console.log(qid, qopt, data, correct)
+
+            if(correct){
+                this.checkAnswer(qid, data, 1)
+            } else{
+                this.checkAnswer(qid, data, 0)
+            }
+        },
         showAfter(){
             setTimeout(() => {
                 this.showOption = true
@@ -435,12 +464,13 @@ export default {
             this.current = this.questions[this.qid].id
         },
         checkAnswer(q, a, rw){
+            this.shortAnswer = null
             this.answered = 1
             this.right_wrong = rw
             this.gamedata['uid'] = this.user.id
             this.gamedata['channel'] = this.channel
             this.gamedata['name'] = this.user.name
-            this.gamedata['question'] = this.questions[this.qid].question_text
+            this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
             this.gamedata['answer'] = this.getCorrectAnswertext()
             this.gamedata['selected'] = a
             this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
@@ -457,7 +487,15 @@ export default {
             this.waitForOption = 'Processing'
         },
         getCorrectAnswertext(){
-            return this.questions[this.qid].options.find(o => o.correct == 1).option
+            const correctOption = this.questions[this.qid].options.find(o => o.correct == 1)
+            // console.log('correctOption....', correctOption)
+            if(correctOption.flag == 'img') {
+                return correctOption.img_link
+            } else{
+                const correctEngOption = correctOption.option
+                const correctBanOption = correctOption.bd_option
+                return  this.tbe(correctBanOption, correctEngOption, this.user.lang)
+            }
         },
         resultScreen(){
             // console.log('resultScreen')
@@ -527,13 +565,20 @@ export default {
             this.results = []
             this.users.forEach(user => {
                 let score = 0;
+                let correct = 0;
+                let incorrect = 0;
                 this.answered_user_data
                     .filter(f => f.uid === user.id)
                     .map(u => {
                         score += u.isCorrect
+                        if(u.isCorrect > 0){
+                            correct += 1
+                        } else{
+                            incorrect += 1
+                        }
                     })
 
-                this.results.push({id:user.id, name:user.name, score:score})
+                this.results.push({id:user.id, name:user.name, score:score, correct:correct, incorrect:incorrect})
 
             })
             this.results.sort((a, b) => b.score - a.score)
@@ -560,27 +605,27 @@ export default {
                     origin: { y: 0.6 }
                 });
             }
-            else{
-                var colors = ['#bb0000', '#ffffff'];
-
-                confetti({
-                    zIndex:999999,
-                    particleCount: 100,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    zIndex:999999,
-                    particleCount: 100,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
-
-            }
+            // else{
+            //     var colors = ['#bb0000', '#ffffff'];
+            //
+            //     confetti({
+            //         zIndex:999999,
+            //         particleCount: 100,
+            //         angle: 60,
+            //         spread: 55,
+            //         origin: { x: 0 },
+            //         colors: colors
+            //     });
+            //     confetti({
+            //         zIndex:999999,
+            //         particleCount: 100,
+            //         angle: 120,
+            //         spread: 55,
+            //         origin: { x: 1 },
+            //         colors: colors
+            //     });
+            //
+            // }
         },
         kickUser(id){
             if(id != this.uid){
@@ -701,7 +746,9 @@ export default {
 .share-result-image {
     max-width: fit-content;
 }
-
+.col-md-6.col-6:hover {
+    background-color: #38c172 !important;
+}
 @media screen and (min-width: 480px) {
     .imageOption {
         height: 170px;
