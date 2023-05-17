@@ -206,48 +206,6 @@
                                                 </div>
                                             @endforeach
                                         </div>
-{{--                                        <div class="col-sm-6 px-0 px-md-2">--}}
-{{--                                            <div class="myadmin-dd dd" id="nestable" style="width: 100% !important;">--}}
-{{--                                                <ol class="dd-list">--}}
-{{--                                                    <li class="dd-item" id="parentdd">--}}
-{{--                                                        <div class="dd-handle-new">--}}
-{{--                                                            <strong class="selectedTopic">{{ $id ? $catName :__('form.select_topic') }}</strong>--}}
-{{--                                                        </div>--}}
-{{--                                                        <input type="hidden" name="category" id="categoryId">--}}
-{{--                                                        <ol class="dd-list">--}}
-{{--                                                            @foreach($topic as $c)--}}
-{{--                                                                <li class="dd-item">--}}
-{{--                                                                    <div class="dd-handle-new" data-cid="{{$c->id}}">--}}
-{{--                                                                        @if( ! count($c->childs))--}}
-{{--                                                                            <input type="checkbox" value="{{$c->id}}"--}}
-{{--                                                                                   name="topic" id="topic{{$c->id}}"--}}
-{{--                                                                                   data-name="{{$lang=='gb'?$c->name:$c->bn_name}}"--}}
-{{--                                                                                   data-qCount="{{$c->questions_count}}"--}}
-{{--                                                                                   class="material-inputs programming">--}}
-{{--                                                                        @endif--}}
-{{--                                                                        <label class="" for="topic{{$c->id}}">--}}
-{{--                                                                            {{$lang=='gb'?$c->name:$c->bn_name }}--}}
-{{--                                                                            @if( ! count($c->childs))--}}
-{{--                                                                                <span class="badge badge-pill badge-info float-right">--}}
-{{--                                                                                    {{$lang=='gb'? $c->questions_count : $bang->bn_number($c->questions_count)}}--}}
-{{--                                                                                </span>--}}
-{{--                                                                            @endif--}}
-{{--                                                                        </label>--}}
-
-{{--                                                                    </div>--}}
-{{--                                                                    @if(count($c->childs))--}}
-{{--                                                                        {{dd($c->childs)}}--}}
-{{--                                                                        @include('Admin.Games._subtopic', ['category'=>$c->childs])--}}
-{{--                                                                    @endif--}}
-{{--                                                                </li>--}}
-{{--                                                            @endforeach--}}
-{{--                                                        </ol>--}}
-{{--                                                    </li>--}}
-{{--                                                </ol>--}}
-{{--                                            </div>--}}
-
-{{--                                        </div>--}}
-{{--                                    </div>--}}
                                 </div>
                             </div>
                         </section>
@@ -271,16 +229,6 @@
                                                 </div>
                                             </div>
                                         </div>
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="card">--}}
-{{--                                                <div class="card-body">--}}
-{{--                                                    <h4 class="card-title"> {{__('form.noq')}}</h4>--}}
-{{--                                                    <div class="form-group">--}}
-{{--                                                        <input name="qq" type="number" class="form-control" value="10">--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +291,7 @@
         @php $pics = array("ag", "al", "as", "ga", "gk","gs", "sa", "sg", "sp", "ags", "asg", "gsa"); @endphp
         @foreach($challenges as $ch)
                 <div class="col-md-4 col-sm-12 text-center mb-4 d-flex align-items-stretch">
-                    <div class="card bg-white">
+                    <div class="card bg-white shadow-lg">
 {{--                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">--}}
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <div id="shareBtn{{ $ch->id }}" class="show_share shareBtnDiv"></div>

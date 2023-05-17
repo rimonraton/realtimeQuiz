@@ -62,6 +62,7 @@
                 <div class="input-group">
                     <textarea
                         ref="type_msg"
+                        id="type_msg"
                         v-model="message"
                         @keyup.enter="sendMessage"
                         class="form-control type_msg attach_btn"
@@ -100,6 +101,7 @@ export default{
                 this.messages.push(data)
                 console.log('SendMessageEvent.............', data)
                 this.scrollToElement()
+                this.show = true
             })
             .listen('DeleteMessageEvent', (data) => {
                 this.messages = {}
@@ -182,14 +184,14 @@ export default{
     bottom: 20px;
     right: 20px;
     cursor: pointer;
-    z-index: 999;
+    z-index: 99999;
 }
 .chat{
     width: 24rem;
     position: fixed;
     right: 20px;
     bottom: 20px;
-    z-index: 999
+    z-index: 99999
 }
 .card{
     height: 500px;

@@ -86,32 +86,41 @@
                         </span>
                         <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
-                        <video
-                            v-if="question.fileType == 'video'"
-                            :src="'/'+ question.question_file_link"
-                            @ended="onEnd()"
-                            @play="onStart()"
-                            class="image w-100 mt-1 rounded img-thumbnail"
-                            controls="controls"
-                            playsinline
-                            autoplay
-                        >
+                        <div>
 
-                        </video>
-                        <div class="audio" v-if="question.fileType == 'audio'">
-                            <audio
+                        <div v-if="endAVWait">
+                            <video
+                                v-if="question.fileType == 'video'"
+                                :src="'/'+ question.question_file_link"
                                 @ended="onEnd()"
                                 @play="onStart()"
-                                controls
-                                autoplay>
-                                <source :src="'/'+ question.question_file_link" type="audio/mpeg">
-                            </audio>
-                            <div id="ar"></div>
+                                class="image w-100 mt-1 rounded img-thumbnail"
+                                controls="controls"
+                                playsinline
+                                autoplay
+                            >
+
+                            </video>
+                            <div class="audio" v-if="question.fileType == 'audio'">
+                                <audio
+                                    @ended="onEnd()"
+                                    @play="onStart()"
+                                    controls
+                                    autoplay>
+                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
+                                </audio>
+                                <div id="ar"></div>
+                            </div>
                         </div>
-<!--                        <img v-if="question.more_info_link" class="image w-100 mt-1 rounded" :src="question.more_info_link" style="max-height:70vh">-->
-<!--                        <img v-if="question.question_file_link" class="image w-100 mt-1 rounded img-thumbnail"-->
-<!--                             :src="'/' + question.question_file_link" style="max-height:70vh" alt="">-->
-<!--                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>-->
+                        <div v-else>
+                            <div v-if="currentQuestionType == 'audio'" >
+                                <h1>Audio Question... </h1>
+                            </div>
+                            <div v-if="currentQuestionType == 'video'" >
+                                <h1>Video Question... </h1>
+                            </div>
+                        </div>
+
                         <div v-show="av">
                             <div class="card">
                                 <div class="card-header">
@@ -122,26 +131,11 @@
                                 </div>
                             </div>
 
-<!--                            <div :class="{'row justify-content-center justify-item-center': imageOption(question.options)}">-->
-<!--                                <div v-for="(option, i) in question.options" :class="{'col-6':option.flag == 'img'}">-->
-<!--                                    <ul class="list-group" v-if="option.flag != 'img'" :class="getOptionClass(i, id.option_view_time)">-->
-<!--                                        <li @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"-->
-<!--                                            class="list-group-item list-group-item-action cursor my-1"-->
-<!--                                            v-html="tbe(option.bd_option, option.option, user.lang)" >-->
-
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                    <div v-else @click="checkAnswer(question.id, option.img_link, option.correct)" class="cursor my-1 imageDiv" :class="getOptionClass(i, id.option_view_time)">-->
-<!--                                        <img  class="imageOption image mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                  :class="{'row justify-content-center justify-item-center': imageOption(question['options'])}"
                             >
                                 <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
-<!--                                    {{question.options}}-->
+<!--                                    Fill in the blank -->
                                     <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
@@ -175,18 +169,7 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <ul class="list-group" v-for="option in question.options">-->
-<!--                            <li @click="checkAnswer(question.id, option.option, option.correct)"-->
-<!--                                class="list-group-item list-group-item-action cursor my-1">-->
-<!--                                <span v-html="tbe(option.bd_option, option.option, user.lang)" v-if="option.flag != 'img'"></span>-->
-<!--                            </li>-->
-<!--                            <li @click="checkAnswer(question.id, option.img_link, option.correct)"-->
-<!--                                class="list-group-item list-group-item-action cursor my-1" v-if="option.flag == 'img'" >-->
-<!--                                <img  class="image mt-1 rounded img-thumbnail"-->
-<!--                                      :src="'/'+ option.img_link" style="max-height:15vh;width:200px" alt="">-->
-
-<!--                            </li>-->
-<!--                        </ul>-->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,7 +177,7 @@
                 <div class="card my-4" v-if="results.length>0">
                     <div class="card-header">
                         Score Board
-<!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
+                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
                     <div class="card-body" >
@@ -232,7 +215,8 @@
             return {
                 qt:{
                     ms: 0,
-                    time:30,
+                    defaultTime: 30,
+                    time: 30,
                     timer:null
                 },
                 users: [],
@@ -266,7 +250,8 @@
                 preventClick: true,
                 shortAnswer: null,
                 requestHost: false,
-                requestHostUser: null
+                requestHostUser: null,
+                endAVWait: false
             };
         },
 
@@ -280,7 +265,8 @@
                     this.screen.waiting = 0
                     this.sqo = true
                     this.showQuestionOptions(null)
-                    // this.QuestionTimer() // Set and Start QuestionTimer
+                    this.qt.defaultTime = data.defaultTime
+                    this.qt.time = data.defaultTime
 
                 })
                 .listen('GameResetEvent', (data) => {
@@ -400,7 +386,7 @@
                     // })
 
             },
-           async newQuiz(uid){
+            async newQuiz(uid){
               let makeHostStatus = await this.makeHost(uid)
                 console.log('makeHostStatus..', makeHostStatus.status)
                 if(makeHostStatus.status === 200){
@@ -450,10 +436,20 @@
                     }
                 })
             },
-            gameStart: function () {
+            gameStart: function (defaultTime) {
                 this.sqo = true
                 let ids = this.users.map(u => u.id)
-                let gd = {channel: this.channel, gameStart: 1, uid: ids, id:this.challenge.id, users:this.users,host_id:this.uid}
+                let gd = {
+                    channel: this.channel,
+                    gameStart: 1,
+                    uid: ids,
+                    id: this.challenge.id,
+                    users:this.users,
+                    host_id:this.uid,
+                    defaultTime: defaultTime
+                }
+                this.qt.defaultTime = defaultTime
+                this.qt.time = defaultTime
                 // console.log(gd);
                 axios.post(`/api/gameStart`, gd)
                     .then(res => {
@@ -473,7 +469,7 @@
 
             },
             gameReset(){
-                this.questionInit()
+                this.questionInit(this.qt.defaultTime)
                 this.screen.waiting = 1
                 this.screen.loading = 0
                 this.screen.result = 0
@@ -488,6 +484,7 @@
                 this.user_ranking = null
                 this.game_start = 0
                 this.current = this.questions[this.qid].id
+                this.endAVWait = false
             },
             checkAnswer(q, a, rw){
                 this.shortAnswer = null
@@ -501,8 +498,7 @@
                 this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
                 let clone = {...this.gamedata}
-                this.questionInit()
-                // console.log('this.questionInit() call.........')
+                this.questionInit(this.qt.defaultTime)
                 axios.post(`/api/questionClick`, clone)
                 .then(res => {
                     this.resultScreen();
@@ -523,7 +519,7 @@
             },
             resultScreen(){
                 // console.log('resultScreen')
-                this.questionInit()
+                this.questionInit(this.qt.defaultTime)
                 this.getResult() //Sorting this.results
                 this.countDown()
                 if(this.qid+1 == this.questions.length){
@@ -547,7 +543,7 @@
                     setInterval(() => {
                         // console.log('this.qt.time', this.qt.time)
                         if(this.qt.time <= 0){
-                            this.questionInit();
+                            this.questionInit(this.qt.defaultTime);
                             this.checkAnswer(this.qid, 'Not Answered', 0);
                             // this.resultScreen();
                         }
@@ -567,7 +563,6 @@
             countDown(){
                 // console.log('countDown')
                 if(this.counter <= 0){
-                    // this.questionInit()
                     this.qid ++
                     this.current = this.questions[this.qid].id
                     this.showQuestionOptions(null)
@@ -600,7 +595,7 @@
                     .reduce(function (prev, curr) {
                         return prev.perform_status < curr.perform_status ? prev : curr;
                     });
-                this.questionInit()
+                this.questionInit(this.qt.defaultTime)
                 this.screen.result = 1
                 this.screen.winner = 1
                 this.game_start = 0
@@ -664,19 +659,25 @@
                 return '';
             },
             showQuestionOptions (question) {
-                // console.log('showQuestionOptions', question)
                 let timeout = 1000;
-                if(this.challenge.option_view_time != 0) {
-                    timeout = 3500; // this.quiz.quiz_time * 1000
+                if(this.challenge.option_view_time != 0) { // this.quiz.quiz_time * 1000
+                    timeout = 3500;
                 }
-                if(question == null || question == 'image') {
-                    clearInterval(this.qt.timer);
-                    setTimeout(() => {
-                        // this.sqo = true
-                        this.preventClick = false
-                        this.QuestionTimer()
-                    }, timeout)
+                if(question !=='onEnd'){
+                    if(this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+                        timeout += 3000
+                        this.av = false
+                        setTimeout(() => {
+                            this.endAVWait = true
+                        }, 3000)
+                    }
                 }
+                clearInterval(this.qt.timer);
+                setTimeout(() => {
+                    // this.sqo = true
+                    this.preventClick = false
+                    this.QuestionTimer()
+                }, timeout)
             },
             quizEnd () {
                 // axios.post(`/api/gameEndUser`, {'channel': this.channel})
@@ -707,6 +708,9 @@
             // progressWidth(){
             //     return {'width':this.progress + '%', }
             // }
+            currentQuestionType () {
+                return this.quizquestions[this.qid].fileType
+            }
         }
 
     };

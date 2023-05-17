@@ -514,7 +514,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n.imageDiv{\n    width: 300px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\r\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\r\n    font-size: 30px;\r\n    position: absolute;\r\n    right: -7px;\r\n    top: -3px;\r\n    background: white;\r\n    border: 1px solid;\r\n    border-radius: 50%;\r\n    width: 35px;\r\n    /* z-index: 999999; */\n}\n.imgTick{\r\n    position: absolute;\r\n    right: 24px;\r\n    top: 15px;\n}\n.imageOption {\r\n    height: 100px;\r\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\n.imageDiv{\r\n    width: 300px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -534,7 +534,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.Tick[data-v-78a10eb9]{\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    background-color: gray;\n    opacity: .7;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.Tick[data-v-78a10eb9]{\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    top: 0;\r\n    background-color: gray;\r\n    opacity: .7;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

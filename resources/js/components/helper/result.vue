@@ -1,8 +1,5 @@
 <template>
 	<div class="result">
-<!--        <div class="card bg-dark text-white">-->
-<!--          <img class="card-img" :src="addImage()">-->
-<!--        </div>-->
     <div class="d-flex px-2" v-if="!!requestHostUser && uid == user.id">
       <div class="alert alert-success page-alert text-center" id="alert-1">
 <!--        <button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
@@ -16,21 +13,26 @@
             <div class="d-flex justify-content-between p-2" v-if="uid == user.id">
                 <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
                 <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
-                <button type="button" class="btn" :class="[isDisabledHost() ? 'btn-secondary disabled' : 'btn-success']" @click="$emit('makeHost', makeUid)">Make host</button>
+                <button type="button" class="btn"
+                        :class="[isDisabledHost() ? 'btn-secondary disabled' : 'btn-success']"
+                        @click="$emit('makeHost', makeUid)">Make host</button>
             </div>
 
           <div class="d-flex justify-content-between p-2" v-else>
 <!--            <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>-->
 <!--            <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>-->
-            <button type="button" class="btn " :class="[isDisabled() ? 'btn-secondary disabled' : 'btn-success']" @click="$emit('makeHost', makeUid)" >
-              {{ isDisabled() ? 'Request Pending' : 'Make host' }}</button>
+            <button type="button" class="btn " :class="[isDisabled() ? 'btn-secondary disabled' : 'btn-success']"
+                    @click="$emit('makeHost', makeUid)" >
+              {{ isDisabled() ? 'Request Pending' : 'Make host' }}
+            </button>
           </div>
 
             <div class="card-header">Results</div>
             <div class="card-body">
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
                 <ul class="list-group">
-                    <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']" style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
+                    <li class="list-group-item" :class="[v.id == makeUid ? 'bg-success' : '']"
+                        style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
                         {{v.name}}

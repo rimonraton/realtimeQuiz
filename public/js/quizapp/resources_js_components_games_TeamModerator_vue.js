@@ -2085,10 +2085,11 @@ var quizHelpers = {
   },
   methods: {
     questionInit: function questionInit() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
       clearInterval(this.timer);
       clearInterval(this.qt.timer);
       this.qt.ms = 0;
-      this.qt.time = 15;
+      this.qt.time = time;
       this.progress = 100;
       this.answered = 0;
       this.counter = 2;
@@ -2096,6 +2097,7 @@ var quizHelpers = {
       this.screen.loading = 0;
       this.screen.result = 0;
       this.screen.winner = 0;
+      this.endAVWait = false;
     },
     tbe: function tbe(b, e, l) {
       if (b !== null && e !== null) {
@@ -2156,7 +2158,7 @@ var quizHelpers = {
         });
       }
       this.av = true;
-      this.showQuestionOptions(null);
+      this.showQuestionOptions('onEnd');
     },
     onStart: function onStart() {
       this.av = false;
@@ -18409,7 +18411,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.pointer{\n    cursor: pointer;\n}\n.pointer :hover{\n    background:grey !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pointer{\r\n    cursor: pointer;\n}\n.pointer :hover{\r\n    background:grey !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -18451,7 +18453,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\r\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\r\n    font-size: 30px;\r\n    position: absolute;\r\n    right: -7px;\r\n    top: -3px;\r\n    background: white;\r\n    border: 1px solid;\r\n    border-radius: 50%;\r\n    width: 35px;\r\n    /* z-index: 999999; */\n}\n.imgTick{\r\n    position: absolute;\r\n    right: 24px;\r\n    top: 15px;\n}\n.imageOption {\r\n    height: 100px;\r\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
