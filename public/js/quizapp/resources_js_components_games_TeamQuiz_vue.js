@@ -996,6 +996,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
@@ -2365,56 +2370,72 @@ var render = function () {
                       [_vm._v("New quiz")]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabledHost()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabledHost()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [_vm._v("Make host")]
-                    ),
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        ),
                   ]
                 )
               : _c(
                   "div",
                   { staticClass: "d-flex justify-content-between p-2" },
                   [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabled()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabled()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(
-                              _vm.isDisabled() ? "Request Pending" : "Make host"
-                            ) +
-                            "\n            "
+                          [
+                            _vm._v(
+                              "\n                Request Pending\n            "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                 Make host\n              "
+                            ),
+                          ]
                         ),
-                      ]
-                    ),
                   ]
                 ),
             _vm._v(" "),

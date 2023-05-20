@@ -370,13 +370,34 @@
 
         methods: {
             async makeHost(uid, status = null){
-                if (status == 'accept'){
+                console.log('user id..', this.isHost())
+                // if (this.user.id == uid){
+                //     this.uid = uid
+                //     this.requestHostUser = null
+                // } else{
+                //     if (status == 'accept'){
+                //         this.uid = uid
+                //         this.requestHostUser = null
+                //     } else if (status == 'deny'){
+                //         this.requestHostUser = null
+                //     } else {
+                //         this.requestHostUser = this.user
+                //     }
+                // }
+                if(this.isHost()){
                     this.uid = uid
                     this.requestHostUser = null
-                } else if (status == 'deny'){
-                    this.requestHostUser = null
-                } else {
-                    this.requestHostUser = this.user
+                    status = 'accept'
+                    // this.makeHost(uid, 'accept')
+                } else{
+                    if (status == 'accept'){
+                        this.uid = uid
+                        this.requestHostUser = null
+                    } else if (status == 'deny'){
+                        this.requestHostUser = null
+                    } else {
+                        this.requestHostUser = this.user
+                    }
                 }
 
                 return await  axios.post(`/api/makeHost/${uid}/${this.channel}/${status}`)

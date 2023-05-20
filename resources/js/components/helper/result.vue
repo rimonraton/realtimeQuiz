@@ -13,18 +13,23 @@
             <div class="d-flex justify-content-between p-2" v-if="uid == user.id">
                 <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
                 <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
-                <button type="button" class="btn"
-                        :class="[isDisabledHost() ? 'btn-secondary disabled' : 'btn-success']"
-                        @click="$emit('makeHost', makeUid)">Make host</button>
+                <button v-if="isDisabledHost()" type="button" class="btn btn-secondary disabled">
+                    Make host
+                </button>
+                <button v-else type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">
+                    Make host
+                </button>
             </div>
 
           <div class="d-flex justify-content-between p-2" v-else>
 <!--            <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>-->
 <!--            <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>-->
-            <button type="button" class="btn " :class="[isDisabled() ? 'btn-secondary disabled' : 'btn-success']"
-                    @click="$emit('makeHost', makeUid)" >
-              {{ isDisabled() ? 'Request Pending' : 'Make host' }}
+            <button v-if="isDisabled()" type="button" class="btn btn-secondary disabled">
+                Request Pending
             </button>
+              <button v-else type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)" >
+                 Make host
+              </button>
           </div>
 
             <div class="card-header">Results</div>

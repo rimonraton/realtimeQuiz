@@ -205,6 +205,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -259,6 +274,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       pm: '',
       perform: 0,
       preventClick: true,
+      shortAnswer: null,
       question_time: 60
     };
   },
@@ -377,6 +393,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // },
 
   methods: {
+    smtAnswer: function smtAnswer(qid, qopt, data) {
+      if (data == null) return;
+      var correct = qopt.some(function (opt) {
+        return opt.option.toLowerCase() == data.toLowerCase() || opt.bd_option == data;
+      });
+      // console.log(qid, qopt, data, correct)
+
+      if (correct) {
+        this.checkAnswer(qid, data, 1);
+      } else {
+        this.checkAnswer(qid, data, 0);
+      }
+    },
     showAfter: function showAfter() {
       var _this2 = this;
       setTimeout(function () {
@@ -493,12 +522,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     checkAnswer: function checkAnswer(q, a, rw) {
       var _this5 = this;
+      this.shortAnswer = null;
       this.answered = 1;
       this.right_wrong = rw;
       this.gamedata['uid'] = this.user.id;
       this.gamedata['channel'] = this.channel;
       this.gamedata['name'] = this.user.name;
-      this.gamedata['question'] = this.questions[this.qid].question_text;
+      this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang);
       this.gamedata['answer'] = this.getCorrectAnswertext();
       this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw == 1 ? Math.floor(this.progress) : 0;
@@ -514,9 +544,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.waitForOption = 'Processing';
     },
     getCorrectAnswertext: function getCorrectAnswertext() {
-      return this.questions[this.qid].options.find(function (o) {
+      var correctOption = this.questions[this.qid].options.find(function (o) {
         return o.correct == 1;
-      }).option;
+      });
+      // console.log('correctOption....', correctOption)
+      if (correctOption.flag == 'img') {
+        return correctOption.img_link;
+      } else {
+        var correctEngOption = correctOption.option;
+        var correctBanOption = correctOption.bd_option;
+        return this.tbe(correctBanOption, correctEngOption, this.user.lang);
+      }
     },
     resultScreen: function resultScreen() {
       var _this6 = this;
@@ -587,15 +625,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.results = [];
       this.users.forEach(function (user) {
         var score = 0;
+        var correct = 0;
+        var incorrect = 0;
         _this8.answered_user_data.filter(function (f) {
           return f.uid === user.id;
         }).map(function (u) {
           score += u.isCorrect;
+          if (u.isCorrect > 0) {
+            correct += 1;
+          } else {
+            incorrect += 1;
+          }
         });
         _this8.results.push({
           id: user.id,
           name: user.name,
-          score: score
+          score: score,
+          correct: correct,
+          incorrect: incorrect
         });
       });
       this.results.sort(function (a, b) {
@@ -627,29 +674,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             y: 0.6
           }
         });
-      } else {
-        var colors = ['#bb0000', '#ffffff'];
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 60,
-          spread: 55,
-          origin: {
-            x: 0
-          },
-          colors: colors
-        });
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 120,
-          spread: 55,
-          origin: {
-            x: 1
-          },
-          colors: colors
-        });
       }
+      // else{
+      //     var colors = ['#bb0000', '#ffffff'];
+      //
+      //     confetti({
+      //         zIndex:999999,
+      //         particleCount: 100,
+      //         angle: 60,
+      //         spread: 55,
+      //         origin: { x: 0 },
+      //         colors: colors
+      //     });
+      //     confetti({
+      //         zIndex:999999,
+      //         particleCount: 100,
+      //         angle: 120,
+      //         spread: 55,
+      //         origin: { x: 1 },
+      //         colors: colors
+      //     });
+      //
+      // }
     },
     kickUser: function kickUser(id) {
       if (id != this.uid) {
@@ -765,6 +811,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1452,7 +1503,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion', 'resultDetail'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid'],
   data: function data() {
     return {
       showResult: true,
@@ -1660,7 +1711,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\r\n    height: 100px;\r\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\r\n    position: absolute;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.1);\r\n    width: 100%;\r\n    z-index: 999;\r\n    left: 0px;\r\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\r\n    max-width: -moz-fit-content;\r\n    max-width: fit-content;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n.col-md-6.col-6[data-v-5d74a772]:hover {\n    background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1764,13 +1815,13 @@ QRRSBlock.RS_BLOCK_TABLE = [// L
 // 1
 [1, 26, 19], [1, 26, 16], [1, 26, 13], [1, 26, 9], // 2
 [1, 44, 34], [1, 44, 28], [1, 44, 22], [1, 44, 16], // 3
-[1, 70, 55], [1, 70, 44], [2, 35, 17], [2, 35, 13], // 4
+[1, 70, 55], [1, 70, 44], [2, 35, 17], [2, 35, 13], // 4		
 [1, 100, 80], [2, 50, 32], [2, 50, 24], [4, 25, 9], // 5
 [1, 134, 108], [2, 67, 43], [2, 33, 15, 2, 34, 16], [2, 33, 11, 2, 34, 12], // 6
-[2, 86, 68], [4, 43, 27], [4, 43, 19], [4, 43, 15], // 7
+[2, 86, 68], [4, 43, 27], [4, 43, 19], [4, 43, 15], // 7		
 [2, 98, 78], [4, 49, 31], [2, 32, 14, 4, 33, 15], [4, 39, 13, 1, 40, 14], // 8
 [2, 121, 97], [2, 60, 38, 2, 61, 39], [4, 40, 18, 2, 41, 19], [4, 40, 14, 2, 41, 15], // 9
-[2, 146, 116], [3, 58, 36, 2, 59, 37], [4, 36, 16, 4, 37, 17], [4, 36, 12, 4, 37, 13], // 10
+[2, 146, 116], [3, 58, 36, 2, 59, 37], [4, 36, 16, 4, 37, 17], [4, 36, 12, 4, 37, 13], // 10		
 [2, 86, 68, 2, 87, 69], [4, 69, 43, 1, 70, 44], [6, 43, 19, 2, 44, 20], [6, 43, 15, 2, 44, 16], // 11
 [4, 101, 81], [1, 80, 50, 4, 81, 51], [4, 50, 22, 4, 51, 23], [3, 36, 12, 8, 37, 13], // 12
 [2, 116, 92, 2, 117, 93], [6, 58, 36, 2, 59, 37], [4, 46, 20, 6, 47, 21], [7, 42, 14, 4, 43, 15], // 13
@@ -2413,7 +2464,7 @@ proto.setupTypeNumber = function (test) {
 
 proto.setupTypeInfo = function (test, maskPattern) {
   var data = this.errorCorrectLevel << 3 | maskPattern;
-  var bits = util.getBCHTypeInfo(data); // vertical
+  var bits = util.getBCHTypeInfo(data); // vertical		
 
   for (var i = 0; i < 15; i++) {
     var mod = !test && (bits >> i & 1) == 1;
@@ -2852,7 +2903,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SingleQuestion_vue_vue_type_style_index_0_id_5d74a772_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SingleQuestion.vue?vue&type=style&index=0&id=5d74a772&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/games/SingleQuestion.vue?vue&type=style&index=0&id=5d74a772&scoped=true&lang=css&");
 
-
+            
 
 var options = {};
 
@@ -2878,7 +2929,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./waiting.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleDisplay/waiting.vue?vue&type=style&index=0&lang=css&");
 
-
+            
 
 var options = {};
 
@@ -2904,7 +2955,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_vue_tel_input_css_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./vue-tel-input.css?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-tel-input/dist/vue-tel-input.css?vue&type=style&index=0&lang=css&");
 
-
+            
 
 var options = {};
 
@@ -2946,7 +2997,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   "5d74a772",
   null
-
+  
 )
 
 /* hot reload */
@@ -2981,7 +3032,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -3016,7 +3067,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -3053,7 +3104,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -3090,7 +3141,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -3125,7 +3176,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -3143,7 +3194,7 @@ component.options.__file = "resources/js/components/helper/singleResult.vue"
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SingleQuestion_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SingleQuestion.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/games/SingleQuestion.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SingleQuestion_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SingleQuestion_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3155,7 +3206,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./result.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/result.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_result_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3167,7 +3218,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Qrcode_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Qrcode.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleDisplay/Qrcode.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Qrcode_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Qrcode_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3179,7 +3230,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserName_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserName.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleDisplay/UserName.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserName_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserName_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3191,7 +3242,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./waiting.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleDisplay/waiting.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_waiting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3203,7 +3254,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./singleResult.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/singleResult.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_singleResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3373,6 +3424,9 @@ var render = function () {
                 attrs: {
                   results: _vm.results,
                   lastQuestion: _vm.qid == _vm.questions.length,
+                  resultDetail: _vm.answered_user_data,
+                  uid: _vm.uid,
+                  user: _vm.user,
                 },
               })
             : _vm._e(),
@@ -3663,105 +3717,219 @@ var render = function () {
                                               _vm.imageOption(question.options),
                                           },
                                         },
-                                        _vm._l(
-                                          question.options,
-                                          function (option, i) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                staticClass: "col-md-6 px-1",
-                                                class: [
-                                                  option.flag == "img"
-                                                    ? "col-6"
-                                                    : " col-12",
-                                                ],
-                                              },
-                                              [
-                                                option.flag != "img"
-                                                  ? _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "list-group",
-                                                        class:
-                                                          _vm.getOptionClass(
-                                                            i,
-                                                            _vm.challenge
-                                                              .option_view_time
-                                                          ),
-                                                      },
-                                                      [
-                                                        _c("span", {
-                                                          staticClass:
-                                                            "list-group-item list-group-item-action cursor my-1",
-                                                          domProps: {
-                                                            innerHTML: _vm._s(
-                                                              _vm.tbe(
-                                                                option.bd_option,
-                                                                option.option,
-                                                                _vm.user.lang
-                                                              )
-                                                            ),
-                                                          },
-                                                          on: {
-                                                            click: function (
-                                                              $event
-                                                            ) {
-                                                              _vm.checkAnswer(
-                                                                question.id,
-                                                                _vm.tbe(
-                                                                  option.bd_option,
-                                                                  option.option,
-                                                                  _vm.user.lang
-                                                                ),
-                                                                option.correct
-                                                              )
-                                                            },
-                                                          },
-                                                        }),
-                                                      ]
-                                                    )
-                                                  : _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "cursor my-1",
-                                                        class:
-                                                          _vm.getOptionClass(
-                                                            i,
-                                                            _vm.challenge
-                                                              .option_view_time
-                                                          ),
-                                                        on: {
-                                                          click: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.checkAnswer(
-                                                              question.id,
-                                                              option.img_link,
-                                                              option.correct
-                                                            )
-                                                          },
+                                        [
+                                          question.short_answer > 0
+                                            ? _c(
+                                                "div",
+                                                {
+                                                  staticClass: "col-md-12 mt-4",
+                                                },
+                                                [
+                                                  _c(
+                                                    "form",
+                                                    {
+                                                      on: {
+                                                        submit: function (
+                                                          $event
+                                                        ) {
+                                                          $event.preventDefault()
+                                                          return _vm.smtAnswer(
+                                                            question.id,
+                                                            question.options,
+                                                            _vm.shortAnswer
+                                                          )
                                                         },
                                                       },
-                                                      [
-                                                        _c("img", {
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
                                                           staticClass:
-                                                            "imageOption mt-1 rounded img-thumbnail",
-                                                          attrs: {
-                                                            src:
-                                                              "/" +
-                                                              option.img_link,
-                                                            alt: "",
-                                                          },
-                                                        }),
-                                                      ]
-                                                    ),
-                                              ]
-                                            )
-                                          }
-                                        ),
-                                        0
+                                                            "input-group",
+                                                        },
+                                                        [
+                                                          _c("input", {
+                                                            directives: [
+                                                              {
+                                                                name: "model",
+                                                                rawName:
+                                                                  "v-model",
+                                                                value:
+                                                                  _vm.shortAnswer,
+                                                                expression:
+                                                                  "shortAnswer",
+                                                              },
+                                                            ],
+                                                            staticClass:
+                                                              "form-control",
+                                                            attrs: {
+                                                              type: "text",
+                                                              placeholder:
+                                                                "Type Your Answer",
+                                                            },
+                                                            domProps: {
+                                                              value:
+                                                                _vm.shortAnswer,
+                                                            },
+                                                            on: {
+                                                              input: function (
+                                                                $event
+                                                              ) {
+                                                                if (
+                                                                  $event.target
+                                                                    .composing
+                                                                ) {
+                                                                  return
+                                                                }
+                                                                _vm.shortAnswer =
+                                                                  $event.target.value
+                                                              },
+                                                            },
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "input-group-append",
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "button",
+                                                                {
+                                                                  staticClass:
+                                                                    "btn btn-primary",
+                                                                  attrs: {
+                                                                    disabled:
+                                                                      _vm.shortAnswer !=
+                                                                      null
+                                                                        ? false
+                                                                        : true,
+                                                                    type: "submit",
+                                                                  },
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "Submit"
+                                                                  ),
+                                                                ]
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              )
+                                            : _vm._l(
+                                                question.options,
+                                                function (option, i) {
+                                                  return _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "col-md-6 px-1",
+                                                      class: [
+                                                        option.flag == "img"
+                                                          ? "col-6"
+                                                          : " col-12",
+                                                      ],
+                                                    },
+                                                    [
+                                                      option.flag != "img"
+                                                        ? _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "list-group",
+                                                              class:
+                                                                _vm.getOptionClass(
+                                                                  i,
+                                                                  _vm.challenge
+                                                                    .option_view_time
+                                                                ),
+                                                            },
+                                                            [
+                                                              _c("span", {
+                                                                staticClass:
+                                                                  "list-group-item list-group-item-action cursor my-1",
+                                                                domProps: {
+                                                                  innerHTML:
+                                                                    _vm._s(
+                                                                      _vm.tbe(
+                                                                        option.bd_option,
+                                                                        option.option,
+                                                                        _vm.user
+                                                                          .lang
+                                                                      )
+                                                                    ),
+                                                                },
+                                                                on: {
+                                                                  click:
+                                                                    function (
+                                                                      $event
+                                                                    ) {
+                                                                      _vm.checkAnswer(
+                                                                        question.id,
+                                                                        _vm.tbe(
+                                                                          option.bd_option,
+                                                                          option.option,
+                                                                          _vm
+                                                                            .user
+                                                                            .lang
+                                                                        ),
+                                                                        option.correct
+                                                                      )
+                                                                    },
+                                                                },
+                                                              }),
+                                                            ]
+                                                          )
+                                                        : _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "cursor my-1",
+                                                              class:
+                                                                _vm.getOptionClass(
+                                                                  i,
+                                                                  _vm.challenge
+                                                                    .option_view_time
+                                                                ),
+                                                              on: {
+                                                                click:
+                                                                  function (
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.checkAnswer(
+                                                                      question.id,
+                                                                      option.img_link,
+                                                                      option.correct
+                                                                    )
+                                                                  },
+                                                              },
+                                                            },
+                                                            [
+                                                              _c("img", {
+                                                                staticClass:
+                                                                  "imageOption mt-1 rounded img-thumbnail",
+                                                                attrs: {
+                                                                  src:
+                                                                    "/" +
+                                                                    option.img_link,
+                                                                  alt: "",
+                                                                },
+                                                              }),
+                                                            ]
+                                                          ),
+                                                    ]
+                                                  )
+                                                }
+                                              ),
+                                        ],
+                                        2
                                       )
                                     : _c("div", [
                                         _vm._v(
@@ -3986,56 +4154,72 @@ var render = function () {
                       [_vm._v("New quiz")]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabledHost()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabledHost()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [_vm._v("Make host")]
-                    ),
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        ),
                   ]
                 )
               : _c(
                   "div",
                   { staticClass: "d-flex justify-content-between p-2" },
                   [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabled()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabled()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(
-                              _vm.isDisabled() ? "Request Pending" : "Make host"
-                            ) +
-                            "\n            "
+                          [
+                            _vm._v(
+                              "\n                Request Pending\n            "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                 Make host\n              "
+                            ),
+                          ]
                         ),
-                      ]
-                    ),
                   ]
                 ),
             _vm._v(" "),
@@ -4569,46 +4753,52 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "waiting" }, [
     _c("div", { staticClass: "card", staticStyle: { "min-width": "24rem" } }, [
-      _c("div", { staticClass: "card-header text-center" }, [
-        _c(
-          "span",
-          {
-            staticClass: "btn btn-sm btn-danger align-self-start",
-            on: { click: _vm.back },
-          },
-          [_vm._v("Back")]
-        ),
-        _vm._v(" "),
-        _vm.user.id != _vm.uid
-          ? _c("span", { staticClass: "ml-1 text-primary" }, [
-              _vm._v(
-                "\n                    Please wait, the Quiz Host will start the game soon.\n                "
-              ),
-            ])
-          : _c("span", { staticClass: "ml-1 text-primary" }, [
-              _c("span", [_vm._v("User List")]),
-            ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-sm align-self-start",
-            class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
-            on: {
-              click: function ($event) {
-                _vm.qr = !_vm.qr
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between card-header text-center",
+        },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "btn btn-sm btn-danger align-self-start",
+              on: { click: _vm.back },
+            },
+            [_vm._v("Back")]
+          ),
+          _vm._v(" "),
+          _vm.user.id != _vm.uid
+            ? _c("span", { staticClass: "ml-1 text-primary" }, [
+                _vm._v(
+                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
+                ),
+              ])
+            : _c("span", { staticClass: "ml-1 text-primary" }, [
+                _c("span", [_vm._v("User List")]),
+              ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-sm align-self-start",
+              class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
+              on: {
+                click: function ($event) {
+                  _vm.qr = !_vm.qr
+                },
               },
             },
-          },
-          [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.qr ? "QR" : "QR") +
-                "\n                "
-            ),
-          ]
-        ),
-      ]),
+            [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.qr ? "QR" : "QR") +
+                  "\n                "
+              ),
+            ]
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -4794,44 +4984,30 @@ var render = function () {
                 "ul",
                 { staticClass: "list-group" },
                 _vm._l(_vm.results, function (v, i) {
-                  return _c(
-                    "li",
-                    {
-                      key: i,
-                      staticClass: "list-group-item",
-                      class: [v.id == _vm.makeUid ? "bg-success" : ""],
-                      staticStyle: { cursor: "pointer" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.selectUid(v.id)
-                        },
+                  return _c("li", { key: i, staticClass: "list-group-item" }, [
+                    _c("span", {
+                      domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
+                    }),
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(v.name) +
+                        "\n                      "
+                    ),
+                    v.id == _vm.user.id
+                      ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
+                          _vm._v("You"),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "badge badge-primary float-right mt-1 text-white",
                       },
-                    },
-                    [
-                      _c("span", {
-                        domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
-                      }),
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(v.name) +
-                          "\n                      "
-                      ),
-                      v.id == _vm.uid
-                        ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
-                            _vm._v("Host"),
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "badge badge-primary float-right mt-1 text-white",
-                        },
-                        [_vm._v(_vm._s(v.score))]
-                      ),
-                    ]
-                  )
+                      [_vm._v(_vm._s(v.score))]
+                    ),
+                  ])
                 }),
                 0
               ),
@@ -4848,14 +5024,16 @@ var render = function () {
                   [_vm._v("Dashboard")]
                 ),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info",
-                    on: { click: _vm.showDetail },
-                  },
-                  [_vm._v("Show your result")]
-                ),
+                _vm.uid !== _vm.user.id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-info",
+                        on: { click: _vm.showDetail },
+                      },
+                      [_vm._v("Show your result")]
+                    )
+                  : _vm._e(),
               ]),
             ]),
           ]

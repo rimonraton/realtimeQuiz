@@ -388,19 +388,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               status = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : null;
-              if (status == 'accept') {
+              console.log('user id..', _this3.isHost());
+              // if (this.user.id == uid){
+              //     this.uid = uid
+              //     this.requestHostUser = null
+              // } else{
+              //     if (status == 'accept'){
+              //         this.uid = uid
+              //         this.requestHostUser = null
+              //     } else if (status == 'deny'){
+              //         this.requestHostUser = null
+              //     } else {
+              //         this.requestHostUser = this.user
+              //     }
+              // }
+              if (_this3.isHost()) {
                 _this3.uid = uid;
                 _this3.requestHostUser = null;
-              } else if (status == 'deny') {
-                _this3.requestHostUser = null;
+                status = 'accept';
+                // this.makeHost(uid, 'accept')
               } else {
-                _this3.requestHostUser = _this3.user;
+                if (status == 'accept') {
+                  _this3.uid = uid;
+                  _this3.requestHostUser = null;
+                } else if (status == 'deny') {
+                  _this3.requestHostUser = null;
+                } else {
+                  _this3.requestHostUser = _this3.user;
+                }
               }
-              _context.next = 4;
+              _context.next = 5;
               return axios.post("/api/makeHost/".concat(uid, "/").concat(_this3.channel, "/").concat(status));
-            case 4:
-              return _context.abrupt("return", _context.sent);
             case 5:
+              return _context.abrupt("return", _context.sent);
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -975,6 +996,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4019,56 +4045,72 @@ var render = function () {
                       [_vm._v("New quiz")]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabledHost()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabledHost()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [_vm._v("Make host")]
-                    ),
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Make host\n                "
+                            ),
+                          ]
+                        ),
                   ]
                 )
               : _c(
                   "div",
                   { staticClass: "d-flex justify-content-between p-2" },
                   [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn",
-                        class: [
-                          _vm.isDisabled()
-                            ? "btn-secondary disabled"
-                            : "btn-success",
-                        ],
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("makeHost", _vm.makeUid)
+                    _vm.isDisabled()
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary disabled",
+                            attrs: { type: "button" },
                           },
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(
-                              _vm.isDisabled() ? "Request Pending" : "Make host"
-                            ) +
-                            "\n            "
+                          [
+                            _vm._v(
+                              "\n                Request Pending\n            "
+                            ),
+                          ]
+                        )
+                      : _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.$emit("makeHost", _vm.makeUid)
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                 Make host\n              "
+                            ),
+                          ]
                         ),
-                      ]
-                    ),
                   ]
                 ),
             _vm._v(" "),
