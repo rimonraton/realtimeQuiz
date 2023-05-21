@@ -4573,7 +4573,12 @@ var render = function () {
                     },
                   }),
                   _vm._v(" "),
-                  _c("span", { staticClass: "ml-5" }, [_vm._v(_vm._s(u.name))]),
+                  _c("span", { staticClass: "ml-5" }, [
+                    _vm._v(_vm._s(u.name) + " "),
+                    u.id == _vm.user.id
+                      ? _c("span", [_vm._v("(You)")])
+                      : _vm._e(),
+                  ]),
                   _vm._v(" "),
                   u.id == _vm.uid
                     ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
