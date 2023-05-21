@@ -6,7 +6,7 @@
                     <button v-if="uid === user.id" type="button" class="btn btn-xs btn-dark px-1 py-0" @click="deleteMessage">
                         <i class="fa fa-trash-alt" ></i>
                     </button>
-                    <button type="button" class="btn btn-xs btn-dark px-1 py-0" @click="show = !show">
+                    <button type="button" class="btn btn-xs btn-dark px-1 py-0" @click="show = !show; chat_count = 0">
                         <i class="fa fa-minus fa-lg" ></i>
                     </button>
                 </div>
@@ -78,6 +78,12 @@
         </div>
 
         <div class="chat-min" v-show="!show">
+            <div v-if="chat_count > 0"
+                 class="chat-count rounded-circle d-flex justify-content-center align-items-center"
+                 @click="showChat"
+            >
+                {{chat_count}}
+            </div>
             <i class="far fa-comments fa-5x" @click="showChat"></i>
         </div>
     </div>
@@ -91,7 +97,8 @@ export default{
         return {
             message: null,
             messages: [],
-            show: false
+            show: false,
+            chat_count: 0
         };
     },
     created(){
@@ -101,7 +108,7 @@ export default{
                 this.messages.push(data)
                 console.log('SendMessageEvent.............', data)
                 this.scrollToElement()
-                this.show = true
+                this.chat_count++
             })
             .listen('DeleteMessageEvent', (data) => {
                 this.messages = {}
@@ -115,6 +122,7 @@ export default{
     methods:{
         showChat() {
             this.show = !this.show
+            this.chat_count = 0
             let input = this.$refs.type_msg
             console.log('input message', input)
             input.focus()
@@ -179,6 +187,15 @@ export default{
 
 </script>
 <style scoped>
+.chat-count {
+    background: red;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    color: white;
+    top: -16px;
+    right: 0px;
+}
 .chat-min{
     position: fixed;
     bottom: 20px;

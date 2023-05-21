@@ -11,14 +11,14 @@ return [
     | as Mailgun, Postmark, AWS and more. This file provides the de facto
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
-            
+
     |
     */
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.eu.mailgun.net'),
     ],
 
     'postmark' => [
@@ -48,7 +48,7 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'), // Your GitHub Client Secret
         'redirect' => 'https://gyankosh.org/login/google/callback',
     ],
-    
+
     'twitter' => [
         'client_id' => env('TWITTER_CLIENT_ID'),         // Your twitter Client ID
         'client_secret' => env('TWITTER_CLIENT_SECRET'), // Your twitter Client Secret
