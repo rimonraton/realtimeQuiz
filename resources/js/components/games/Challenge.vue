@@ -384,7 +384,7 @@
                 //         this.requestHostUser = this.user
                 //     }
                 // }
-                if(this.isHost()){
+                if(this.isHost() && status == null){
                     this.uid = uid
                     this.requestHostUser = null
                     status = 'accept'

@@ -16,7 +16,7 @@
                 <button v-if="isDisabledHost()" type="button" class="btn btn-secondary disabled">
                     Make host
                 </button>
-                <button v-else type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)">
+                <button v-else type="button" class="btn btn-success" @click="makeHostByHost()">
                     Make host
                 </button>
             </div>
@@ -40,7 +40,7 @@
                         style="cursor: pointer" v-for="(v, i) in results" :key="i" @click="selectUid(v.id)">
 <!--                        {{ v.name + ' : ' + v.score }}-->
                         <span v-html="getMedel(i)"></span>
-                        {{v.name}}
+                        {{v.name}} <span v-if="v.id == user.id">(You)</span>
                       <span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
                       <span v-if="requestHostUser" class="ml-1 badge badge-danger">{{ v.id == requestHostUser.id ? 'Requested' : '' }}</span>
                         <span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
@@ -156,6 +156,10 @@ export default{
 	    console.log('result data', this.resultDetailData)
     },
     methods:{
+	    makeHostByHost(){
+            this.$emit('makeHost', this.makeUid)
+            this.makeUid = this.user.id
+        },
       isDisabledHost(){
         return this.uid == this.makeUid
       },
@@ -168,7 +172,7 @@ export default{
             return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
         },
         selectUid(id){
-            console.log('id data..', id)
+            // console.log('id data..', id)
             if(this.uid == this.user.id) {
               this.makeUid = id
             }
