@@ -26,7 +26,7 @@
 	                    :class="{active : u.id == user.id}"
 	                    >
 	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
-	                    <span class="ml-5">{{ u.name }}</span>
+	                    <span class="ml-5">{{ u.name }} <span v-if="u.id == user.id">(You)</span></span>
 	                    <span v-if="u.id == uid" class="ml-1 badge badge-info">Host</span>
 
 	                    <span class="flag" >

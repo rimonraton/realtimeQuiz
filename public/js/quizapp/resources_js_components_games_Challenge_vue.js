@@ -402,7 +402,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               //         this.requestHostUser = this.user
               //     }
               // }
-              if (_this3.isHost()) {
+              if (_this3.isHost() && status == null) {
                 _this3.uid = uid;
                 _this3.requestHostUser = null;
                 status = 'accept';
@@ -1161,6 +1161,10 @@ __webpack_require__.r(__webpack_exports__);
     console.log('result data', this.resultDetailData);
   },
   methods: {
+    makeHostByHost: function makeHostByHost() {
+      this.$emit('makeHost', this.makeUid);
+      this.makeUid = this.user.id;
+    },
     isDisabledHost: function isDisabledHost() {
       return this.uid == this.makeUid;
     },
@@ -1173,7 +1177,7 @@ __webpack_require__.r(__webpack_exports__);
       return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
     },
     selectUid: function selectUid(id) {
-      console.log('id data..', id);
+      // console.log('id data..', id)
       if (this.uid == this.user.id) {
         this.makeUid = id;
       }
@@ -4086,7 +4090,7 @@ var render = function () {
                             attrs: { type: "button" },
                             on: {
                               click: function ($event) {
-                                return _vm.$emit("makeHost", _vm.makeUid)
+                                return _vm.makeHostByHost()
                               },
                             },
                           },
@@ -4160,10 +4164,12 @@ var render = function () {
                         domProps: { innerHTML: _vm._s(_vm.getMedel(i)) },
                       }),
                       _vm._v(
-                        "\n                        " +
-                          _vm._s(v.name) +
-                          "\n                      "
+                        "\n                        " + _vm._s(v.name) + " "
                       ),
+                      v.id == _vm.user.id
+                        ? _c("span", [_vm._v("(You)")])
+                        : _vm._e(),
+                      _vm._v(" "),
                       v.id == _vm.uid
                         ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
                             _vm._v("Host"),
@@ -4588,7 +4594,12 @@ var render = function () {
                     },
                   }),
                   _vm._v(" "),
-                  _c("span", { staticClass: "ml-5" }, [_vm._v(_vm._s(u.name))]),
+                  _c("span", { staticClass: "ml-5" }, [
+                    _vm._v(_vm._s(u.name) + " "),
+                    u.id == _vm.user.id
+                      ? _c("span", [_vm._v("(You)")])
+                      : _vm._e(),
+                  ]),
                   _vm._v(" "),
                   u.id == _vm.uid
                     ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
