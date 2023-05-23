@@ -279,11 +279,28 @@
         // if($('input:checkbox.verifyelement:checked').length > 0) {
         //     $('input:checkbox.verifyelement').prop('checked', false);
         // }
+        // $(document).on('click', '.pagination a', function(event){
+        //     event.preventDefault();
+        //     var page = $(this).attr('href').split('page=')[1];
+        //     fetch_data(page);
+        // });
+
+        // function fetch_data(page)
+        // {
+        //     $.ajax({
+        //         url:"/pagination/fetch_data?page="+page,
+        //         success:function(data)
+        //         {
+        //             $('#table_data').html(data);
+        //         }
+        //     });
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            alert(url);
-            // return;
+            if(window.location.pathname == '/draft-questions') {
+                window.location.href = url;
+                return;
+            }
             $.ajax({
                 url: url,
                 type: "GET",

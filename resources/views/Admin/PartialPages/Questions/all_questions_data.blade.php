@@ -206,9 +206,9 @@
 
                                 </div>
                                 <div class="row">
-{{--                                    <div class="col-md-8">--}}
-{{--                                        {{$questions->links()}}--}}
-{{--                                    </div>--}}
+                                    <div class="col-md-8">
+                                        {{$questions->links()}}
+                                    </div>
 {{--                                    <div class="col-md-4" >--}}
 {{--                                        <div class="text-center loading" style="display: block;">--}}
 {{--                                            <button class="btn btn-primary" type="button" disabled="">--}}

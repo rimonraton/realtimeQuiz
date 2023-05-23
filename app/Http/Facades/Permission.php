@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\Http\Facades;
 
-
 use App\Menu;
+use Illuminate\Support\Facades\Cache;
 
 class Permission
 {
@@ -40,33 +39,34 @@ class Permission
 
     public function getMenus()
     {
-        $findMenuUser = \App\MenuRole::where('user_id', auth()->user()->id)->count();
-        $rm = '';
-        if($findMenuUser) {
-            $rm = auth()->user()->usermenu;
-        }
-        else{
-            $rm = auth()->user()->roleuser->rolemenu;
-        }
+        return Cache::remember(auth()->user()->id, now()->addHour(), function () {
+            $findMenuUser = \App\MenuRole::where('user_id', auth()->user()->id)->count();
+            $rm = '';
+            if($findMenuUser) {
+                $rm = auth()->user()->usermenu;
+            }
+            else{
+                $rm = auth()->user()->roleuser->rolemenu;
+            }
 
-        $role = auth()->user()->roleuser->role;
+            $role = auth()->user()->roleuser->role;
 
-        if($rm)
-        {
-            $menuIdArray = explode(',', $rm->menu_id);
-        }
-        else
-        {
-            $menuIdArray = array("1");
-        }
-        $menu =\App\Menu::where('parent_id',0)->where('show_menu', 1)->get();
-        $lang = \App::getLocale();
-
-        return [
-            'menu' => $menu,
-            'menuIdArray' => $menuIdArray,
-            'lang' => $lang,
-            'role' => $role
-        ];
+            if($rm)
+            {
+                $menuIdArray = explode(',', $rm->menu_id);
+            }
+            else
+            {
+                $menuIdArray = array("1");
+            }
+            $menu =\App\Menu::where('parent_id',0)->where('show_menu', 1)->get();
+            $lang = \App::getLocale();
+            return [
+                'menu' => $menu,
+                'menuIdArray' => $menuIdArray,
+                'lang' => $lang,
+                'role' => $role
+            ];
+        });
     }
 }
