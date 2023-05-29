@@ -371,19 +371,6 @@
         methods: {
             async makeHost(uid, status = null){
                 console.log('user id..', this.isHost())
-                // if (this.user.id == uid){
-                //     this.uid = uid
-                //     this.requestHostUser = null
-                // } else{
-                //     if (status == 'accept'){
-                //         this.uid = uid
-                //         this.requestHostUser = null
-                //     } else if (status == 'deny'){
-                //         this.requestHostUser = null
-                //     } else {
-                //         this.requestHostUser = this.user
-                //     }
-                // }
                 if(this.isHost() && status == null){
                     this.uid = uid
                     this.requestHostUser = null
@@ -401,11 +388,6 @@
                 }
 
                 return await  axios.post(`/api/makeHost/${uid}/${this.channel}/${status}`)
-                    // .then(res => {
-                    //     console.log('result...', res.status)
-                    //     status = res.status
-                    // })
-
             },
             async newQuiz(uid){
               let makeHostStatus = await this.makeHost(uid)
@@ -457,7 +439,7 @@
                     }
                 })
             },
-            gameStart: function (defaultTime) {
+            gameStart: function (defaultTime = 30) {
                 this.sqo = true
                 let ids = this.users.map(u => u.id)
                 let gd = {

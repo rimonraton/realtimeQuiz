@@ -389,19 +389,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               status = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : null;
               console.log('user id..', _this3.isHost());
-              // if (this.user.id == uid){
-              //     this.uid = uid
-              //     this.requestHostUser = null
-              // } else{
-              //     if (status == 'accept'){
-              //         this.uid = uid
-              //         this.requestHostUser = null
-              //     } else if (status == 'deny'){
-              //         this.requestHostUser = null
-              //     } else {
-              //         this.requestHostUser = this.user
-              //     }
-              // }
               if (_this3.isHost() && status == null) {
                 _this3.uid = uid;
                 _this3.requestHostUser = null;
@@ -495,8 +482,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     },
-    gameStart: function gameStart(defaultTime) {
+    gameStart: function gameStart() {
       var _this5 = this;
+      var defaultTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
       this.sqo = true;
       var ids = this.users.map(function (u) {
         return u.id;

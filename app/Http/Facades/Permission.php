@@ -39,7 +39,8 @@ class Permission
 
     public function getMenus()
     {
-        return Cache::remember(auth()->user()->id, now()->addHour(), function () {
+        $userAndLang = auth()->user()->id .'-'. \App::getLocale();
+        return Cache::remember($userAndLang, now()->addHour(), function () {
             $findMenuUser = \App\MenuRole::where('user_id', auth()->user()->id)->count();
             $rm = '';
             if($findMenuUser) {
