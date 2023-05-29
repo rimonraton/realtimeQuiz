@@ -1715,7 +1715,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\r\n    height: 100px;\r\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\r\n    position: absolute;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.1);\r\n    width: 100%;\r\n    z-index: 999;\r\n    left: 0px;\r\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\r\n    max-width: -moz-fit-content;\r\n    max-width: fit-content;\n}\n.col-md-6.col-6[data-v-5d74a772]:hover {\r\n    background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-5d74a772] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-5d74a772] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-5d74a772] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n.col-md-6.col-6[data-v-5d74a772]:hover {\n    background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-5d74a772] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

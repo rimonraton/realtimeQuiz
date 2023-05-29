@@ -177,7 +177,7 @@
                 <div class="card my-4" v-if="results.length>0">
                     <div class="card-header">
                         Score Board
-                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>
+<!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
                         <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>
                     </div>
                     <div class="card-body" >

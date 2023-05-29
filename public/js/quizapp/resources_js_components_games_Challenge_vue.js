@@ -3585,17 +3585,7 @@ var render = function () {
           _vm.results.length > 0
             ? _c("div", { staticClass: "card my-4" }, [
                 _c("div", { staticClass: "card-header" }, [
-                  _vm._v(
-                    "\n                        Score Board\n                        "
-                  ),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-sm btn-danger float-left",
-                      on: { click: _vm.stop },
-                    },
-                    [_vm._v("STOP")]
-                  ),
+                  _vm._v("\n                        Score Board\n"),
                   _vm._v(" "),
                   _vm.user.id == _vm.uid && _vm.qid > 0
                     ? _c(
