@@ -1526,7 +1526,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.circle{\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        text-align: center;\n        position: absolute;\n        top: 4px;\n        left: 15px;\n        font-size: 1.5rem;\n        background: gray;\n        color: white;\n}\n.flag{\n\t\tposition: absolute;\n\t\tright: 15px;\n\t\ttop: 8px;\n}\n.close{\n    \tposition: absolute;\n    \ttop: -5px;\n    \tright: 0px;\n    \tcolor: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.circle{\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        text-align: center;\n        position: absolute;\n        top: 4px;\n        left: 15px;\n        font-size: 1.5rem;\n        background: gray;\n        color: white;\n}\n.flag{\n\t\tposition: absolute;\n\t\tright: 15px;\n\t\ttop: 8px;\n}\n.close{\n    \tposition: absolute;\n    \ttop: -5px;\n    \tright: 0px;\n    \tcolor: red;\n}\n.activeItem{\n        z-index: 2;\n        color: #20c899;\n        border-color: #3490dc;\n        border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -4004,8 +4004,10 @@ var render = function () {
                 "li",
                 {
                   key: u.id,
-                  staticClass: "list-group-item",
-                  class: { active: u.id == _vm.user.id },
+                  staticClass: "list-group-item rounded-lg",
+                  class: {
+                    "border border-success text-success": u.id == _vm.user.id,
+                  },
                 },
                 [
                   _c("img", {
@@ -4024,7 +4026,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   u.id == _vm.uid
-                    ? _c("span", { staticClass: "ml-1 badge badge-info" }, [
+                    ? _c("span", { staticClass: "ml-1 badge badge-danger" }, [
                         _vm._v("Host"),
                       ])
                     : _vm._e(),

@@ -21,13 +21,13 @@
                 <div id="reader" width="300px"></div>
                 <qrcode-vue :value="value" :size="size" level="H" v-if="qr" class="text-center" />
 	            <ul class="list-group ">
-	                <li class="list-group-item"
+	                <li class="list-group-item rounded-lg"
 	                    v-for="u in users" :key="u.id"
-	                    :class="{active : u.id == user.id}"
+	                    :class="{ 'border border-success text-success' : u.id == user.id}"
 	                    >
 	                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
 	                    <span class="ml-5">{{ u.name }} <span v-if="u.id == user.id">(You)</span></span>
-	                    <span v-if="u.id == uid" class="ml-1 badge badge-info">Host</span>
+	                    <span v-if="u.id == uid" class="ml-1 badge badge-danger">Host</span>
 
 	                    <span class="flag" >
 	                    	<img :src="getFlag(u.country)">
@@ -160,5 +160,11 @@ export default{
     	top: -5px;
     	right: 0px;
     	color: red;
+    }
+    .activeItem{
+        z-index: 2;
+        color: #20c899;
+        border-color: #3490dc;
+        border-radius: 5px;
     }
 </style>
