@@ -1341,7 +1341,7 @@ var render = function () {
                                         "span",
                                         {
                                           staticClass:
-                                            "text-white rounded-circle",
+                                            "text-dark rounded-circle",
                                           class: { qid: index == _vm.qid },
                                         },
                                         [
