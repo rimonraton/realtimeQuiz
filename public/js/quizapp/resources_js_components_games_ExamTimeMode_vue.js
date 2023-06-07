@@ -1351,20 +1351,17 @@ var render = function () {
                                               _vm.user.lang == "gb"
                                                 ? index + 1
                                                 : _vm.q2bNumber(index + 1)
-                                            )
+                                            ) +
+                                              " " +
+                                              _vm._s(
+                                                _vm.tbe(
+                                                  question.bd_question_text,
+                                                  question.question_text,
+                                                  _vm.user.lang
+                                                )
+                                              )
                                           ),
                                         ]
-                                      ),
-                                      _vm._v(
-                                        "\n                                    " +
-                                          _vm._s(
-                                            _vm.tbe(
-                                              question.bd_question_text,
-                                              question.question_text,
-                                              _vm.user.lang
-                                            )
-                                          ) +
-                                          "\n                                    "
                                       ),
                                     ])
                                   : _vm._e(),

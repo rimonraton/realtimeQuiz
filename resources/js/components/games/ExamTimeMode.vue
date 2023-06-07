@@ -80,8 +80,8 @@
                                             <source :src="'/'+ question.question_file_link" type="audio/mpeg">
                                         </audio>
                                     </div>
-                                    <span class="text-dark rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
-                                    {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    <span class="text-dark rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }} {{ tbe(question.bd_question_text, question.question_text, user.lang) }}</span>
+
                                     <!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
                                 </div>
                                 <!--		            <ul class="list-group text-dark">-->
