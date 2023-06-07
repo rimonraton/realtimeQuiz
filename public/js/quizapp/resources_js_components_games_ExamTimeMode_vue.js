@@ -1243,8 +1243,9 @@ var render = function () {
                                 ),
                               ]
                             ),
-                            _vm._v(
-                              "\n                            " +
+                            _vm._v(" "),
+                            _c("span", { staticClass: "text-dark" }, [
+                              _vm._v(
                                 _vm._s(
                                   _vm.fileType(question.fileType)
                                     ? _vm.fileText(
@@ -1256,9 +1257,9 @@ var render = function () {
                                         question.question_text,
                                         _vm.user.lang
                                       )
-                                ) +
-                                "\n                        "
-                            ),
+                                )
+                              ),
+                            ]),
                           ]
                         ),
                         _vm._v(" "),

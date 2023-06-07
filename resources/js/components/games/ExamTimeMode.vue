@@ -63,7 +63,7 @@
                              aria-expanded="true"
                              :aria-controls="'collapse'+ index">
                             <span class="text-dark rounded-circle" :class="{qid: index == qid}">{{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}</span>
-                            {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}
+                            <span class="text-dark">{{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}</span>
                         </div>
                         <div :id="'collapse'+ index" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
                             <div class="card-body">
