@@ -229,11 +229,11 @@
                                                 @if(count($exam->existUser))
                                                     @if($exam->existUser[0]->reason)
                                                         <button class="btn btn-sm btn-outline-secondary align-self-center rounded-lg cursor-not-allowed" disabled>
-                                                            {{__('Pending your request')}}
+                                                            {{__('exam.pendingRequest')}}
                                                         </button>
                                                     @else
                                                         <button class="btn btn-sm btn-outline-warning align-self-center rounded-lg reason" data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-exam="{{$exam->id}}" data-user="{{Auth::id()}}">
-                                                            {{__('Request to unlock')}}
+                                                            {{__('exam.unlockRequest')}}
                                                         </button>
                                                     @endif
                                                         <p class="text-danger pt-2">{{$lang == 'gb'? 'Temporarily locked' : 'সাময়িকভাবে লক করা হয়েছে'}}</p>
@@ -308,23 +308,24 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="title"></h5>
+                    <h5 class="modal-title" id="title">{{$lang == 'gb' ? 'Give suitable reasons' : 'উপযুক্ত কারণ দিন'}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="py-3 text-center">{{$lang == 'gb' ? 'Exam Name: ' : 'পরীক্ষার নামঃ '}} <span id="eName"></span></div>
                     <form action="{{url('update-reason')}}" method="POST">
                         @csrf
                         <input id="examId" type="hidden" name="exam">
                         <input id="userId" type="hidden" name="user">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Write Reason</span>
+                                <span class="input-group-text">{{$lang == 'gb' ?'Write Reason' : 'কারণ লিখুন'}}</span>
                             </div>
                             <textarea class="form-control" aria-label="With textarea" name="reasonValue"></textarea>
                         </div>
-                        <div class="mt-4 text-right"><button type="submit" class="btn btn-primary">Send Request</button></div>
+                        <div class="mt-4 text-right"><button type="submit" class="btn btn-primary">{{$lang == 'gb'?'Send Request': 'অনুরোধ পাঠান'}}</button></div>
                     </form>
                 </div>
             </div>
@@ -334,7 +335,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="titleReason">Reasons</h5>
+                    <h5 class="modal-title" id="titleReason">{{$lang == 'gb' ? 'Reasons' : 'কারণগুলো'}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -344,7 +345,7 @@
                            <div class="row">
                                <div class="col-lg-10 mx-auto">
                                    <div class="section-title text-center ">
-                                       <h3 class="top-c-sep" id="examName">Exam Name</h3>
+                                       <h3 class="top-c-sep">{{$lang == 'gb' ? 'Exam Name:' : 'পরীক্ষার নামঃ'}} <span id="examName"></span></h3>
                                    </div>
                                </div>
                            </div>
@@ -372,19 +373,24 @@
         $(function () {
             $(".alert").delay(5000).slideUp(300);
             $('.reason').on('click', function () {
+                {{--const lang = "{{$lang}}"--}}
+                {{--const title = lang == 'gb' ? 'Appropriate Reason' : 'উপযুক্ত কারণ'--}}
                 $('#userId').val($(this).attr('data-user'))
                 $('#examId').val($(this).attr('data-exam'))
-                $('#title').html( 'Reason for Exam (' + $(this).attr('data-name')+')')
+                // $('#title').html( `${title}` + "(" + $(this).attr('data-name')+")")
+                $('#eName').html($(this).attr('data-name'))
                 $('#resonModal').modal('show')
             })
 
             $('.viewReason').on('click', function () {
                 $('#examName').html($(this).attr('data-name'))
                 const reasons = JSON.parse($(this).attr('data-reasons'))
-                console.log('reasons', reasons)
+                // console.log('reasons', reasons)
+                const lang = "{{$lang}}"
+                const unlock = lang == 'gb' ? 'Unlock' : 'আনলক করুন'
                 let reasonView = ''
                     $.each(reasons, function( index, value ) {
-                        console.log(index, value)
+                        // console.log(index, value)
                         if(!!value.reason) {
                             reasonView += `<div class="job-box d-md-flex align-items-center justify-content-between mb-30 border rounded">
                                                <div class="job-left my-4 d-md-flex align-items-center flex-wrap p-2">
@@ -398,7 +404,7 @@
                                                    </div>
                                                </div>
                                                <div class="job-right my-4 mx-2 flex-shrink-0">
-                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">Unlock</a>
+                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">${unlock}</a>
                                                </div>
                                          </div>`
                         }

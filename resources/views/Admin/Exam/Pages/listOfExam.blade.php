@@ -453,7 +453,7 @@
                         <div class="row">
                             <div class="col-lg-10 mx-auto">
                                 <div class="section-title text-center ">
-                                    <h3 class="top-c-sep" id="examName">Exam Name</h3>
+                                    <h3 class="top-c-sep">{{$lang == 'gb' ? 'Exam Name:' : 'পরীক্ষার নামঃ'}} <span id="examName"></span></h3>
                                 </div>
                             </div>
                         </div>
@@ -486,6 +486,8 @@
         $(function() {
             $('.viewReason').on('click', function () {
                 $('#examName').html($(this).attr('data-name'))
+                const lang = "{{$lang}}"
+                const unlock = lang == 'gb' ? 'Unlock' : 'আনলক করুন'
                 const reasons = JSON.parse($(this).attr('data-reasons'))
                 console.log('reasons', reasons)
                 let reasonView = ''
@@ -504,7 +506,7 @@
                                                    </div>
                                                </div>
                                                <div class="job-right my-4 mx-2 flex-shrink-0">
-                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">Unlock</a>
+                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">${unlock}</a>
                                                </div>
                                          </div>`
                     }
