@@ -9,9 +9,9 @@
                         <div>
                             <h4 class="card-title text-center">
                                 @if($lang == 'gb')
-                                    {{__('exam.result_title') .' '. $userResult->exam_en}}
+                                    {{__('exam.result_title') .' '}} {{$userResult->exam_en ? $userResult->exam_en : $userResult->exam_bn}}
                                 @else
-                                    {{$userResult->exam_bn.' '.__('exam.result_title')}}
+                                    {{$userResult->exam_bn ? $userResult->exam_bn : $userResult->exam_en}}{{' '.__('exam.result_title')}}
                                 @endif
                             </h4>
                         </div>

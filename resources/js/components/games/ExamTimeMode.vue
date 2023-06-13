@@ -242,6 +242,16 @@
             }
         },
 		methods: {
+            examGiverUser(){
+                const data = {
+                    'exam_id': this.qid.id,
+                    'user_id': this.user.id
+                }
+                // console.log('data...', data)
+                axios.post('/api/save-exist-exam-given-user', data).then((res) => {
+                    console.log(res, 'response from server')
+                })
+            },
             scrollToElement(id) {
                 console.log('id....',id);
                 // this.$refs["question_element" + id].scrollIntoView({ behavior: "smooth" });
@@ -275,7 +285,7 @@
             q2bNumber(numb) {
                 let numbString = numb.toString();
                 let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.':'.'};
                 [...numbString].forEach(n => bn += eb[n])
                 return bn
             },
@@ -409,6 +419,11 @@
                 // }
                 // this.results.push(data)
             },
+            deleteExistUser(){
+                axios.post('/api/delete-exist-exam-given-user', {'exam_id': this.qid.id, 'user_id': this.user.id}).then((res) => {
+                    console.log(res, 'response from server')
+                })
+            },
             submitExam(){
                 const resultValue = {
                     'user_id': this.user.id,
@@ -417,6 +432,7 @@
                 }
                 axios.post('/api/save-results', resultValue).then((res) => {
                     console.log(res, 'response from server')
+                    this.deleteExistUser()
                     this.screen.exam = false
                     this.screen.examSubmit = true
                 })
@@ -446,6 +462,7 @@
             }
 		},
         created(){
+            this.examGiverUser();
             this.countDownTimer()
             this.$watch('countDown', (newValue) => {
                 if (newValue == 0) {

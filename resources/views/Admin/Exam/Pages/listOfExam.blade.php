@@ -194,6 +194,11 @@
                                                     <a class="delete text-danger" style="cursor: pointer;" data-id="{{$exam->id}}" title="Remove">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
+                                                    @if(count($exam->existUser))
+                                                    <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}" data-toggle="tooltip" data-placement="top" title="Request for unlock">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    @endif
                                                 </th>
                                             </tr>
                                         @endforeach
@@ -434,6 +439,43 @@
         <!-- /.modal-dialog -->
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="userReasons">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleReason">Reasons</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 mx-auto">
+                                <div class="section-title text-center ">
+                                    <h3 class="top-c-sep" id="examName">Exam Name</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row overflow-auto" style="height: 400px">
+                            <div class="col-lg-10 mx-auto">
+                                <div class="career-search mb-60">
+                                    <div class="filter-result">
+                                        <div id="loadReason">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('js')
@@ -442,6 +484,66 @@
     <script>
         $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
         $(function() {
+            $('.viewReason').on('click', function () {
+                $('#examName').html($(this).attr('data-name'))
+                const reasons = JSON.parse($(this).attr('data-reasons'))
+                console.log('reasons', reasons)
+                let reasonView = ''
+                $.each(reasons, function( index, value ) {
+                    console.log(index, value)
+                    if(!!value.reason) {
+                        reasonView += `<div class="job-box d-md-flex align-items-center justify-content-between mb-30 border rounded">
+                                               <div class="job-left my-4 d-md-flex align-items-center flex-wrap p-2">
+                                                   <div class="job-content">
+                                                       <h5 class="text-center text-md-left">${value.user.name}(${value.user.email})</h5>
+                                                       <ul class="d-md-flex flex-wrap text-capitalize ff-open-sans">
+                                                           <li class="mr-md-4 text-danger">
+                                                               ${value.reason}
+                                                           </li>
+                                                       </ul>
+                                                   </div>
+                                               </div>
+                                               <div class="job-right my-4 mx-2 flex-shrink-0">
+                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">Unlock</a>
+                                               </div>
+                                         </div>`
+                    }
+                });
+
+                $('#loadReason').html( reasonView )
+                $('#userReasons').modal('show')
+            })
+            $(document).on('click','.unlock', function () {
+                const lang = "{{$lang}}"
+                const exam = $(this).attr('data-exam')
+                let fd = {
+                    'exam': exam,
+                    'user': $(this).attr('data-user')
+                }
+                $.ajax({
+                    url:"{{url('api/unlock-exam')}}",
+                    type:"Post",
+                    data: fd,
+                    success: function (data) {
+                        console.log('number_of_reason...', data['number_of_reason'])
+                        // if (data['number_of_reason'] > 0){
+                        //     $('#num_'+ exam).html(lang == 'gb' ? data['number_of_reason'] : q2bNumber(data['number_of_reason']))
+                        //     $('#viewRes_' + exam).attr('data-reasons', JSON.stringify(data['reasons']))
+                        // } else{
+                        //     $('#btn_'+ exam).addClass('d-none')
+                        // }
+                        $('#userReasons').modal('hide')
+                    }
+                })
+            })
+
+            function q2bNumber(numb) {
+                let numbString = numb.toString();
+                let bn = ''
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.':'.'};
+                [...numbString].forEach(n => bn += eb[n])
+                return bn
+            }
             var today = new Date()
             // $('.timeseconds').daterangepicker({
             //     timePicker: true,

@@ -263,6 +263,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     };
   },
   methods: {
+    examGiverUser: function examGiverUser() {
+      var data = {
+        'exam_id': this.qid.id,
+        'user_id': this.user.id
+      };
+      // console.log('data...', data)
+      axios.post('/api/save-exist-exam-given-user', data).then(function (res) {
+        console.log(res, 'response from server');
+      });
+    },
     scrollToElement: function scrollToElement(id) {
       console.log('id....', id);
       // this.$refs["question_element" + id].scrollIntoView({ behavior: "smooth" });
@@ -309,7 +319,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         6: '৬',
         7: '৭',
         8: '৮',
-        9: '৯'
+        9: '৯',
+        '.': '.'
       };
       _toConsumableArray(numbString).forEach(function (n) {
         return bn += eb[n];
@@ -445,6 +456,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // }
       // this.results.push(data)
     },
+    deleteExistUser: function deleteExistUser() {
+      axios.post('/api/delete-exist-exam-given-user', {
+        'exam_id': this.qid.id,
+        'user_id': this.user.id
+      }).then(function (res) {
+        console.log(res, 'response from server');
+      });
+    },
     submitExam: function submitExam() {
       var _this2 = this;
       var resultValue = {
@@ -454,6 +473,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       };
       axios.post('/api/save-results', resultValue).then(function (res) {
         console.log(res, 'response from server');
+        _this2.deleteExistUser();
         _this2.screen.exam = false;
         _this2.screen.examSubmit = true;
       });
@@ -485,6 +505,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     var _this4 = this;
+    this.examGiverUser();
     this.countDownTimer();
     this.$watch('countDown', function (newValue) {
       if (newValue == 0) {

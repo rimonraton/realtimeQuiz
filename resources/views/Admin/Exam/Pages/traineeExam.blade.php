@@ -226,9 +226,23 @@
                                             </p>
                                         @else
                                             @if($exam->is_published)
+                                                @if(count($exam->existUser))
+                                                    @if($exam->existUser[0]->reason)
+                                                        <button class="btn btn-sm btn-outline-secondary align-self-center rounded-lg cursor-not-allowed" disabled>
+                                                            {{__('Pending your request')}}
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-sm btn-outline-warning align-self-center rounded-lg reason" data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-exam="{{$exam->id}}" data-user="{{Auth::id()}}">
+                                                            {{__('Request to unlock')}}
+                                                        </button>
+                                                    @endif
+                                                        <p class="text-danger pt-2">{{$lang == 'gb'? 'Temporarily locked' : 'সাময়িকভাবে লক করা হয়েছে'}}</p>
+                                                @else
                                                 <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-sm btn-outline-info align-self-center rounded-lg" >
                                                     {{__('msg.start')}}
                                                 </a>
+                                                @endif
+
                                             @else
                                                 @if($futureDate < $now)
                                                     <p>
@@ -246,54 +260,42 @@
                                     @endif
                                 @endif
                                 @endif
+
                                 @if($exam->results_count)
                                         @if(auth()->user()->roleuser->role->id < 4)
                                             <p>{{$lang == 'gb' ? 'Number of Test takers' : 'পরীক্ষা জমাদানকারীর সংখ্যা'}}: {{$lang == 'gb' ? $exam->results_count : $ban->bn_number($exam->results_count)}}</p>
+                                            <div class="d-flex justify-content-center">
                                             <p>
                                              <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-sm rounded-lg btn-outline-primary align-self-center">
                                                 {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}
-                                                </a>
+                                             </a>
                                             </p>
+                                            <p id="btn_{{$exam->id}}" class="mx-1">
+                                            @if(count($exam->existUser))
+                                                    @if($exam->existUser[0]->reason)
+                                                        <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
+                                                        {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
+                                                    </a>
+                                                    @endif
+                                                @endif
+                                        </p>
+                                            </div>
                                         @endif
+                                @else
+                                @if(auth()->user()->roleuser->role->id < 4)
+                                    <span id="btn_{{$exam->id}}">
+                                    @if(count($exam->existUser))
+                                            @if($exam->existUser[0]->reason)
+                                                <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
+                                                {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
+                                            </a>
+                                            @endif
+                                        @endif
+                                </span>
                                 @endif
-                        </div>
-{{--                    </a>--}}
-{{--                    <div class="info d-flex justify-content-center py-1 px-2 mt-auto ">--}}
-{{--                        @if(auth()->user()->roleuser->role->id > 3)--}}
-{{--                        @if($futureDate < $now)--}}
-{{--                        @if($exam->results_count)--}}
-{{--                                @if(auth()->user()->roleuser->role->id < 4)--}}
-{{--                                    <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-xs btn-outline-danger align-self-center">--}}
-{{--                                        {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}--}}
-{{--                                    </a>--}}
-{{--                                    @endif--}}
-{{--                                <p>--}}
-{{--                                    <span class="btn btn-sm btn-outline-success rounded-lg align-self-center text-success cursor-not-allowed">--}}
-{{--                                        {{__('exam.submitted')}}--}}
-{{--                                    </span>--}}
-{{--                                </p>--}}
-{{--                            @else--}}
-{{--                                    @if($exam->is_published)--}}
-{{--                                    <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-xs btn-outline-info align-self-center" >--}}
-{{--                                        {{__('msg.start')}}--}}
-{{--                                    </a>--}}
-{{--                                    @else--}}
-{{--                                        @if($futureDate < $now)--}}
-{{--                                            <p>--}}
-{{--                                                <span class="btn btn-sm btn-outline-danger rounded-lg align-self-center text-danger cursor-not-allowed">--}}
-{{--                                                    {{__('exam.expired')}}--}}
-{{--                                                </span>--}}
-{{--                                            </p>--}}
-{{--                                        @else--}}
-{{--                                            <a class="btn btn-xs btn-outline-dark align-self-center text-warning cursor-not-allowed">--}}
-{{--                                                {{__('msg.not_published_yet')}}--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
-{{--                                    @endif--}}
-{{--                                @endif--}}
-{{--                            @endif--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
+                                @endif
+
+                            </div>
                 </div>
             </div>
         @endforeach
@@ -302,11 +304,141 @@
             {{ $exams->links() }}
         </div>
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="resonModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url('update-reason')}}" method="POST">
+                        @csrf
+                        <input id="examId" type="hidden" name="exam">
+                        <input id="userId" type="hidden" name="user">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Write Reason</span>
+                            </div>
+                            <textarea class="form-control" aria-label="With textarea" name="reasonValue"></textarea>
+                        </div>
+                        <div class="mt-4 text-right"><button type="submit" class="btn btn-primary">Send Request</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="userReasons">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleReason">Reasons</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                       <div class="container">
+                           <div class="row">
+                               <div class="col-lg-10 mx-auto">
+                                   <div class="section-title text-center ">
+                                       <h3 class="top-c-sep" id="examName">Exam Name</h3>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="row overflow-auto" style="height: 400px">
+                               <div class="col-lg-10 mx-auto">
+                                   <div class="career-search mb-60">
+                                       <div class="filter-result">
+                                           <div id="loadReason">
+
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     <script>
         $(function () {
             $(".alert").delay(5000).slideUp(300);
+            $('.reason').on('click', function () {
+                $('#userId').val($(this).attr('data-user'))
+                $('#examId').val($(this).attr('data-exam'))
+                $('#title').html( 'Reason for Exam (' + $(this).attr('data-name')+')')
+                $('#resonModal').modal('show')
+            })
+
+            $('.viewReason').on('click', function () {
+                $('#examName').html($(this).attr('data-name'))
+                const reasons = JSON.parse($(this).attr('data-reasons'))
+                console.log('reasons', reasons)
+                let reasonView = ''
+                    $.each(reasons, function( index, value ) {
+                        console.log(index, value)
+                        if(!!value.reason) {
+                            reasonView += `<div class="job-box d-md-flex align-items-center justify-content-between mb-30 border rounded">
+                                               <div class="job-left my-4 d-md-flex align-items-center flex-wrap p-2">
+                                                   <div class="job-content">
+                                                       <h5 class="text-center text-md-left">${value.user.name}(${value.user.email})</h5>
+                                                       <ul class="d-md-flex flex-wrap text-capitalize ff-open-sans">
+                                                           <li class="mr-md-4 text-danger">
+                                                               ${value.reason}
+                                                           </li>
+                                                       </ul>
+                                                   </div>
+                                               </div>
+                                               <div class="job-right my-4 mx-2 flex-shrink-0">
+                                                   <a href="#" class="btn d-block w-100 d-sm-inline-block btn-light unlock" data-exam="${value.exam_id}" data-user="${value.user_id}">Unlock</a>
+                                               </div>
+                                         </div>`
+                        }
+                    });
+
+                $('#loadReason').html( reasonView )
+                $('#userReasons').modal('show')
+            })
+            $(document).on('click','.unlock', function () {
+                const lang = "{{$lang}}"
+                const exam = $(this).attr('data-exam')
+                let fd = {
+                    'exam': exam,
+                    'user': $(this).attr('data-user')
+                }
+                $.ajax({
+                    url:"{{url('api/unlock-exam')}}",
+                    type:"Post",
+                    data: fd,
+                    success: function (data) {
+                        console.log('number_of_reason...', data['number_of_reason'])
+                        if (data['number_of_reason'] > 0){
+                            $('#num_'+ exam).html(lang == 'gb' ? data['number_of_reason'] : q2bNumber(data['number_of_reason']))
+                            $('#viewRes_' + exam).attr('data-reasons', JSON.stringify(data['reasons']))
+                        } else{
+                            $('#btn_'+ exam).addClass('d-none')
+                        }
+                        $('#userReasons').modal('hide')
+                    }
+                })
+            })
+
+           function q2bNumber(numb) {
+                let numbString = numb.toString();
+                let bn = ''
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.':'.'};
+                [...numbString].forEach(n => bn += eb[n])
+                return bn
+            }
+
         })
     </script>
 @endsection
