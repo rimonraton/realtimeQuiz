@@ -431,7 +431,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['options', 'user', 'question'],
@@ -477,17 +476,17 @@ __webpack_require__.r(__webpack_exports__);
       // console.log(this.isPredict())
     },
     tbe: function tbe(b, e, l) {
-      if (b !== null && e !== null) {
+      if (b && e) {
         if (l === 'bd') {
           return b;
         }
         return e;
-      } else if (b !== null && e === null) {
+      } else if (b) {
         return b;
-      } else if (b === null && e !== null) {
+      } else if (e) {
         return e;
       }
-      return b;
+      return;
     },
     imageOption: function imageOption(objArray) {
       var data = objArray.some(function (a) {
@@ -834,24 +833,35 @@ var render = function () {
         [
           option.flag != "img"
             ? _c("div", { staticClass: "list-group" }, [
-                _c("span", {
-                  staticClass:
-                    "list-group-item list-group-item-action cursor my-1",
-                  class: [
-                    "element-animation" + (index + 1),
-                    { selected: _vm.qoption.selected == index },
-                  ],
-                  domProps: {
-                    innerHTML: _vm._s(
-                      _vm.tbe(option.bd_option, option.option, _vm.user.lang)
-                    ),
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.clickSelect(index, option)
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action cursor my-1",
+                    class: [
+                      "element-animation" + (index + 1),
+                      { selected: _vm.qoption.selected == index },
+                    ],
+                    on: {
+                      click: function ($event) {
+                        return _vm.clickSelect(index, option)
+                      },
                     },
                   },
-                }),
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(
+                          _vm.tbe(
+                            option.bd_option,
+                            option.option,
+                            _vm.user.lang
+                          )
+                        ) +
+                        "\n    "
+                    ),
+                  ]
+                ),
               ])
             : _c(
                 "div",

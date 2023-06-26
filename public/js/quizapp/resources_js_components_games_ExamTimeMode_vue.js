@@ -233,6 +233,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
 
 
 
@@ -505,7 +508,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     var _this4 = this;
-    this.examGiverUser();
+    // this.examGiverUser();
     this.countDownTimer();
     this.$watch('countDown', function (newValue) {
       if (newValue == 0) {
@@ -596,7 +599,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['options', 'user', 'question'],
@@ -642,17 +644,17 @@ __webpack_require__.r(__webpack_exports__);
       // console.log(this.isPredict())
     },
     tbe: function tbe(b, e, l) {
-      if (b !== null && e !== null) {
+      if (b && e) {
         if (l === 'bd') {
           return b;
         }
         return e;
-      } else if (b !== null && e === null) {
+      } else if (b) {
         return b;
-      } else if (b === null && e !== null) {
+      } else if (e) {
         return e;
       }
-      return b;
+      return;
     },
     imageOption: function imageOption(objArray) {
       var data = objArray.some(function (a) {
@@ -679,7 +681,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.bg-custom{\n    background-color: #F1EEFF;\n}\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1152,63 +1154,67 @@ var render = function () {
               ]),
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "d-flex justify-content-between py-1" }, [
-              _c("span", [
-                _vm._v(
-                  " " +
-                    _vm._s(
-                      _vm.user.lang == "gb" ? "Exam Name" : "পরীক্ষার নাম"
-                    ) +
-                    " : " +
-                    _vm._s(
-                      _vm.tbe(_vm.qid.exam_bn, _vm.qid.exam_en, _vm.user.lang)
-                    )
-                ),
+            _c("div", { staticClass: "p-2 border rounded-lg shadow mb-1" }, [
+              _c("div", { staticClass: "d-flex justify-content-between h5" }, [
+                _c("span", [
+                  _vm._v(
+                    " " +
+                      _vm._s(
+                        _vm.user.lang == "gb" ? "Exam Name" : "পরীক্ষার নাম"
+                      ) +
+                      " : " +
+                      _vm._s(
+                        _vm.tbe(_vm.qid.exam_bn, _vm.qid.exam_en, _vm.user.lang)
+                      )
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("span", [
+                  _vm._v(
+                    " " +
+                      _vm._s(_vm.user.lang == "gb" ? "Total Time" : "মোট সময়") +
+                      " : " +
+                      _vm._s(_vm.totalTime())
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("span", [
+                  _vm._v(
+                    " " +
+                      _vm._s(
+                        _vm.user.lang == "gb" ? "Total Mark" : "মোট মার্ক"
+                      ) +
+                      " : " +
+                      _vm._s(
+                        _vm.user.lang == "gb"
+                          ? _vm.questions.length * _vm.qid.each_question_mark
+                          : _vm.q2bNumber(
+                              _vm.questions.length * _vm.qid.each_question_mark
+                            )
+                      )
+                  ),
+                ]),
               ]),
               _vm._v(" "),
-              _c("span", [
-                _vm._v(
-                  " " +
-                    _vm._s(_vm.user.lang == "gb" ? "Total Time" : "মোট সময়") +
-                    " : " +
-                    _vm._s(_vm.totalTime())
-                ),
-              ]),
-              _vm._v(" "),
-              _c("span", [
-                _vm._v(
-                  " " +
-                    _vm._s(_vm.user.lang == "gb" ? "Total Mark" : "মোট মার্ক") +
-                    " : " +
-                    _vm._s(
-                      _vm.user.lang == "gb"
-                        ? _vm.questions.length * _vm.qid.each_question_mark
-                        : _vm.q2bNumber(
-                            _vm.questions.length * _vm.qid.each_question_mark
-                          )
-                    )
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-center py-1" }, [
-              _c("span", [
-                _vm._v(
-                  " " +
-                    _vm._s(
-                      _vm.user.lang == "gb"
-                        ? "[0" +
-                            _vm.qid.each_question_mark +
-                            " mark will be given for each correct answer and " +
-                            _vm.negativeMark() +
-                            " mark will be deducted for each wrong answer.]"
-                        : "[প্রতিটি শুদ্ধ উত্তরের জন্য ০" +
-                            _vm.q2bNumber(_vm.qid.each_question_mark) +
-                            " নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য " +
-                            _vm.q2bNumber(_vm.negativeMark()) +
-                            " নম্বর কর্তন হবে ।]"
-                    )
-                ),
+              _c("div", { staticClass: "text-center py-1 text-danger" }, [
+                _c("span", [
+                  _vm._v(
+                    " " +
+                      _vm._s(
+                        _vm.user.lang == "gb"
+                          ? "[" +
+                              _vm.qid.each_question_mark +
+                              " mark will be given for each correct answer and " +
+                              _vm.negativeMark() +
+                              " mark will be deducted for each wrong answer.]"
+                          : "[প্রতিটি শুদ্ধ উত্তরের জন্য " +
+                              _vm.q2bNumber(_vm.qid.each_question_mark) +
+                              " নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য " +
+                              _vm.q2bNumber(_vm.negativeMark()) +
+                              " নম্বর কর্তন হবে ।]"
+                      )
+                  ),
+                ]),
               ]),
             ]),
             _vm._v(" "),
@@ -1236,7 +1242,7 @@ var render = function () {
                         _c(
                           "div",
                           {
-                            staticClass: "card-header p-1 cursor text-dark",
+                            staticClass: "border-bottom p-3 cursor text-dark",
                             attrs: {
                               id: "heading" + index,
                               "data-toggle": "collapse",
@@ -1249,7 +1255,8 @@ var render = function () {
                             _c(
                               "span",
                               {
-                                staticClass: "text-dark rounded-circle",
+                                staticClass:
+                                  "text-dark rounded-circle h5 font-weight-bold",
                                 class: { qid: index == _vm.qid },
                               },
                               [
@@ -1257,30 +1264,34 @@ var render = function () {
                                   _vm._s(
                                     !_vm.fileType(question.fileType)
                                       ? _vm.user.lang == "gb"
-                                        ? index + 1
-                                        : _vm.q2bNumber(index + 1)
+                                        ? index + 1 + "."
+                                        : _vm.q2bNumber(index + 1) + "."
                                       : ""
                                   )
                                 ),
                               ]
                             ),
                             _vm._v(" "),
-                            _c("span", { staticClass: "text-dark" }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.fileType(question.fileType)
-                                    ? _vm.fileText(
-                                        question.fileType,
-                                        _vm.user.lang
-                                      )
-                                    : _vm.tbe(
-                                        question.bd_question_text,
-                                        question.question_text,
-                                        _vm.user.lang
-                                      )
-                                )
-                              ),
-                            ]),
+                            _c(
+                              "span",
+                              { staticClass: "text-dark h5 font-weight-bold" },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.fileType(question.fileType)
+                                      ? _vm.fileText(
+                                          question.fileType,
+                                          _vm.user.lang
+                                        )
+                                      : _vm.tbe(
+                                          question.bd_question_text,
+                                          question.question_text,
+                                          _vm.user.lang
+                                        )
+                                  )
+                                ),
+                              ]
+                            ),
                           ]
                         ),
                         _vm._v(" "),
@@ -1360,10 +1371,10 @@ var render = function () {
                                         : _vm._e(),
                                       _vm._v(" "),
                                       _c(
-                                        "span",
+                                        "h5",
                                         {
                                           staticClass:
-                                            "text-dark rounded-circle",
+                                            "text-dark font-weight-bold p-3 rounded-lg border",
                                           class: { qid: index == _vm.qid },
                                         },
                                         [
@@ -1373,7 +1384,7 @@ var render = function () {
                                                 ? index + 1
                                                 : _vm.q2bNumber(index + 1)
                                             ) +
-                                              " " +
+                                              "." +
                                               _vm._s(
                                                 _vm.tbe(
                                                   question.bd_question_text,
@@ -1416,7 +1427,8 @@ var render = function () {
               _c(
                 "span",
                 {
-                  staticClass: "btn btn-sm btn-info rounded border",
+                  staticClass:
+                    "btn btn-sm rounded border bg-primary text-white",
                   on: { click: _vm.submited },
                 },
                 [
@@ -1436,7 +1448,7 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-4" }, [
             _c("div", { staticClass: "card my-4 d-sm-none d-md-block" }, [
-              _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "p-3 border-bottom text-center" }, [
                 _vm._v(
                   "\n                    " +
                     _vm._s(
@@ -1458,83 +1470,104 @@ var render = function () {
                           "card-profile-stats d-flex justify-content-between",
                       },
                       [
-                        _c("div", { staticClass: "text-center" }, [
-                          _c("span", { staticClass: "heading" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.hours
-                                  : _vm.q2bNumber(_vm.timer.hours)
-                              )
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "description" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.hours > 1
-                                    ? "Hours"
-                                    : "Hour"
-                                  : "ঘণ্টা"
-                              )
-                            ),
-                          ]),
-                        ]),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.hours
+                                    : _vm.q2bNumber(_vm.timer.hours)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.hours > 1
+                                      ? "Hours"
+                                      : "Hour"
+                                    : "ঘণ্টা"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "text-center" }, [
-                          _c("span", { staticClass: "heading" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.minutes
-                                  : _vm.q2bNumber(_vm.timer.minutes)
-                              )
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "description" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.minutes > 1
-                                    ? "Minutes"
-                                    : "Minute"
-                                  : "মিনিট"
-                              )
-                            ),
-                          ]),
-                        ]),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.minutes
+                                    : _vm.q2bNumber(_vm.timer.minutes)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.minutes > 1
+                                      ? "Minutes"
+                                      : "Minute"
+                                    : "মিনিট"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "text-center" }, [
-                          _c("span", { staticClass: "heading" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.seconds
-                                  : _vm.q2bNumber(_vm.timer.seconds)
-                              )
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "description" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.user.lang == "gb"
-                                  ? _vm.timer.seconds > 1
-                                    ? "Seconds"
-                                    : "Second"
-                                  : "সেকেন্ড"
-                              )
-                            ),
-                          ]),
-                        ]),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.seconds
+                                    : _vm.q2bNumber(_vm.timer.seconds)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.seconds > 1
+                                      ? "Seconds"
+                                      : "Second"
+                                    : "সেকেন্ড"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
                       ]
                     ),
                   ]),
@@ -1543,7 +1576,7 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card my-4 d-sm-none d-md-block" }, [
-              _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "p-3 border-bottom text-center" }, [
                 _vm._v(
                   "\n                    " +
                     _vm._s(
@@ -1625,7 +1658,7 @@ var render = function () {
                     "button",
                     {
                       staticClass:
-                        "btn border border-secondary text-white bg-danger m-1",
+                        "btn border border-secondary text-white bg-primary m-1",
                       class: _vm.questionAttemptOrNot(question.id)
                         ? "btn-primary"
                         : "",
@@ -1688,24 +1721,35 @@ var render = function () {
         [
           option.flag != "img"
             ? _c("div", { staticClass: "list-group" }, [
-                _c("span", {
-                  staticClass:
-                    "list-group-item list-group-item-action cursor my-1",
-                  class: [
-                    "element-animation" + (index + 1),
-                    { selected: _vm.qoption.selected == index },
-                  ],
-                  domProps: {
-                    innerHTML: _vm._s(
-                      _vm.tbe(option.bd_option, option.option, _vm.user.lang)
-                    ),
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.clickSelect(index, option)
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action cursor my-1",
+                    class: [
+                      "element-animation" + (index + 1),
+                      { selected: _vm.qoption.selected == index },
+                    ],
+                    on: {
+                      click: function ($event) {
+                        return _vm.clickSelect(index, option)
+                      },
                     },
                   },
-                }),
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(
+                          _vm.tbe(
+                            option.bd_option,
+                            option.option,
+                            _vm.user.lang
+                          )
+                        ) +
+                        "\n    "
+                    ),
+                  ]
+                ),
               ])
             : _c(
                 "div",

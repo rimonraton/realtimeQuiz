@@ -412,9 +412,7 @@
 {{--                        <input type="hidden" id="scheduledatetime" name="scheduledatetime">--}}
                         <div class="form-group row">
                             <div for="category" class="col-sm-4 text-right">{{__('exam.exam_time')}} :</div>
-                            <div class="col-sm-8" id="showSchedule">
-
-                            </div>
+                            <div class="col-sm-8" id="showSchedule"></div>
 
                         </div>
                         <div class="form-group row">
@@ -457,14 +455,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row overflow-auto" style="height: 400px">
                             <div class="col-lg-10 mx-auto">
                                 <div class="career-search mb-60">
                                     <div class="filter-result">
-                                        <div id="loadReason">
-
-                                        </div>
+                                        <div id="loadReason"></div>
                                     </div>
                                 </div>
                             </div>

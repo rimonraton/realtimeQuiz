@@ -149,8 +149,8 @@
     </div>
     <div class="row justify-content-center mt-4">
         @foreach($exams as $exam)
-            <div class="col-md-4 col-sm-12 text-center mb-4 ">
-                <div class="card shadow h-100 animate-fast animate__zoomIn animate__animated animate__delay-1s">
+            <div class="col-md-3 col-sm-12 text-center mb-4 ">
+                <div class="card shadow h-100 animate-fast animate__zoomIn animate__animated animate__delay-1s" style="border-radius: 15px 50px">
                     <div class="d-flex justify-content-between py-1 px-2">
                         @if(auth()->user()->roleuser->role->id > 3)
                         <div class="d-flex pointer p-2">
@@ -177,125 +177,139 @@
                             {{ app()->getLocale() == 'bd'? $bang->bn_number($qc) . 'টি ' : $qc  }}
                             {{ __('games.questions') }}
                         </span>
-                        <span class="text-muted">
+                        <span class="text-muted pr-4">
                             {{ app()->getLocale() == 'bd'? $bang->bn_number($qn): $qn  }}
                             {{ __('exam.questions_mark') }}
                         </span>
                     </div>
 {{--                    <a href="http://realtimequiz.test/Mode/Practice/931/112">--}}
-                        <div class="card-body py-0 ">
-                            <h5 class="my-3 text-primary">{{$lang == 'gb' ? ($exam->exam_en ? $exam->exam_en : $exam->exam_bn)  : ($exam->exam_bn ? $exam->exam_bn : $exam->exam_en)}}</h5>
-                            <p>{{$lang == 'gb' ? 'Exam Duration' : 'পরীক্ষার সময়কাল'}}: {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}</p>
+                        <div class="card-body py-0">
+                            <h4 class="my-0 text-primary p-2 rounded-lg" style="background-color:#F1EEFF">{{$lang == 'gb' ? ($exam->exam_en ? $exam->exam_en : $exam->exam_bn)  : ($exam->exam_bn ? $exam->exam_bn : $exam->exam_en)}}</h4>
+                            <h6 class="mt-2">{{$lang == 'gb' ? 'Exam Duration' : 'পরীক্ষার সময়কাল'}}: {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}</h6>
                             @if($exam->category)
-                            <p>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}: {{$lang == 'gb' ? $exam->category->name : $exam->category->bn_name }}</p>
+                            <h6>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}: {{$lang == 'gb' ? $exam->category->name : $exam->category->bn_name }}</h6>
                             @else
-                            <p>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}:
+                            <h6>{{$lang == 'gb' ? 'Topic' : 'বিষয়'}}:
                                 @foreach(json_decode($exam->topics) as $topic)
                                     {{$lang == 'gb' ? ( $topic->name ?  $topic->name :  $topic->bn_name)  : ($topic->bn_name ? $topic->bn_name : $topic->name)}}
                                     {{ $loop->last ? '' : ', ' }}
                                 @endforeach
-                            </p>
+                            </h6>
                             @endif
-                            <p>{{$lang == 'gb' ? 'Exam Time' : 'পরীক্ষার সময়'}}:
+                            <h6>{{$lang == 'gb' ? 'Exam Time' : 'পরীক্ষার সময়'}}:
                             <span class="font-14 text-danger">
                                 {{ $lang == 'gb' ? \Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A') : $ban->bn_date_time(\Carbon\Carbon::parse($exam->schedule)->format('d F Y, h:i A'))}}
                             </span>
-                            </p>
+                            </h6>
                                 @if($futureDate > $now)
                                     @if(auth()->user()->roleuser->role->id > 3)
-                                        <p>{{$lang == 'gb' ? 'Time left for the exam to start' : 'পরীক্ষা শুরু হতে সময় বাকী'}}: {{$lang == 'gb' ? $remainingTime : $ban->bn_human($remainingTime) }}</p>
-                                    <p>
-                                        <span class="border border-primary rounded-lg align-self-center text-primary cursor-not-allowed p-2">
-                                             {{__('msg.not_published_yet')}}
-                                        </span>
-                                    </p>
+                                        <h6>{{$lang == 'gb' ? 'Time left for the exam to start' : 'পরীক্ষা শুরু হতে সময় বাকী'}}: {{$lang == 'gb' ? $remainingTime : $ban->bn_human($remainingTime) }}</h6>
                                     @endif
-                                @else
-                                @if(auth()->user()->roleuser->role->id > 3)
-                                    @if($futureDate < $now)
-                                        @if($exam->results_count)
-                                            {{--                                @if(auth()->user()->roleuser->role->id < 4)--}}
-                                            {{--                                    <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-xs btn-outline-danger align-self-center">--}}
-                                            {{--                                        {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}--}}
-                                            {{--                                    </a>--}}
-                                            {{--                                    @endif--}}
-                                            <p>
-                                    <span class="border border-success rounded-lg align-self-center text-success cursor-not-allowed p-2">
-                                        {{__('exam.submitted')}}
-                                    </span>
-                                            </p>
-                                        @else
-                                            @if($exam->is_published)
-                                                @if(count($exam->existUser))
-                                                    @if($exam->existUser[0]->reason)
-                                                        <button class="btn btn-sm btn-outline-secondary align-self-center rounded-lg cursor-not-allowed" disabled>
-                                                            {{__('exam.pendingRequest')}}
-                                                        </button>
-                                                    @else
-                                                        <button class="btn btn-sm btn-outline-warning align-self-center rounded-lg reason" data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-exam="{{$exam->id}}" data-user="{{Auth::id()}}">
-                                                            {{__('exam.unlockRequest')}}
-                                                        </button>
-                                                    @endif
-                                                        <p class="text-danger pt-2">{{$lang == 'gb'? 'Temporarily locked' : 'সাময়িকভাবে লক করা হয়েছে'}}</p>
-                                                @else
-                                                <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-sm btn-outline-info align-self-center rounded-lg" >
-                                                    {{__('msg.start')}}
-                                                </a>
-                                                @endif
-
-                                            @else
-                                                @if($futureDate < $now)
-                                                    <p>
-                                                <span class="border border-danger rounded-lg align-self-center text-danger cursor-not-allowed p-2">
-                                                    {{__('exam.expired')}}
-                                                </span>
-                                                    </p>
-                                                @else
-                                                    <span class="border border-primary align-self-center text-primary cursor-not-allowed p-2">
-                                                        {{__('msg.not_published_yet')}}
-                                                    </span>
-                                                @endif
-                                            @endif
-                                        @endif
-                                    @endif
-                                @endif
-                                @endif
-
-                                @if($exam->results_count)
-                                        @if(auth()->user()->roleuser->role->id < 4)
-                                            <p>{{$lang == 'gb' ? 'Number of Test takers' : 'পরীক্ষা জমাদানকারীর সংখ্যা'}}: {{$lang == 'gb' ? $exam->results_count : $ban->bn_number($exam->results_count)}}</p>
-                                            <div class="d-flex justify-content-center">
-                                            <p>
-                                             <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-sm rounded-lg btn-outline-primary align-self-center">
-                                                {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}
-                                             </a>
-                                            </p>
-                                            <p id="btn_{{$exam->id}}" class="mx-1">
-                                            @if(count($exam->existUser))
-                                                    @if($exam->existUser[0]->reason)
-                                                        <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
-                                                        {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
-                                                    </a>
-                                                    @endif
-                                                @endif
-                                        </p>
-                                            </div>
-                                        @endif
-                                @else
-                                @if(auth()->user()->roleuser->role->id < 4)
-                                    <span id="btn_{{$exam->id}}">
-                                    @if(count($exam->existUser))
-                                            @if($exam->existUser[0]->reason)
-                                                <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
-                                                {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
-                                            </a>
-                                            @endif
-                                        @endif
-                                </span>
-                                @endif
                                 @endif
 
                             </div>
+                    @if($exam->results_count)
+                        @if(auth()->user()->roleuser->role->id < 4)
+                            <h6>{{$lang == 'gb' ? 'Number of Test takers' : 'পরীক্ষা জমাদানকারীর সংখ্যা'}}: {{$lang == 'gb' ? $exam->results_count : $ban->bn_number($exam->results_count)}}</h6>
+                        @endif
+                    @endif
+                    <div class="border border-2 border-primary mx-4"></div>
+                    <div class="d-flex justify-content-center py-3 px-2">
+
+                        @if($futureDate > $now)
+                            @if(auth()->user()->roleuser->role->id > 3)
+{{--                                <h5>{{$lang == 'gb' ? 'Time left for the exam to start' : 'পরীক্ষা শুরু হতে সময় বাকী'}}: {{$lang == 'gb' ? $remainingTime : $ban->bn_human($remainingTime) }}</h5>--}}
+                                <h6>
+                                        <span class="border border-primary rounded-lg align-self-center text-primary cursor-not-allowed p-2">
+                                             {{__('msg.not_published_yet')}}
+                                        </span>
+                                </h6>
+                            @endif
+                        @else
+                            @if(auth()->user()->roleuser->role->id > 3)
+                                @if($futureDate < $now)
+                                    @if($exam->results_count)
+                                        {{--                                @if(auth()->user()->roleuser->role->id < 4)--}}
+                                        {{--                                    <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-xs btn-outline-danger align-self-center">--}}
+                                        {{--                                        {{ $lang == 'gb' ? 'View the results' : 'ফলাফল দেখুন ' }}--}}
+                                        {{--                                    </a>--}}
+                                        {{--                                    @endif--}}
+                                        <h6>
+                                    <span class="border border-success rounded-lg align-self-center text-success cursor-not-allowed p-2">
+                                        {{__('exam.submitted')}}
+                                    </span>
+                                        </h6>
+                                    @else
+                                        @if($exam->is_published)
+                                            @if(count($exam->existUser))
+                                                @if($exam->existUser[0]->reason)
+                                                    <button class="btn btn-sm btn-outline-secondary align-self-center rounded-lg cursor-not-allowed" disabled>
+                                                        {{__('exam.pendingRequest')}}
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-sm btn-outline-warning align-self-center rounded-lg reason" data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-exam="{{$exam->id}}" data-user="{{Auth::id()}}">
+                                                        {{__('exam.unlockRequest')}}
+                                                    </button>
+                                                @endif
+{{--                                                <h6 class="text-danger pt-2">{{$lang == 'gb'? 'Temporarily locked' : 'সাময়িকভাবে লক করা হয়েছে'}}</h6>--}}
+                                            @else
+                                                <a href="{{ url('start-exams/'. $exam->id . '/' . Auth::id()) }}" class="btn btn-sm btn-outline-info align-self-center rounded-lg" >
+                                                    {{__('msg.start')}}
+                                                </a>
+                                            @endif
+
+                                        @else
+                                            @if($futureDate < $now)
+                                                <h6>
+                                                <span class="border border-danger rounded-lg align-self-center text-danger cursor-not-allowed p-2">
+                                                    {{__('exam.expired')}}
+                                                </span>
+                                                </h6>
+                                            @else
+                                                <span class="border border-primary align-self-center text-primary cursor-not-allowed p-2">
+                                                        {{__('msg.not_published_yet')}}
+                                                    </span>
+                                            @endif
+                                        @endif
+                                    @endif
+                                @endif
+                            @endif
+                        @endif
+
+                        @if($exam->results_count)
+                            @if(auth()->user()->roleuser->role->id < 4)
+{{--                                <h6>{{$lang == 'gb' ? 'Number of Test takers' : 'পরীক্ষা জমাদানকারীর সংখ্যা'}}: {{$lang == 'gb' ? $exam->results_count : $ban->bn_number($exam->results_count)}}</h6>--}}
+                                <div class="d-flex justify-content-center">
+                                    <h6>
+                                        <a href="{{ url('exam-result/'. $exam->id) }}" class="btn btn-sm rounded-lg btn-outline-primary align-self-center">
+                                            {{ $lang == 'gb' ? 'View results' : 'ফলাফল দেখুন ' }}
+                                        </a>
+                                    </h6>
+                                    <h6 id="btn_{{$exam->id}}" class="mx-1">
+                                        @if(count($exam->existUser))
+                                            @if($exam->existUser[0]->reason)
+                                                <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
+                                                    {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
+                                                </a>
+                                            @endif
+                                        @endif
+                                    </h6>
+                                </div>
+                            @endif
+                        @else
+                            @if(auth()->user()->roleuser->role->id < 4)
+                                <span id="btn_{{$exam->id}}">
+                                    @if(count($exam->existUser))
+                                        @if($exam->existUser[0]->reason)
+                                            <a data-name="{{$lang == 'gb'?($exam->exam_en?$exam->exam_en:$exam->exam_bn):($exam->exam_bn?$exam->exam_bn:$exam->exam_en)}}" data-reasons="{{$exam->existUser}}" class="btn btn-sm rounded-lg btn-outline-success align-self-center viewReason" id="viewRes_{{$exam->id}}">
+                                                {{ $lang == 'gb' ? 'View Requests' : 'অনুরোধগুলো দেখুন' }} (<span id="num_{{$exam->id}}">{{$lang == 'gb' ? count($exam->existUser) : $ban->bn_number(count($exam->existUser))}}</span>)
+                                            </a>
+                                        @endif
+                                    @endif
+                                </span>
+                            @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         @endforeach
