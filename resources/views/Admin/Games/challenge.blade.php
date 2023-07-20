@@ -176,14 +176,22 @@
         top: 0;
     }
 
+    @font-face {
+        font-family: ssFont;
+        src: url('{{asset("css/fonts/ss_regular.ttf")}}');
+    }
+
 
 </style>
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card bg-light">
-                <div class="card-body wizard-content">
-                    <h4 class="card-title text-center">{{__('msg.challenge')}}
+            <div class="card bg-light m-0">
+                <div class="card-body wizard-content py-1">
+                    <h4 class="card-title text-center" >
+                        <span style="font-family: ssFont; font-size: 2rem">
+                            {{__('msg.challenge')}}
+                        </span>
                         <button class="float-lg-right btn btn-primary" id="create_challenge">
                             {{__('form.create_challenge')}}
                         </button>
@@ -330,7 +338,7 @@
 {{--                        @php $key=4;@endphp--}}
 {{--                    @endif--}}
 {{--                    <div class="card {{ $bg[$key] }} shadow-lg">--}}
-                    <div class="card shadow-lg rounded-20 animate__animated animate__zoomIn  bl rounded-20" >
+                    <div class="card shadow-lg rounded-20 animate__animated animate__zoomIn  bl rounded-20 animate__delay-{{$key % 6}}s" >
 {{--                        <img class="card-img-top img-fluid" src="{{asset('img/quiz/'.$pics[rand(0, 11)].'.jpg')}}" alt="Card image cap">--}}
                         <div class="card-body text-white d-flex flex-column justify-content-between">
                             <img src="/images/logobe.png" alt="" class="watermark">
@@ -365,8 +373,8 @@
                                 </div>
                             </div>
                             <div style="margin-top: 5px;">
-                                <h4 class="card-title quiz-title my-3">{{ $ch->name }}</h4>
-                                <p class="card-text text-dark my-3">
+                                <h4 class="card-title quiz-title my-3" style="font-family: ssFont; ">{{ $ch->name }}</h4>
+                                <p class="card-text text-dark my-3" >
                                     @php
                                         $qc = count(explode(',', $ch->question_id));
                                         $beq = app()->getLocale() == 'bd'? ($bang->bn_number($qc) . ' টি') : ($qc .' questions ');

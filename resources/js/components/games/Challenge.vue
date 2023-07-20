@@ -585,7 +585,7 @@
                             score += u.isCorrect
                         })
 
-                    this.results.push({id:user.id, name:user.name, score:score})
+                    this.results.push({id:user.id, name:user.name, score:score, user:user})
 
                 })
                 this.results.sort((a, b) => b.score - a.score)

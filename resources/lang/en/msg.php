@@ -18,6 +18,7 @@ return [
     'challenge' => 'Challenge',
     'moderator' => 'Moderator',
     'team' => 'Team',
+    'instant' => 'Instant',
 
 
 ];

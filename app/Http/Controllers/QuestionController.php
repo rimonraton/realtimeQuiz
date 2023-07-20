@@ -657,6 +657,11 @@ class QuestionController extends Controller
             ->whereIn('user_id',$admin_users)
             ->orderBy('id','desc')
             ->paginate(10);
+
+        if(request()->ajax()){
+            return view('Admin.PartialPages.Questions.all_review_questions_data', compact('questions', 'id'));
+        }
+
         return view('Admin.PartialPages.Questions.review_questions_list', compact(['topic', 'id', 'catName','questionType', 'questions']));
     }
 
