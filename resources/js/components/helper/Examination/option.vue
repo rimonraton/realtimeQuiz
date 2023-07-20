@@ -10,9 +10,8 @@
         >
     <span @click="clickSelect(index, option)"
           class="list-group-item list-group-item-action cursor my-1"
-          :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]"
-          v-html="tbe(option.bd_option, option.option, user.lang)" >
-
+          :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
+            {{tbe(option.bd_option, option.option, user.lang)}}
     </span>
         </div>
         <div
@@ -70,19 +69,19 @@ export default {
             // console.log(this.isPredict())
         },
         tbe(b, e, l) {
-            if(b !== null && e !== null){
+            if( b  && e){
                 if(l === 'bd') {
                     return b;
                 }
                 return e;
             }
-            else if(b !== null && e === null) {
+            else if(b) {
                 return b;
             }
-            else if(b === null && e !== null) {
+            else if(e) {
                 return e;
             }
-            return b;
+            return;
         },
         imageOption(objArray){
             const data = objArray.some(a => a.flag == 'img')

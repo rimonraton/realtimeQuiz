@@ -53,5 +53,7 @@ return [
     'questions_mark' => 'Marks',
     'expired' => 'Exam expired',
     'advace_question_header' => 'Select topic & type number of question',
-    'advance_tooltip' => 'Click to give number of topics and questions as per your choice'
+    'advance_tooltip' => 'Click to give number of topics and questions as per your choice',
+    'unlockRequest' => 'Request to unlock',
+    'pendingRequest' => 'Pending your request',
 ];

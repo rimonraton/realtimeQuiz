@@ -68,4 +68,9 @@ Route::post('getMessage', [GameController::class, 'getMessage']);
 Route::post('sendMessage', [GameController::class, 'sendMessage']);
 Route::post('deleteMessage/{channel}', [GameController::class, 'deleteMessage']);
 
+//Exist Exam Given User
+Route::post('save-exist-exam-given-user', [GameController::class, 'storeExistExam']);
+Route::post('delete-exist-exam-given-user', [GameController::class, 'deleteExistExam']);
+Route::post('unlock-exam', [GameController::class, 'unlockExistExam']);
+
 

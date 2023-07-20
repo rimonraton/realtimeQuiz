@@ -15,4 +15,8 @@ class Examination extends Model
     {
         return $this->hasMany(Result::class);
     }
+    public function existUser()
+    {
+        return $this->hasMany(ExamGivenUser::class, 'exam_id');
+    }
 }

@@ -13,6 +13,7 @@ use App\Events\GameTeamModeratorStartEvent;
 use App\Events\MakeHostEvent;
 use App\Events\SendMessageEvent;
 use App\Events\TeamJoin;
+use App\ExamGivenUser;
 use App\Message;
 use App\Models\Challenge;
 use App\Events\GroupAnsSubEvent;
@@ -213,6 +214,37 @@ class GameController extends Controller
         Message::where('channel_id', $channel)->delete();
         broadcast(new DeleteMessageEvent($channel))->toOthers();
         return 'success';
+    }
+
+    public function storeExistExam(Request $request)
+    {
+        if (ExamGivenUser::where('user_id', $request->user_id)->where('exam_id', $request->exam_id)->count()){
+            ExamGivenUser::where('user_id', $request->user_id)->where('exam_id', $request->exam_id)->update([
+                'unlock_status' => 1,
+                'reason' => null
+            ]);
+            return 'Save';
+        }
+        ExamGivenUser::create([
+            'user_id' => $request->user_id,
+            'exam_id' => $request->exam_id
+        ]);
+        return 'Save';
+    }
+
+    public function deleteExistExam(Request $request)
+    {
+        ExamGivenUser::where('user_id', $request->user_id)->where( 'exam_id', $request->exam_id)->delete();
+        return 'success';
+    }
+    public function unlockExistExam(Request $request)
+    {
+        ExamGivenUser::where('user_id', $request->user)->where('exam_id', $request->exam)->update([
+            'unlock_status' => 0
+        ]);
+        $reasons = ExamGivenUser::with('user')->where('exam_id', $request->exam)->where('unlock_status', '>', 0)->whereNotNull('reason')->get();
+        $numOfReason = count($reasons);
+        return ['success', 'number_of_reason' => $numOfReason, 'reasons' => $reasons];
     }
 
 }

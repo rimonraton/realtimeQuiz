@@ -45,25 +45,28 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between py-1">
+            <div class="p-2 border rounded-lg shadow mb-1">
+            <div class="d-flex justify-content-between h5">
                 <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>
                 <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
                 <span> {{ user.lang == 'gb' ? 'Total Mark' : 'মোট মার্ক' }} : {{ user.lang == 'gb' ? questions.length * qid.each_question_mark : q2bNumber(questions.length * qid.each_question_mark)}}</span>
             </div>
-            <div class="text-center py-1">
-                <span> {{ user.lang == 'gb' ? '[0' + qid.each_question_mark + ' mark will be given for each correct answer and ' + negativeMark() + ' mark will be deducted for each wrong answer.]' : '[প্রতিটি শুদ্ধ উত্তরের জন্য ০' + q2bNumber(qid.each_question_mark) + ' নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য ' + q2bNumber(negativeMark()) + ' নম্বর কর্তন হবে ।]' }}</span>
+                <div class="text-center py-1 text-danger">
+                    <span> {{ user.lang == 'gb' ? '[' + qid.each_question_mark + ' mark will be given for each correct answer and ' + negativeMark() + ' mark will be deducted for each wrong answer.]' : '[প্রতিটি শুদ্ধ উত্তরের জন্য ' + q2bNumber(qid.each_question_mark) + ' নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য ' + q2bNumber(negativeMark()) + ' নম্বর কর্তন হবে ।]' }}</span>
+                </div>
             </div>
+
             <div class="container-fluid p-0 overflow-auto" style="max-height:500px;">
                 <div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questiondata">
                     <div class="card text-white" :id="'question_element' + question.id">
-                        <div class="card-header p-1 cursor text-dark"
+                        <div class="border-bottom p-3 cursor text-dark"
                              :id="'heading'+ index"
                              data-toggle="collapse"
                              :data-target="'#collapse'+ index"
                              aria-expanded="true"
                              :aria-controls="'collapse'+ index">
-                            <span class="text-dark rounded-circle" :class="{qid: index == qid}">{{ !fileType(question.fileType)? user.lang=='gb'?index + 1:q2bNumber(index + 1): '' }}</span>
-                            {{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}
+                            <span class="text-dark rounded-circle h5 font-weight-bold" :class="{qid: index == qid}">{{ !fileType(question.fileType) ? user.lang=='gb'? (index + 1) + '.' :q2bNumber(index + 1) + '.': '' }}</span>
+                            <span class="text-dark h5 font-weight-bold">{{ fileType(question.fileType) ? fileText(question.fileType, user.lang):tbe(question.bd_question_text,question.question_text,user.lang) }}</span>
                         </div>
                         <div :id="'collapse'+ index" :class="{show: index == qid}" :aria-labelledby="'heading'+ index" :data-parent="'#accordion' + index">
                             <div class="card-body">
@@ -80,8 +83,8 @@
                                             <source :src="'/'+ question.question_file_link" type="audio/mpeg">
                                         </audio>
                                     </div>
-                                    <span class="text-white rounded-circle" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}</span>
-                                    {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    <h5 class="text-dark font-weight-bold p-3 rounded-lg border" :class="{qid: index == qid}">{{ user.lang=='gb'?index + 1:q2bNumber(index + 1) }}.{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+
                                     <!--		                <img class="image w-100 mb-2 rounded" :src="question.more_info_link" style="max-height:40vh">-->
                                 </div>
                                 <!--		            <ul class="list-group text-dark">-->
@@ -127,29 +130,29 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center py-2">
-                <span class="btn btn-sm btn-info rounded border" @click="submited">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
+                <span class="btn btn-sm rounded border bg-primary text-white" @click="submited">{{ tbe('আপনার পরীক্ষা জমা দিন','Submit Your Exam',user.lang) }}</span>
             </div>
         </div>
         <div class="col-md-4" >
             <div class="card my-4 d-sm-none d-md-block" >
-                <div class="card-header">
+                <div class="p-3 border-bottom text-center">
                     {{ user.lang == 'gb' ? 'Exam Time Remaining' : 'পরীক্ষার সময় বাকি' }}
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
                             <div class="card-profile-stats d-flex justify-content-between">
-                                <div class="text-center">
+                                <div class="text-center px-3 rounded-lg bg-custom">
                                     <span class="heading">{{ user.lang == 'gb' ? timer.hours : q2bNumber(timer.hours) }}</span>
                                     <br>
                                     <span class="description">{{ user.lang == 'gb' ? (timer.hours > 1 ? 'Hours' : 'Hour') : 'ঘণ্টা' }}</span>
                                 </div>
-                                <div class="text-center">
+                                <div class="text-center px-3 rounded-lg bg-custom">
                                     <span class="heading">{{  user.lang == 'gb' ? timer.minutes :  q2bNumber(timer.minutes)}}</span>
                                     <br>
                                     <span class="description">{{ user.lang == 'gb' ? (timer.minutes > 1 ? 'Minutes' : 'Minute') : 'মিনিট' }}</span>
                                 </div>
-                                <div class="text-center">
+                                <div class="text-center px-3 rounded-lg bg-custom">
                                     <span class="heading">{{ user.lang == 'gb' ? timer.seconds : q2bNumber(timer.seconds) }}</span>
                                     <br>
                                     <span class="description">{{ user.lang == 'gb' ? (timer.seconds > 1 ? 'Seconds' : 'Second') : 'সেকেন্ড' }}</span>
@@ -169,7 +172,7 @@
                 </div>
             </div>
             <div class="card my-4 d-sm-none d-md-block" >
-                <div class="card-header">
+                <div class="p-3 border-bottom text-center">
                     {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
                 </div>
                 <div class="card-body">
@@ -242,6 +245,16 @@
             }
         },
 		methods: {
+            examGiverUser(){
+                const data = {
+                    'exam_id': this.qid.id,
+                    'user_id': this.user.id
+                }
+                // console.log('data...', data)
+                axios.post('/api/save-exist-exam-given-user', data).then((res) => {
+                    console.log(res, 'response from server')
+                })
+            },
             scrollToElement(id) {
                 console.log('id....',id);
                 // this.$refs["question_element" + id].scrollIntoView({ behavior: "smooth" });
@@ -275,7 +288,7 @@
             q2bNumber(numb) {
                 let numbString = numb.toString();
                 let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.':'.'};
                 [...numbString].forEach(n => bn += eb[n])
                 return bn
             },
@@ -409,6 +422,11 @@
                 // }
                 // this.results.push(data)
             },
+            deleteExistUser(){
+                axios.post('/api/delete-exist-exam-given-user', {'exam_id': this.qid.id, 'user_id': this.user.id}).then((res) => {
+                    console.log(res, 'response from server')
+                })
+            },
             submitExam(){
                 const resultValue = {
                     'user_id': this.user.id,
@@ -417,6 +435,7 @@
                 }
                 axios.post('/api/save-results', resultValue).then((res) => {
                     console.log(res, 'response from server')
+                    this.deleteExistUser()
                     this.screen.exam = false
                     this.screen.examSubmit = true
                 })
@@ -446,6 +465,7 @@
             }
 		},
         created(){
+            // this.examGiverUser();
             this.countDownTimer()
             this.$watch('countDown', (newValue) => {
                 if (newValue == 0) {
@@ -456,6 +476,9 @@
 	};
 </script>
 <style>
+.bg-custom{
+    background-color: #F1EEFF;
+}
 #qmodal {
     background: linear-gradient(to right, #0083B0, #00B4DB);
 }

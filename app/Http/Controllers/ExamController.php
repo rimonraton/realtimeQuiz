@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\ExamGivenUser;
 use App\Examination;
 use App\Lang\Bengali;
 use App\Models\Challenge;
@@ -29,7 +30,9 @@ class ExamController extends Controller
     {
 //        $admin = auth()->user()->admin;
 //        $admin_users = $admin->users()->pluck('id');
-        $exam_data = Examination::withCount(['results'])->orderBy('id','desc')->paginate(10);
+        $exam_data = Examination::with(['existUser' =>function($q){
+            $q->with('user')->where('unlock_status','>', 0)->whereNotNull('reason');
+        }])->withCount(['results'])->orderBy('id','desc')->paginate(10);
         return view('Admin.Exam.Pages.listOfExam', compact('exam_data'));
     }
 
@@ -203,14 +206,18 @@ class ExamController extends Controller
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
         $questions = Question::all();
         if (auth()->user()->roleuser->role->id < 4) {
-             $exams = Examination::with('category:id,name,bn_name')
+             $exams = Examination::with(['category:id,name,bn_name', 'existUser'=> function($q){
+                 $q->with('user')->where('unlock_status','>', 0)->whereNotNull('reason');
+             }])
                 ->whereHas('results')
                 ->withCount(['results'])
                 ->orderBy('id', 'desc')
                 ->paginate(12);
 
         } else {
-            $exams = Examination::with('category:id,name,bn_name')
+             $exams = Examination::with(['category:id,name,bn_name', 'existUser' => function($q){
+                $q->where('user_id', auth()->user()->id)->where('unlock_status','>', 0);
+            }])
                 ->withCount(['results' => function ($q) {
                     $q->where('user_id', Auth::user()->id);
                 }])->orderBy('id', 'desc')->paginate(12);
@@ -226,11 +233,17 @@ class ExamController extends Controller
     public function startExam(Examination $examination, $uid)
     {
 //        return $examination;
+
         $now = Carbon::now();
         $futureTime = Carbon::parse($examination->schedule);
         if ($now > $futureTime && $examination->is_published == 0){
             $lang = \App::getLocale();
             $msg = $lang == 'gb' ? 'Exam is expired!' : 'পরীক্ষার মেয়াদ শেষ!' ;
+            return \Redirect::back()->with('exam-message', $msg);;
+        }
+        if (ExamGivenUser::where('user_id', $uid)->where('exam_id', $examination->id)->where('unlock_status', 1)->count()){
+            $lang = \App::getLocale();
+            $msg = $lang == 'gb' ? 'You start the exam before but have not completed it!' : 'আগে পরীক্ষা শুরু করলেও শেষ করেননি!' ;
             return \Redirect::back()->with('exam-message', $msg);;
         }
         $result = Result::where('examination_id', $examination->id)->where('user_id', $uid)->first();
@@ -356,5 +369,13 @@ class ExamController extends Controller
         $lang = \App::getLocale();
         $msg = $lang == 'gb' ? 'Updated successfully!' : 'আপডেট সফল হয়েছে!' ;
         return \Redirect::to('list-of-exam')->with('message', $msg);
+    }
+
+    public function updateReason(Request $request)
+    {
+        ExamGivenUser::where('user_id', $request->user)->where('exam_id', $request->exam)->update([
+            'reason' => $request->reasonValue
+        ]);
+        return redirect()->back();
     }
 }
