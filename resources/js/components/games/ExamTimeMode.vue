@@ -13,38 +13,6 @@
         </div>
 	    <div class="row justify-content-center" v-if="screen.exam">
         <div class="col-md-8" >
-            <div class="d-md-none">
-                <div class="row">
-                    <div class="col">
-                        <div class="card-profile-stats d-flex justify-content-between">
-                            <div class="text-center">
-                                <span class="heading">{{ user.lang == 'gb' ? timer.hours : q2bNumber(timer.hours) }}</span>
-                                <br>
-                                <span class="description">{{ user.lang == 'gb' ? (timer.hours > 1 ? 'Hours' : 'Hour') : 'ঘণ্টা' }}</span>
-                            </div>
-                            <div class="text-center">
-                                <span class="heading">{{  user.lang == 'gb' ? timer.minutes :  q2bNumber(timer.minutes)}}</span>
-                                <br>
-                                <span class="description">{{ user.lang == 'gb' ? (timer.minutes > 1 ? 'Minutes' : 'Minute') : 'মিনিট' }}</span>
-                            </div>
-                            <div class="text-center">
-                                <span class="heading">{{ user.lang == 'gb' ? timer.seconds : q2bNumber(timer.seconds) }}</span>
-                                <br>
-                                <span class="description">{{ user.lang == 'gb' ? (timer.seconds > 1 ? 'Seconds' : 'Second') : 'সেকেন্ড' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="card my-2" >
-                    <div class="card-header">
-                        {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
-                    </div>
-                    <div class="card-body">
-                        <question-button :questiondata="questions" :results="results" @scrollToElement="scrollToElement" :user="user"></question-button>
-                    </div>
-                </div>
-            </div>
             <div class="p-2 border rounded-lg shadow mb-1">
             <div class="d-flex justify-content-between h5">
                 <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(qid.exam_bn,qid.exam_en,user.lang) }}</span>
@@ -53,6 +21,39 @@
             </div>
                 <div class="text-center py-1 text-danger">
                     <span> {{ user.lang == 'gb' ? '[' + qid.each_question_mark + ' mark will be given for each correct answer and ' + negativeMark() + ' mark will be deducted for each wrong answer.]' : '[প্রতিটি শুদ্ধ উত্তরের জন্য ' + q2bNumber(qid.each_question_mark) + ' নম্বর পাবেন এবং প্রতিটি ভুল উত্তরের জন্য ' + q2bNumber(negativeMark()) + ' নম্বর কর্তন হবে ।]' }}</span>
+                </div>
+                <hr>
+                <div class="d-md-none">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-profile-stats d-flex justify-content-between">
+                                <div class="text-center px-3 rounded-lg bg-custom">
+                                    <span class="heading">{{ user.lang == 'gb' ? timer.hours : q2bNumber(timer.hours) }}</span>
+                                    <br>
+                                    <span class="description">{{ user.lang == 'gb' ? (timer.hours > 1 ? 'Hours' : 'Hour') : 'ঘণ্টা' }}</span>
+                                </div>
+                                <div class="text-center px-3 rounded-lg bg-custom">
+                                    <span class="heading">{{  user.lang == 'gb' ? timer.minutes :  q2bNumber(timer.minutes)}}</span>
+                                    <br>
+                                    <span class="description">{{ user.lang == 'gb' ? (timer.minutes > 1 ? 'Minutes' : 'Minute') : 'মিনিট' }}</span>
+                                </div>
+                                <div class="text-center px-3 rounded-lg bg-custom">
+                                    <span class="heading">{{ user.lang == 'gb' ? timer.seconds : q2bNumber(timer.seconds) }}</span>
+                                    <br>
+                                    <span class="description">{{ user.lang == 'gb' ? (timer.seconds > 1 ? 'Seconds' : 'Second') : 'সেকেন্ড' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="card my-2" >
+                        <div class="p-3 border-bottom text-center">
+                            {{ user.lang == 'gb' ? 'You did not answer the questions' : ' আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি' }}
+                        </div>
+                        <div class="card-body">
+                            <question-button :questiondata="questions" :results="results" @scrollToElement="scrollToElement" :user="user"></question-button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -476,6 +477,17 @@
 	};
 </script>
 <style>
+.overflow-auto::-webkit-scrollbar {
+    width: 8px;
+}
+.overflow-auto::-webkit-scrollbar-track {
+    background-color: #E4E4E4;
+    border-radius: 100px;
+}
+.overflow-auto::-webkit-scrollbar-thumb {
+    box-shadow: inset 8px 2px #8070D3;
+    border-radius: 100px;
+}
 .bg-custom{
     background-color: #F1EEFF;
 }

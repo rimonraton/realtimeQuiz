@@ -327,6 +327,11 @@ class ExamController extends Controller
 
     }
 
+    public function showUserOwnResult(Examination $examination, $uid)
+    {
+
+    }
+
     public function showExamResult(Examination $examination)
     {
         $userResult = $examination->load(['results' => function($q) {

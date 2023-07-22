@@ -11,7 +11,7 @@
         <div class="row justify-content-center" v-else>
             <div v-for="(question, index) in questiondata" :key="index">
                 <!--                <button v-if="questionAttemptOrNot(question.id)" type="button" class="btn border border-secondary" @click="$emit('scrollToElement', question.id)" :class="questionAttemptOrNot(question.id) ? 'btn-primary' : ''">Q {{index + 1}}</button>-->
-                <button v-if="!questionAttemptOrNot(question.id)" type="button" class="btn border border-secondary text-white bg-primary m-1" @click="$emit('scrollToElement', question.id)" :class="questionAttemptOrNot(question.id) ? 'btn-primary' : ''">Q {{index + 1}}</button>
+                <button v-if="!questionAttemptOrNot(question.id)" type="button" class="btn text-white bg-primary rounded-circle p-2 m-1 shadow" @click="$emit('scrollToElement', question.id)" :class="questionAttemptOrNot(question.id) ? 'btn-primary' : ''">Q {{index + 1}}</button>
             </div>
         </div>
     </div>

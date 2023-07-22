@@ -236,6 +236,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 
 
@@ -681,7 +682,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.bg-custom{\n    background-color: #F1EEFF;\n}\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.overflow-auto::-webkit-scrollbar {\n    width: 8px;\n}\n.overflow-auto::-webkit-scrollbar-track {\n    background-color: #E4E4E4;\n    border-radius: 100px;\n}\n.overflow-auto::-webkit-scrollbar-thumb {\n    box-shadow: inset 8px 2px #8070D3;\n    border-radius: 100px;\n}\n.bg-custom{\n    background-color: #F1EEFF;\n}\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1029,131 +1030,6 @@ var render = function () {
     _vm.screen.exam
       ? _c("div", { staticClass: "row justify-content-center" }, [
           _c("div", { staticClass: "col-md-8" }, [
-            _c("div", { staticClass: "d-md-none" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "card-profile-stats d-flex justify-content-between",
-                    },
-                    [
-                      _c("div", { staticClass: "text-center" }, [
-                        _c("span", { staticClass: "heading" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.hours
-                                : _vm.q2bNumber(_vm.timer.hours)
-                            )
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "description" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.hours > 1
-                                  ? "Hours"
-                                  : "Hour"
-                                : "ঘণ্টা"
-                            )
-                          ),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "text-center" }, [
-                        _c("span", { staticClass: "heading" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.minutes
-                                : _vm.q2bNumber(_vm.timer.minutes)
-                            )
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "description" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.minutes > 1
-                                  ? "Minutes"
-                                  : "Minute"
-                                : "মিনিট"
-                            )
-                          ),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "text-center" }, [
-                        _c("span", { staticClass: "heading" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.seconds
-                                : _vm.q2bNumber(_vm.timer.seconds)
-                            )
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "description" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.user.lang == "gb"
-                                ? _vm.timer.seconds > 1
-                                  ? "Seconds"
-                                  : "Second"
-                                : "সেকেন্ড"
-                            )
-                          ),
-                        ]),
-                      ]),
-                    ]
-                  ),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("div", { staticClass: "card my-2" }, [
-                _c("div", { staticClass: "card-header" }, [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(
-                        _vm.user.lang == "gb"
-                          ? "You did not answer the questions"
-                          : " আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি"
-                      ) +
-                      "\n                    "
-                  ),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c("question-button", {
-                      attrs: {
-                        questiondata: _vm.questions,
-                        results: _vm.results,
-                        user: _vm.user,
-                      },
-                      on: { scrollToElement: _vm.scrollToElement },
-                    }),
-                  ],
-                  1
-                ),
-              ]),
-            ]),
-            _vm._v(" "),
             _c("div", { staticClass: "p-2 border rounded-lg shadow mb-1" }, [
               _c("div", { staticClass: "d-flex justify-content-between h5" }, [
                 _c("span", [
@@ -1213,6 +1089,154 @@ var render = function () {
                               _vm.q2bNumber(_vm.negativeMark()) +
                               " নম্বর কর্তন হবে ।]"
                       )
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-md-none" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card-profile-stats d-flex justify-content-between",
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.hours
+                                    : _vm.q2bNumber(_vm.timer.hours)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.hours > 1
+                                      ? "Hours"
+                                      : "Hour"
+                                    : "ঘণ্টা"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.minutes
+                                    : _vm.q2bNumber(_vm.timer.minutes)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.minutes > 1
+                                      ? "Minutes"
+                                      : "Minute"
+                                    : "মিনিট"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-center px-3 rounded-lg bg-custom",
+                          },
+                          [
+                            _c("span", { staticClass: "heading" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.seconds
+                                    : _vm.q2bNumber(_vm.timer.seconds)
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "description" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.user.lang == "gb"
+                                    ? _vm.timer.seconds > 1
+                                      ? "Seconds"
+                                      : "Second"
+                                    : "সেকেন্ড"
+                                )
+                              ),
+                            ]),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("div", { staticClass: "card my-2" }, [
+                  _c("div", { staticClass: "p-3 border-bottom text-center" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(
+                          _vm.user.lang == "gb"
+                            ? "You did not answer the questions"
+                            : " আপনি উক্ত প্রশ্নগুলোর উত্তর করেন নি"
+                        ) +
+                        "\n                        "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _c("question-button", {
+                        attrs: {
+                          questiondata: _vm.questions,
+                          results: _vm.results,
+                          user: _vm.user,
+                        },
+                        on: { scrollToElement: _vm.scrollToElement },
+                      }),
+                    ],
+                    1
                   ),
                 ]),
               ]),
@@ -1658,7 +1682,7 @@ var render = function () {
                     "button",
                     {
                       staticClass:
-                        "btn border border-secondary text-white bg-primary m-1",
+                        "btn text-white bg-primary rounded-circle p-2 m-1 shadow",
                       class: _vm.questionAttemptOrNot(question.id)
                         ? "btn-primary"
                         : "",

@@ -189,6 +189,7 @@ Route::post('createRoleUser', 'RoleController@createRoleUser')->name('createRole
 Route::post('storeRole', [RoleController::class,'storeRole'])->name('createRolestoreRole');
 
 Route::post('update-reason', [ExamController::class, 'updateReason']);
+Route::get('show-own-result/{examination}/{uid}', [ExamController::class, 'showUserOwnResult'])->name('showOwnResult');
 Route::middleware(['hasAccess'])->group(function () {
     //new user
     Route::post('create-new-user',[NewUserController::class,'create'])->name('createNewUser');
