@@ -1,55 +1,4 @@
 @extends('Admin.Layout.dashboard')
-@section('css')
-<style>
-    .myadmin-dd .dd-list .dd-item .dd-handle-new {
-        background: #fff;
-        border: 1px solid rgba(120, 130, 140, .13);
-        padding: 8px 16px;
-        height: auto;
-        font-family: Montserrat, sans-serif;
-        font-weight: 400;
-        border-radius: 0;
-    }
-
-    .dd-handle-new {
-        display: block;
-        height: 30px;
-        margin: 5px 0;
-        padding: 5px 10px;
-        cursor: pointer;
-        /* color: #000; */
-        text-decoration: none;
-        font-weight: 700;
-        border: 1px solid #e5e5e5;
-        background: #fafafa;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    }
-
-    .activeli {
-        background-color: #e9ecef !important;
-    }
-    .disabled {
-        /* Make the disabled links grayish*/
-        color: gray;
-        /* And disable the pointer events */
-        pointer-events: none;
-    }
-    .verifyButton {
-        /*background: rgba(0,0,0,0.2);*/
-        position: fixed;
-        /*width: 280px;*/
-        /*height: 32px;*/
-        top: 345px;
-        left: 265px;
-        z-index: 999;
-        /*border: 1px solid darkgray;*/
-        /*border-radius: 15px;*/
-        padding: 5px 10px;
-        /*color: black;*/
-    }
-</style>
-@endsection
 @php $lang = App::getLocale(); @endphp
 @section('content')
 <div class="row">
@@ -75,9 +24,9 @@
                                         <li class="dd-item">
                                             <div class="dd-handle-new topicls" data-cid="{{$c->id}}">
 
-{{--                                                @if(count($c->childs) == 0)--}}
-{{--                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">--}}
-{{--                                                @endif--}}
+                                            {{--                                                @if(count($c->childs) == 0)--}}
+                                            {{--                                                <input type="checkbox" name="topic" value="{{$c->id}}" data-name="{{$lang=='gb'?$c->name:$c->bn_name}}" id="" class="programming">--}}
+                                            {{--                                                @endif--}}
 
                                                 <span>
                                                     {{$lang == 'gb' ? ($c->name?$c->name : $c->bn_name) : ($c->bn_name ? $c->bn_name : $c->name)}}
@@ -96,23 +45,23 @@
 
                     </div>
 
-{{--                    <div class="col-sm-2 mt-1">--}}
-{{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
-{{--                    </div>--}}
-                        <div class="input-group col-sm-6 mt-1 d-none" id="search_question_box">
-                            <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word or sentence for search' : 'শব্দ বা বাক্য দিয়ে খুজুন'}}" id="search_input_keyword" autocomplete="off">
-                            <div>
-                                <button class="btn btn-primary" type="button" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
-                                <button class="btn btn-info" type="button" id="search_question_category_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
-                                <button class="btn btn-dark-warning" type="button" id="search_question_category_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
-                            </div>
+                    {{--                    <div class="col-sm-2 mt-1">--}}
+                    {{--                        <a href="" class="btn btn-success smt">{{__('form.submit')}}</a>--}}
+                    {{--                    </div>--}}
+
+                    <div class="input-group col-sm-6 mt-1 d-none" id="search_question_box">
+                        <input type="text" class="form-control" placeholder="{{ $lang == 'gb' ? 'Enter word or sentence for search' : 'শব্দ বা বাক্য দিয়ে খুজুন'}}" id="search_input_keyword" autocomplete="off">
+                        <div>
+                            <button class="btn btn-primary" type="button" id="search_question_category">{{$lang == 'gb' ? 'Search' : 'খুজুন'}}</button>
+                            <button class="btn btn-info" type="button" id="search_question_category_clear">{{$lang == 'gb' ? 'Clear' : 'মুছুন'}}</button>
+                            <button class="btn btn-dark-warning" type="button" id="search_question_category_refresh">{{$lang == 'gb' ? 'Refresh' : 'রিফ্রেশ'}}</button>
                         </div>
+                    </div>
 
 
                 </div>
 
                 <div class="table-responsive" style="overflow-x: hidden">
-
                     <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12 loading" style="display: none;">
@@ -241,6 +190,12 @@
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
+            var clickedUrl = new URL($(this).attr('href'));
+            // if(clickedUrl.pathname === '/review-questions') {
+            //     window.location.href = url;
+            //     return;
+            // }
+
             $.ajax({
                 url: url,
                 type: "GET",
@@ -272,7 +227,6 @@
 
                 }
             })
-            // window.history.pushState("", "", url);
         });
 
 
@@ -923,4 +877,56 @@
         return bn
     }
 </script>
+@endsection
+
+@section('css')
+<style>
+    .myadmin-dd .dd-list .dd-item .dd-handle-new {
+        background: #fff;
+        border: 1px solid rgba(120, 130, 140, .13);
+        padding: 8px 16px;
+        height: auto;
+        font-family: Montserrat, sans-serif;
+        font-weight: 400;
+        border-radius: 0;
+    }
+
+    .dd-handle-new {
+        display: block;
+        height: 30px;
+        margin: 5px 0;
+        padding: 5px 10px;
+        cursor: pointer;
+        /* color: #000; */
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #e5e5e5;
+        background: #fafafa;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+
+    .activeli {
+        background-color: #e9ecef !important;
+    }
+    .disabled {
+        /* Make the disabled links grayish*/
+        color: gray;
+        /* And disable the pointer events */
+        pointer-events: none;
+    }
+    .verifyButton {
+        /*background: rgba(0,0,0,0.2);*/
+        position: fixed;
+        /*width: 280px;*/
+        /*height: 32px;*/
+        top: 345px;
+        left: 265px;
+        z-index: 999;
+        /*border: 1px solid darkgray;*/
+        /*border-radius: 15px;*/
+        padding: 5px 10px;
+        /*color: black;*/
+    }
+</style>
 @endsection

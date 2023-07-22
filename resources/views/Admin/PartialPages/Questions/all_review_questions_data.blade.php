@@ -130,9 +130,7 @@
                                                 @endforeach
                                             </td>
                                             <td class="text-center">
-{{--                                                <a class="view text-success" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="view">--}}
-{{--                                                    <i class="fas fa-eye"></i>--}}
-{{--                                                </a>--}}
+
                                                 @if(Permission::can('reviewQuestion.edit'))
                                                 <a class="edit text-info" style="cursor: pointer; color:black;" data-id="{{$qs->id}}" title="edit">
                                                     <i class="fas fa-pencil-alt"></i>
@@ -182,21 +180,11 @@
 
                                     </tfoot>
                                 </table>
-
-
                             </div>
                             <div class="row">
                                 <div class="col-md-8">
                                     {{$questions->links()}}
                                 </div>
-                                {{--                                    <div class="col-md-4" >--}}
-                                {{--                                        <div class="text-center loading" style="display: block;">--}}
-                                {{--                                            <button class="btn btn-primary" type="button" disabled="">--}}
-                                {{--                                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>--}}
-                                {{--                                                {{__('form.loading')}}--}}
-                                {{--                                            </button>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
                             </div>
                         </div>
                     </div>
