@@ -563,7 +563,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         6: '৬',
         7: '৭',
         8: '৮',
-        9: '৯'
+        9: '৯',
+        '.': '.'
       };
       _toConsumableArray(numbString).forEach(function (n) {
         return bn += eb[n];
@@ -738,7 +739,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return (hasMinutes == undefined ? '' : hasMinutes) + (hasSeconds == undefined ? '' : hasSeconds);
       } else {
         if (minutes) {
-          hasMinutes = this.q2bNumber(minutes) + ' মিনিট';
+          hasMinutes = this.q2bNumber(minutes) + ' মিনিট ';
         }
         if (seconds) {
           hasSeconds = this.q2bNumber(seconds) + ' সেকেন্ড';
@@ -3104,7 +3105,7 @@ var render = function () {
                               },
                               [
                                 _c("div", { staticClass: "card" }, [
-                                  _c("div", { staticClass: "card-header" }, [
+                                  _c("div", { staticClass: "p-3" }, [
                                     _c(
                                       "div",
                                       {
@@ -3118,17 +3119,24 @@ var render = function () {
                                           [_vm._v("Q.")]
                                         ),
                                         _vm._v(" "),
-                                        _c("h5", { staticClass: "mt-1 ml-2" }, [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.tbe(
-                                                question.bd_question_text,
-                                                question.question_text,
-                                                _vm.user.lang
+                                        _c(
+                                          "h5",
+                                          {
+                                            staticClass:
+                                              "mt-1 ml-2 font-weight-bold",
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.tbe(
+                                                  question.bd_question_text,
+                                                  question.question_text,
+                                                  _vm.user.lang
+                                                )
                                               )
-                                            )
-                                          ),
-                                        ]),
+                                            ),
+                                          ]
+                                        ),
                                       ]
                                     ),
                                   ]),
@@ -3255,8 +3263,8 @@ var render = function () {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-4" }, [
-              _c("div", { staticClass: "card my-4" }, [
-                _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "card shadow" }, [
+                _c("div", { staticClass: "p-3 border-bottom" }, [
                   _vm._v(
                     "\n                        " +
                       _vm._s(
@@ -3275,7 +3283,7 @@ var render = function () {
                       staticClass: "d-flex justify-content-between flex-column",
                     },
                     [
-                      _c("span", [
+                      _c("span", { staticClass: "p-1" }, [
                         _vm._v(
                           " " +
                             _vm._s(
@@ -3294,7 +3302,7 @@ var render = function () {
                         ),
                       ]),
                       _vm._v(" "),
-                      _c("span", [
+                      _c("span", { staticClass: "p-1" }, [
                         _vm._v(
                           " " +
                             _vm._s(
@@ -3305,7 +3313,7 @@ var render = function () {
                         ),
                       ]),
                       _vm._v(" "),
-                      _c("span", [
+                      _c("span", { staticClass: "p-1" }, [
                         _vm._v(
                           _vm._s(
                             _vm.user.lang == "gb"
@@ -3317,7 +3325,7 @@ var render = function () {
                         ),
                       ]),
                       _vm._v(" "),
-                      _c("span", [
+                      _c("span", { staticClass: "p-1" }, [
                         _vm._v(
                           _vm._s(
                             _vm.user.lang == "gb"
@@ -3335,23 +3343,26 @@ var render = function () {
                         ),
                       ]),
                       _vm._v(" "),
-                      _c("span", [
+                      _c("span", { staticClass: "text-danger p-1" }, [
                         _vm._v(
                           _vm._s(
                             _vm.user.lang == "gb"
                               ? "Negative mark"
                               : "নেগেটিভ নম্বর"
-                          ) +
-                            " : " +
+                          ) + " : "
+                        ),
+                        _c("span", { staticClass: "font-weight-bold" }, [
+                          _vm._v(
                             _vm._s(
                               _vm.user.lang == "gb"
                                 ? _vm.negativeMark()
                                 : _vm.q2bNumber(_vm.negativeMark())
                             )
-                        ),
+                          ),
+                        ]),
                       ]),
                       _vm._v(" "),
-                      _c("span", [
+                      _c("span", { staticClass: "p-1" }, [
                         _vm._v(
                           " " +
                             _vm._s(

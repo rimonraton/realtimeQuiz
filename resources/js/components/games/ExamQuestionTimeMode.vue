@@ -50,10 +50,10 @@
                             <!--                        <p v-html="tbe(question.bd_question_text, question.question_text, user.lang)" class="my-2 font-bold"></p>-->
                             <div v-show="av">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="p-3">
                                         <div class="d-flex flex-row align-items-center question-title">
                                             <h3 class="text-danger">Q.</h3>
-                                            <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+                                            <h5 class="mt-1 ml-2 font-weight-bold">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -115,19 +115,19 @@
                     </div>
                 </div>
                 <div class="col-md-4" >
-                    <div class="card my-4" >
-                        <div class="card-header">
+                    <div class="card shadow" >
+                        <div class="p-3 border-bottom">
                             {{user.lang == 'gb' ?'Exam Details' : 'পরীক্ষার বিবরণ'}}
                             <!--                        <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">RESET</a>-->
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-column">
-                                <span> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(challenge.exam_bn,challenge.exam_en,user.lang) }}</span>
-                                <span> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
-                                <span>{{user.lang == 'gb' ? 'Time per question' : 'প্রতি প্রশ্নের সময়'}} : {{ perQTime() }}</span>
-                                <span>{{user.lang == 'gb' ? 'Marks per question' : 'প্রতি প্রশ্নের নম্বর'}} : {{ user.lang == 'gb'? challenge.each_question_mark : q2bNumber(challenge.each_question_mark) }}</span>
-                                <span>{{user.lang == 'gb' ? 'Negative mark' : 'নেগেটিভ নম্বর'}} : {{ user.lang == 'gb' ? negativeMark() :  q2bNumber(negativeMark())}}</span>
-                                <span> {{ user.lang == 'gb' ? 'Total Number' : 'মোট নম্বর' }} : {{ user.lang == 'gb' ? questions.length * challenge.each_question_mark : q2bNumber(questions.length * challenge.each_question_mark)}}</span>
+                                <span class="p-1"> {{ user.lang == 'gb' ? 'Exam Name' : 'পরীক্ষার নাম' }} : {{ tbe(challenge.exam_bn,challenge.exam_en,user.lang) }}</span>
+                                <span class="p-1 "> {{ user.lang == 'gb' ? 'Total Time' : 'মোট সময়' }} : {{ totalTime() }}</span>
+                                <span class="p-1 ">{{user.lang == 'gb' ? 'Time per question' : 'প্রতি প্রশ্নের সময়'}} : {{ perQTime() }}</span>
+                                <span class="p-1 ">{{user.lang == 'gb' ? 'Marks per question' : 'প্রতি প্রশ্নের নম্বর'}} : {{ user.lang == 'gb'? challenge.each_question_mark : q2bNumber(challenge.each_question_mark) }}</span>
+                                <span class="text-danger p-1 ">{{user.lang == 'gb' ? 'Negative mark' : 'নেগেটিভ নম্বর'}} : <span class="font-weight-bold">{{ user.lang == 'gb' ? negativeMark() :  q2bNumber(negativeMark())}}</span> </span>
+                                <span class="p-1 "> {{ user.lang == 'gb' ? 'Total Number' : 'মোট নম্বর' }} : {{ user.lang == 'gb' ? questions.length * challenge.each_question_mark : q2bNumber(questions.length * challenge.each_question_mark)}}</span>
                             </div>
                         </div>
                         <!--                    <div class="card-body" v-if="results.length>0">-->
@@ -509,7 +509,7 @@
             q2bNumber(numb) {
                 let numbString = numb.toString();
                 let bn = ''
-                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯'};
+                let eb = {0: '০', 1: '১', 2: '২', 3: '৩', 4: '৪', 5: '৫', 6: '৬', 7: '৭', 8: '৮', 9: '৯', '.': '.'};
                 [...numbString].forEach(n => bn += eb[n])
                 return bn
             },
@@ -674,7 +674,7 @@
                     return ( hasMinutes == undefined ? '' : hasMinutes ) + ( hasSeconds == undefined ? '' : hasSeconds )
                 } else {
                     if(minutes) {
-                        hasMinutes =  this.q2bNumber(minutes) + ' মিনিট'
+                        hasMinutes =  this.q2bNumber(minutes) + ' মিনিট '
                     }
                     if (seconds) {
                         hasSeconds =  this.q2bNumber(seconds) + ' সেকেন্ড'
