@@ -29,8 +29,8 @@ window.Echo = new Echo({
     wsHost: window.location.hostname,
     // authEndpoint : 'http://27.147.187.184/quiz/public/broadcasting/auth',
     wsPort: 6001,
-    // wssPort: 6001,
-    // enabledTransports: ['ws', 'wss'],
+    wssPort: 6001,
+    enabledTransports: ['ws', 'wss'],
     disableStats: true,
-    forceTLS: false
+    forceTLS: true
 });
