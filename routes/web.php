@@ -1,7 +1,11 @@
 <?php
 
+use App\Events\WsEvent;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\Game\ChallengeController;
 use App\Http\Controllers\Game\ModeController;
 use App\Http\Controllers\Game\PracticeController;
@@ -10,12 +14,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\NewUserController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SetupController;
+use App\Http\Controllers\ShareController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserCredential;
 use App\Http\Middleware\HasAccess;
@@ -73,7 +79,7 @@ Route::get('game/perform-message/delete/{id}', 'PerformController@performmessage
 //Route::get('search_game_cat/{keyword}', 'SearchController@search_game_cat');
 
 // Payment
-Route::post('create-institute',[\App\Http\Controllers\PaymentController::class,'store'])->name('createInstitute');
+Route::post('create-institute',[PaymentController::class,'store'])->name('createInstitute');
 //new User create
 
 Route::get('userCredential/{token}',[UserCredential::class,'userCredential'])->name('userCredential');
@@ -112,7 +118,7 @@ Route::get('setLanguage/{locale}', function ($locale) {
 	return redirect()->back();
 });
 
-Route::post('contact', [\App\Http\Controllers\ContractController::class ,'sendMessage']);
+Route::post('contact', [ContractController::class ,'sendMessage']);
 
 Route::get('getProgress/{id}', [HomeController::class, 'getProgress'])->name('getProgress');
 Route::get('/lang-{lang}.js', 'LanguageController@show');
@@ -122,53 +128,53 @@ Route::get('SingleQuestionDisplay/{challenge}/{uid}', [SingleQuestionDisplayQuiz
 
 
 
-Route::get('challengeShareResult/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShareResult'])->name('challengeShareResult');
-Route::get('challengeShareResult/{link}/details', [\App\Http\Controllers\ShareController::class, 'challengeShareResultDetails'])->name('challengeShareResult.details');
-Route::get('challengeShare/{link}', [\App\Http\Controllers\ShareController::class, 'challengeShare'])->name('challengeShare');
+Route::get('challengeShareResult/{link}', [ShareController::class, 'challengeShareResult'])->name('challengeShareResult');
+Route::get('challengeShareResult/{link}/details', [ShareController::class, 'challengeShareResultDetails'])->name('challengeShareResult.details');
+Route::get('challengeShare/{link}', [ShareController::class, 'challengeShare'])->name('challengeShare');
 //Route::get('product',function (){
 //
 //    \Excel::import(new \App\Imports\QuestionImport(), public_path('prods.xlsx'));
 //});
 
-Route::post('saveFile',[\App\Http\Controllers\FileController::class,'store'])->name('saveFile');
-Route::get('deleteFile/{path}',[\App\Http\Controllers\FileController::class,'deleteFile'])->name('deleteFile');
+Route::post('saveFile',[FileController::class,'store'])->name('saveFile');
+Route::get('deleteFile/{path}',[FileController::class,'deleteFile'])->name('deleteFile');
 
 
 //export
 
-Route::get('export_questions',[\App\Http\Controllers\ExcelController::class,'export'])->name('exportQuestions');
+Route::get('export_questions',[ExcelController::class,'export'])->name('exportQuestions');
 Route::get('newreset',function (){
 return view('auth.passwords.newreset');
 });
 
 //Search
 
-Route::get('search_quiz/{keyword}/{tid}',[\App\Http\Controllers\SearchController::class,'quiz_search'])->name('searchQuiz');
-Route::get('search_role/{keyword}',[\App\Http\Controllers\SearchController::class,'search_role'])->name('searchRole');
+Route::get('search_quiz/{keyword}/{tid}',[SearchController::class,'quiz_search'])->name('searchQuiz');
+Route::get('search_role/{keyword}',[SearchController::class,'search_role'])->name('searchRole');
 
 
 
 //login User Cedentials
-Route::get('user_cedential/{value}',[\App\Http\Controllers\Auth\LoginController::class,'user_cedential'])->name('userCedential');
+Route::get('user_cedential/{value}',[LoginController::class,'user_cedential'])->name('userCedential');
 
 Route::post('question-update',[QuestionController::class,'question_update'])->name('questionUpdate');
 Route::get('search-user/{keyword}',[NewUserController::class,'search_user'])->name('searchUser');
 Route::post('shareStore',[NewUserController::class,'shareQuestionStore'])->name('shareStore');
 
 //delete Result
-Route::get('deleteresult/{id}',[\App\Http\Controllers\ShareController::class,'deleteResult'])->name('deleteResult');
+Route::get('deleteresult/{id}',[ShareController::class,'deleteResult'])->name('deleteResult');
 
 //Team Member
-Route::post('team-members',[\App\Http\Controllers\TeamController::class,'teamMember'])->name('teamMembers');
-Route::get('delete-team/{id}',[\App\Http\Controllers\TeamController::class,'teamDelete'])->name('deleteTeam');
-Route::post('save_team',[\App\Http\Controllers\TeamController::class,'save_team'])->name('saveTeam');
+Route::post('team-members',[TeamController::class,'teamMember'])->name('teamMembers');
+Route::get('delete-team/{id}',[TeamController::class,'teamDelete'])->name('deleteTeam');
+Route::post('save_team',[TeamController::class,'save_team'])->name('saveTeam');
 
 //Team Quiz
-Route::get('delete_team_quiz/{id}',[\App\Http\Controllers\TeamController::class,'delete_team_quiz'])->name('deleteTeamQuiz');
-Route::get('quiz_info/{id}',[\App\Http\Controllers\TeamController::class,'quiz_info'])->name('quiz_info');
+Route::get('delete_team_quiz/{id}',[TeamController::class,'delete_team_quiz'])->name('deleteTeamQuiz');
+Route::get('quiz_info/{id}',[TeamController::class,'quiz_info'])->name('quiz_info');
 
 //role user search
-Route::get('rolo-user-search/{keyword}',[\App\Http\Controllers\RoleController::class,'searchRoleUser'])->name('roleUserSearch');
+Route::get('rolo-user-search/{keyword}',[RoleController::class,'searchRoleUser'])->name('roleUserSearch');
 
 
 // Questions
@@ -297,5 +303,8 @@ Route::middleware(['hasAccess'])->group(function () {
     Route::post('challange-Published',[HomeController::class,'challenge_publish'])->name('challangePublished');
     Route::get('delete_challange/{id}',[HomeController::class,'delete_challange'])->name('deleteChallange');
     Route::get('challange_search/{keyword}',[HomeController::class,'challange_search'])->name('challangeSearch');
-
+    Route::get('ws', function (){
+        event(new WsEvent('Helllo from the other side'));
+        return 'success';
+    });
 });
