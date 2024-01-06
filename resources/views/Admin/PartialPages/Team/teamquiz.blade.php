@@ -51,7 +51,9 @@
         <div class="card">
             <div class="card-body">
                 @if(Permission::can('gameQuizCreate'))
-                <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('game_quiz_create')}}" >{{__('form.create_quiz')}}</a>
+                <a type="button" class="btn btn-info btn-rounded float-right" href="{{url('game_quiz_create')}}" >
+                    {{__('form.create_quiz')}}
+                </a>
                 @endif
                 <h4 class="card-title text-center">{{__('form.quiz')}}</h4>
                 <hr>
@@ -71,7 +73,6 @@
 
                             <div class="card-body">
                                 <h5 class="card-title text-center font-20">
-{{--                                    {{$lang=='gb'?$q->quiz_name:$q->bd_quiz_name}}--}}
                                     @if($lang=='gb')
                                         @if(!is_null($q->quiz_name))
                                             {{$q->quiz_name}}

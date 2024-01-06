@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('qr-code', function () {
     return view('QR.scanner');
 });
-Route::middleware(['hasAccess'])->group(function () {
+Route::middleware(['hasAccess', 'verified'])->group(function () {
     // dashboard
     Route::get('dashboard', [AdminController::class,'index'])->name('dashboard');
 
@@ -52,8 +52,8 @@ Route::middleware(['hasAccess'])->group(function () {
     Route::get('game/perform-message', [PerformController::class,'performmessagesetup'])->name('game.performMessage');
 
 //team
-    Route::get('teamlist', [TeamController::class,'index'])->name('teamList');
-    Route::get('team_quiz',[TeamController::class,'team_quiz'])->name('teamQuiz');
+    Route::get('teamlist', [TeamController::class, 'index'])->name('teamList');
+    Route::get('team_quiz',[TeamController::class, 'team_quiz'])->name('teamQuiz');
 
 
 //profile

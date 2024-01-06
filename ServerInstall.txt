@@ -6,7 +6,7 @@ Firewall ===>>>
 MySQL ===>>>
 sudo apt-get install mysql-server
 
-Configuring MySQL ===>>> gy@nk0sh@2021
+Configuring MySQL ===>>> gyankosh@2021
 mysql -u root -p
 
 CREATE DATABASE gyankosh DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -78,8 +78,8 @@ php artisan migrate
 Configure NGINX ===>>>
 sudo chgrp -R www-data storage bootstrap/cache
 sudo chmod -R ug+rwx storage bootstrap/cache
-sudo chown -R www-data.www-data /var/www/html/gyankosh/storage
-sudo chown -R www-data.www-data /var/www/html/gyankosh/bootstrap/cache
+sudo chown -R www-data.www-data /var/www/html/quizapp/storage
+sudo chown -R www-data.www-data /var/www/html/quizapp/bootstrap/cache
 
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
 sudo nano /etc/nginx/sites-available/example.com
@@ -208,3 +208,6 @@ tar -xzvf archive.tar.gz
 cat ~/.ssh/id_rsa.pub | ssh raton@35.232.113.230 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 
 rsync -rP raton@35.232.113.230:/var/bigbluebutton/published/ /var/bigbluebutton/published/
+
+
+cat ~/.ssh/id_rsa.pub | ssh quizapp@194.233.73.111 "mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys"

@@ -42,7 +42,7 @@ class TeamController extends Controller
 //      return $user_ids = Team::find(2);
 //       return explode(',',$user_ids->user_ids);
 //        User::whereIn('id',explode(',',$user_ids->user_ids))->get();
-        $admin_users = auth()->user()->admin->users;
+        return $admin_users = auth()->user()->admin->users;
         $teams = Team::orderBy('id','desc')->paginate(10);
         return view('Admin.PartialPages.Team.teamlist', compact('teams','admin_users','data'));
     }

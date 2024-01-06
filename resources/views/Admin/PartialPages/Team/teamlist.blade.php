@@ -5,7 +5,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center">{{__('form.team_list')}}</h4>
+                <h4 class="card-title text-center">
+                    {{__('form.team_list')}}
+                </h4>
                 <hr>
                 @if(Permission::can('createTeam'))
                 <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_team')}}</button>

@@ -187,6 +187,7 @@ class ExamController extends Controller
 
     public function traineeExams($id = null)
     {
+
 //        $user = Auth::user();
         $exams = '';
         $admin_users = auth()->user()->admin->users()->pluck('id');
