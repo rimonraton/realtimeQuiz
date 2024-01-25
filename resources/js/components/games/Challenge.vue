@@ -8,8 +8,8 @@
             </div>
         </div>
 
-        <transition name="fade">
-            <result v-if="screen.result"
+        <transition name="fade" v-if="screen.result">
+            <result
                     :results='results'
                     :lastQuestion='qid == questions.length'
                     :resultDetail="answered_user_data"
@@ -43,27 +43,9 @@
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
             </div>
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
-
-<!--            <div class="px-2">-->
-<!--                <img-->
-<!--                    class="card-img img-responsive my-3 lazy share-result-image"-->
-<!--                    :src="getUrl('challengeShareResult/'+share.link)"-->
-<!--                    type="image/png"-->
-<!--                >-->
-<!--            </div>-->
-
-<!--            <iframe-->
-<!--                :src="getShareLink('challengeShareResult/'+share.link)"-->
-<!--                width="77" height="28"-->
-<!--                style="border:none; overflow:hidden"-->
-<!--                scrolling="no"-->
-<!--                frameborder="0"-->
-<!--                allowfullscreen="true"-->
-<!--                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"-->
-<!--            ></iframe>-->
         </div>
 
-        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule'
+        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule' :challenge="challenge"
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
                 @gameReset="gameReset"

@@ -148,6 +148,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -161,6 +169,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       current: 0,
       qid: 0,
       winner_screen: false,
+      place: 0,
       gamedata: {},
       timer: null,
       minutes: 0,
@@ -225,6 +234,75 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       if (qco.flag == 'img') return qco.img_link;
       return this.tbe(qco.bd_option, qco.option, this.user.lang);
     },
+    firstPlace: function firstPlace() {
+      this.place = 1;
+      confetti({
+        zIndex: 999999,
+        particleCount: 200,
+        spread: 120,
+        origin: {
+          y: 0.6
+        }
+      });
+      setTimeout(function () {
+        confetti({
+          zIndex: 999999,
+          particleCount: 200,
+          spread: 120,
+          origin: {
+            y: 0.6
+          }
+        });
+      }, 500);
+    },
+    secondPlace: function secondPlace() {
+      this.place = 2;
+      var colors = ['#bb0000', '#0AE84E'];
+      confetti({
+        zIndex: 999999,
+        particleCount: 100,
+        angle: 60,
+        spread: 55,
+        origin: {
+          x: 0
+        },
+        colors: colors
+      });
+      confetti({
+        zIndex: 999999,
+        particleCount: 100,
+        angle: 120,
+        spread: 55,
+        origin: {
+          x: 1
+        },
+        colors: colors
+      });
+    },
+    thirdPlace: function thirdPlace() {
+      this.place = 3;
+      var defaults = {
+        spread: 360,
+        ticks: 50,
+        gravity: 0,
+        decay: 0.94,
+        startVelocity: 30,
+        shapes: ["star"],
+        colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"]
+      };
+      confetti(_objectSpread(_objectSpread({}, defaults), {}, {
+        zIndex: 999999,
+        particleCount: 400,
+        scalar: 1.2,
+        shapes: ["star"]
+      }));
+      confetti(_objectSpread(_objectSpread({}, defaults), {}, {
+        zIndex: 999999,
+        particleCount: 100,
+        scalar: 0.75,
+        shapes: ["circle"]
+      }));
+    },
     winner: function winner() {
       var perform = this.correct / this.questions.length * 100;
       this.pm = this.gmsg.filter(function (g) {
@@ -234,37 +312,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
       this.winner_screen = 1;
       if (perform === 100) {
-        confetti({
-          zIndex: 999999,
-          particleCount: 200,
-          spread: 120,
-          origin: {
-            y: 0.6
-          }
-        });
+        this.firstPlace();
       }
       if (perform >= 75) {
-        var colors = ['#bb0000', '#0AE84E'];
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 60,
-          spread: 55,
-          origin: {
-            x: 0
-          },
-          colors: colors
-        });
-        confetti({
-          zIndex: 999999,
-          particleCount: 100,
-          angle: 120,
-          spread: 55,
-          origin: {
-            x: 1
-          },
-          colors: colors
-        });
+        this.secondPlace();
       }
       if (!this.user.log > 0) {
         this.saveQuiz();
@@ -754,6 +805,41 @@ var render = function () {
           "div",
           { staticClass: "winner" },
           [
+            _vm.place == 1
+              ? _c("img", {
+                  staticStyle: { width: "100px", "margin-right": "15px" },
+                  attrs: { src: "/img/quiz/position/1st.gif", alt: "" },
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.place == 2
+              ? _c("img", {
+                  staticStyle: { width: "100px", "margin-right": "15px" },
+                  attrs: { src: "/img/quiz/position/2nd.gif", alt: "" },
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.place == 3
+              ? _c("img", {
+                  staticStyle: { width: "100px", margin: "15px" },
+                  attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex" }, [
+              _c("button", { on: { click: _vm.firstPlace } }, [
+                _vm._v("First"),
+              ]),
+              _vm._v(" "),
+              _c("button", { on: { click: _vm.secondPlace } }, [
+                _vm._v("Second"),
+              ]),
+              _vm._v(" "),
+              _c("button", { on: { click: _vm.thirdPlace } }, [
+                _vm._v("Third"),
+              ]),
+            ]),
+            _vm._v(" "),
             _c("h2", { staticClass: "text-center" }, [
               _vm._v("Quiz Game Over"),
             ]),

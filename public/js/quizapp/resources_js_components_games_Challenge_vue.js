@@ -202,24 +202,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -894,7 +876,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       message: null,
       messages: [],
       show: false,
-      chat_count: 0
+      chat_count: 0,
+      audio: new Audio('/audios/chat_notification.mp3')
     };
   },
   created: function created() {
@@ -905,8 +888,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       console.log('SendMessageEvent.............', data);
       _this.scrollToElement();
       _this.chat_count++;
+      console.log('this.show', _this.show);
+      if (!_this.show) {
+        _this.audio.play();
+      }
     }).listen('DeleteMessageEvent', function (data) {
-      _this.messages = {};
+      _this.messages = [];
       console.log('DeleteMessageEvent.............', data);
     });
   },
@@ -1274,11 +1261,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  // Share Link
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'uid', 'users', 'time'],
+  props: ['user', 'uid', 'users', 'time', 'challenge'],
   components: {
     QrcodeVue: qrcode_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -1291,6 +1289,7 @@ __webpack_require__.r(__webpack_exports__);
       schedule: '',
       timer: null,
       qr: false,
+      share: false,
       size: 300,
       defaultTime: 30,
       value: window.location.toString()
@@ -1534,7 +1533,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.circle{\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        text-align: center;\n        position: absolute;\n        top: 4px;\n        left: 15px;\n        font-size: 1.5rem;\n        background: gray;\n        color: white;\n}\n.flag{\n\t\tposition: absolute;\n\t\tright: 15px;\n\t\ttop: 8px;\n}\n.close{\n    \tposition: absolute;\n    \ttop: -5px;\n    \tright: 0px;\n    \tcolor: red;\n}\n.activeItem{\n        z-index: 2;\n        color: #20c899;\n        border-color: #3490dc;\n        border-radius: 5px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.circle{\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        text-align: center;\n        position: absolute;\n        top: 4px;\n        left: 15px;\n        font-size: 1.5rem;\n        background: gray;\n        color: white;\n}\n.flag{\n  position: absolute;\n  right: 15px;\n  top: 8px;\n}\n.close{\n    position: absolute;\n    top: -5px;\n    right: 0px;\n    color: red;\n}\n.activeItem{\n      z-index: 2;\n      color: #20c899;\n      border-color: #3490dc;\n      border-radius: 5px;\n}\n.iframe-size{\n    width: 90vw;\n    height: 90vh;\n    left: 3vw;\n}\n.show_share {\n    position: absolute;\n    right: 0;\n    height: 40px;\n    width: 300px;\n    overflow: hidden;\n    transition: .5s linear;\n    opacity: 1;\n    top: -45px;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -3072,12 +3071,12 @@ var render = function () {
         ? _c("div", { staticClass: "result-waiting" }, [_vm._m(0)])
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "transition",
-        { attrs: { name: "fade" } },
-        [
-          _vm.screen.result
-            ? _c("result", {
+      _vm.screen.result
+        ? _c(
+            "transition",
+            { attrs: { name: "fade" } },
+            [
+              _c("result", {
                 attrs: {
                   results: _vm.results,
                   lastQuestion: _vm.qid == _vm.questions.length,
@@ -3091,11 +3090,11 @@ var render = function () {
                   newQuiz: _vm.newQuiz,
                   makeHost: _vm.makeHost,
                 },
-              })
-            : _vm._e(),
-        ],
-        1
-      ),
+              }),
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "transition",
@@ -3174,6 +3173,7 @@ var render = function () {
               users: _vm.users,
               user: _vm.user,
               time: _vm.challenge.schedule,
+              challenge: _vm.challenge,
             },
             on: {
               kickingUser: function ($event) {
@@ -4493,6 +4493,37 @@ var render = function () {
       _c(
         "div",
         {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.share,
+              expression: "share",
+            },
+          ],
+          staticClass: "show_share shareBtnDiv",
+          attrs: { id: "shareBtn" },
+        },
+        [
+          _c("iframe", {
+            staticClass: "iframe-size",
+            attrs: {
+              id: "shareFrame",
+              src:
+                "http://quiz.test/Challenge/" +
+                _vm.challenge.id +
+                "/" +
+                _vm.uid +
+                "/share",
+              frameborder: "0",
+            },
+          }),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
           staticClass: "d-flex justify-content-between card-header text-center",
         },
         [
@@ -4502,38 +4533,53 @@ var render = function () {
               staticClass: "btn btn-sm btn-danger align-self-start",
               on: { click: _vm.back },
             },
-            [_vm._v("Back")]
+            [_vm._v("\n            Back\n          ")]
           ),
           _vm._v(" "),
           _vm.user.id != _vm.uid
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
-                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
+                  "\n            Please wait, the Quiz Host will start the game soon.\n          "
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
                 _c("span", [_vm._v("User List")]),
               ]),
           _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-sm align-self-start",
-              class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
-              on: {
-                click: function ($event) {
-                  _vm.qr = !_vm.qr
+          _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm align-self-start",
+                class: [_vm.qr ? "btn-dark" : "btn-outline-secondary"],
+                on: {
+                  click: function ($event) {
+                    _vm.qr = !_vm.qr
+                  },
                 },
               },
-            },
-            [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.qr ? "QR" : "QR") +
-                  "\n                "
-              ),
-            ]
-          ),
+              [
+                _vm._v(
+                  "\n              " +
+                    _vm._s(_vm.qr ? "Close QR" : "QR") +
+                    "\n            "
+                ),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-outline-info",
+                on: {
+                  click: function ($event) {
+                    _vm.share = !_vm.share
+                  },
+                },
+              },
+              [_vm._v("\n              Share\n            ")]
+            ),
+          ]),
         ]
       ),
       _vm._v(" "),
@@ -4618,20 +4664,6 @@ var render = function () {
           _vm._v(" "),
           _vm.user.id == _vm.uid
             ? _c("div", { staticClass: "d-flex justify-content-between" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "btn btn-sm btn-outline-success mt-4 pull-right",
-                    on: {
-                      click: function ($event) {
-                        return _vm.$emit("gameStart", _vm.defaultTime)
-                      },
-                    },
-                  },
-                  [_vm._v("START\n                    ")]
-                ),
-                _vm._v(" "),
                 _c("div", { staticClass: "mt-4" }, [
                   _c("div", { staticStyle: { position: "relative" } }, [
                     _c(
@@ -4671,6 +4703,20 @@ var render = function () {
                     }),
                   ]),
                 ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-outline-success mt-4 pull-right",
+                    on: {
+                      click: function ($event) {
+                        return _vm.$emit("gameStart", _vm.defaultTime)
+                      },
+                    },
+                  },
+                  [_vm._v("START\n                ")]
+                ),
               ])
             : _vm._e(),
         ],

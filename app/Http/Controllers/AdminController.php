@@ -6,6 +6,7 @@ use App\Admin;
 use App\Menu;
 use App\Question;
 use App\Quiz;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,5 +37,12 @@ class AdminController extends Controller
         $admin = Admin::get()->except(1);
 
         return view('Admin.PartialPages.home', compact('quiz_counts', 'quiz_publish', 'totalQuestions','admin'));
+    }
+
+    public function userRemove(User $user)
+    {
+        $user->roleuser->delete();
+        $user->delete();
+        return 'User ' . $user->name . ', deleted successfully!';
     }
 }

@@ -118,7 +118,7 @@
             $lang = App::getLocale();
         @endphp
       <footer class="footer">
-        © <span id="year">{{$lang=='gb'?'2021':$bang->bn_number(2021)}}</span>
+        © <span id="year">{{ $lang=='gb'? date('Y') :$bang->bn_number(date('Y')) }}</span>
           {{__('msg.companyName')}}
       </footer>
       <!-- ============================================================== -->
@@ -228,6 +228,11 @@
 
 
   <script>
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
     $(function() {
       $('.lang').on('click', function() {
         if ($(this).attr('aria-expanded') == 'false') {

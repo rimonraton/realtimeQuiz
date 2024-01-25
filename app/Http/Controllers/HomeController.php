@@ -108,29 +108,7 @@ class HomeController extends Controller
         return view('quiz_progress', compact('progress'));
     }
 
-    public function gameInAdmin($type, $id = null)
-    {
-        $questionHasTopics = Category::whereHas('questioncount')->withCount(['questioncount', 'easy', 'intermidiate', 'difficult'])->get();
 
-        $admin_users = auth()->user()->admin->users()->pluck('id');
-
-        $catName = '';
-        if ($id) {
-            $catName = Category::find($id)->name;
-        }
-        $questionType = QuestionType::all();
-        $topic = Category::withCount('questions')
-            ->where('sub_topic_id', 0)->get();
-        $lang = $this->lang;
-        $challenges_published = Challenge::whereIn('user_id',$admin_users)
-            ->where('is_published',1)
-            ->latest()->get();
-        $challenges_own = Challenge::where('user_id',Auth::user()->id)
-            ->where('is_published',0)
-            ->latest()->get();
-        $challenges = $challenges_published->merge($challenges_own)->paginate(12);
-        return view('Admin.Games.challenge', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questionHasTopics']));
-    }
 
     public function createChallenge(Request $request)
     {

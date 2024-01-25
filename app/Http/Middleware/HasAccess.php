@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Facades\Permission as Permissoin;
+use App\Http\Facades\Permission;
 use App\Http\Traits\hasPermission;
 use Closure;
 use Illuminate\Support\Facades\Route;
@@ -18,11 +18,10 @@ class HasAccess
             return $next($request);
         }
         $routeName = Route::currentRouteName();
-        if (\Permission::can($routeName)) {
+        if (Permission::can($routeName)) {
             return $next($request);
         };
         return redirect('dashboard');
     }
-
 
 }

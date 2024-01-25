@@ -205,7 +205,8 @@ class ExamController extends Controller
         $challenges_published = Challenge::whereIn('user_id',$admin_users)->where('is_published',1)->latest()->get();
         $challenges_own = Challenge::where('user_id',Auth::user()->id)->where('is_published',0)->latest()->get();
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
-        $questions = Question::all();
+//        $questions = Question::all();
+        $questions = [];
         if (auth()->user()->roleuser->role->id < 4) {
              $exams = Examination::with(['category:id,name,bn_name', 'existUser'=> function($q){
                  $q->with('user')->where('unlock_status','>', 0)->whereNotNull('reason');
@@ -216,13 +217,14 @@ class ExamController extends Controller
                 ->paginate(12);
 
         } else {
-             $exams = Examination::with(['category:id,name,bn_name', 'existUser' => function($q){
+              $exams = Examination::with(['category:id,name,bn_name', 'existUser' => function($q){
                 $q->where('user_id', auth()->user()->id)->where('unlock_status','>', 0);
             }])
                 ->withCount(['results' => function ($q) {
                     $q->where('user_id', Auth::user()->id);
                 }])->orderBy('id', 'desc')->paginate(12);
         }
+
         return view('Admin.Exam.Pages.traineeExam', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions', 'exams']));
     }
 //    function exam_completed($data){

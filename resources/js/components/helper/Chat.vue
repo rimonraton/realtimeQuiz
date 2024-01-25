@@ -98,7 +98,8 @@ export default{
             message: null,
             messages: [],
             show: false,
-            chat_count: 0
+            chat_count: 0,
+            audio: new Audio('/audios/chat_notification.mp3')
         };
     },
     created(){
@@ -109,9 +110,14 @@ export default{
                 console.log('SendMessageEvent.............', data)
                 this.scrollToElement()
                 this.chat_count++
+                console.log('this.show', this.show)
+                if(!this.show) {
+                    this.audio.play()
+                }
+
             })
             .listen('DeleteMessageEvent', (data) => {
-                this.messages = {}
+                this.messages = []
                 console.log('DeleteMessageEvent.............', data)
             });
     },

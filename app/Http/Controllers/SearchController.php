@@ -11,59 +11,62 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    protected $admin_id;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function($request, $next) {
+            $this->admin_id = auth()->user()->admin->id;
+            return $next($request);
+        });
+
     }
 
     public function search($keyword)
     {
-        $admin = auth()->user()->admin;
-        $admin_users = $admin->users()->pluck('id');
         if ($keyword == 'all'){
-            $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
+            $category = Category::where('admin_id', $this->admin_id)->orderBy('id', 'desc')->paginate(10);
             return view('Admin.PartialPages.Questions.partial._searchCategory',compact('category'));
         }
         $category = Category::where(function ($query) use($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
                 ->orWhere('bn_name', 'like', '%' . $keyword . '%');
         })
-            ->whereIn('user_id',$admin_users)
+            ->where('admin_id', $this->admin_id)
             ->paginate(10);
         return view('Admin.PartialPages.Questions.partial._searchCategory',compact('category'));
     }
 
     public function type_search($keyword)
     {
-        $admin = auth()->user()->admin;
-        $admin_users = $admin->users()->pluck('id');
         if ($keyword == 'all'){
-            $quizcategory = QuestionType::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
+            $quizcategory = QuestionType::where('admin_id', $this->admin_id)->orderBy('id', 'desc')->paginate(10);
             return view('Admin.PartialPages.Questions.partial._searchType',compact('quizcategory'));
         }
         $quizcategory = QuestionType::where(function ($query) use($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
                 ->orWhere('bn_name', 'like', '%' . $keyword . '%');
         })
-            ->whereIn('user_id',$admin_users)
+            ->where('admin_id',$this->admin_id)
             ->paginate(10);
         return view('Admin.PartialPages.Questions.partial._searchType',compact('quizcategory'));
     }
 
-    public function quiz_search($keyword,$tid)
+    public function quiz_search($keyword, $tid)
     {
         $role = auth()->user()->roleuser->role->role_name;
-        $admin = auth()->user()->admin;
-        $admin_users = $admin->users()->pluck('id');
         if ($keyword == 'all'){
-            $quiz = Quiz::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->where('category_id',$tid)->paginate(10);
+            $quiz = Quiz::where('admin_id',$this->admin_id)
+                ->orderBy('id', 'desc')
+                ->where('category_id',$tid)
+                ->paginate(10);
             return view('Admin.PartialPages.Quiz.Partial._quiz_search',compact('quiz','role'));
         }
         $quiz = Quiz::where(function ($query) use($keyword) {
             $query->where('quiz_name', 'like', '%' . $keyword . '%')
                 ->orWhere('bd_quiz_name', 'like', '%' . $keyword . '%');
         })
-            ->whereIn('user_id',$admin_users)
+            ->where('admin_id',$this->admin_id)
             ->where('category_id',$tid)
             ->paginate(10);
         return view('Admin.PartialPages.Quiz.Partial._quiz_search',compact('quiz','role'));
@@ -102,12 +105,11 @@ class SearchController extends Controller
 
     public function search_role($keyword)
     {
-        $adminId = auth()->user()->admin->id;
         if ($keyword == 'all'){
-            $roles = Role::where('id','!=',1)->where('admin_id', $adminId)->orderBy('id', 'desc')->paginate(10);
+            $roles = Role::where('id','!=',1)->where('admin_id', $this->admin_id)->orderBy('id', 'desc')->paginate(10);
             return view('Admin.PartialPages.Role.partial._search_role',compact('roles'));
         }
-        $roles = Role::where('admin_id', $adminId)->where(function ($query) use($keyword) {
+        $roles = Role::where('admin_id', $this->admin_id)->where(function ($query) use($keyword) {
             $query->where('role_name', 'like', '%' . $keyword . '%')
                 ->orWhere('bn_role_name', 'like', '%' . $keyword . '%');
         })

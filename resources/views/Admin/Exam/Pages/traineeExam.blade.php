@@ -185,7 +185,7 @@
                 @endif
                 <div class="m-2 p-2 rounded-lg  text-center" data-toggle="tooltip" data-placement="top" title="{{$lang == 'gb' ? ($exam->exam_en ? $exam->exam_en : $exam->exam_bn)  : ($exam->exam_bn ? $exam->exam_bn : $exam->exam_en)}}">
 {{--                    {{$lang == 'gb' ? ($exam->exam_en ? $exam->exam_en : $exam->exam_bn)  : ($exam->exam_bn ? $exam->exam_bn : $exam->exam_en)}}--}}
-                    {{mb_strimwidth($in, 0, 10, '...')}}
+                    {{mb_strimwidth($in, 0, 20, '...')}}
                 </div>
                 <div class="m-2 p-2">
                     @if($futureDate > $now)

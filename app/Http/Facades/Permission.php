@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Cache;
 
 class Permission
 {
-    public function can($route)
+    public static function can($route)
     {
 
         $user = auth()->user();
         if($user->roleuser->role->role_name == 'Super Admin'){
             return true;
         }
-        $mId = $this->getMenuId($route);
+        $mId = self::getMenuId($route);
         $findMenuUser = \App\MenuRole::where('user_id', $user->id)->count();
 //        $rm = '' ;
         if ($findMenuUser) {
@@ -27,7 +27,7 @@ class Permission
         };
         return false;
     }
-    public function getMenuId($path)
+    public static function getMenuId($path)
     {
         $menu = Menu::where('router_name', $path)->first();
         if ($menu){
@@ -37,7 +37,7 @@ class Permission
         }
     }
 
-    public function getMenus()
+    public static function getMenus()
     {
         $userAndLang = auth()->user()->id .'-'. \App::getLocale();
         return Cache::remember($userAndLang, now()->addHour(), function () {

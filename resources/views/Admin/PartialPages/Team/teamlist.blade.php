@@ -10,7 +10,10 @@
                 </h4>
                 <hr>
                 @if(Permission::can('createTeam'))
-                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-contact">{{__('form.add_team')}}</button>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right"
+                        data-toggle="modal" data-target="#add-contact">
+                    {{__('form.add_team')}}
+                </button>
                 @endif
                 <!-- Add Contact Popup Model -->
                 <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -31,16 +34,6 @@
                                             <input type="text" class="form-control" name="bn_name" placeholder="{{__('form.add_bn_team_placholder')}}" >
                                         </div>
                                     </div>
-{{--                                    <div class="row">--}}
-{{--                                        @foreach($admin_users as $au)--}}
-{{--                                            @if($au->roleuser->role_id > 3)--}}
-{{--                                                <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">--}}
-{{--                                                    <input type="checkbox" name="members[]" value="{{$au->id}}" id="chca_{{$au->id}}" class="material-inputs chk child{{$au->id}}">--}}
-{{--                                                    <label for="chca_{{$au->id}}">{{$au->name}}</label>--}}
-{{--                                                </div>--}}
-{{--                                            @endif--}}
-{{--                                        @endforeach--}}
-{{--                                    </div>--}}
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
                                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
@@ -92,9 +85,12 @@
                                                 @endif
                                             </td>
                                             <td style="text-align: center;">
-{{--                                                <a class="add text-dark" href="" data-id="{{$team->id}}" title="Add"><i class="fas fa-plus"></i></a>--}}
                                                 @if(Permission::can('updateTeam'))
-                                                    <a class="edit" href="" data-pid="{{$team->id}}" data-id="{{$team->id}}" data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}" data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a class="edit" href="" data-pid="{{$team->id}}" data-id="{{$team->id}}"
+                                                       data-name="{{$team->name}}" data-bnname="{{$team->bn_name}}"
+                                                       data-ids="{{$team->members?$team->members->user_ids:''}}" title="Edit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
                                                 @else
                                                     <a ><i class="fas fa-pencil-alt"></i></a>
                                                 @endif
@@ -134,8 +130,8 @@
 </div>
 
 <div id="edit-category" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">{{__('form.team_update')}}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -160,7 +156,9 @@
                                 @if($au->roleuser->role_id > 3)
                                     <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">
                                         <input type="checkbox" name="members[]" value="{{$au->id}}" id="chce_{{$au->id}}" class="material-inputs chk child">
-                                        <label for="chce_{{$au->id}}">{{$au->name}}</label>
+                                        <label for="chce_{{$au->id}}">
+                                            {{mb_strimwidth($au->name, 0, 30, '...')}}
+                                        </label>
                                     </div>
                                 @endif
                             @endif
@@ -189,7 +187,6 @@
             <div class="modal-body">
                 <form class="form-horizontal form-material" method="POST" action="{{url('team-members')}}" autocomplete="off">
                     @csrf
-{{--                    <input type="hidden" id="uid" name="id">--}}
                     <div class="form-group row">
                         <div class="col-md-12 m-b-20">
                             <select class="form-control  arcategory" name="team" id="team_id">
@@ -199,34 +196,19 @@
                                 @endforeach
                             </select>
                         </div>
-
                     </div>
-{{--                    <div class="form-group row">--}}
-{{--                        <div class="d-flex">--}}
-{{--                                @foreach($admin_users as $au)--}}
-{{--                                        <div class="checkbox checkbox-info col-2">--}}
-{{--                                            <input type="checkbox" name="members[]" value="{{$au->id}}" id="chc{{$au->id}}" class="material-inputs chk child{{$au->id}}">--}}
-{{--                                            <label for="chc{{$au->id}}">{{$au->name}}</label>--}}
-{{--                                        </div>--}}
-{{--                                @endforeach--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="tab-content">--}}
-{{--                            <div class="tab-pane">--}}
-                                <div class="row">
-                                    @foreach($admin_users as $au)
-                                        @if($au->roleuser)
-                                            @if($au->roleuser->role_id > 3)
-                                            <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">
-                                                <input type="checkbox" name="members[]" value="{{$au->id}}" id="chc{{$au->id}}" class="material-inputs chk child{{$au->id}}">
-                                                <label for="chc{{$au->id}}">{{$au->name}}</label>
-                                            </div>
-                                            @endif
-                                        @endif
-                                    @endforeach
+                    <div class="row">
+                        @foreach($admin_users as $au)
+                            @if($au->roleuser)
+                                @if($au->roleuser->role_id > 3)
+                                <div class="checkbox checkbox-info m-1 badge badge-light-danger col-md-5 col-sm-12">
+                                    <input type="checkbox" name="members[]" value="{{$au->id}}" id="chc{{$au->id}}" class="material-inputs chk child{{$au->id}}">
+                                    <label for="chc{{$au->id}}">{{$au->name}}</label>
                                 </div>
-{{--                            </div>--}}
-{{--                    </div>--}}
+                                @endif
+                            @endif
+                        @endforeach
+                    </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>

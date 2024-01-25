@@ -331,7 +331,6 @@
                 "bg-vc", "bg-mild", "bg-dania", "bg-fire", "bg-frost", "bg-toad", "bg-friday", "bg-shore", "bg-ash","bg-earthly", "bg-dirty-fog", "bg-winter");
         @endphp
         @foreach($challenges as $key => $ch)
-
                 <div class="col-md-4 col-sm-12 text-center mb-4 d-flex align-items-stretch">
 
 {{--                    @if($key > 4)--}}

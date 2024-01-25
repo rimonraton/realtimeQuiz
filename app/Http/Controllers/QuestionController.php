@@ -26,18 +26,9 @@ class QuestionController extends Controller
     // Questions Category
     public function index()
     {
-        //  $c = array(Category::find(13)->name);
-        //  $c = Category::find(13)->name;
-        //  implode(", ",array_keys($c));
-        // $values  = explode(",", $c);
-
-        //    return Question::whereIn('id', $values)->get();
-        // dd($values);
-
-        $admin_users = \auth()->user()->admin->users()->pluck('id');
-//        $category = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->paginate(10);
-//       return $category_all = Category::whereIn('user_id',$admin_users)->where('sub_topic_id',0)->orderBy('id', 'desc')->get();
-        $category_all = Category::whereIn('user_id',$admin_users)->orderBy('id', 'desc')->get();
+        $category_all = Category::where('admin_id', auth()->user()->admin->id)
+            ->orderBy('id', 'desc')
+            ->get();
         return view('Admin.PartialPages.Questions.category', compact('category_all'));
     }
     public function store(Request $request)
@@ -54,11 +45,13 @@ class QuestionController extends Controller
             $parentId = $request->topic;
         }
         // return $parentId;
+        $user = \auth()->user();
         Category::create([
             'name' => $request->name,
             'bn_name' => $request->bn_name,
             'sub_topic_id' => $parentId,
-            'user_id'=>\auth()->user()->id,
+            'user_id'=> $user->id,
+            'admin_id'=>$user->admin->id,
 
         ]);
         return redirect('question/category');

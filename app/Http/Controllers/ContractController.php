@@ -26,7 +26,7 @@ class ContractController extends Controller
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();
-        //\Mail::to($request->email)->send(new contact($request->name));
+        \Mail::to($request->email)->send(new contact($request->name));
         return "OK";
     }
 }

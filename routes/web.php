@@ -11,6 +11,7 @@ use App\Http\Controllers\Game\ModeController;
 use App\Http\Controllers\Game\PracticeController;
 use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\NewUserController;
@@ -51,8 +52,10 @@ use Illuminate\Support\Facades\Route;
 //     return \App\UserInfo::where('mobile','01723144904')->first()->user;
      return view('auth.registertoday');
  });
-
-Route::get('/', 'LandingPageController@index');
+Route::get('/time', function (){
+    return DB::table('cache')->where('expiration', '>', time())->count();
+});
+Route::get('/', [LandingPageController::class, 'index']);
 // Route::get('landing/page', 'LandingPageController@index');
 // website setup
 Route::post('features/save', [SetupController::class,'featureStore'])->name('features.save');
@@ -296,16 +299,5 @@ Route::middleware(['hasAccess'])->group(function () {
     // profile
     Route::post('profile/update', 'ProfileController@update')->name('profile.update');
 
-    //challenge
-    Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout'])->name('updateChallengeOptionLayout');
-    Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge'])->name('Challenge.challenge');
-    Route::post('createChallenge', [HomeController::class, 'createChallenge'])->name('createChallenge');
-    //challamge setup
-    Route::post('challange-Published',[HomeController::class,'challenge_publish'])->name('challangePublished');
-    Route::get('delete_challange/{id}',[HomeController::class,'delete_challange'])->name('deleteChallange');
-    Route::get('challange_search/{keyword}',[HomeController::class,'challange_search'])->name('challangeSearch');
-    Route::get('ws', function (){
-        event(new WsEvent('Helllo from the other side'));
-        return 'success';
-    });
+
 });

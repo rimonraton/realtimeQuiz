@@ -601,8 +601,7 @@
         </div>
     </div>
     <script src="{{asset('js/theme-site.js')}}"></script>
-{{--    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>--}}
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" defer></script>
 
     <script>
         function onSubmit(token) {

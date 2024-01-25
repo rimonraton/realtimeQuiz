@@ -2,6 +2,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\Game\ChallengeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuPermissionController;
@@ -73,8 +74,7 @@ Route::middleware(['hasAccess', 'verified'])->group(function () {
 //challange
     Route::get('challenge_setup',[HomeController::class,'challenge_setup'])->name('challengeSetup');
     Route::get('challenge/resultList', [ShareController::class, 'challengeUserResultList'])->name('challenge.resultList');
-    Route::get('game/mode/challenge/{id?}', [HomeController::class, 'gameInAdmin'])->name('game.mode');
-//    Route::get('game/mode/{type}/{id?}', [HomeController::class, 'gameInAdmin'])->name('game.mode');
+
 
 //exam
     Route::get('list-of-exam', [ExamController::class, 'index'])->name('listOfExam');

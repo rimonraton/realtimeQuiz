@@ -486,8 +486,9 @@
                         var id = $this.attr('data-id');
                         $.ajax({
                             url: "{{url('/user-remove')}}/" + id,
-                            type: "GET",
+                            type: "POST",
                             success: function(data) {
+                                console.log(data);
                                 // $(this).parent().parent().remove();
                                 // alert($this.parent().parent());
                                 $this.closest("tr").remove();

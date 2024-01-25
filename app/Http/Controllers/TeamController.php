@@ -22,27 +22,14 @@ class TeamController extends Controller
     {
         $data = [];
         $tids = TeamMember::all();
-//        return Arr::collapse([$tids]);
-       foreach ($tids as $tid){
+
+        foreach ($tids as $tid){
           $arr = explode(',',$tid->user_ids);
           $data = Arr::collapse([$arr]);
-       }
-//       return count($tdata);
-//        if(in_array(56,$data))
-//        {
-//           return $newdata = implode(',',$data);
-//           return TeamMember::where('user_ids',$newdata)->get();
-//
-//        }
-//       return count($data);
+        }
 
-//       whereNotIn
-//        return auth()->user()->roleuser;
-//          $user_ids = Team::all();
-//      return $user_ids = Team::find(2);
-//       return explode(',',$user_ids->user_ids);
-//        User::whereIn('id',explode(',',$user_ids->user_ids))->get();
-        return $admin_users = auth()->user()->admin->users;
+        $admin_users = auth()->user()->admin->users->paginate(50);
+//       $admin_users = [];
         $teams = Team::orderBy('id','desc')->paginate(10);
         return view('Admin.PartialPages.Team.teamlist', compact('teams','admin_users','data'));
     }
@@ -58,13 +45,14 @@ class TeamController extends Controller
             'bn_name'=>$request->bn_name,
             'link'=>$random,
             'user_id'=>Auth::id(),
+            'admin_id'=> auth()->user()->admin->id,
         ]);
 
-        $members = implode(',',$request->members);
-        TeamMember::insert([
-            'team_id'=>$id->id,
-            'user_ids'=>$members
-        ]);
+//        $members = implode(',',$request->members);
+//        TeamMember::insert([
+//            'team_id'=>$id->id,
+//            'user_ids'=>$members
+//        ]);
         return redirect('teamlist');
     }
 
