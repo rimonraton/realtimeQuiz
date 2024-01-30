@@ -117,7 +117,7 @@
             <!-- Form -->
             <div class="row">
                 <div class="col-12">
-                    <form class="form-horizontal mt-3 form-material" method="POST" action="{{ route('register') }}">
+                    <form id="registerForm" class="form-horizontal mt-3 form-material" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="form-group mb-3">
                             <div class="col-xs-12">
@@ -185,8 +185,15 @@
 
                         <div class="form-group text-center mb-3">
                             <div class="col-xs-12">
-                                <button id="smt_btn" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit" disabled>
-                                    {{__('auth.register')}}</button>
+                                <button id="smt_btn"
+                                        class="g-recaptcha btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light"
+                                        type="submit"
+                                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"
+                                        data-callback='onSubmit'
+                                        data-action='submit'
+                                        disabled>
+                                    {{__('auth.register')}}
+                                </button>
                             </div>
                         </div>
                         <div class="form-group mb-0 mt-2 ">
@@ -213,7 +220,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://www.google.com/recaptcha/api.js" defer></script>
+
 <script>
+    function onSubmit(token) {
+        document.getElementById("registerForm").submit();
+    }
     $(function (){
         $("#successMessage").delay(5000).slideUp(300);
         $('#password').on('keypress',function (){

@@ -133,9 +133,10 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
                                 <div class="social mb-3">
-                                    <a href="{{ url('login/facebook') }}" class="btn  btn-primary btn-sm" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> {{__('form.facebook')}} </a>
-                                    <a href="{{ url('login/google') }}" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i>
-                                        {{__('form.google')}} </a>
+{{--                                    <a href="{{ url('login/facebook') }}" class="btn  btn-primary btn-sm" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> {{__('form.facebook')}} </a>--}}
+                                    <a href="{{ url('login/google') }}" class="btn-block btn btn-danger btn-lg" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i>
+                                        {{__('form.google')}}
+                                    </a>
                                 </div>
                             </div>
                         </div>

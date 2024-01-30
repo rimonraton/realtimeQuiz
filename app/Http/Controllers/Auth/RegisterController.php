@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
 use App\Providers\RouteServiceProvider;
 use App\RoleUser;
+use App\Rules\ReCaptcha;
 use App\User;
 use App\UserInfo;
 use Illuminate\Auth\Events\Registered;
@@ -51,6 +52,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
+        return $request->all();
         if(is_numeric($request->email)){
             if (User::where('email',$request->email.'@gyankosh.org')->count()){
                 \Session::flash('status', __('auth.already_registered'));
@@ -83,6 +85,7 @@ class RegisterController extends Controller
 //            'email' => ['required', 'string','email', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'g-recaptcha-response' => ['required', new ReCaptcha],
         ]);
     }
 

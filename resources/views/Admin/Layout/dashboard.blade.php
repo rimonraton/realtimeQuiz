@@ -228,11 +228,26 @@
 
 
   <script>
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    // Session Flash Message with redirect
+
+    @if (session('success'))
+      toastr.success("{{ session('success') }}", {
+        "closeButton": true
       });
+    @endif
+
+    @if (session('warning'))
+      toastr.warning("{{ session('warning') }}", {
+        "closeButton": true
+      });
+    @endif
+
     $(function() {
       $('.lang').on('click', function() {
         if ($(this).attr('aria-expanded') == 'false') {

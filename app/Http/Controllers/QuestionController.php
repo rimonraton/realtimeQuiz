@@ -247,7 +247,7 @@ class QuestionController extends Controller
             'user_id' => \auth()->user()->id,
             'details' => json_encode($userIpInfo)
         ]);
-        return redirect('/draft-questions');
+        return redirect('/draft-questions')->with('success', 'Question created successfully!');
     }
 
     public function optionFile($file)
@@ -587,8 +587,8 @@ class QuestionController extends Controller
             }
         }
 
-       return $question = Question::with('options', 'difficulty')->where('id',$request->qid)->first();;
-        return 'Success';
+        return $question = Question::with('options', 'difficulty')->where('id',$request->qid)->first();
+//        return 'Success';
     }
 
     public function optionFileUpdate(Request $request)

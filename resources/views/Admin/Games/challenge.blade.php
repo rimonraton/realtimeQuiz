@@ -1,188 +1,7 @@
 @extends('Admin.Layout.dashboard')
-<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
-<link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
-<link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-@section('css')
-@endsection
 @php $lang = App::getLocale(); @endphp
-<style>
-    .myadmin-dd .dd-list .dd-item .dd-handle-new {
-        background: #fff;
-        border: 1px solid rgba(120, 130, 140, .13);
-        padding: 8px 16px;
-        height: auto;
-        font-family: Montserrat, sans-serif;
-        font-weight: 400;
-        border-radius: 0;
-    }
-    .dd {
-        width: 100% !important;
-        height: auto;
-        max-height: 50vh;
-        overflow: auto;
-    }
 
-    .dd-handle-new {
-        min-height: 40px;
-        display: block;
-        height: 30px;
-        margin: 5px 0;
-        padding: 5px 10px;
-        cursor: pointer;
-        /* color: #000; */
-        text-decoration: none;
-        font-weight: 700;
-        border: 1px solid #e5e5e5;
-        background: #fafafa;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    }
-
-    .activeli {
-        background-color: #e9ecef !important;
-    }
-    [type="checkbox"] + label::before, [type="checkbox"]:not(.filled-in) + label::after {
-        top: 10px !important;
-        left: 10px !important;
-    }
-    [type="checkbox"] + label {
-        padding-left: 40px !important;
-    }
-    [type="checkbox"] + label {
-        position: absolute !important;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        padding: 10px;
-    }
-    .selected{
-        background: whitesmoke;
-    }
-    .wizard-content .wizard > .actions > ul > li > a:hover {
-        border: 1px solid blue !important;
-        color: blue !important;
-    }
-
-    .iframe-size{
-        width: 90vw;
-        height: 90vh;
-        left: 3vw;
-    }
-    .hide_share{
-        position: absolute;
-        left: 3%;
-        top: -25px;
-        height: 40px;
-        width: 300px;
-        overflow: hidden;
-        transition: .3s linear;
-        opacity: 0;
-        visibility: hidden;
-    }
-    .show_share {
-        position: absolute;
-        left: -17px;
-        height: 40px;
-        width: 300px;
-        overflow: hidden;
-        transition: .5s linear;
-        opacity: 1;
-        bottom: -25px;
-    }
-    .pointer{
-        cursor: pointer;
-        text-decoration: none !important;
-    }
-    .stars {
-        position: absolute;
-        font-size: 10px;
-    }
-    .checked {
-        color: gold;
-    }
-
-    /*For menu toggler mismatch fix*/
-    .sidebartoggler{  position: absolute; margin-top: -10px;  }
-    .profile-pic{ margin-top: 20px; }
-
-    @media only screen and (max-width: 600px) {
-        .card-body.wizard-content{
-            padding: 0;
-        }
-        .dd-list .dd-list {
-            padding-left: 10px !important;
-        }
-        [type="checkbox"] + label {
-            font-size: .8rem;
-        }
-    }
-
-    .badgebox
-    {
-        opacity: 0;
-    }
-
-    .badgebox + .badge
-    {
-        /* Move the check mark away when unchecked */
-        text-indent: -999999px;
-        /* Makes the badge's width stay the same checked and unchecked */
-        width: 27px;
-    }
-
-    .badgebox:focus + .badge
-    {
-        /* Set something to make the badge looks focused */
-        /* This really depends on the application, in my case it was: */
-
-        /* Adding a light border */
-        box-shadow: inset 0px 0px 5px;
-        /* Taking the difference out of the padding */
-    }
-
-    .badgebox:checked + .badge
-    {
-        /* Move the check mark back when checked */
-        text-indent: 0;
-    }
-
-    /*.card:hover {*/
-    /*    transform: translateY(-20px);*/
-    /*    transition: 0.4s ease-out;*/
-    /*}*/
-    .rounded-20 {
-        border-radius: 20px !important;
-    }
-    .bl {
-        border-left: 3px double gray !important;
-    }
-
-    .quiz-title {
-        background-color:#fc5185;
-        border-radius: 20px;
-        color: white;
-        padding: 8px 0px;
-    }
-
-    .watermark {
-        width: 50px;
-        position: absolute;
-        z-index: -1;
-        opacity: .2;
-        right: 0;
-        top: 0;
-    }
-
-    @font-face {
-        font-family: ssFont;
-        src: url('{{asset("css/fonts/ss_regular.ttf")}}');
-    }
-
-
-</style>
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -560,9 +379,6 @@
             }
         })
 
-    </script>
-
-    <script>
         $(function() {
             var lang ='{{$lang}}';
             var checkedTopics = [];
@@ -914,4 +730,187 @@
         })
     </script>
 
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/jquery-steps/steps.css')}}">
+    <link rel="stylesheet" href="{{asset('Admin/assets/libs/daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        .myadmin-dd .dd-list .dd-item .dd-handle-new {
+            background: #fff;
+            border: 1px solid rgba(120, 130, 140, .13);
+            padding: 8px 16px;
+            height: auto;
+            font-family: Montserrat, sans-serif;
+            font-weight: 400;
+            border-radius: 0;
+        }
+        .dd {
+            width: 100% !important;
+            height: auto;
+            max-height: 50vh;
+            overflow: auto;
+        }
+
+        .dd-handle-new {
+            min-height: 40px;
+            display: block;
+            height: 30px;
+            margin: 5px 0;
+            padding: 5px 10px;
+            cursor: pointer;
+            /* color: #000; */
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid #e5e5e5;
+            background: #fafafa;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .activeli {
+            background-color: #e9ecef !important;
+        }
+        [type="checkbox"] + label::before, [type="checkbox"]:not(.filled-in) + label::after {
+            top: 10px !important;
+            left: 10px !important;
+        }
+        [type="checkbox"] + label {
+            padding-left: 40px !important;
+        }
+        [type="checkbox"] + label {
+            position: absolute !important;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+        .selected{
+            background: whitesmoke;
+        }
+        .wizard-content .wizard > .actions > ul > li > a:hover {
+            border: 1px solid blue !important;
+            color: blue !important;
+        }
+
+        .iframe-size{
+            width: 90vw;
+            height: 90vh;
+            left: 3vw;
+        }
+        .hide_share{
+            position: absolute;
+            left: 3%;
+            top: -25px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .3s linear;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .show_share {
+            position: absolute;
+            left: -17px;
+            height: 40px;
+            width: 300px;
+            overflow: hidden;
+            transition: .5s linear;
+            opacity: 1;
+            bottom: -25px;
+        }
+        .pointer{
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+        .stars {
+            position: absolute;
+            font-size: 10px;
+        }
+        .checked {
+            color: gold;
+        }
+
+        /*For menu toggler mismatch fix*/
+        .sidebartoggler{  position: absolute; margin-top: -10px;  }
+        .profile-pic{ margin-top: 20px; }
+
+        @media only screen and (max-width: 600px) {
+            .card-body.wizard-content{
+                padding: 0;
+            }
+            .dd-list .dd-list {
+                padding-left: 10px !important;
+            }
+            [type="checkbox"] + label {
+                font-size: .8rem;
+            }
+        }
+
+        .badgebox
+        {
+            opacity: 0;
+        }
+
+        .badgebox + .badge
+        {
+            /* Move the check mark away when unchecked */
+            text-indent: -999999px;
+            /* Makes the badge's width stay the same checked and unchecked */
+            width: 27px;
+        }
+
+        .badgebox:focus + .badge
+        {
+            /* Set something to make the badge looks focused */
+            /* This really depends on the application, in my case it was: */
+
+            /* Adding a light border */
+            box-shadow: inset 0px 0px 5px;
+            /* Taking the difference out of the padding */
+        }
+
+        .badgebox:checked + .badge
+        {
+            /* Move the check mark back when checked */
+            text-indent: 0;
+        }
+
+        /*.card:hover {*/
+        /*    transform: translateY(-20px);*/
+        /*    transition: 0.4s ease-out;*/
+        /*}*/
+        .rounded-20 {
+            border-radius: 20px !important;
+        }
+        .bl {
+            border-left: 3px double gray !important;
+        }
+
+        .quiz-title {
+            background-color:#fc5185;
+            border-radius: 20px;
+            color: white;
+            padding: 8px 0px;
+        }
+
+        .watermark {
+            width: 50px;
+            position: absolute;
+            z-index: -1;
+            opacity: .2;
+            right: 0;
+            top: 0;
+        }
+
+        @font-face {
+            font-family: ssFont;
+            src: url('{{asset("css/fonts/ss_regular.ttf")}}');
+        }
+
+
+    </style>
 @endsection

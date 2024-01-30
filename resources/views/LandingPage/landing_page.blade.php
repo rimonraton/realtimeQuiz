@@ -103,15 +103,25 @@
     </style>
 </head>
 
+@php
+    $lang = App::getLocale();
+    $bang = new \App\Lang\Bengali();
+@endphp
+
 <body>
 
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top d-flex align-items-center header-transparent">
         <div class="container d-flex align-items-center justify-content-center">
-
             <div class="logo mr-auto">
-                <h1 class="text-light"><a href="{{url('/')}}"><span><img src="{{asset('images/logo3.png')}}" alt=""> {{__('msg.logo')}}</span></a></h1>
-{{--                <button id="cam">QR</button>--}}
+                <h1 class="text-light">
+                    <a href="{{url('/')}}">
+                        <span>
+                            <img src="{{asset('images/logo3.png')}}" alt="">
+                            {{__('msg.logo')}}
+                        </span>
+                    </a>
+                </h1>
             </div>
             <div class="dropdown mr-5 d-md-none">
                 <a class="btn btn-default dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -169,14 +179,14 @@
                         </ul>
                     </li>
                 </ul>
-            </nav><!-- .nav-menu -->
-
+            </nav>
+            <!-- .nav-menu -->
         </div>
-    </header><!-- End Header -->
+    </header>
+    <!-- End Header -->
 
     <!-- ======= Hero Section ======= -->
     <section id="home">
-
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
@@ -206,14 +216,13 @@
             </g>
         </svg>
 
-    </section><!-- End Hero -->
+    </section>
+    <!-- End Hero -->
 
     <main id="main">
-
         <!-- ======= About Section ======= -->
         <section id="about" class="about">
             <div class="container-fluid">
-
                 <div class="row">
                     <div class="col-8 m-auto icon-boxes d-flex flex-column align-items-stretch justify-content-center" data-aos="fade-left">
                         <div class="video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right">
@@ -222,8 +231,6 @@
 
                         <div class="d-flex justify-content-center">
                             <div class="menu-container">
-
-
                                 <div class="circle-menu-box">
                                     <p class="top-text"><strong>{{__('msg.practice')}}</strong></p>
                                     <p class="right-text"><strong>{{__('msg.challenge')}}</strong></p>
@@ -263,10 +270,7 @@
             </div>
         </section>
         <!-- End About Section -->
-        @php
-            $lang = App::getLocale();
-            $bang = new \App\Lang\Bengali();
-        @endphp
+
         <!-- ======= Features Section ======= -->
         <section id="features" class="features">
             <div class="container">
@@ -293,70 +297,52 @@
                     @endforeach
                 </div>
             </div>
-        </section><!-- End Features Section -->
+        </section>
+        <!-- End Features Section -->
+
         <!-- ======= Topics Section ======= -->
         <section id="topics" class="features">
             <div class="container">
-
                 <div class="section-title" data-aos="fade-up">
                     <h2>{{__('msg.topics')}}</h2>
                     <p>{{__('msg.checktopics')}}</p>
                 </div>
-
                 <div class="row justify-content-center" data-aos="fade-left">
-                    <!-- @foreach($category as $c)
-                    <div class="col-lg-3 col-md-4 mt-4">
-                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
-                            <i class="fas fa-book"></i>
-                            <h3>
-                                <a href="">
-                                    <span>{{$lang=='gb'?$c->name:$c->bn_name}}</span>
-                                </a>
-                            </h3>
-                        </div>
-                    </div>
-                    @endforeach -->
-
                     <div class="row justify-content-center ml-0 mb-5">
                         @foreach($category as $cat)
-{{--                            @if( App\User::where('id',$cat->user_id)->first()->admin_id == 1)--}}
-                        <div class="col-md-4 col-sm-12 text-center">
-                            <div class="wrap my-3">
-                                <div class="task">
-                                    <div class="abstract tops" data-id="sub__{{$cat->id}}">
-                                        <h5 class="d-flex">
-                                            <span>{!! $cat->icon !!}</span>
-                                            <a class="ml-2">{{ $lang=='gb'?$cat->name:$cat->bn_name }}</a>
-                                            @if(count($cat->childs))
-                                            <i class="fas fa-sort-down ml-auto closepanel" style="z-index: 100000;" data-rid="sub__{{$cat->id}}"></i>
-                                            @endif
-                                        </h5>
-                                    </div>
-                                    @if(count($cat->childs))
-                                    <div class="details" id="sub__{{$cat->id}}">
-                                        <div class="details__inner">
-                                            <div id="list-example" class="list-group">
-                                                @foreach($cat->childs->where('is_published',1) as $cc)
-                                                <!-- <i class="fas fa-angle-right"></i> -->
-                                                <a class="list-group-item list-group-item-action gb">
-                                                    <i class="fas fa-check text-success"></i>
-                                                    {{ $lang=='gb'?$cc->name:$cc->bn_name }}
-                                                </a>
-                                                @endforeach
+                            <div class="col-md-4 col-sm-12 text-center">
+                                <div class="wrap my-3">
+                                    <div class="task">
+                                        <div class="abstract tops" data-id="sub__{{$cat->id}}">
+                                            <h5 class="d-flex">
+                                                <span>{!! $cat->icon !!}</span>
+                                                <a class="ml-2">{{ $lang=='gb'?$cat->name:$cat->bn_name }}</a>
+                                                @if(count($cat->childs))
+                                                <i class="fas fa-sort-down ml-auto closepanel" style="z-index: 100000;" data-rid="sub__{{$cat->id}}"></i>
+                                                @endif
+                                            </h5>
+                                        </div>
+                                        @if(count($cat->childs))
+                                        <div class="details" id="sub__{{$cat->id}}">
+                                            <div class="details__inner">
+                                                <div id="list-example" class="list-group">
+                                                    @foreach($cat->childs->where('is_published',1) as $cc)
+                                                    <!-- <i class="fas fa-angle-right"></i> -->
+                                                    <a class="list-group-item list-group-item-action gb">
+                                                        <i class="fas fa-check text-success"></i>
+                                                        {{ $lang=='gb'?$cc->name:$cc->bn_name }}
+                                                    </a>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
-                                    @endif
                                 </div>
                             </div>
-                        </div>
-{{--                            @endif--}}
                         @endforeach
-
                     </div>
                 </div>
-
-
             </div>
         </section>
         <!-- End Topics Section -->
@@ -495,8 +481,7 @@
                                         class="g-recaptcha"
                                         data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"
                                         data-callback='onSubmit'
-                                        data-action='submit'
-                                >
+                                        data-action='submit'>
                                     {{__('msg.sendmessage')}}
                                 </button>
                             </div>
