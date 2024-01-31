@@ -1,14 +1,10 @@
 <?php
 
-use App\Events\WsEvent;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\Game\ChallengeController;
-use App\Http\Controllers\Game\ModeController;
-use App\Http\Controllers\Game\PracticeController;
 use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
@@ -25,9 +21,6 @@ use App\Http\Controllers\SetupController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserCredential;
-use App\Http\Middleware\HasAccess;
-use App\Mail\WelcomeMail;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 //use Mail;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
@@ -75,20 +68,7 @@ Route::get('/home', function () {
 
 // Route::get('/home', 'HomeController@home')->name('home');
 
-Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
-//Route::get('Mode/Practice', [PracticeController::class, 'Practice'])->name('practice');
-//Route::get('Mode/Challenge', [ChallengeController::class, 'Challenge'])->name('challenge');
 
-Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
-
-Route::get('Mode/{type}/{quiz}/{user}', [HomeController::class, 'Game'])->name('mode');
-Route::get('Mode{type}/{quiz}', [\App\Http\Controllers\PracticeController::class, 'Game'])->name('modeType');
-
-Route::get('Mode/{type}/{id}/{user}/share', [HomeController::class,'shareBtnLink'])->name('modeShare');
-
-// Route::get('game/{id}/{user}', 'HomeController@game');
-
-Route::get('singleGame/{id}/{user}', 'HomeController@singleGame')->name('singleGame');
 
 
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');

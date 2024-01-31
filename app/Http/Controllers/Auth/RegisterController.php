@@ -52,7 +52,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        return $request->all();
+//        return $request->all();
         if(is_numeric($request->email)){
             if (User::where('email',$request->email.'@gyankosh.org')->count()){
                 \Session::flash('status', __('auth.already_registered'));

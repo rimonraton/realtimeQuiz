@@ -67,6 +67,10 @@ export const quizHelpers = {
         onStart() {
             this.av = false
         },
+        audioVideoError() {
+            console.log('audioVideoError....')
+            this.onEnd()
+        },
         stop () {
             this.questionInit()
             console.log('stop()')

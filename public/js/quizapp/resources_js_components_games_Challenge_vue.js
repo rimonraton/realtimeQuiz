@@ -202,6 +202,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -1447,6 +1448,10 @@ var quizHelpers = {
     },
     onStart: function onStart() {
       this.av = false;
+    },
+    audioVideoError: function audioVideoError() {
+      console.log('audioVideoError....');
+      this.onEnd();
     },
     stop: function stop() {
       this.questionInit();
@@ -3262,6 +3267,9 @@ var render = function () {
                                         autoplay: "",
                                       },
                                       on: {
+                                        error: function ($event) {
+                                          return _vm.audioVideoError()
+                                        },
                                         ended: function ($event) {
                                           return _vm.onEnd()
                                         },
@@ -3274,30 +3282,25 @@ var render = function () {
                                 _vm._v(" "),
                                 question.fileType == "audio"
                                   ? _c("div", { staticClass: "audio" }, [
-                                      _c(
-                                        "audio",
-                                        {
-                                          attrs: { controls: "", autoplay: "" },
-                                          on: {
-                                            ended: function ($event) {
-                                              return _vm.onEnd()
-                                            },
-                                            play: function ($event) {
-                                              return _vm.onStart()
-                                            },
+                                      _c("audio", {
+                                        attrs: {
+                                          src:
+                                            "/" + question.question_file_link,
+                                          controls: "",
+                                          autoplay: "",
+                                        },
+                                        on: {
+                                          error: function ($event) {
+                                            return _vm.audioVideoError()
+                                          },
+                                          ended: function ($event) {
+                                            return _vm.onEnd()
+                                          },
+                                          play: function ($event) {
+                                            return _vm.onStart()
                                           },
                                         },
-                                        [
-                                          _c("source", {
-                                            attrs: {
-                                              src:
-                                                "/" +
-                                                question.question_file_link,
-                                              type: "audio/mpeg",
-                                            },
-                                          }),
-                                        ]
-                                      ),
+                                      }),
                                       _vm._v(" "),
                                       _c("div", { attrs: { id: "ar" } }),
                                     ])

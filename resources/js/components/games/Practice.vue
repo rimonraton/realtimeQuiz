@@ -23,29 +23,30 @@
                         <span class="q_num text-right text-muted">
                             {{ qne2b(qid, questions.length, user.lang) }}
                         </span>
-<!--                        <div>-->
-<!--                            {{getImageVideoAudio(question)}}-->
-                            <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
-                                 :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
+                        <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
+                             :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
+                        <div class="video" v-if="question.fileType == 'video'">
+                            {{ }}
                             <video
+                                id="myVideo"
                                 v-if="question.fileType == 'video'"
+                                :src="'/'+ question.question_file_link"
+                                @error="audioVideoError()"
                                 @ended="onEnd()"
                                 @play="onStart()"
                                 class="image w-100 mt-1 rounded img-thumbnail"
                                 autoplay
                                 controls
-                            >
-                                <source :src="'/'+ question.question_file_link" type="video/mp4">
-                            </video>
+                            />
+                        </div>
                             <div class="audio" v-if="question.fileType == 'audio'">
                                 <audio
+                                    :src="'/'+ question.question_file_link"
+                                    @error="audioVideoError()"
                                     @ended="onEnd()"
                                     @play="onStart()"
                                     controls
-                                    autoplay>
-                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
-                                </audio>
-                                <div ></div>
+                                    autoplay />
                             </div>
 <!--                        </div>-->
                         <div v-show="av">
@@ -159,7 +160,7 @@ export default {
             mc: 0,
             pm: '',
             av: true,
-            sqo: true
+            sqo: true,
         };
     },
     watch: {
@@ -216,7 +217,7 @@ export default {
             return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
-      firstPlace: function() {
+        firstPlace: function() {
         this.place = 1
         confetti({
           zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
@@ -226,9 +227,9 @@ export default {
             zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
           });
         }, 500)
-      },
+        },
 
-      secondPlace: function() {
+        secondPlace: function() {
         this.place = 2
         let colors = ['#bb0000', '#0AE84E'];
 
@@ -238,8 +239,8 @@ export default {
         confetti({
           zIndex: 999999, particleCount: 100, angle: 120, spread: 55, origin: {x: 1}, colors: colors
         });
-      },
-      thirdPlace: function() {
+        },
+        thirdPlace: function() {
         this.place = 3
         const defaults = {
           spread: 360,
@@ -265,7 +266,7 @@ export default {
             scalar: 0.75,
             shapes: ["circle"],
           });
-      },
+        },
 
         winner: function () {
             let perform = this.correct / this.questions.length * 100
@@ -332,6 +333,10 @@ export default {
             clearInterval(this.timer);
             this.av = false
             // this.sqo = false
+        },
+        audioVideoError() {
+            console.log('audioVideoError....')
+            this.onEnd()
         },
         q2bNumber(numb) {
             let numbString = numb.toString();

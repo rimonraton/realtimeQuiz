@@ -156,6 +156,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -368,6 +369,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       clearInterval(this.timer);
       this.av = false;
       // this.sqo = false
+    },
+    audioVideoError: function audioVideoError() {
+      console.log('audioVideoError....');
+      this.onEnd();
     },
     q2bNumber: function q2bNumber(numb) {
       var numbString = numb.toString();
@@ -900,13 +905,50 @@ var render = function () {
                       : _vm._e(),
                     _vm._v(" "),
                     question.fileType == "video"
-                      ? _c(
-                          "video",
-                          {
-                            staticClass:
-                              "image w-100 mt-1 rounded img-thumbnail",
-                            attrs: { autoplay: "", controls: "" },
+                      ? _c("div", { staticClass: "video" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s() +
+                              "\n                            "
+                          ),
+                          question.fileType == "video"
+                            ? _c("video", {
+                                staticClass:
+                                  "image w-100 mt-1 rounded img-thumbnail",
+                                attrs: {
+                                  id: "myVideo",
+                                  src: "/" + question.question_file_link,
+                                  autoplay: "",
+                                  controls: "",
+                                },
+                                on: {
+                                  error: function ($event) {
+                                    return _vm.audioVideoError()
+                                  },
+                                  ended: function ($event) {
+                                    return _vm.onEnd()
+                                  },
+                                  play: function ($event) {
+                                    return _vm.onStart()
+                                  },
+                                },
+                              })
+                            : _vm._e(),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    question.fileType == "audio"
+                      ? _c("div", { staticClass: "audio" }, [
+                          _c("audio", {
+                            attrs: {
+                              src: "/" + question.question_file_link,
+                              controls: "",
+                              autoplay: "",
+                            },
                             on: {
+                              error: function ($event) {
+                                return _vm.audioVideoError()
+                              },
                               ended: function ($event) {
                                 return _vm.onEnd()
                               },
@@ -914,44 +956,7 @@ var render = function () {
                                 return _vm.onStart()
                               },
                             },
-                          },
-                          [
-                            _c("source", {
-                              attrs: {
-                                src: "/" + question.question_file_link,
-                                type: "video/mp4",
-                              },
-                            }),
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    question.fileType == "audio"
-                      ? _c("div", { staticClass: "audio" }, [
-                          _c(
-                            "audio",
-                            {
-                              attrs: { controls: "", autoplay: "" },
-                              on: {
-                                ended: function ($event) {
-                                  return _vm.onEnd()
-                                },
-                                play: function ($event) {
-                                  return _vm.onStart()
-                                },
-                              },
-                            },
-                            [
-                              _c("source", {
-                                attrs: {
-                                  src: "/" + question.question_file_link,
-                                  type: "audio/mpeg",
-                                },
-                              }),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div"),
+                          }),
                         ])
                       : _vm._e(),
                     _vm._v(" "),

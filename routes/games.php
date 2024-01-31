@@ -1,15 +1,31 @@
 <?php
 
 use App\Events\WsEvent;
+use App\Http\Controllers\Game\ModeController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Game\ChallengeController;
 
 
+Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
+//Route::get('Mode/Practice', [PracticeController::class, 'Practice'])->name('practice');
+//Route::get('Mode/Challenge', [ChallengeController::class, 'Challenge'])->name('challenge');
+
+Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
+
+Route::get('Mode/{type}/{quiz}/{user}', [HomeController::class, 'Game'])->name('mode');
+Route::get('Mode{type}/{quiz}', [\App\Http\Controllers\PracticeController::class, 'Game'])->name('modeType');
+
+Route::get('Mode/{type}/{id}/{user}/share', [HomeController::class,'shareBtnLink'])->name('modeShare');
+
+// Route::get('game/{id}/{user}', 'HomeController@game');
+
+Route::get('singleGame/{id}/{user}', 'HomeController@singleGame')->name('singleGame');
+
 //challenge
-Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout'])->name('updateChallengeOptionLayout');
 Route::get('Challenge/{challenge}/{user}', [HomeController::class, 'Challenge'])->name('Challenge.challenge');
+Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout'])->name('updateChallengeOptionLayout');
 Route::post('createChallenge', [HomeController::class, 'createChallenge'])->name('createChallenge');
 //challamge setup
 Route::post('challange-Published',[HomeController::class,'challenge_publish'])->name('challangePublished');

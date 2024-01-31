@@ -68,89 +68,90 @@
                         </span>
                         <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
+
                         <div>
-
-                        <div v-if="endAVWait">
-                            <video
-                                v-if="question.fileType == 'video'"
-                                :src="'/'+ question.question_file_link"
-                                @ended="onEnd()"
-                                @play="onStart()"
-                                class="image w-100 mt-1 rounded img-thumbnail"
-                                controls="controls"
-                                playsinline
-                                autoplay
-                            >
-
-                            </video>
-                            <div class="audio" v-if="question.fileType == 'audio'">
-                                <audio
+                            <div v-if="endAVWait">
+                                <video
+                                    v-if="question.fileType == 'video'"
+                                    :src="'/'+ question.question_file_link"
+                                    @error="audioVideoError()"
                                     @ended="onEnd()"
                                     @play="onStart()"
-                                    controls
-                                    autoplay>
-                                    <source :src="'/'+ question.question_file_link" type="audio/mpeg">
-                                </audio>
-                                <div id="ar"></div>
+                                    class="image w-100 mt-1 rounded img-thumbnail"
+                                    controls="controls"
+                                    playsinline
+                                    autoplay
+                                >
+<!--                                    <source :src="'/'+ question.question_file_link" @error="audioVideoError()" type="video/mp4">-->
+                                </video>
+                                <div class="audio" v-if="question.fileType == 'audio'">
+                                    <audio
+                                        :src="'/'+ question.question_file_link"
+                                        @error="audioVideoError()"
+                                        @ended="onEnd()"
+                                        @play="onStart()"
+                                        controls
+                                        autoplay />
+                                    <div id="ar"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div v-else>
-                            <div v-if="currentQuestionType == 'audio'" >
-                                <h1>Audio Question... </h1>
-                            </div>
-                            <div v-if="currentQuestionType == 'video'" >
-                                <h1>Video Question... </h1>
-                            </div>
-                        </div>
-
-                        <div v-show="av">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex align-items-center question-title">
-                                        <h3 class="text-danger">Q.</h3>
-                                        <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
-                                    </div>
+                            <div v-else>
+                                <div v-if="currentQuestionType == 'audio'" >
+                                    <h1>Audio Question... </h1>
+                                </div>
+                                <div v-if="currentQuestionType == 'video'" >
+                                    <h1>Video Question... </h1>
                                 </div>
                             </div>
 
-                            <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
-                                 :class="{'row justify-content-center justify-item-center': imageOption(question['options'])}"
-                            >
-                                <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
-<!--                                    Fill in the blank -->
-                                    <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                            <div v-show="av">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center question-title">
+                                            <h3 class="text-danger">Q.</h3>
+                                            <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
                                         </div>
                                     </div>
-                                    </form>
-
                                 </div>
-                                <div v-else v-for="(option, i) in question.options" class="col-md-6 px-1"
-                                     :class="[option.flag == 'img' ? 'col-6' : 'col-12' ]"
-                                >
-                                    <div class="list-group" v-if="option.flag != 'img'"
-                                         :class="getOptionClass(i, challenge.option_view_time)"
-                                    >
-                                        <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
-                                              class="list-group-item list-group-item-action cursor my-1"
-                                              v-html="tbe(option.bd_option, option.option, user.lang)" >
 
-                                        </span>
+                                <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
+                                     :class="{'row justify-content-center justify-item-center': imageOption(question['options'])}"
+                                >
+                                    <div v-if="question.short_answer > 0" class="col-md-12 mt-4">
+    <!--                                    Fill in the blank -->
+                                        <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                                            </div>
+                                        </div>
+                                        </form>
+
                                     </div>
-                                    <div
-                                        v-else
-                                        @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                        class="cursor my-1 "
-                                        :class="getOptionClass(i, challenge.option_view_time)"
+                                    <div v-else v-for="(option, i) in question.options" class="col-md-6 px-1"
+                                         :class="[option.flag == 'img' ? 'col-6' : 'col-12' ]"
                                     >
-                                        <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                        <div class="list-group" v-if="option.flag != 'img'"
+                                             :class="getOptionClass(i, challenge.option_view_time)"
+                                        >
+                                            <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                                  class="list-group-item list-group-item-action cursor my-1"
+                                                  v-html="tbe(option.bd_option, option.option, user.lang)" >
+
+                                            </span>
+                                        </div>
+                                        <div
+                                            v-else
+                                            @click="checkAnswer(question.id, option.img_link, option.correct)"
+                                            class="cursor my-1 "
+                                            :class="getOptionClass(i, challenge.option_view_time)"
+                                        >
+                                            <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>

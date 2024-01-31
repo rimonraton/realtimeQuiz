@@ -2163,6 +2163,10 @@ var quizHelpers = {
     onStart: function onStart() {
       this.av = false;
     },
+    audioVideoError: function audioVideoError() {
+      console.log('audioVideoError....');
+      this.onEnd();
+    },
     stop: function stop() {
       this.questionInit();
       console.log('stop()');
