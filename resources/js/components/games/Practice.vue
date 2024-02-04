@@ -5,11 +5,6 @@
           <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
-<!--          <div class="d-flex">-->
-<!--            <button @click="firstPlace">First</button>-->
-<!--            <button @click="secondPlace">Second</button>-->
-<!--            <button @click="thirdPlace">Third</button>-->
-<!--          </div>-->
             <h2 class="text-center">Quiz Game Over</h2>
             <h3>{{ pm.perform_message }}</h3>
             <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong"/>
@@ -229,53 +224,53 @@ export default {
         },
 
         firstPlace: function() {
-        this.place = 1
-        confetti({
-          zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
-        });
-        setTimeout(() => {
-          confetti({
-            zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
-          });
-        }, 500)
+            this.place = 1
+            confetti({
+              zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
+            });
+            setTimeout(() => {
+              confetti({
+                zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
+              });
+            }, 500)
         },
         secondPlace: function() {
-        this.place = 2
-        let colors = ['#bb0000', '#0AE84E'];
+            this.place = 2
+            let colors = ['#bb0000', '#0AE84E'];
 
-        confetti({
-          zIndex: 999999, particleCount: 100, angle: 60, spread: 55, origin: {x: 0}, colors: colors
-        });
-        confetti({
-          zIndex: 999999, particleCount: 100, angle: 120, spread: 55, origin: {x: 1}, colors: colors
-        });
+            confetti({
+              zIndex: 999999, particleCount: 100, angle: 60, spread: 55, origin: {x: 0}, colors: colors
+            });
+            confetti({
+              zIndex: 999999, particleCount: 100, angle: 120, spread: 55, origin: {x: 1}, colors: colors
+            });
         },
         thirdPlace: function() {
-        this.place = 3
-        const defaults = {
-          spread: 360,
-          ticks: 50,
-          gravity: 0,
-          decay: 0.94,
-          startVelocity: 30,
-          shapes: ["star"],
-          colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
-        };
-          confetti({
-            ...defaults,
-            zIndex: 999999,
-            particleCount: 400,
-            scalar: 1.2,
-            shapes: ["star"],
-          });
+            this.place = 3
+            const defaults = {
+              spread: 360,
+              ticks: 50,
+              gravity: 0,
+              decay: 0.94,
+              startVelocity: 30,
+              shapes: ["star"],
+              colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
+            };
+              confetti({
+                ...defaults,
+                zIndex: 999999,
+                particleCount: 400,
+                scalar: 1.2,
+                shapes: ["star"],
+              });
 
-          confetti({
-            ...defaults,
-            zIndex: 999999,
-            particleCount: 100,
-            scalar: 0.75,
-            shapes: ["circle"],
-          });
+              confetti({
+                ...defaults,
+                zIndex: 999999,
+                particleCount: 100,
+                scalar: 0.75,
+                shapes: ["circle"],
+              });
         },
 
         winner: function () {

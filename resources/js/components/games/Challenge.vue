@@ -31,13 +31,20 @@
         </transition>
 
         <div class="winner" v-if="screen.winner">
+                <img v-if="user_ranking == 0" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
+                <img v-if="user_ranking == 1" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
+                <img v-if="user_ranking == 2" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
+
+            <h3 class="text-center">{{ pm.perform_message }} </h3>
+
             <div v-if="user_ranking == 0">
-                <h3 class="text-center">{{ pm.perform_message }} </h3>
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
             </div>
             <div v-else-if="user_ranking == 1">
-                <h3 class="text-center">{{ pm.perform_message }}</h3>
                 <h3><b>{{ user.name }}</b>, you got second place</h3>
+            </div>
+            <div v-else-if="user_ranking == 2">
+                <h3><b>{{ user.name }}</b>, you got third place</h3>
             </div>
             <div v-else>
                 <h3 class="text-center"><b>{{ user.name }}</b>, you need more concentration </h3>
@@ -192,13 +199,14 @@
     import result from '../helper/result'
     import chat from '../helper/Chat'
     import { quizHelpers } from '../mixins/quizHelpers'
+    import resultdetails from "../helper/practice/resultdetails.vue";
 
     export default {
         mixins: [quizHelpers],
 
         props : ['challenge', 'hostid', 'user', 'quizquestions', 'gmsg','teams'],
 
-        components: { waiting, result, chat },
+        components: {resultdetails, waiting, result, chat },
 
         data() {
             return {
@@ -207,7 +215,7 @@
                     defaultTime: 30,
                     time: 30,
                     timer:null
-              },
+                },
                 counter: 2,
                 timer: null,
                 users: [],
@@ -242,7 +250,7 @@
                 requestHostUser: null,
                 endAVWait: false,
                 gameEnded: false,
-                timerTimeOut: 100
+                timerTimeOut: 100,
             };
         },
 
@@ -525,7 +533,6 @@
             },
             gameReset(){
                 console.log('gameReset....')
-
                 this.questionInit(this.qt.defaultTime)
                 this.screen.waiting = 1
                 this.screen.loading = 0
@@ -567,7 +574,7 @@
                     this.quizEnd()
                 } else {
                     console.log('resultScreen preventClick True')
-                    this.preventClick = true
+                    // this.preventClick = true
                     this.qid ++
                     this.current = this.questions[this.qid].id
                     this.showQuestionOptions(null)
@@ -599,35 +606,14 @@
                 this.screen.result = 1
                 this.screen.winner = 1
                 this.game_start = 0
-                if(this.user_ranking == 0 ){
-                    confetti({
-                        zIndex:999999,
-                        particleCount: 200,
-                        spread: 120,
-                        origin: { y: 0.6 }
-                    });
+                if(this.user_ranking === 0) {
+                    this.firstPlace()
                 }
-                // else{
-                //     let colors = ['#bb0000', '#ffffff'];
-                //
-                //     confetti({
-                //         zIndex:999999,
-                //         particleCount: 100,
-                //         angle: 60,
-                //         spread: 55,
-                //         origin: { x: 0 },
-                //         colors: colors
-                //     });
-                //     confetti({
-                //         zIndex:999999,
-                //         particleCount: 100,
-                //         angle: 120,
-                //         spread: 55,
-                //         origin: { x: 1 },
-                //         colors: colors
-                //     });
-                //
-                // }
+                else if(this.user_ranking === 1) {
+                    this.secondPlace()
+                }else if(this.user_ranking === 2) {
+                    this.thirdPlace()
+                }
             },
             kickUser(id){
                 if(id != this.uid){

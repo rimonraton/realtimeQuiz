@@ -77,6 +77,54 @@ export const quizHelpers = {
             this.questionInit()
             console.log('stop()')
         },
+
+        firstPlace: function() {
+            confetti({
+                zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
+            });
+            setTimeout(() => {
+                confetti({
+                    zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
+                });
+            }, 500)
+        },
+        secondPlace: function() {
+            let colors = ['#bb0000', '#0AE84E'];
+
+            confetti({
+                zIndex: 999999, particleCount: 100, angle: 60, spread: 55, origin: {x: 0}, colors: colors
+            });
+            confetti({
+                zIndex: 999999, particleCount: 100, angle: 120, spread: 55, origin: {x: 1}, colors: colors
+            });
+        },
+        thirdPlace: function() {
+            const defaults = {
+                spread: 360,
+                ticks: 50,
+                gravity: 0,
+                decay: 0.94,
+                startVelocity: 30,
+                shapes: ["star"],
+                colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
+            };
+            confetti({
+                ...defaults,
+                zIndex: 999999,
+                particleCount: 400,
+                scalar: 1.2,
+                shapes: ["star"],
+            });
+
+            confetti({
+                ...defaults,
+                zIndex: 999999,
+                particleCount: 100,
+                scalar: 0.75,
+                shapes: ["circle"],
+            });
+        },
+
         externalJS(){
             let confetti = document.createElement('script')
             confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js')
