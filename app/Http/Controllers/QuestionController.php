@@ -100,7 +100,7 @@ class QuestionController extends Controller
 //        $admin = auth()->user()->admin;
 //        $admin_users = $admin->users()->pluck('id');
 //        $category = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
-       return $category = Category::mainTopic()->admin(auth()->user()->admin->id)->get();
+        $category = Category::mainTopic()->admin(auth()->user()->admin->id)->get();
         $quizCategory = QuestionType::all();
         $difficulty = Difficulty::all();
         return view('Admin.PartialPages.Questions.questions_create', compact(['category', 'quizCategory', 'difficulty']));
