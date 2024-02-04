@@ -52,9 +52,12 @@ class Category extends Model
         return $this->hasOne(Category::class, "id", "sub_topic_id");
     }
 
-    public function scopeAdmin($query)
+    public function scopeAdmin($query, $admin_id = 1): void
     {
-        $users = Admin::find(1)->users()->pluck('id');
-        return $query->whereIn('user_id', $users);
+        $query->where('admin_id', $admin_id);
+    }
+    public function scopeMainTopic($query): void
+    {
+        $query->where('sub_topic_id', 0);
     }
 }

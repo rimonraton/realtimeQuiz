@@ -22,7 +22,7 @@
                     >
             </result>
         </transition>
-        <transition
+        <transition id="Chat"
             name="custom-classes"
             enter-active-class="animate__animated animate__fadeIn animate__slow"
             leave-active-class="animate__animated animate__fadeOut animate__slow"
@@ -45,7 +45,7 @@
             <button @click="screen.winner = 0" class="btn btn-sm btn-secondary">More Result</button>
         </div>
 
-        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule' :challenge="challenge"
+        <waiting :uid='uid' :users='users' :user='user' :time='challenge.schedule' :challenge="challenge" :defTime="qt.defaultTime"
                 @kickingUser="kickUser($event)"
                 @gameStart="gameStart"
                 @gameReset="gameReset"
@@ -71,8 +71,7 @@
 
                         <div>
                             <div v-if="endAVWait">
-                                <video
-                                    v-if="question.fileType == 'video'"
+                                <video v-if="question.fileType == 'video'"
                                     :src="'/'+ question.question_file_link"
                                     @error="audioVideoError()"
                                     @ended="onEnd()"
@@ -109,7 +108,9 @@
                                     <div class="card-header">
                                         <div class="d-flex align-items-center question-title">
                                             <h3 class="text-danger">Q.</h3>
-                                            <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+                                            <h5 class="mt-1 ml-2">
+                                                {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -121,9 +122,14 @@
     <!--                                    Fill in the blank -->
                                         <form @submit.prevent="smtAnswer(question.id, question.options, shortAnswer)">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Type Your Answer" v-model="shortAnswer">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   placeholder="Type Your Answer"
+                                                   v-model="shortAnswer">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary":disabled="shortAnswer != null ? false : true" type="submit">Submit</button>
+                                                <button class="btn btn-primary"
+                                                        :disabled="shortAnswer != null ? false : true"
+                                                        type="submit">Submit</button>
                                             </div>
                                         </div>
                                         </form>
@@ -135,7 +141,7 @@
                                         <div class="list-group" v-if="option.flag != 'img'"
                                              :class="getOptionClass(i, challenge.option_view_time)"
                                         >
-                                            <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                                            <span @click.once="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                                   class="list-group-item list-group-item-action cursor my-1"
                                                   v-html="tbe(option.bd_option, option.option, user.lang)" >
 
@@ -201,7 +207,9 @@
                     defaultTime: 30,
                     time: 30,
                     timer:null
-                },
+              },
+                counter: 2,
+                timer: null,
                 users: [],
                 uid: this.hostid,
                 questions: this.quizquestions,
@@ -209,12 +217,10 @@
                 end_user: 0,
                 answered_user_data: [],
                 results: [],
-                counter: 2,
-                timer: null,
-                current: 0,
                 av: true,
                 sqo:false,
                 qid: 0,
+                current: 0,
                 screen:{
                     waiting: 1,
                     loading: 0,
@@ -234,12 +240,14 @@
                 shortAnswer: null,
                 requestHost: false,
                 requestHostUser: null,
-                endAVWait: false
+                endAVWait: false,
+                gameEnded: false,
+                timerTimeOut: 100
             };
         },
 
         created(){
-            console.log('challenge created')
+            // console.log('challenge created')
             Echo.channel(this.channel)
                 .listen('GameStartEvent', (data) => {
                     console.log(['GameStartEvent.............', data])
@@ -293,7 +301,6 @@
                     }
 
                 });
-
         },
         // watch: {
         //     questions: {
@@ -352,47 +359,133 @@
         // },
 
         methods: {
-            async makeHost(uid, status = null){
-                console.log('user id..', this.isHost())
-                if(this.isHost() && status == null){
-                    this.uid = uid
-                    this.requestHostUser = null
-                    status = 'accept'
-                    // this.makeHost(uid, 'accept')
-                } else{
-                    if (status == 'accept'){
-                        this.uid = uid
-                        this.requestHostUser = null
-                    } else if (status == 'deny'){
-                        this.requestHostUser = null
-                    } else {
-                        this.requestHostUser = this.user
+            gameStart: function (defaultTime = 30) {
+                console.log('gameStart...')
+                this.sqo = true
+                let ids = this.users.map(u => u.id)
+                let gd = {
+                    channel: this.channel,
+                    gameStart: 1,
+                    uid: ids,
+                    id: this.challenge.id,
+                    users:this.users,
+                    host_id:this.uid,
+                    defaultTime: defaultTime
+                }
+                this.qt.defaultTime = defaultTime
+                this.qt.time = defaultTime
+                // console.log(gd);
+                axios.post(`/api/gameStart`, gd)
+                    .then(res => {
+                        this.share = res.data
+                        this.game_start = 1
+                        this.screen.waiting = 0
+                        this.showQuestionOptions(this.questions[0].fileType)
+                    })
+                // this.QuestionTimer()
+            },
+            showQuestionOptions (question) {
+                if (this.gameEnded) return;
+                console.log('showQuestionOptions...')
+                let timeout = 1000;
+                if(this.challenge.option_view_time != 0) { // this.quiz.quiz_time * 1000
+                    timeout = 3500;
+                }
+                if(question !=='onEnd'){ //onEnd is made up text to check audioVideo end
+                    if(this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+                        timeout += 3000
+                        this.av = false
+                        setTimeout(() => {
+                            this.endAVWait = true
+                        }, timeout) //3000
                     }
                 }
-
-                return await  axios.post(`/api/makeHost/${uid}/${this.channel}/${status}`)
+                setTimeout(() => {
+                    // this.sqo = true
+                    this.preventClick = false
+                    this.QuestionTimer()
+                }, timeout)
             },
-            async newQuiz(uid){
-              let makeHostStatus = await this.makeHost(uid)
-                console.log('makeHostStatus..', makeHostStatus.status)
-                if(makeHostStatus.status === 200){
-                console.log('inside..', makeHostStatus.status)
-                    let data = { channel: this.channel, id:this.challenge.id}
-                    axios.post(`/api/newGameQuiz`, data)
-                        .then(res => {
-                            this.questions = res.data
-                            this.gameResetCall(true)
-                            // console.log('result...', res)
-                            // this.share = res.data
-                            // this.game_start = 1
-                            // this.screen.waiting = 0
-                            // this.showQuestionOptions(this.questions[0].fileType)
-                        })
-                } else{
-                    console.log('makeHostStatus status is not 200')
+            QuestionTimer(){
+                console.log('QuestionTimer...')
+
+                if(this.qid == this.questions.length || this.av == false || this.gameEnded === true) {
+                    return;
                 }
+                let pdec = 100 / (10 * this.qt.time);
+                // console.log('pdec', pdec)
+                // this.preventClick = false
+                this.qt.timer =
+                    setInterval(() => {
+                        console.log('this.qt.time', this.qt.time)
+                        if(this.qt.time <= 0){
+                            this.questionInit(this.qt.defaultTime);
+                            this.checkAnswer(this.qid, 'Not Answered', 0);
+                            // this.resultScreen();
+                        }
+                        else{
+                            this.qt.ms ++
+                            this.progress -= pdec
+
+                            if(this.qt.ms == 10){
+                                this.qt.time--
+                                this.qt.ms = 0
+                            }
+
+                        }
+
+                    }, this.timerTimeOut);
+            },
+            checkAnswer(q, a, rw){
+                if (this.gameEnded) return;
+                this.preventClick = true
+                console.log('checkAnswer...', q, a, rw)
+                // if(this.gameEnded === true) {
+                //     this.stop();
+                //     return
+                // }
+                this.shortAnswer = null
+                this.answered = 1
+                this.right_wrong = rw
+                this.gamedata['uid'] = this.user.id
+                this.gamedata['channel'] = this.channel
+                this.gamedata['name'] = this.user.name
+                this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
+                this.gamedata['answer'] = this.getCorrectAnswerText()
+                this.gamedata['selected'] = a
+                this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
+                let clone = {...this.gamedata}
+                this.questionInit(this.qt.defaultTime)
+                axios.post(`/api/questionClick`, clone)
+                    .then(res => {
+                        this.resultScreen();
+                    })
+                this.answered_user_data.push(clone)
+                this.screen.loading = true
+            },
+            getResult(){
+                console.log('getResult...')
+                this.results = []
+                this.users.forEach(user => {
+                    let score = 0;
+                    this.answered_user_data
+                        .filter(f => f.uid === user.id)
+                        .map(u => {
+                            score += u.isCorrect
+                        })
+
+                    this.results.push({id:user.id, name:user.name, score:score, user:user})
+
+                })
+                this.results.sort((a, b) => b.score - a.score)
             },
             smtAnswer(qid, qopt, data){
+                console.log('smtAnswer...')
+                if(this.gameEnded === true) {
+                    this.stop();
+                    return
+                }
+
                 if (data == null) return
                 const correct = qopt.some((opt) => {
                     return opt.option.toLowerCase() == data.toLowerCase() || opt.bd_option == data
@@ -422,32 +515,8 @@
                     }
                 })
             },
-            gameStart: function (defaultTime = 30) {
-                this.sqo = true
-                let ids = this.users.map(u => u.id)
-                let gd = {
-                    channel: this.channel,
-                    gameStart: 1,
-                    uid: ids,
-                    id: this.challenge.id,
-                    users:this.users,
-                    host_id:this.uid,
-                    defaultTime: defaultTime
-                }
-                this.qt.defaultTime = defaultTime
-                this.qt.time = defaultTime
-                // console.log(gd);
-                axios.post(`/api/gameStart`, gd)
-                    .then(res => {
-                        this.share = res.data
-                        this.game_start = 1
-                        this.screen.waiting = 0
-                        this.showQuestionOptions(this.questions[0].fileType)
-                    })
-                // this.QuestionTimer()
-            },
             gameResetCall(isStart = false) {
-                console.log('isStart....', isStart)
+                console.log('gameResetCall....')
                 axios.post(`/api/gameReset`, {channel: this.channel }).then(res => console.log(res.data))
                 this.gameReset()
                 this.screen.waiting = 0
@@ -455,6 +524,8 @@
 
             },
             gameReset(){
+                console.log('gameReset....')
+
                 this.questionInit(this.qt.defaultTime)
                 this.screen.waiting = 1
                 this.screen.loading = 0
@@ -472,27 +543,10 @@
                 this.current = this.questions[this.qid].id
                 this.endAVWait = false
             },
-            checkAnswer(q, a, rw){
-                this.shortAnswer = null
-                this.answered = 1
-                this.right_wrong = rw
-                this.gamedata['uid'] = this.user.id
-                this.gamedata['channel'] = this.channel
-                this.gamedata['name'] = this.user.name
-                this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
-                this.gamedata['answer'] = this.getCorrectAnswertext()
-                this.gamedata['selected'] = a
-                this.gamedata['isCorrect'] = rw == 1? Math.floor(this.progress): 0
-                let clone = {...this.gamedata}
-                this.questionInit(this.qt.defaultTime)
-                axios.post(`/api/questionClick`, clone)
-                .then(res => {
-                    this.resultScreen();
-                })
-                this.answered_user_data.push(clone)
-                this.screen.loading = true
-            },
-            getCorrectAnswertext(){
+
+            getCorrectAnswerText(){
+                console.log('getCorrectAnswerText....')
+
                const correctOption = this.questions[this.qid].options.find(o => o.correct == 1)
                 // console.log('correctOption....', correctOption)
                 if(correctOption.flag == 'img') {
@@ -504,11 +558,11 @@
                 }
             },
             resultScreen(){
-                // console.log('resultScreen')
+                console.log('resultScreen...')
                 this.questionInit(this.qt.defaultTime)
                 this.getResult() //Sorting this.results
                 this.countDown()
-                if(this.qid+1 == this.questions.length){
+                if(this.qid+1 == this.questions.length) {
                     console.log('......resultScreen')
                     this.quizEnd()
                 } else {
@@ -519,61 +573,21 @@
                     this.showQuestionOptions(null)
                 }
             },
-            QuestionTimer(){
-                if(this.qid == this.questions.length) return
-                if(this.av == false) return
-                let pdec = 100 / (5 * this.qt.time);
-                // console.log('pdec', pdec)
-                this.preventClick = false
-                this.qt.timer =
-                    setInterval(() => {
-                        // console.log('this.qt.time', this.qt.time)
-                        if(this.qt.time <= 0){
-                            this.questionInit(this.qt.defaultTime);
-                            this.checkAnswer(this.qid, 'Not Answered', 0);
-                            // this.resultScreen();
-                        }
-                        else{
-                            this.qt.ms ++
-                            this.progress -= pdec
 
-                            if(this.qt.ms == 5){
-                                this.qt.time --
-                                this.qt.ms=0
-                            }
-
-                        }
-
-                    }, 200);
-            },
             countDown(){
-                // console.log('countDown')
-                if(this.counter <= 0){
-                    this.qid ++
-                    this.current = this.questions[this.qid].id
-                    this.showQuestionOptions(null)
-                   // this.QuestionTimer()
+                if (this.gameEnded) return;
+                console.log('countDown')
+                if(this.counter == 0){
+                  this.qid ++
+                  this.current = this.questions[this.qid].id
+                  this.showQuestionOptions(null)
                 } else {
-                    this.counter --
+                  this.counter --
                 }
             },
-            getResult(){
-                // console.log('getResult')
-                this.results = []
-                this.users.forEach(user => {
-                    let score = 0;
-                    this.answered_user_data
-                        .filter(f => f.uid === user.id)
-                        .map(u => {
-                            score += u.isCorrect
-                        })
-
-                    this.results.push({id:user.id, name:user.name, score:score, user:user})
-
-                })
-                this.results.sort((a, b) => b.score - a.score)
-            },
             winner(){
+                console.log('winer....')
+
                 this.user_ranking = this.results.findIndex(w => w.id == this.user.id)
                 let user_score = this.results[this.user_ranking].score
                 this.perform = Math.round((user_score / ((this.qid +1) * 100)) * 100)
@@ -628,7 +642,7 @@
 
             },
             gameStarted(user){
-                console.log(['user', user])
+                console.log(['gameStarted, user', user])
             },
             getShareLink(path){
                 console.log(['urlencode', encodeURI(this.getUrl(path))]);
@@ -644,56 +658,75 @@
 
                 return '';
             },
-            showQuestionOptions (question) {
-                let timeout = 1000;
-                if(this.challenge.option_view_time != 0) { // this.quiz.quiz_time * 1000
-                    timeout = 3500;
-                }
-                if(question !=='onEnd'){
-                    if(this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
-                        timeout += 3000
-                        this.av = false
-                        setTimeout(() => {
-                            this.endAVWait = true
-                        }, 3000)
+
+
+            async makeHost(uid, status = null){
+                console.log('user id..', this.isHost())
+                if(this.isHost() && status == null){
+                    this.uid = uid
+                    this.requestHostUser = null
+                    status = 'accept'
+                    // this.makeHost(uid, 'accept')
+                } else{
+                    if (status == 'accept'){
+                        this.uid = uid
+                        this.requestHostUser = null
+                    } else if (status == 'deny'){
+                        this.requestHostUser = null
+                    } else {
+                        this.requestHostUser = this.user
                     }
                 }
-                clearInterval(this.qt.timer);
-                setTimeout(() => {
-                    // this.sqo = true
-                    this.preventClick = false
-                    this.QuestionTimer()
-                }, timeout)
+
+                return await  axios.post(`/api/makeHost/${uid}/${this.channel}/${status}`)
+            },
+            async newQuiz(uid){
+                let makeHostStatus = await this.makeHost(uid)
+                console.log('makeHostStatus..', makeHostStatus.status)
+                if(makeHostStatus.status === 200){
+                    console.log('inside..', makeHostStatus.status)
+                    let data = { channel: this.channel, id:this.challenge.id}
+                    axios.post(`/api/newGameQuiz`, data)
+                        .then(res => {
+                            this.questions = res.data
+                            this.gameResetCall(true)
+                            // console.log('result...', res)
+                            // this.share = res.data
+                            // this.game_start = 1
+                            // this.screen.waiting = 0
+                            // this.showQuestionOptions(this.questions[0].fileType)
+                        })
+                } else{
+                    console.log('makeHostStatus status is not 200')
+                }
             },
             quizEnd () {
-                // axios.post(`/api/gameEndUser`, {'channel': this.channel})
-                let gameResult = { result: this.results, 'share_id': this.share.id, 'channel': this.channel }
-                axios.post(`/api/challengeResult`, gameResult).then(res => {
-                    this.end_user ++
-                    console.log('users + end user', this.users.length, this.end_user)
-                    if(this.users.length <= this.end_user) {
-                        this.winner()
-                        return
-                    } else {
-                        this.screen.resultWaiting = 1;
-                        return
-                    }
-                })
+                console.log('gameEnded quizEnd end')
 
+                if(this.gameEnded) {
+                    console.log('gameEnded quizEnd end')
+                    return
+                }else {
+                    // axios.post(`/api/gameEndUser`, {'channel': this.channel})
+                    let gameResult = { result: this.results, 'share_id': this.share.id, 'channel': this.channel }
+                    axios.post(`/api/challengeResult`, gameResult).then(res => {
+                        this.end_user ++
+                        console.log('users + end user', this.users.length, this.end_user)
+                        if(this.users.length <= this.end_user) {
+                            this.winner()
+                            return
+                        } else {
+                            this.gameEnded = true;
+                            this.questionInit(this.qt.defaultTime)
+                            this.screen.resultWaiting = 1;
+                        }
+                    })
+                }
             },
 
         },
 
         computed: {
-            // channel(){
-            //     return `challenge.${this.challenge.id}.${this.uid}`
-            // },
-            // progressClass(){
-            //     return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
-            // },
-            // progressWidth(){
-            //     return {'width':this.progress + '%', }
-            // }
             currentQuestionType () {
                 return this.quizquestions[this.qid].fileType
             }

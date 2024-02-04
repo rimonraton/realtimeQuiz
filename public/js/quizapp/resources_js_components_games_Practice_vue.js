@@ -157,6 +157,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -182,7 +192,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       mc: 0,
       pm: '',
       av: true,
-      sqo: true
+      sqo: true,
+      endAVWait: false
     };
   },
   watch: {
@@ -314,9 +325,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.winner_screen = 1;
       if (perform === 100) {
         this.firstPlace();
-      }
-      if (perform >= 75) {
+      } else if (perform >= 85) {
         this.secondPlace();
+      } else if (perform >= 75) {
+        this.thirdPlace();
       }
       if (!this.user.log > 0) {
         this.saveQuiz();
@@ -362,13 +374,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     onEnd: function onEnd() {
       console.log('onEnded....');
       this.av = true;
-      this.showQuestionOptions(null);
+      this.showQuestionOptions('onEnd');
     },
     onStart: function onStart() {
       console.log('onStart....');
       clearInterval(this.timer);
       this.av = false;
-      // this.sqo = false
     },
     audioVideoError: function audioVideoError() {
       console.log('audioVideoError....');
@@ -404,7 +415,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     showQuestionOptions: function showQuestionOptions(question, f) {
       var _this = this;
       console.log('first time', f, question);
-      var timeout = 0;
+      var timeout = 1000;
       if (this.quiz.quiz_time != 0) {
         timeout = 3000; // this.quiz.quiz_time * 1000
         if (f == 'first') {
@@ -417,6 +428,15 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           // this.sqo = true
           _this.startTimer();
         }, timeout);
+      }
+      if (question !== 'onEnd') {
+        if (this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+          timeout += 3000;
+          this.av = false;
+          setTimeout(function () {
+            _this.endAVWait = true;
+          }, 3000);
+        }
       }
     },
     startTimer: function startTimer() {
@@ -444,6 +464,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return 'animate__animated animate__lightSpeedInRight animate__delay-' + index + 's';
       }
       return '';
+    }
+  },
+  computed: {
+    currentQuestionType: function currentQuestionType() {
+      return this.questions[this.qid].fileType;
     }
   }
 });
@@ -831,20 +856,6 @@ var render = function () {
                 })
               : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "d-flex" }, [
-              _c("button", { on: { click: _vm.firstPlace } }, [
-                _vm._v("First"),
-              ]),
-              _vm._v(" "),
-              _c("button", { on: { click: _vm.secondPlace } }, [
-                _vm._v("Second"),
-              ]),
-              _vm._v(" "),
-              _c("button", { on: { click: _vm.thirdPlace } }, [
-                _vm._v("Third"),
-              ]),
-            ]),
-            _vm._v(" "),
             _c("h2", { staticClass: "text-center" }, [
               _vm._v("Quiz Game Over"),
             ]),
@@ -904,61 +915,72 @@ var render = function () {
                         })
                       : _vm._e(),
                     _vm._v(" "),
-                    question.fileType == "video"
-                      ? _c("div", { staticClass: "video" }, [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s() +
-                              "\n                            "
-                          ),
+                    _vm.endAVWait
+                      ? _c("div", [
                           question.fileType == "video"
-                            ? _c("video", {
-                                staticClass:
-                                  "image w-100 mt-1 rounded img-thumbnail",
-                                attrs: {
-                                  id: "myVideo",
-                                  src: "/" + question.question_file_link,
-                                  autoplay: "",
-                                  controls: "",
-                                },
-                                on: {
-                                  error: function ($event) {
-                                    return _vm.audioVideoError()
+                            ? _c("div", { staticClass: "video" }, [
+                                question.fileType == "video"
+                                  ? _c("video", {
+                                      staticClass:
+                                        "image w-100 mt-1 rounded img-thumbnail",
+                                      attrs: {
+                                        id: "myVideo",
+                                        src: "/" + question.question_file_link,
+                                        autoplay: "",
+                                        controls: "",
+                                      },
+                                      on: {
+                                        error: function ($event) {
+                                          return _vm.audioVideoError()
+                                        },
+                                        ended: function ($event) {
+                                          return _vm.onEnd()
+                                        },
+                                        play: function ($event) {
+                                          return _vm.onStart()
+                                        },
+                                      },
+                                    })
+                                  : _vm._e(),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          question.fileType == "audio"
+                            ? _c("div", { staticClass: "audio" }, [
+                                _c("audio", {
+                                  attrs: {
+                                    src: "/" + question.question_file_link,
+                                    controls: "",
+                                    autoplay: "",
                                   },
-                                  ended: function ($event) {
-                                    return _vm.onEnd()
+                                  on: {
+                                    error: function ($event) {
+                                      return _vm.audioVideoError()
+                                    },
+                                    ended: function ($event) {
+                                      return _vm.onEnd()
+                                    },
+                                    play: function ($event) {
+                                      return _vm.onStart()
+                                    },
                                   },
-                                  play: function ($event) {
-                                    return _vm.onStart()
-                                  },
-                                },
-                              })
+                                }),
+                              ])
                             : _vm._e(),
                         ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    question.fileType == "audio"
-                      ? _c("div", { staticClass: "audio" }, [
-                          _c("audio", {
-                            attrs: {
-                              src: "/" + question.question_file_link,
-                              controls: "",
-                              autoplay: "",
-                            },
-                            on: {
-                              error: function ($event) {
-                                return _vm.audioVideoError()
-                              },
-                              ended: function ($event) {
-                                return _vm.onEnd()
-                              },
-                              play: function ($event) {
-                                return _vm.onStart()
-                              },
-                            },
-                          }),
-                        ])
-                      : _vm._e(),
+                      : _c("div", [
+                          _vm.currentQuestionType == "audio"
+                            ? _c("div", [
+                                _c("h1", [_vm._v("Audio Question... ")]),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.currentQuestionType == "video"
+                            ? _c("div", [
+                                _c("h1", [_vm._v("Video Question... ")]),
+                              ])
+                            : _vm._e(),
+                        ]),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -988,13 +1010,15 @@ var render = function () {
                                 _vm._v(" "),
                                 _c("h5", { staticClass: "mt-1 ml-2" }, [
                                   _vm._v(
-                                    _vm._s(
-                                      _vm.tbe(
-                                        question.bd_question_text,
-                                        question.question_text,
-                                        _vm.user.lang
-                                      )
-                                    )
+                                    "\n                                          " +
+                                      _vm._s(
+                                        _vm.tbe(
+                                          question.bd_question_text,
+                                          question.question_text,
+                                          _vm.user.lang
+                                        )
+                                      ) +
+                                      "\n                                        "
                                   ),
                                 ]),
                               ]

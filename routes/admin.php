@@ -4,10 +4,6 @@ use App\Http\Controllers\Game\ChallengeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('admintest', function (){
-   return 'Admin tests';
-});
-
 Route::get('team/resultList', [\App\Http\Controllers\ShareController::class, 'teamResultList']);
 Route::get('team/answer/{id}/{team}', [\App\Http\Controllers\ShareController::class, 'teamAnswertList']);
 
@@ -24,10 +20,10 @@ Route::get('game/mode/challenge/{id?}', [ChallengeController::class, 'gameInAdmi
 //});
 //
 Route::get('cat-admin', function (){
-    return auth()->user()->admin->id;
+//    return auth()->user()->admin->id;
     $categories =  \App\Category::with('user.admin')->get();
     foreach ($categories as $category) {
         $category->admin_id = $category->user->admin->id;
         $category->save();
     }
-});
+})->middleware('auth');

@@ -1593,8 +1593,10 @@ var quizHelpers = {
   methods: {
     questionInit: function questionInit() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
-      clearInterval(this.timer);
       clearInterval(this.qt.timer);
+      this.qt.timer = null;
+      clearInterval(this.timer);
+      this.timer = null;
       this.qt.ms = 0;
       this.qt.time = time;
       this.progress = 100;
@@ -1671,7 +1673,7 @@ var quizHelpers = {
       this.av = false;
     },
     audioVideoError: function audioVideoError() {
-      console.log('audioVideoError....');
+      // console.log('audioVideoError....')
       this.onEnd();
     },
     stop: function stop() {

@@ -78,7 +78,7 @@
 import QrcodeVue from 'qrcode.vue' // Share Link
 
 export default{
-	props:['user', 'uid', 'users', 'time', 'challenge'],
+	props:['user', 'uid', 'users', 'time', 'challenge', 'defTime'],
     components: {
         QrcodeVue,
     },
@@ -93,7 +93,7 @@ export default{
             qr: false,
             share: false,
             size: 300,
-            defaultTime: 30,
+            defaultTime: this.defTime,
             value: window.location.toString()
         };
     },

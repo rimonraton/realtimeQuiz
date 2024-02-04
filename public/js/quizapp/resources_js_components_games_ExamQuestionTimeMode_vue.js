@@ -1437,7 +1437,7 @@ __webpack_require__.r(__webpack_exports__);
  // Share Link
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'uid', 'users', 'time', 'challenge'],
+  props: ['user', 'uid', 'users', 'time', 'challenge', 'defTime'],
   components: {
     QrcodeVue: qrcode_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -1452,7 +1452,7 @@ __webpack_require__.r(__webpack_exports__);
       qr: false,
       share: false,
       size: 300,
-      defaultTime: 30,
+      defaultTime: this.defTime,
       value: window.location.toString()
     };
   },

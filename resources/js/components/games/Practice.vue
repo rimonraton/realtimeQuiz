@@ -5,11 +5,11 @@
           <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
-          <div class="d-flex">
-            <button @click="firstPlace">First</button>
-            <button @click="secondPlace">Second</button>
-            <button @click="thirdPlace">Third</button>
-          </div>
+<!--          <div class="d-flex">-->
+<!--            <button @click="firstPlace">First</button>-->
+<!--            <button @click="secondPlace">Second</button>-->
+<!--            <button @click="thirdPlace">Third</button>-->
+<!--          </div>-->
             <h2 class="text-center">Quiz Game Over</h2>
             <h3>{{ pm.perform_message }}</h3>
             <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong"/>
@@ -25,30 +25,38 @@
                         </span>
                         <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
-                        <div class="video" v-if="question.fileType == 'video'">
-                            {{ }}
-                            <video
-                                id="myVideo"
-                                v-if="question.fileType == 'video'"
-                                :src="'/'+ question.question_file_link"
-                                @error="audioVideoError()"
-                                @ended="onEnd()"
-                                @play="onStart()"
-                                class="image w-100 mt-1 rounded img-thumbnail"
-                                autoplay
-                                controls
-                            />
+                        <div v-if="endAVWait">
+                          <div class="video" v-if="question.fileType == 'video'">
+                              <video
+                                  id="myVideo"
+                                  v-if="question.fileType == 'video'"
+                                  :src="'/'+ question.question_file_link"
+                                  @error="audioVideoError()"
+                                  @ended="onEnd()"
+                                  @play="onStart()"
+                                  class="image w-100 mt-1 rounded img-thumbnail"
+                                  autoplay
+                                  controls
+                              />
+                          </div>
+                          <div class="audio" v-if="question.fileType == 'audio'">
+                              <audio
+                                  :src="'/'+ question.question_file_link"
+                                  @error="audioVideoError()"
+                                  @ended="onEnd()"
+                                  @play="onStart()"
+                                  controls
+                                  autoplay />
+                          </div>
                         </div>
-                            <div class="audio" v-if="question.fileType == 'audio'">
-                                <audio
-                                    :src="'/'+ question.question_file_link"
-                                    @error="audioVideoError()"
-                                    @ended="onEnd()"
-                                    @play="onStart()"
-                                    controls
-                                    autoplay />
-                            </div>
-<!--                        </div>-->
+                        <div v-else>
+                          <div v-if="currentQuestionType == 'audio'" >
+                            <h1>Audio Question... </h1>
+                          </div>
+                          <div v-if="currentQuestionType == 'video'" >
+                            <h1>Video Question... </h1>
+                          </div>
+                        </div>
                         <div v-show="av">
 <!--                            <p class="my-1 font-bold"-->
 <!--                               v-html="tbe(question.bd_question_text, question.question_text, user.lang)">-->
@@ -58,7 +66,9 @@
                                 <div class="card-header">
                                     <div class="d-flex flex-row align-items-center question-title">
                                         <h3 class="text-danger">Q.</h3>
-                                        <h5 class="mt-1 ml-2">{{ tbe(question.bd_question_text, question.question_text, user.lang) }}</h5>
+                                        <h5 class="mt-1 ml-2">
+                                          {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                        </h5>
                                     </div>
 <!--                                   <h3 class="text-danger">Q. </h3> {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
                                 </div>
@@ -161,6 +171,7 @@ export default {
             pm: '',
             av: true,
             sqo: true,
+            endAVWait: false
         };
     },
     watch: {
@@ -228,7 +239,6 @@ export default {
           });
         }, 500)
         },
-
         secondPlace: function() {
         this.place = 2
         let colors = ['#bb0000', '#0AE84E'];
@@ -276,11 +286,13 @@ export default {
                     return prev.perform_status < curr.perform_status ? prev : curr;
                 });
             this.winner_screen = 1
-            if (perform === 100) {
+            if(perform === 100) {
                 this.firstPlace()
             }
-            if (perform >= 75) {
+            else if(perform >= 85) {
                 this.secondPlace()
+            }else if(perform >= 75) {
+              this.thirdPlace()
             }
             if (!this.user.log > 0) {
                 this.saveQuiz();
@@ -324,15 +336,14 @@ export default {
             return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
         },
         onEnd() {
-            console.log('onEnded....')
-            this.av = true
-            this.showQuestionOptions(null)
+          console.log('onEnded....')
+          this.av = true
+          this.showQuestionOptions('onEnd')
         },
         onStart() {
             console.log('onStart....')
             clearInterval(this.timer);
             this.av = false
-            // this.sqo = false
         },
         audioVideoError() {
             console.log('audioVideoError....')
@@ -352,7 +363,7 @@ export default {
         },
         showQuestionOptions (question, f) {
             console.log('first time', f, question);
-            let timeout = 0;
+            let timeout = 1000;
             if(this.quiz.quiz_time != 0) {
                 timeout = 3000; // this.quiz.quiz_time * 1000
                 if(f == 'first') {
@@ -366,6 +377,16 @@ export default {
                     this.startTimer()
                 }, timeout)
             }
+
+          if(question !=='onEnd'){
+            if(this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+              timeout += 3000
+              this.av = false
+              setTimeout(() => {
+                this.endAVWait = true
+              }, 3000)
+            }
+          }
         },
         startTimer () {
             if(this.av == true) {
@@ -394,6 +415,11 @@ export default {
 
             return '';
         }
+    },
+    computed: {
+      currentQuestionType () {
+        return this.questions[this.qid].fileType
+      }
     }
 };
 </script>

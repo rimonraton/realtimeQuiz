@@ -7,8 +7,10 @@ export const quizHelpers = {
     },
     methods: {
         questionInit(time = 30){
-            clearInterval(this.timer)
             clearInterval(this.qt.timer)
+            this.qt.timer = null
+            clearInterval(this.timer)
+            this.timer = null
             this.qt.ms = 0
             this.qt.time = time
             this.progress = 100
@@ -68,7 +70,7 @@ export const quizHelpers = {
             this.av = false
         },
         audioVideoError() {
-            console.log('audioVideoError....')
+            // console.log('audioVideoError....')
             this.onEnd()
         },
         stop () {
