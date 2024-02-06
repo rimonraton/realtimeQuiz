@@ -531,25 +531,27 @@
                 if (isStart) this.gameStart();
 
             },
-            gameReset(){
-                console.log('gameReset....')
-                this.questionInit(this.qt.defaultTime)
-                this.screen.waiting = 1
-                this.screen.loading = 0
-                this.screen.result = 0
-                this.screen.resultWaiting = 0
-                this.screen.winner = 0
-                this.end_user = 0
-                this.answered_user_data = []
-                this.results = []
-                this.qid = 0
-                this.gamedata = {}
-                this.score = []
-                this.user_ranking = null
-                this.game_start = 0
-                this.current = this.questions[this.qid].id
-                this.endAVWait = false
-            },
+          gameReset() {
+            console.log('gameReset....')
+            this.questionInit(this.qt.defaultTime)
+            this.screen.waiting = 1
+            this.screen.loading = 0
+            this.screen.result = 0
+            this.screen.resultWaiting = 0
+            this.screen.winner = 0
+            this.end_user = 0
+            this.answered_user_data = []
+            this.results = []
+            this.qid = 0
+            this.gamedata = {}
+            this.score = []
+            this.user_ranking = null
+            this.game_start = 0
+            this.current = this.questions[this.qid].id
+            this.endAVWait = false
+            this.preventClick = true
+            this.gameEnded = false
+          },
 
             getCorrectAnswerText(){
                 console.log('getCorrectAnswerText....')

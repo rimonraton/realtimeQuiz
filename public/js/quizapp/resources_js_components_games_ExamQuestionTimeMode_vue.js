@@ -3975,12 +3975,7 @@ var render = function () {
             staticClass: "iframe-size",
             attrs: {
               id: "shareFrame",
-              src:
-                "http://quiz.test/Challenge/" +
-                _vm.challenge.id +
-                "/" +
-                _vm.uid +
-                "/share",
+              src: "/Challenge/" + _vm.challenge.id + "/" + _vm.uid + "/share",
               frameborder: "0",
             },
           }),

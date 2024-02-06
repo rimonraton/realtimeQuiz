@@ -2,7 +2,7 @@
 	<div class="waiting">
 	    <div class="card" style="min-width: 24rem">
         <div id="shareBtn" class="show_share shareBtnDiv" v-show="share">
-          <iframe id="shareFrame" :src="`http://quiz.test/Challenge/${challenge.id}/${uid}/share`" frameborder="0" class="iframe-size"></iframe>
+          <iframe id="shareFrame" :src="`/Challenge/${challenge.id}/${uid}/share`" frameborder="0" class="iframe-size"></iframe>
         </div>
         <div class="d-flex justify-content-between card-header text-center">
           <span class="btn btn-sm btn-danger align-self-start" @click="back">

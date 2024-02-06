@@ -573,6 +573,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.game_start = 0;
       this.current = this.questions[this.qid].id;
       this.endAVWait = false;
+      this.preventClick = true;
+      this.gameEnded = false;
     },
     getCorrectAnswerText: function getCorrectAnswerText() {
       console.log('getCorrectAnswerText....');
@@ -5154,12 +5156,7 @@ var render = function () {
             staticClass: "iframe-size",
             attrs: {
               id: "shareFrame",
-              src:
-                "http://quiz.test/Challenge/" +
-                _vm.challenge.id +
-                "/" +
-                _vm.uid +
-                "/share",
+              src: "/Challenge/" + _vm.challenge.id + "/" + _vm.uid + "/share",
               frameborder: "0",
             },
           }),
