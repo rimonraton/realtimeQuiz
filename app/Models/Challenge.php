@@ -43,4 +43,13 @@ class Challenge extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopePublished($query)
+    {
+        $query->where('is_published',1);
+    }
+    public function scopeUnPublished($query)
+    {
+        $query->where('is_published', 0);
+    }
+
 }

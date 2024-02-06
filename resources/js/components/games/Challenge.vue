@@ -35,7 +35,7 @@
                 <img v-if="user_ranking == 1" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
                 <img v-if="user_ranking == 2" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
 
-            <h3 class="text-center">{{ pm.perform_message }} </h3>
+            <h3 class="text-center">{{ getPerform() }} </h3>
 
             <div v-if="user_ranking == 0">
                 <h3><b>{{ user.name }}</b>, you won this game.</h3>
@@ -614,6 +614,9 @@
                 }else if(this.user_ranking === 2) {
                     this.thirdPlace()
                 }
+            },
+            getPerform(perform){
+                return `${this.pm.perform_message} (${this.questions.length * 100}/${this.results[this.user_ranking].score} ${this.perform}% )`
             },
             kickUser(id){
                 if(id != this.uid){

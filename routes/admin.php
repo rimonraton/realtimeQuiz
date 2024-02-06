@@ -18,12 +18,15 @@ Route::get('game/mode/challenge/{id?}', [ChallengeController::class, 'gameInAdmi
 //        $challenge->save();
 //    }
 //});
-//
-Route::get('cat-admin', function (){
-//    return auth()->user()->admin->id;
-    $categories =  \App\Category::with('user.admin')->get();
-    foreach ($categories as $category) {
-        $category->admin_id = $category->user->admin->id;
-        $category->save();
+
+Route::get('setAdminId/{modelName}', function ($modelName){
+    $model = '\App\\' . $modelName;
+
+    $colllections =  $model::with('user.admin')->get();
+    foreach ($colllections as $colllection) {
+        $colllection->admin_id = $colllection->user->admin->id;
+        $colllection->save();
     }
+    return 'Successfully set admin_id to Model => '. $modelName;
+
 })->middleware('auth');

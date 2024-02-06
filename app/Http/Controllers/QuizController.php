@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Difficulty;
 use App\Game;
 use App\Lang\Bengali;
 use App\Question;
@@ -29,7 +30,7 @@ class QuizController extends Controller
         $teams = Team::all();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
-         $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        $question_topic = Category::mainTopic()->admin(auth()->user()->admin->id)->get();
         // $question_category = QuizCategory::all();
         $gameType = Game::all();
         return view('Admin.PartialPages.Quiz.quiz_create', compact(['question_topic', 'gameType','teams']));

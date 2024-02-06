@@ -640,6 +640,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         this.thirdPlace();
       }
     },
+    getPerform: function getPerform(perform) {
+      return "".concat(this.pm.perform_message, " (").concat(this.questions.length * 100, "/").concat(this.results[this.user_ranking].score, " ").concat(this.perform, "% )");
+    },
     kickUser: function kickUser(id) {
       if (id != this.uid) {
         this.users = this.users.filter(function (u) {
@@ -3453,7 +3456,7 @@ var render = function () {
               : _vm._e(),
             _vm._v(" "),
             _c("h3", { staticClass: "text-center" }, [
-              _vm._v(_vm._s(_vm.pm.perform_message) + " "),
+              _vm._v(_vm._s(_vm.getPerform()) + " "),
             ]),
             _vm._v(" "),
             _vm.user_ranking == 0

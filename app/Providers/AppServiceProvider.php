@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $categories = Category::where('sub_topic_id', 0)->get();
+        $categories = Category::mainTopic()->get();
 
         view()->share(['bang'=> new Bengali(), 'categories' => $categories ]);
     }

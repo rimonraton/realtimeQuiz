@@ -18,12 +18,10 @@ use Auth;
 
 class ExamController extends Controller
 {
-    public $lang;
-
     public function __construct()
     {
         $this->middleware('auth');
-        $this->lang = app()->getLocale();
+        parent::__construct();
     }
 
     public function index()
@@ -187,23 +185,18 @@ class ExamController extends Controller
 
     public function traineeExams($id = null)
     {
-
-//        $user = Auth::user();
-        $exams = '';
-        $admin_users = auth()->user()->admin->users()->pluck('id');
         $catName = '';
+
         if ($id) {
             $catName = Category::find($id)->name;
         }
+
+//        $admin_users = auth()->user()->admin->users()->pluck('id');
+
         $questionType = QuestionType::all();
-        $topic = Category::withCount('questions')->where('sub_topic_id', 0)->get();
-        $lang = $this->lang;
-//        $challenges = Challenge::latest()->paginate(12);
-
-//        $challenges = Challenge::whereIn('user_id',$admin_users)->latest()->paginate(12);
-
-        $challenges_published = Challenge::whereIn('user_id',$admin_users)->where('is_published',1)->latest()->get();
-        $challenges_own = Challenge::where('user_id',Auth::user()->id)->where('is_published',0)->latest()->get();
+        $topic = Category::withCount('questions')->mainTopic()->get();
+        $challenges_published = Challenge::where('admin_id',$this->user->admin->id)->published()->latest()->paginate(20);
+        $challenges_own = Challenge::where('user_id', $this->user->id)->unPublished()->latest()->get();
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
 //        $questions = Question::all();
         $questions = [];
@@ -225,7 +218,7 @@ class ExamController extends Controller
                 }])->orderBy('id', 'desc')->paginate(12);
         }
 
-        return view('Admin.Exam.Pages.traineeExam', compact(['topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questions', 'exams']));
+        return view('Admin.Exam.Pages.traineeExam', compact(['topic', 'id', 'catName', 'questionType', 'challenges', 'questions', 'exams']));
     }
 //    function exam_completed($data){
 //        $results = array_filter((array)$data, function($item){

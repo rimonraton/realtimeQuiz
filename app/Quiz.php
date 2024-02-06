@@ -9,6 +9,11 @@ class Quiz extends Model
 {
     protected $guarded = [];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function quizCategory()
     {
         return $this->belongsTo(Category::class,'category_id');

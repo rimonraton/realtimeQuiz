@@ -40,7 +40,7 @@ class Permission
     public static function getMenus()
     {
         $userAndLang = auth()->user()->id .'-'. \App::getLocale();
-        return Cache::remember($userAndLang, now()->addHour(), function () {
+//        return Cache::remember($userAndLang, now()->addHour(), function () {
             $findMenuUser = \App\MenuRole::where('user_id', auth()->user()->id)->count();
             $rm = '';
             if($findMenuUser) {
@@ -68,6 +68,6 @@ class Permission
                 'lang' => $lang,
                 'role' => $role
             ];
-        });
+//        });
     }
 }

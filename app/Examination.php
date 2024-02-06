@@ -19,4 +19,8 @@ class Examination extends Model
     {
         return $this->hasMany(ExamGivenUser::class, 'exam_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
