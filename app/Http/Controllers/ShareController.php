@@ -19,7 +19,12 @@ class ShareController extends Controller
         $share->results = json_encode($request->result);
         $share->save();
         $gc = new GameController();
-        $gc->gameEndUser($request);
+
+        if($request->host_end) {
+            $gc->gameEndByHost($request);
+        }else {
+            $gc->gameEndUser($request);
+        }
         return 'success';
     }
     public function challengeShare($link)

@@ -7,6 +7,7 @@ use App\Events\AddTeamEvent;
  use App\Events\ChangeQuestionEvent;
 use App\Events\DeleteMessageEvent;
 use App\Events\DeleteTeamEvent;
+use App\Events\GameEndByHostEvent;
 use App\Events\GameEndUserEvent;
 use App\Events\GameResetEvent;
 use App\Events\GameTeamModeratorStartEvent;
@@ -95,6 +96,12 @@ class GameController extends Controller
     {
         broadcast(new GameEndUserEvent($request))->toOthers();
         return 'GameEndUserEvent call from server';
+    }
+
+    public function gameEndByHost(Request $request)
+    {
+        broadcast(new GameEndByHostEvent($request))->toOthers();
+        return 'GameEndByHostEvent call from server';
     }
 
 	public function kickUser(Request $request): Request

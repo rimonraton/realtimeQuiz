@@ -217,6 +217,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -298,6 +303,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       if (_this.users.length == _this.end_user) {
         _this.winner();
       }
+    }).listen('GameEndByHostEvent', function (data) {
+      console.log(['GameEndByHostEvent.............', data]);
+      _this.winner();
     }).listen('QuestionClickedEvent', function (data) {
       console.log('QuestionClickedEvent.............');
       _this.answered_user_data.push(data);
@@ -552,8 +560,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return console.log(res.data);
       });
       this.gameReset();
-      this.screen.waiting = 0;
-      if (isStart) this.gameStart();
+      // this.screen.waiting = 0
+      // if (isStart) this.gameStart();
     },
     gameReset: function gameReset() {
       console.log('gameReset....');
@@ -641,8 +649,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } else if (this.user_ranking === 2) {
         this.thirdPlace();
       }
+      setTimeout(function () {
+        _this8.screen.winner = 0;
+      }, 5000);
     },
-    getPerform: function getPerform(perform) {
+    getPerform: function getPerform() {
       return "".concat(this.pm.perform_message, " (").concat(this.questions.length * 100, "/").concat(this.results[this.user_ranking].score, " ").concat(this.perform, "% )");
     },
     kickUser: function kickUser(id) {
@@ -772,6 +783,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           }
         });
       }
+    },
+    gameEndHost: function gameEndHost() {
+      var _this12 = this;
+      var gameResult = {
+        result: this.results,
+        'share_id': this.share.id,
+        'channel': this.channel,
+        'host_end': 1
+      };
+      axios.post("/api/challengeResult", gameResult).then(function (res) {
+        _this12.winner();
+        _this12.gameEnded = true;
+        _this12.screen.resultWaiting = 0;
+      });
     }
   },
   computed: {
@@ -1683,7 +1708,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-6a184f0c] {\n    height: 100px;\n    width: 100%;\n}\n.preventClick[data-v-6a184f0c] {\n    position: absolute;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    z-index: 999;\n    left: 0px;\n    top: 0px;\n}\n.share-result-image[data-v-6a184f0c] {\n    max-width: -moz-fit-content;\n    max-width: fit-content;\n}\n.col-md-6.col-6[data-v-6a184f0c]:hover {\n    background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-6a184f0c] {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imageOption[data-v-6a184f0c] {\n  height: 100px;\n  width: 100%;\n}\n.preventClick[data-v-6a184f0c] {\n  position: absolute;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.1);\n  width: 100%;\n  z-index: 999;\n  left: 0px;\n  top: 0px;\n}\n.share-result-image[data-v-6a184f0c] {\n  max-width: -moz-fit-content;\n  max-width: fit-content;\n}\n.col-md-6.col-6[data-v-6a184f0c]:hover {\n  background-color: #38c172 !important;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-6a184f0c] {\n    height: 170px;\n    width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -3381,7 +3406,31 @@ var render = function () {
       _c("div", { class: { preventClick: _vm.preventClick } }),
       _vm._v(" "),
       _vm.screen.resultWaiting
-        ? _c("div", { staticClass: "result-waiting" }, [_vm._m(0)])
+        ? _c("div", { staticClass: "result-waiting" }, [
+            _c("div", { staticClass: "text-center bg-light" }, [
+              _c("img", {
+                attrs: {
+                  src: "/img/quiz/result-waiting.gif",
+                  alt: "Waiting for game end.",
+                },
+              }),
+              _vm._v(" "),
+              _c("p", { staticClass: "text-center px-5" }, [
+                _vm._v("Please wait result is processing.."),
+              ]),
+              _vm._v(" "),
+              _vm.user.id === _vm.uid
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-danger m-3",
+                      on: { click: _vm.gameEndHost },
+                    },
+                    [_vm._v("End Game")]
+                  )
+                : _vm._e(),
+            ]),
+          ])
         : _vm._e(),
       _vm._v(" "),
       _vm.screen.result
@@ -3537,13 +3586,7 @@ var render = function () {
                   class: _vm.progressClass,
                   style: _vm.progressWidth,
                 },
-                [
-                  _vm._v(
-                    " " +
-                      _vm._s(Math.floor(_vm.progress)) +
-                      "\n                    "
-                  ),
-                ]
+                [_vm._v(" " + _vm._s(Math.floor(_vm.progress)) + "\n        ")]
               ),
             ]),
             _vm._v(" "),
@@ -3562,7 +3605,7 @@ var render = function () {
                           { staticClass: "q_num text-right text-muted" },
                           [
                             _vm._v(
-                              "\n                            " +
+                              "\n                          " +
                                 _vm._s(
                                   _vm.qne2b(
                                     _vm.qid,
@@ -3570,7 +3613,7 @@ var render = function () {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                        "
+                                "\n                      "
                             ),
                           ]
                         ),
@@ -3682,7 +3725,7 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("h5", { staticClass: "mt-1 ml-2" }, [
                                         _vm._v(
-                                          "\n                                                " +
+                                          "\n                      " +
                                             _vm._s(
                                               _vm.tbe(
                                                 question.bd_question_text,
@@ -3690,7 +3733,7 @@ var render = function () {
                                                 _vm.user.lang
                                               )
                                             ) +
-                                            "\n                                            "
+                                            "\n                    "
                                         ),
                                       ]),
                                     ]
@@ -3796,7 +3839,11 @@ var render = function () {
                                                                 type: "submit",
                                                               },
                                                             },
-                                                            [_vm._v("Submit")]
+                                                            [
+                                                              _vm._v(
+                                                                "Submit\n                        "
+                                                              ),
+                                                            ]
                                                           ),
                                                         ]
                                                       ),
@@ -3926,7 +3973,7 @@ var render = function () {
           _vm.results.length > 0
             ? _c("div", { staticClass: "card my-4" }, [
                 _c("div", { staticClass: "card-header" }, [
-                  _vm._v("\n                        Score Board\n"),
+                  _vm._v("\n          Score Board\n          "),
                   _vm._v(" "),
                   _vm.user.id == _vm.uid && _vm.qid > 0
                     ? _c(
@@ -3964,11 +4011,7 @@ var render = function () {
                                 innerHTML: _vm._s(_vm.getMedel(index)),
                               },
                             }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(res.name) +
-                                " "
-                            ),
+                            _vm._v("\n              " + _vm._s(res.name) + " "),
                             _c(
                               "span",
                               {
@@ -3993,25 +4036,7 @@ var render = function () {
     1
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center bg-light" }, [
-      _c("img", {
-        attrs: {
-          src: "/img/quiz/result-waiting.gif",
-          alt: "Waiting for game end.",
-        },
-      }),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-center px-5" }, [
-        _vm._v("Please wait result is processing.."),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
