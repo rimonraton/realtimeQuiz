@@ -229,7 +229,6 @@ Route::middleware(['hasAccess'])->group(function () {
     // Quiz Team
     Route::get('game_quiz_create', [QuizController::class,'game_quiz_create'])->name('gameQuizCreate');
     Route::post('game_quiz_save', [QuizController::class,'game_quiz_save'])->name('gameQuizSave');
-    Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team'])->name('team.quiz');
 
     // Quiz Practice
     Route::get('quiz/quiz/list/{id}', [QuizController::class,'quizList'])->name('quiz.withOptionList');

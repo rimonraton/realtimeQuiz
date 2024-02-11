@@ -1,5 +1,6 @@
 <template>
     <div class="result">
+        <h1>Group Result</h1>
         <div class="card w-50 m-auto">
           <div class="card-body">
             <h5 class="card-title text-center">{{ tbe('ফলাফল','Results',user.lang) }}</h5>

@@ -1595,6 +1595,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion', 'groupName', 'user'],
@@ -1635,6 +1636,13 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -18531,7 +18539,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\r\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\r\n    font-size: 30px;\r\n    position: absolute;\r\n    right: -7px;\r\n    top: -3px;\r\n    background: white;\r\n    border: 1px solid;\r\n    border-radius: 50%;\r\n    width: 35px;\r\n    /* z-index: 999999; */\n}\n.imgTick{\r\n    position: absolute;\r\n    right: 24px;\r\n    top: 15px;\n}\n.imageOption {\r\n    height: 100px;\r\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -43328,6 +43336,8 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "result" }, [
+    _c("h1", [_vm._v("Group Result")]),
+    _vm._v(" "),
     _c("div", { staticClass: "card w-50 m-auto" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("h5", { staticClass: "card-title text-center" }, [
@@ -43521,6 +43531,8 @@ var render = function () {
   return _c(
     "div",
     [
+      _c("h1", [_vm._v("Moderator Questions..")]),
+      _vm._v(" "),
       _vm._l(_vm.questiondata, function (question, index) {
         return _c(
           "div",
@@ -43772,9 +43784,11 @@ var render = function () {
           },
           [
             _vm._v(
-              _vm._s(
-                _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
-              )
+              "\n                " +
+                _vm._s(
+                  _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
+                ) +
+                "\n            "
             ),
           ]
         ),
@@ -43855,13 +43869,15 @@ var render = function () {
                         [
                           _c("option", { attrs: { value: "0" } }, [
                             _vm._v(
-                              _vm._s(
-                                _vm.tbe(
-                                  "দয়া করে বিষয় নির্বাচন করুন",
-                                  "Please Select Topic",
-                                  _vm.user.lang
-                                )
-                              )
+                              "\n                                        " +
+                                _vm._s(
+                                  _vm.tbe(
+                                    "দয়া করে বিষয় নির্বাচন করুন",
+                                    "Please Select Topic",
+                                    _vm.user.lang
+                                  )
+                                ) +
+                                "\n                                    "
                             ),
                           ]),
                           _vm._v(" "),
@@ -43869,7 +43885,13 @@ var render = function () {
                             return _c(
                               "option",
                               { key: index, domProps: { value: topic.id } },
-                              [_vm._v(_vm._s(topic.name))]
+                              [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(topic.name) +
+                                    "\n                                    "
+                                ),
+                              ]
                             )
                           }),
                         ],

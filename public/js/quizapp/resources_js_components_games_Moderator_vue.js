@@ -11,6 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/PieChart */ "./resources/js/components/helper/PieChart.vue");
 /* harmony import */ var _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/moderator/questions */ "./resources/js/components/helper/moderator/questions.vue");
 /* harmony import */ var _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/groupResult */ "./resources/js/components/helper/groupResult.vue");
+/* harmony import */ var _mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/quizHelpers */ "./resources/js/components/mixins/quizHelpers.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -221,15 +222,23 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_quizHelpers__WEBPACK_IMPORTED_MODULE_3__.quizHelpers],
   props: ['id', 'uid', 'user', 'questions'],
   components: {
     PieChart: _helper_PieChart__WEBPACK_IMPORTED_MODULE_0__["default"],
-    questions: _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__["default"],
+    questionsComponent: _helper_moderator_questions__WEBPACK_IMPORTED_MODULE_1__["default"],
     groupResult: _helper_groupResult__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
@@ -356,19 +365,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     checkAnswer: function checkAnswer(q, a, rw) {
       var _this3 = this;
       this.gamedata['id'] = this.qid + 1;
-      this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text);
-      this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext());
-      this.gamedata['selected'] = this.ToText(a);
+      this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang);
+      this.gamedata['answer'] = this.getCorrectAnswerText();
+      this.gamedata['selected'] = a;
       this.gamedata['isCorrect'] = rw;
       this.gamedata['user'] = this.user;
       this.gamedata['channel'] = this.channel;
-      this.gamedata['group'] = this.user.group.name;
+      this.gamedata['group'] = 'group';
       var clone = _objectSpread({}, this.gamedata);
       this.answered_user_data.push(clone);
       axios.post("/api/submitAnswerGroup", {
         data: clone
       }).then(function (response) {
-        return _this3.getResult();
+        console.log(response.data);
+        _this3.getResult();
       });
     },
     getResult: function getResult() {
@@ -423,10 +433,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return c;
       });
     },
-    getCorrectAnswertext: function getCorrectAnswertext() {
-      return this.questions[this.qid].options.find(function (o) {
+    getCorrectAnswerText: function getCorrectAnswerText() {
+      var correctOption = this.questions[this.qid].options.find(function (o) {
         return o.correct == 1;
-      }).option;
+      });
+      if (correctOption.flag == 'img') {
+        return correctOption.img_link;
+      } else {
+        var correctEngOption = correctOption.option;
+        var correctBanOption = correctOption.bd_option;
+        return this.tbe(correctBanOption, correctEngOption, this.user.lang);
+      }
     },
     winner: function winner() {
       var _this7 = this;
@@ -540,6 +557,7 @@ var reactiveProp = vue_chartjs__WEBPACK_IMPORTED_MODULE_0__.mixins.reactiveProp;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -745,6 +763,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['questions', 'qid', 'topics', 'user'],
@@ -833,6 +858,220 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/components/mixins/quizHelpers.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/mixins/quizHelpers.js ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "quizHelpers": function() { return /* binding */ quizHelpers; }
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+var quizHelpers = {
+  created: function created() {
+    // console.log('Mixin loaded')
+  },
+  mounted: function mounted() {
+    this.externalJS();
+  },
+  methods: {
+    questionInit: function questionInit() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
+      clearInterval(this.qt.timer);
+      this.qt.timer = null;
+      clearInterval(this.timer);
+      this.timer = null;
+      this.qt.ms = 0;
+      this.qt.time = time;
+      this.progress = 100;
+      this.answered = 0;
+      this.counter = 2;
+      this.screen.waiting = 0;
+      this.screen.loading = 0;
+      this.screen.result = 0;
+      this.screen.winner = 0;
+      this.endAVWait = false;
+    },
+    tbe: function tbe(b, e, l) {
+      if (b !== null && e !== null) {
+        if (l === 'bd') return b;
+        return e;
+      } else if (b !== null && e === null) return b;else if (b === null && e !== null) return e;
+      return b;
+    },
+    qne2b: function qne2b(q, qn, l) {
+      if (l === 'gb') {
+        return "Question ".concat(q + 1, " of ").concat(qn, " ");
+      }
+      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+    },
+    q2bNumber: function q2bNumber(numb) {
+      var numbString = numb.toString();
+      var bn = '';
+      var eb = {
+        0: '০',
+        1: '১',
+        2: '২',
+        3: '৩',
+        4: '৪',
+        5: '৫',
+        6: '৬',
+        7: '৭',
+        8: '৮',
+        9: '৯'
+      };
+      _toConsumableArray(numbString).forEach(function (n) {
+        return bn += eb[n];
+      });
+      return bn;
+    },
+    getUrl: function getUrl(path) {
+      return location.origin + '/' + path;
+    },
+    getMedel: function getMedel(index) {
+      if (index == 0) return '<i class="fas fa-award fa-lg" style="color: gold"></i>';
+      if (index == 1) return '<i class="fas fa-award" style="color: silver"></i>';
+      if (index == 2) return '<i class="fas fa-award fa-sm" style="color: #CD7F32"></i>';
+      return '';
+    },
+    waitingResult: function waitingResult() {
+      return 'waiting-result';
+    },
+    imageOption: function imageOption(objArray) {
+      return objArray.some(function (a) {
+        return a.flag == 'img';
+      });
+    },
+    onEnd: function onEnd(api) {
+      if (api == 'apiCall') {
+        axios.post("/api/audioVideoEnd", {
+          channel: this.channel
+        }).then(function (res) {
+          return console.log('apiCallThen ..', res.data);
+        });
+      }
+      this.av = true;
+      this.showQuestionOptions('onEnd');
+    },
+    onStart: function onStart() {
+      this.av = false;
+    },
+    audioVideoError: function audioVideoError() {
+      // console.log('audioVideoError....')
+      this.onEnd();
+    },
+    stop: function stop() {
+      this.questionInit();
+      console.log('stop()');
+    },
+    firstPlace: function firstPlace() {
+      confetti({
+        zIndex: 999999,
+        particleCount: 200,
+        spread: 120,
+        origin: {
+          y: 0.6
+        }
+      });
+      setTimeout(function () {
+        confetti({
+          zIndex: 999999,
+          particleCount: 200,
+          spread: 120,
+          origin: {
+            y: 0.6
+          }
+        });
+      }, 500);
+    },
+    secondPlace: function secondPlace() {
+      var colors = ['#bb0000', '#0AE84E'];
+      confetti({
+        zIndex: 999999,
+        particleCount: 100,
+        angle: 60,
+        spread: 55,
+        origin: {
+          x: 0
+        },
+        colors: colors
+      });
+      confetti({
+        zIndex: 999999,
+        particleCount: 100,
+        angle: 120,
+        spread: 55,
+        origin: {
+          x: 1
+        },
+        colors: colors
+      });
+    },
+    thirdPlace: function thirdPlace() {
+      var defaults = {
+        spread: 360,
+        ticks: 50,
+        gravity: 0,
+        decay: 0.94,
+        startVelocity: 30,
+        shapes: ["star"],
+        colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"]
+      };
+      confetti(_objectSpread(_objectSpread({}, defaults), {}, {
+        zIndex: 999999,
+        particleCount: 400,
+        scalar: 1.2,
+        shapes: ["star"]
+      }));
+      confetti(_objectSpread(_objectSpread({}, defaults), {}, {
+        zIndex: 999999,
+        particleCount: 100,
+        scalar: 0.75,
+        shapes: ["circle"]
+      }));
+    },
+    externalJS: function externalJS() {
+      var confetti = document.createElement('script');
+      confetti.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.0/dist/confetti.browser.min.js');
+      document.head.appendChild(confetti);
+    },
+    isHost: function isHost() {
+      return this.uid === this.user.id;
+    }
+  },
+  computed: {
+    channel: function channel() {
+      var path = window.location.pathname.split('/');
+      // console.log(path, 'path...........')
+      return "".concat(path[1], ".").concat(path[2], ".").concat(path[3]);
+    },
+    progressClass: function progressClass() {
+      return this.progress > 66 ? 'bg-success' : this.progress > 33 ? 'bg-info' : 'bg-danger';
+    },
+    progressWidth: function progressWidth() {
+      return {
+        'width': this.progress + '%'
+      };
+    }
+  }
+};
 
 /***/ }),
 
@@ -17031,7 +17270,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\r\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\r\n    font-size: 30px;\r\n    position: absolute;\r\n    right: -7px;\r\n    top: -3px;\r\n    background: white;\r\n    border: 1px solid;\r\n    border-radius: 50%;\r\n    width: 35px;\r\n    /* z-index: 999999; */\n}\n.imgTick{\r\n    position: absolute;\r\n    right: 24px;\r\n    top: 15px;\n}\n.imageOption {\r\n    height: 100px;\r\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\r\n        height: 170px;\r\n        width: 100%;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#qmodal {\n    background: linear-gradient(to right, #0083B0, #00B4DB);\n}\n#btn_cls_q {\n    font-size: 30px;\n    position: absolute;\n    right: -7px;\n    top: -3px;\n    background: white;\n    border: 1px solid;\n    border-radius: 50%;\n    width: 35px;\n    /* z-index: 999999; */\n}\n.imgTick{\n    position: absolute;\n    right: 24px;\n    top: 15px;\n}\n.imageOption {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption {\n        height: 170px;\n        width: 100%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -39294,8 +39533,12 @@ var render = function () {
               "div",
               { staticClass: "col-md-7" },
               [
-                _c("questions", {
-                  attrs: { questions: _vm.questions, qid: _vm.qid },
+                _c("questions-component", {
+                  attrs: {
+                    questions: _vm.questions,
+                    qid: _vm.qid,
+                    user: _vm.user,
+                  },
                 }),
               ],
               1
@@ -39504,10 +39747,7 @@ var render = function () {
               _vm._m(0),
             ]),
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.user.id != _vm.uid
-        ? _c("div", { staticClass: "row justify-content-center" }, [
+        : _c("div", { staticClass: "row justify-content-center" }, [
             _c("div", { staticClass: "col-md-8" }, [
               _c(
                 "div",
@@ -39546,8 +39786,15 @@ var render = function () {
                                 { staticClass: "pl-1 element-animation0" },
                                 [
                                   _vm._v(
-                                    " " +
-                                      _vm._s(_vm.ToText(question.question_text))
+                                    "\n                                    " +
+                                      _vm._s(
+                                        _vm.tbe(
+                                          question.bd_question_text,
+                                          question.question_text,
+                                          _vm.user.lang
+                                        )
+                                      ) +
+                                      "\n                                "
                                   ),
                                 ]
                               ),
@@ -39598,7 +39845,13 @@ var render = function () {
                                   [
                                     _vm._v(
                                       "\n                                    " +
-                                        _vm._s(_vm.ToText(option.option)) +
+                                        _vm._s(
+                                          _vm.tbe(
+                                            option.bd_option,
+                                            option.option,
+                                            _vm.user.lang
+                                          )
+                                        ) +
                                         "\n                                "
                                     ),
                                   ]
@@ -39717,8 +39970,7 @@ var render = function () {
               ],
               2
             ),
-          ])
-        : _vm._e(),
+          ]),
     ],
     1
   )
@@ -39816,6 +40068,8 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "result" }, [
+    _c("h1", [_vm._v("Group Result")]),
+    _vm._v(" "),
     _c("div", { staticClass: "card w-50 m-auto" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("h5", { staticClass: "card-title text-center" }, [
@@ -40009,6 +40263,8 @@ var render = function () {
   return _c(
     "div",
     [
+      _c("h1", [_vm._v("Moderator Questions..")]),
+      _vm._v(" "),
       _vm._l(_vm.questiondata, function (question, index) {
         return _c(
           "div",
@@ -40260,9 +40516,11 @@ var render = function () {
           },
           [
             _vm._v(
-              _vm._s(
-                _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
-              )
+              "\n                " +
+                _vm._s(
+                  _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
+                ) +
+                "\n            "
             ),
           ]
         ),
@@ -40343,13 +40601,15 @@ var render = function () {
                         [
                           _c("option", { attrs: { value: "0" } }, [
                             _vm._v(
-                              _vm._s(
-                                _vm.tbe(
-                                  "দয়া করে বিষয় নির্বাচন করুন",
-                                  "Please Select Topic",
-                                  _vm.user.lang
-                                )
-                              )
+                              "\n                                        " +
+                                _vm._s(
+                                  _vm.tbe(
+                                    "দয়া করে বিষয় নির্বাচন করুন",
+                                    "Please Select Topic",
+                                    _vm.user.lang
+                                  )
+                                ) +
+                                "\n                                    "
                             ),
                           ]),
                           _vm._v(" "),
@@ -40357,7 +40617,13 @@ var render = function () {
                             return _c(
                               "option",
                               { key: index, domProps: { value: topic.id } },
-                              [_vm._v(_vm._s(topic.name))]
+                              [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(topic.name) +
+                                    "\n                                    "
+                                ),
+                              ]
                             )
                           }),
                         ],

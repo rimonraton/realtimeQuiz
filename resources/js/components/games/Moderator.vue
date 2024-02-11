@@ -33,7 +33,11 @@
 
         <div class="row justify-content-center" v-if="user.id == uid">
             <div class="col-md-7">
-                <questions :questions="questions" :qid="qid" ></questions>
+                <questions-component
+                    :questions="questions"
+                    :qid="qid"
+                    :user="user"
+                />
             </div>
 
             <div class="col-md-5">
@@ -135,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center" v-if="user.id != uid">
+        <div class="row justify-content-center" v-else>
             <div class="col-md-8">
                 <div class="container-fluid px-0">
                     <!-- <div class="modal-dialog"> -->
@@ -145,7 +149,9 @@
                                     <span class="bg-success text-white rounded-circle" id="qid">{{ qid + 1 }}</span>
                                 </div>
                                 <div class="col-xs-11">
-                                    <h6 class="pl-1 element-animation0"> {{ ToText(question.question_text) }}</h6>
+                                    <h6 class="pl-1 element-animation0">
+                                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                                    </h6>
                                 </div>
 
                             </div>
@@ -158,7 +164,7 @@
                                     <li @click="clickSelect(index, option)"
                                         class="list-group-item list-group-item-action cursor my-1"
                                         :class="[`element-animation${index + 1}`, {selected:qoption.selected == index}]">
-                                        {{ ToText(option.option) }}
+                                        {{ tbe(option.bd_option, option.option, user.lang) }}
                                     </li>
                                 </ul>
                             </div>
@@ -204,14 +210,16 @@
 
 <script>
     import PieChart from '../helper/PieChart'
-    import questions from '../helper/moderator/questions'
+    import questionsComponent from '../helper/moderator/questions'
     import groupResult from '../helper/groupResult'
+    import {quizHelpers} from "../mixins/quizHelpers";
 
 
     export default {
+        mixins: [quizHelpers],
         props : ['id', 'uid', 'user', 'questions'],
 
-        components: { PieChart, questions, groupResult },
+        components: { PieChart, questionsComponent, groupResult },
 
         data() {
             return {
@@ -366,16 +374,19 @@
 
             checkAnswer(q, a, rw){
                 this.gamedata['id'] = this.qid + 1
-                this.gamedata['question'] = this.ToText(this.questions[this.qid].question_text)
-                this.gamedata['answer'] = this.ToText(this.getCorrectAnswertext())
-                this.gamedata['selected'] = this.ToText(a)
+                this.gamedata['question'] = this.tbe(this.questions[this.qid].bd_question_text, this.questions[this.qid].question_text, this.user.lang)
+                this.gamedata['answer'] = this.getCorrectAnswerText()
+                this.gamedata['selected'] = a
                 this.gamedata['isCorrect'] = rw
                 this.gamedata['user'] = this.user
                 this.gamedata['channel'] = this.channel
-                this.gamedata['group'] = this.user.group.name
+                this.gamedata['group'] = 'group'
                 let clone = {...this.gamedata}
                 this.answered_user_data.push(clone)
-                axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => this.getResult() )
+                axios.post(`/api/submitAnswerGroup`, {data:clone}).then( response => {
+                    console.log(response.data)
+                    this.getResult()
+                })
 
             },
             getResult(){
@@ -436,8 +447,15 @@
 
             },
 
-            getCorrectAnswertext(){
-                return this.questions[this.qid].options.find(o => o.correct == 1).option
+            getCorrectAnswerText() {
+                const correctOption = this.questions[this.qid].options.find(o => o.correct == 1)
+                if (correctOption.flag == 'img') {
+                    return correctOption.img_link
+                } else {
+                    const correctEngOption = correctOption.option
+                    const correctBanOption = correctOption.bd_option
+                    return this.tbe(correctBanOption, correctEngOption, this.user.lang)
+                }
             },
 
             winner(){

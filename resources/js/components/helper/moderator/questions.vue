@@ -1,5 +1,6 @@
 <template>
 	<div>
+        <h1>Moderator Questions..</h1>
 		<div :id="'accordion' + index" class="w-100 mb-2" v-for="(question, index) in questiondata">
 		    <div class="card text-white" :class="index == qid ? 'bg-success' : 'bg-secondary'">
 		        <div class="card-header p-1 cursor"
@@ -68,7 +69,9 @@
 		    </div>
 		</div>
         <div class="text-center">
-            <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">{{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}</a>
+            <a class="btn btn-sm col-sm-6 btn-success" @click="showModal">
+                {{ tbe('প্রশ্ন যুক্ত করুন','ADD QUESTION',user.lang) }}
+            </a>
 
         </div>
         <div class="modal" tabindex="-1" data-backdrop="false" role="dialog" id="qmodal">
@@ -84,8 +87,12 @@
                         <div class="row">
                             <div class="form-group col-md-8 col-sm-6">
                                 <select class="custom-select" required v-model="formData.topics">
-                                    <option value="0">{{ tbe('দয়া করে বিষয় নির্বাচন করুন','Please Select Topic',user.lang) }}</option>
-                                    <option :value="topic.id" v-for="(topic,index) in topics" :key="index">{{topic.name}}</option>
+                                    <option value="0">
+                                        {{ tbe('দয়া করে বিষয় নির্বাচন করুন','Please Select Topic',user.lang) }}
+                                    </option>
+                                    <option :value="topic.id" v-for="(topic,index) in topics" :key="index">
+                                        {{topic.name}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-sm-6">

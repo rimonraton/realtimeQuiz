@@ -247,16 +247,16 @@
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
 {{--                                    exampleModal--}}
-{{--                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">--}}
-{{--                                        <i class="fas fa-user text-white"></i>--}}
-{{--                                    </a>--}}
-                                    <a href="#" class="menu-item menu-blue bottom-cercle alt_notify">
+                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
-
-{{--                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">--}}
-{{--                                        <i class="fas fa-users text-white"></i>--}}
+{{--                                    <a href="#" class="menu-item menu-blue bottom-cercle alt_notify">--}}
+{{--                                        <i class="fas fa-user text-white"></i>--}}
 {{--                                    </a>--}}
+
+                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">
+                                        <i class="fas fa-users text-white"></i>
+                                    </a>
                                     <a href="{{url('team_quiz')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>

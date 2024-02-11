@@ -34,7 +34,11 @@
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr role="row">
-                                                <th style="width: 0px;">{{__('form.sl')}}</th>
+                                                <th style="width: 0px;">
+                                                    <input type="checkbox" id="allUser" name="users" class="material-inputs allUser" >
+                                                    <label class="m-0" for="allUser"></label>
+                                                    {{__('form.sl')}}
+                                                </th>
                                                 <th style="width: 0px;">{{__('form.user')}}</th>
                                                 <th style="width: 0px;">{{__('form.email')}}</th>
                                                 <th style="width: 0px;">{{__('form.mobile')}}</th>
@@ -44,7 +48,12 @@
                                             <tbody>
                                             @foreach($users as $user)
                                                     <tr>
-                                                        <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                                                        <td>
+                                                            <input type="checkbox" id="user_{{ $user->id }}"
+                                                                   class="material-inputs" name="users[]" value="{{ $user->id }}">
+                                                            <label class="m-0" for="user_{{ $user->id }}"></label>
+                                                            {{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}
+                                                        </td>
                                                         <th>{{$user->name}}</th>
                                                         <th>{{$user->email}}</th>
                                                         <th>{{$user->info ? ($user->info->mobile ? $user->info->mobile :'---') : '---'}}</th>
@@ -393,6 +402,29 @@
                     }
                 })
             });
+
+            var usersData = []
+            $(document).on('click', '.allUsers', function () {
+                const id = $(this).val()
+                // if($('input:checkbox.verifyelement:checked').length > 0) {
+                //     $( "#verifybtnDiv" ).removeClass('d-none');
+                // } else{
+                //     $( "#verifybtnDiv" ).addClass('d-none');
+                // }
+
+                if ($(this).is(':checked')) {
+                    verifydata.push(id);
+                } else {
+                    verifydata = verifydata.filter(function(elem){
+                        return elem != id;
+                    });
+                }
+                if ($('input:checkbox.verifyelement').length == verifydata.length){
+                    $('.alloptionverify').prop('checked', true);
+                } else {
+                    $('.alloptionverify').prop('checked', false);
+                }
+            })
 
             $('.add').on('click',function (){
                 var role_id = $(this).data('role_id');

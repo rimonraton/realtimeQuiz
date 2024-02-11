@@ -12,6 +12,9 @@ Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
 //Route::get('Mode/Practice', [PracticeController::class, 'Practice'])->name('practice');
 //Route::get('Mode/Challenge', [ChallengeController::class, 'Challenge'])->name('challenge');
 
+Route::get('Team/{quiz}/{user}', [HomeController::class, 'Team'])->name('team.quiz');
+
+
 Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
 
 Route::get('Mode/{type}/{quiz}/{user}', [HomeController::class, 'Game'])->name('mode');
