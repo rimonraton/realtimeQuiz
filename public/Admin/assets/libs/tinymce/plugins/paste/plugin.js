@@ -150,7 +150,7 @@ var paste = (function (domGlobals) {
         clipboard.pasteFormat.set('text');
         Events.firePastePlainTextToggle(editor, true);
         if (shouldInformUserAboutPlainText(editor, userIsInformedState)) {
-          displayNotification(editor, 'Paste is now in plain text mode. Contents will now be pasted as plain text until you toggle this option off.');
+          displayNotification(editor, 'Paste is now in plain text practice. Contents will now be pasted as plain text until you toggle this option off.');
           userIsInformedState.set(true);
         }
       }

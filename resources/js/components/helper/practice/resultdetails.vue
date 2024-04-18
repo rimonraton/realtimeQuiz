@@ -10,7 +10,7 @@
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body p-0">
                 <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
-                    <li v-for="result in results" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
+                    <li v-for="result in results.slice().reverse()" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
                         <div class="font-weight-light f-13">
                             <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
@@ -68,7 +68,7 @@
                 window.location.reload()
             },
             back(){
-                window.history.back()
+              window.location.replace("/Practice");
                 // window.history.back()
             },
             isImg(link){

@@ -194,7 +194,7 @@
 		 * the Api's context.
 		 * @param {boolean} [traditional=false] Set the API instance's context to be
 		 *   only the table referred to by the `DataTable.ext.iApiIndex` option, as was
-		 *   used in the API presented by DataTables 1.9- (i.e. the traditional mode),
+		 *   used in the API presented by DataTables 1.9- (i.e. the traditional practice),
 		 *   or if all tables captured in the jQuery object should be used.
 		 * @return {DataTables.Api}
 		 */
@@ -7799,7 +7799,7 @@
 			page   = opts.page;    // all, current
 	
 		if ( _fnDataSource( settings ) == 'ssp' ) {
-			// In server-side processing mode, most options are irrelevant since
+			// In server-side processing practice, most options are irrelevant since
 			// rows not shown don't exist and the index order is the applied order
 			// Removed is a special case - for consistency just return an empty
 			// array

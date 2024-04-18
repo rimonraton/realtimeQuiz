@@ -16,7 +16,6 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\ShareController;
-use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('qr-code', function () {
@@ -52,9 +51,7 @@ Route::middleware(['hasAccess', 'verified'])->group(function () {
 //    Route::get('game/setup', [PerformController::class,'gamesetup'])->name('game.create');
     Route::get('game/perform-message', [PerformController::class,'performmessagesetup'])->name('game.performMessage');
 
-//team
-    Route::get('teamlist', [TeamController::class, 'index'])->name('teamList');
-    Route::get('team_quiz',[TeamController::class, 'team_quiz'])->name('teamQuiz');
+
 
 
 //profile

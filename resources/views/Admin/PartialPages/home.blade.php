@@ -57,7 +57,7 @@
                         <i class="fas fa-address-card"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('Mode/Practice')}}">{{__('msg.practice')}}</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{route('game.practice')}}">{{__('msg.practice')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Total Quizzes</h5> -->
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                         <i class="fas fa-arrows-alt-h"></i>
                     </div>
                     <div class="ml-2 align-self-center">
-                        <h3 class="mb-0 font-weight-light"><a href="{{url('game/mode/challenge')}}">{{__('msg.challenge')}}</a></h3>
+                        <h3 class="mb-0 font-weight-light"><a href="{{route('game.challenge')}}">{{__('msg.challenge')}}</a></h3>
                         <!-- <h5 class="text-muted mb-0">Publish Quizzes</h5> -->
                     </div>
                 </div>

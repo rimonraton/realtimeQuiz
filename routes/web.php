@@ -82,7 +82,7 @@ Route::get('setLanguage/{locale}', function ($locale) {
 
 Route::post('contact', [ContractController::class ,'sendMessage']);
 
-Route::get('getProgress/{id}', [HomeController::class, 'getProgress'])->name('getProgress');
+
 Route::get('/lang-{lang}.js', 'LanguageController@show');
 
 
@@ -204,7 +204,7 @@ Route::middleware(['hasAccess'])->group(function () {
     //Exam
     Route::get('start-exams/{examination}/{uid}', [ExamController::class, 'startExam'])->name('startExams');
     Route::post('save-examination', [ExamController::class, 'store'])->name('saveExamination');
-    Route::post('mode-update', [ExamController::class, 'timeModeUpdate'])->name('modeUpdate');
+    Route::post('practice-update', [ExamController::class, 'timeModeUpdate'])->name('modeUpdate');
     Route::post('examPublished', [ExamController::class, 'examPublished'])->name('examPublished');
     Route::get('show-result/{examination}/{uid}', [ExamController::class, 'showUserResult'])->name('showResult');
     Route::get('exam-result/{examination}', [ExamController::class, 'showExamResult'])->name('examResult');
@@ -226,9 +226,7 @@ Route::middleware(['hasAccess'])->group(function () {
     Route::get('questionTypedelete/{id}', [QuestionTypeController::class,'delete'])->name('questionTypeDelete');
     Route::get('search_Q_type/{keyword}',[SearchController::class,'search_Q_type'])->name('searchQType');
 
-    // Quiz Team
-    Route::get('game_quiz_create', [QuizController::class,'game_quiz_create'])->name('gameQuizCreate');
-    Route::post('game_quiz_save', [QuizController::class,'game_quiz_save'])->name('gameQuizSave');
+
 
     // Quiz Practice
     Route::get('quiz/quiz/list/{id}', [QuizController::class,'quizList'])->name('quiz.withOptionList');

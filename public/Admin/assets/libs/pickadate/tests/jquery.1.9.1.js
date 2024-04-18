@@ -1527,7 +1527,7 @@ jQuery.support = (function() {
 
             if ( support.inlineBlockNeedsLayout ) {
                 // Prevent IE 6 from affecting layout for positioned elements #11048
-                // Prevent IE from shrinking the body in IE 7 mode #12869
+                // Prevent IE from shrinking the body in IE 7 practice #12869
                 // Support: IE<8
                 body.style.zoom = 1;
             }
@@ -3018,7 +3018,7 @@ jQuery.event = {
                         elem[ type ]();
                     } catch ( e ) {
                         // IE<9 dies on focus/blur to hidden element (#1486,#12518)
-                        // only reproducible on winXP IE8 native, not IE9 in IE8 mode
+                        // only reproducible on winXP IE8 native, not IE9 in IE8 practice
                     }
                     jQuery.event.triggered = undefined;
 
@@ -7911,7 +7911,7 @@ jQuery.extend({
             }
         }
 
-        // Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+        // Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
         if ( s.ifModified ) {
             if ( jQuery.lastModified[ cacheURL ] ) {
                 jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
@@ -8023,7 +8023,7 @@ jQuery.extend({
             // If successful, handle type chaining
             if ( status >= 200 && status < 300 || status === 304 ) {
 
-                // Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+                // Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
                 if ( s.ifModified ) {
                     modified = jqXHR.getResponseHeader("Last-Modified");
                     if ( modified ) {
@@ -8600,7 +8600,7 @@ if ( xhrSupported ) {
                     };
 
                     if ( !s.async ) {
-                        // if we're in sync mode we fire the callback
+                        // if we're in sync practice we fire the callback
                         callback();
                     } else if ( xhr.readyState === 4 ) {
                         // (IE6 & IE7) if it's in cache and has been

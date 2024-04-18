@@ -74,10 +74,10 @@
   var REGEXP_TAG_NAME = /^(?:img|canvas)$/i;
 
   var DEFAULTS = {
-    // Define the view mode of the cropper
+    // Define the view practice of the cropper
     viewMode: 0, // 0, 1, 2, 3
 
-    // Define the dragging mode of the cropper
+    // Define the dragging practice of the cropper
     dragMode: DRAG_MODE_CROP, // 'crop', 'move' or 'none'
 
     // Define the aspect ratio of the crop box
@@ -149,7 +149,7 @@
     // Enable to resize the crop box
     cropBoxResizable: true,
 
-    // Toggle drag mode between "crop" and "move" when click twice on the cropper
+    // Toggle drag practice between "crop" and "move" when click twice on the cropper
     toggleDragModeOnDblclick: true,
 
     // Size limitation
@@ -539,7 +539,7 @@
 
 
         /**
-         * This setter can fix a `TypeError` in strict mode
+         * This setter can fix a `TypeError` in strict practice
          * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only}
          * @param {boolean} value - The value to set
          */
@@ -2018,7 +2018,7 @@
       var renderable = true;
       var offset = void 0;
 
-      // Locking aspect ratio in "free mode" by holding shift key
+      // Locking aspect ratio in "free practice" by holding shift key
       if (!aspectRatio && e.shiftKey) {
         aspectRatio = width && height ? width / height : 1;
       }
@@ -3224,8 +3224,8 @@
 
 
     /**
-     * Change the drag mode.
-     * @param {string} mode - The new drag mode.
+     * Change the drag practice.
+     * @param {string} mode - The new drag practice.
      * @returns {Cropper} this
      */
     setDragMode: function setDragMode(mode) {
@@ -3246,7 +3246,7 @@
         toggleClass(dragBox, CLASS_MOVE, movable);
 
         if (!options.cropBoxMovable) {
-          // Sync drag mode to crop box when it is not movable
+          // Sync drag practice to crop box when it is not movable
           setData(face, DATA_ACTION, mode);
           toggleClass(face, CLASS_CROP, croppable);
           toggleClass(face, CLASS_MOVE, movable);

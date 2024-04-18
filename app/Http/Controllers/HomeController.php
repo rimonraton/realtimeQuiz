@@ -45,11 +45,12 @@ class HomeController extends Controller
         $quiz =  Quiz::with('quizCategory')->paginate(9);
         $user = Auth::user();
         $categories = Category::where('sub_topic_id', 0)->get();
-        return view('mode', compact('quiz', 'user', 'categories', 'type'));
+        return view('practice', compact('quiz', 'user', 'categories', 'type'));
     }
 
     public function Game($type, Quiz $quiz, $uid)
     {
+        return 'Practice and Moderator Mode';
         if($type == 'Moderator') {
             $type = 'Quiz Master';
         }
@@ -66,6 +67,27 @@ class HomeController extends Controller
         $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
         return view('games.' . Str::slug($type), compact(['id', 'user', 'questions', 'uid', 'gmsg', 'quiz']));
     }
+    public function Practice(Quiz $quiz, $uid)
+    {
+        return 'Practice Mode';
+        if($type == 'Moderator') {
+            $type = 'Quiz Master';
+        }
+        $game = \DB::table('games')->where('gb_game_name', $type)->first();
+//        dd($game);
+        $gmsg = \DB::table('perform_messages')->where('game_id', $game->id)->get();
+        $id = $quiz->id;
+        $questions = Question::with('options')->whereIn('id', explode(",", $quiz->questions))->get();
+        // return json_encode($questions, JSON_UNESCAPED_UNICODE);
+        //  $questions = $exam->questions()->with('options')->get();
+        $user = Auth::user();
+        $user['lang'] = app()->getLocale();
+        $user['group'] = Auth::user()->group;
+        $user['start_at'] = Carbon::now('Asia/Dhaka')->format('Y-m-d h:i:s');
+        return view('games.' . Str::slug($type), compact(['id', 'user', 'questions', 'uid', 'gmsg', 'quiz']));
+    }
+
+
 
 
     public function home()
@@ -100,12 +122,6 @@ class HomeController extends Controller
             return redirect('Mode/' . $type . '/' . $id . '/' . $uid);
         }
         return view('share_btn_link', compact('type', 'id', 'uid'));
-    }
-
-    public function getProgress($id)
-    {
-        $progress = Auth::user()->progress->where('quiz_id', $id);
-        return view('quiz_progress', compact('progress'));
     }
 
 

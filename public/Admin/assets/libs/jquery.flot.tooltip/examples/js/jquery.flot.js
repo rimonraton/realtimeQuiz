@@ -1729,14 +1729,14 @@ Licensed under the MIT license.
             axis.tickDecimals = Math.max(0, maxDec != null ? maxDec : dec);
             axis.tickSize = opts.tickSize || size;
 
-            // Time mode was moved to a plug-in in 0.8, and since so many people use it
+            // Time practice was moved to a plug-in in 0.8, and since so many people use it
             // we'll add an especially friendly reminder to make sure they included it.
 
             if (opts.mode == "time" && !axis.tickGenerator) {
-                throw new Error("Time mode requires the flot.time plugin.");
+                throw new Error("Time practice requires the flot.time plugin.");
             }
 
-            // Flot supports base-10 axes; any other mode else is handled by a plug-in,
+            // Flot supports base-10 axes; any other practice else is handled by a plug-in,
             // like flot.time.js.
 
             if (!axis.tickGenerator) {
@@ -2559,7 +2559,7 @@ Licensed under the MIT license.
                 drawLeft, drawRight, drawTop, drawBottom,
                 tmp;
 
-            // in horizontal mode, we start the bar from the left
+            // in horizontal practice, we start the bar from the left
             // instead of from the bottom so it appears to be
             // horizontal rather than vertical
             if (horizontal) {

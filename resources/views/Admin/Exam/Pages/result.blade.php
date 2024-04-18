@@ -29,13 +29,13 @@
                                 >
                                 </exam-result-when-empty>
                             @endif
-{{--                        <exam-time-mode--}}
+{{--                        <exam-time-practice--}}
 {{--                            :questions="{{ $questions }}"--}}
 {{--                            :qid="{{$id}}"--}}
 {{--                            :user="{{ $user }}"--}}
 {{--                            :exam-time="{{ $examination->exam_time }}"--}}
 {{--                            @addQuestion="addQuestion($event)">--}}
-{{--                        </exam-time-mode>--}}
+{{--                        </exam-time-practice>--}}
 
                     </div>
                 </div>

@@ -7754,7 +7754,7 @@ jQuery.extend({
 			// If successful, handle type chaining
 			if ( status >= 200 && status < 300 || status === 304 ) {
 
-				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
 				if ( s.ifModified ) {
 
 					modified = jqXHR.getResponseHeader("Last-Modified");
@@ -7923,7 +7923,7 @@ jQuery.extend({
 			jqXHR.setRequestHeader( "Content-Type", s.contentType );
 		}
 
-		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
 		if ( s.ifModified ) {
 			ifModifiedKey = ifModifiedKey || s.url;
 			if ( jQuery.lastModified[ ifModifiedKey ] ) {
@@ -8520,7 +8520,7 @@ if ( jQuery.support.ajax ) {
 					};
 
 					if ( !s.async ) {
-						// if we're in sync mode we fire the callback
+						// if we're in sync practice we fire the callback
 						callback();
 					} else if ( xhr.readyState === 4 ) {
 						// (IE6 & IE7) if it's in cache and has been

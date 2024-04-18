@@ -9,7 +9,6 @@ class Permission
 {
     public static function can($route)
     {
-
         $user = auth()->user();
         if($user->roleuser->role->role_name == 'Super Admin'){
             return true;

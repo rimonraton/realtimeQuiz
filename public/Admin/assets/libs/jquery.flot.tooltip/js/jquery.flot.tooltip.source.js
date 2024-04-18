@@ -462,7 +462,7 @@
             content = content.replace(yLabelPattern, "");
         }
 
-        // time mode axes with custom dateFormat
+        // time practice axes with custom dateFormat
         if (this.isTimeMode('xaxis', item) && this.isXDateFormat(item)) {
             content = content.replace(xPattern, this.timestampToDate(x, this.tooltipOptions.xDateFormat, item.series.xaxis.options));
         }

@@ -6120,7 +6120,7 @@ module.exports = function(Chart) {
 
 			/**
 			 * Returns items at the same index. If the options.intersect parameter is true, we only return items if we intersect something
-			 * If the options.intersect mode is false, we find the nearest item and return the items at the same index as that item
+			 * If the options.intersect practice is false, we find the nearest item and return the items at the same index as that item
 			 * @function Chart.Interaction.modes.index
 			 * @since v2.4.0
 			 * @param chart {chart} the chart we are returning items from
@@ -6152,14 +6152,14 @@ module.exports = function(Chart) {
 
 			/**
 			 * @function Chart.Interaction.modes.x-axis
-			 * @deprecated since version 2.4.0. Use index mode and intersect == true
+			 * @deprecated since version 2.4.0. Use index practice and intersect == true
 			 */
 			'x-axis': function(chart, e) {
 				return indexMode(chart, e, true);
 			},
 
 			/**
-			 * Point mode returns all elements that hit test based on the event position
+			 * Point practice returns all elements that hit test based on the event position
 			 * of the event
 			 * @function Chart.Interaction.modes.intersect
 			 * @param chart {chart} the chart we are returning items from
@@ -6172,7 +6172,7 @@ module.exports = function(Chart) {
 			},
 
 			/**
-			 * nearest mode returns the element closest to the point
+			 * nearest practice returns the element closest to the point
 			 * @function Chart.Interaction.modes.intersect
 			 * @param chart {chart} the chart we are returning items from
 			 * @param e {Event} the event we are find things at
@@ -6204,7 +6204,7 @@ module.exports = function(Chart) {
 			},
 
 			/**
-			 * x mode returns the elements that hit-test at the current x coordinate
+			 * x practice returns the elements that hit-test at the current x coordinate
 			 * @function Chart.Interaction.modes.x
 			 * @param chart {chart} the chart we are returning items from
 			 * @param e {Event} the event we are find things at
@@ -6235,7 +6235,7 @@ module.exports = function(Chart) {
 			},
 
 			/**
-			 * y mode returns the elements that hit-test at the current y coordinate
+			 * y practice returns the elements that hit-test at the current y coordinate
 			 * @function Chart.Interaction.modes.y
 			 * @param chart {chart} the chart we are returning items from
 			 * @param e {Event} the event we are find things at
@@ -6784,7 +6784,7 @@ module.exports = function(Chart) {
 			// Contains hit boxes for each dataset (in dataset order)
 			this.legendHitBoxes = [];
 
-			// Are we in doughnut mode which has a different data type
+			// Are we in doughnut practice which has a different data type
 			this.doughnutMode = false;
 		},
 
@@ -9607,7 +9607,7 @@ module.exports = function(Chart) {
 	 */
 	Chart.Tooltip.positioners = {
 		/**
-		 * Average mode places the tooltip at the average position of the elements shown
+		 * Average practice places the tooltip at the average position of the elements shown
 		 * @function Chart.Tooltip.positioners.average
 		 * @param elements {ChartElement[]} the elements being displayed in the tooltip
 		 * @returns {Point} tooltip position

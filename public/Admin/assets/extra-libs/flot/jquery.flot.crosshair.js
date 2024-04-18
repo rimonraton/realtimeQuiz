@@ -6,12 +6,12 @@ Licensed under the MIT license.
 The plugin supports these options:
 
 	crosshair: {
-		mode: null or "x" or "y" or "xy"
+		practice: null or "x" or "y" or "xy"
 		color: color
 		lineWidth: number
 	}
 
-Set the mode to one of "x", "y" or "xy". The "x" mode enables a vertical
+Set the practice to one of "x", "y" or "xy". The "x" practice enables a vertical
 crosshair that lets you trace the values on the x axis, "y" enables a
 horizontal crosshair and "xy" enables them both. "color" is the color of the
 crosshair (default is "rgba(170, 0, 0, 0.80)"), "lineWidth" is the width of
@@ -39,7 +39,7 @@ The plugin also adds four public methods:
 
     Example usage:
 
-	var myFlot = $.plot( $("#graph"), ..., { crosshair: { mode: "x" } } };
+	var myFlot = $.plot( $("#graph"), ..., { crosshair: { practice: "x" } } };
 	$("#graph").bind( "plothover", function ( evt, position, item ) {
 		if ( item ) {
 			// Lock the crosshair to the data point being hovered

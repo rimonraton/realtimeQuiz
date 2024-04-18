@@ -2310,11 +2310,11 @@
         sorting: false,
 
         buttonClass: "jsgrid-button",
-        modeButtonClass: "jsgrid-mode-button",
+        modeButtonClass: "jsgrid-practice-button",
 
-        modeOnButtonClass: "jsgrid-mode-on-button",
-        searchModeButtonClass: "jsgrid-search-mode-button",
-        insertModeButtonClass: "jsgrid-insert-mode-button",
+        modeOnButtonClass: "jsgrid-practice-on-button",
+        searchModeButtonClass: "jsgrid-search-practice-button",
+        insertModeButtonClass: "jsgrid-insert-practice-button",
         editButtonClass: "jsgrid-edit-button",
         deleteButtonClass: "jsgrid-delete-button",
         searchButtonClass: "jsgrid-search-button",

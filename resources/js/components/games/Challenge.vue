@@ -179,7 +179,9 @@
             Score Board
             <!--                        <a @click="stop"  class="btn btn-sm btn-danger float-left">STOP</a>-->
             <a @click="gameResetCall" v-if="user.id == uid && qid > 0 "
-               class="btn btn-sm btn-danger float-right">RESET</a>
+               class="btn btn-sm btn-danger float-right">
+                RESET
+            </a>
           </div>
           <div class="card-body">
             <transition-group name="slide-up" class="list-group" tag="ul" appear>
@@ -259,66 +261,66 @@ export default {
     };
   },
 
-  created() {
-    // console.log('challenge created')
-    Echo.channel(this.channel)
-        .listen('GameStartEvent', (data) => {
-          console.log(['GameStartEvent.............', data])
-          this.share = data.share
-          this.game_start = 1 // Game Start from Game Owner...
-          this.screen.waiting = 0
-          this.sqo = true
-          this.showQuestionOptions(null)
-          this.qt.defaultTime = data.defaultTime
-          this.qt.time = data.defaultTime
+    created: function () {
+        // console.log('challenge created')
+        Echo.channel(this.channel)
+            .listen('GameStartEvent', (data) => {
+                if (this.game_start === 1) return
+                console.log(['GameStartEvent.............', data.gameData])
+                this.share = data.gameData['share']
+                this.game_start = 1 // Game Start from Game Owner...
+                this.screen.waiting = 0
+                this.sqo = true
+                this.showQuestionOptions(null)
+                this.qt.defaultTime = data.gameData['defaultTime']
+                this.qt.time = data.gameData['defaultTime']
+            })
+            .listen('GameResetEvent', (data) => {
+                console.log(['GameResetEvent.............', data])
+                this.gameReset()
+            })
+            .listen('GameEndUserEvent', (data) => {
+                console.log(['GameEndUserEvent.............', data])
+                this.end_user++
+                if (this.users.length == this.end_user) {
+                    this.winner()
+                }
+            })
+            .listen('GameEndByHostEvent', (data) => {
+                console.log(['GameEndByHostEvent.............', data])
+                this.winner()
+            })
+            .listen('QuestionClickedEvent', (data) => {
+                console.log('QuestionClickedEvent.............')
+                this.answered_user_data.push(data)
+                this.getResult()
+            })
+            .listen('MakeHostEvent', (data) => {
+                console.log('MakeHostEvent.............', data)
+                if (data.status == 'accept') {
+                    this.uid = data.user.id
+                    this.requestHostUser = null
+                } else if (data.status == 'deny') {
+                    this.requestHostUser = null
+                } else {
+                    this.requestHostUser = data.user
+                }
 
-        })
-        .listen('GameResetEvent', (data) => {
-          console.log(['GameResetEvent.............', data])
-          this.gameReset()
-        })
-        .listen('GameEndUserEvent', (data) => {
-          console.log(['GameEndUserEvent.............', data])
-          this.end_user++
-          if (this.users.length == this.end_user) {
-            this.winner()
-          }
-        })
-        .listen('GameEndByHostEvent', (data) => {
-          console.log(['GameEndByHostEvent.............', data])
-            this.winner()
-        })
-        .listen('QuestionClickedEvent', (data) => {
-          console.log('QuestionClickedEvent.............')
-          this.answered_user_data.push(data)
-          this.getResult()
-        })
-        .listen('MakeHostEvent', (data) => {
-          console.log('MakeHostEvent.............', data)
-          if (data.status == 'accept') {
-            this.uid = data.user.id
-            this.requestHostUser = null
-          } else if (data.status == 'deny') {
-            this.requestHostUser = null
-          } else {
-            this.requestHostUser = data.user
-          }
+            })
+            .listen('ChangeQuestionEvent', (data) => {
+                console.log('ChangeQuestionEvent.............', data)
+                this.questions = data.questions
+            })
+            .listen('KickUserEvent', (data) => {
+                console.log('KickUserEvent.............')
+                this.users = this.users.filter(u => u.id !== data.uid)
 
-        })
-        .listen('ChangeQuestionEvent', (data) => {
-          console.log('ChangeQuestionEvent.............', data)
-          this.questions = data.questions
-        })
-        .listen('KickUserEvent', (data) => {
-          console.log('KickUserEvent.............')
-          this.users = this.users.filter(u => u.id !== data.uid)
+                if (this.user.id == data.uid) {
+                    window.location.href = "/"
+                }
 
-          if (this.user.id == data.uid) {
-            window.location.href = "/"
-          }
-
-        });
-  },
+            });
+    },
   // watch: {
   //     questions: {
   //         handler(newQuestion) {
@@ -377,29 +379,31 @@ export default {
 
   methods: {
     gameStart: function (defaultTime = 30) {
-      console.log('gameStart...')
-      this.sqo = true
-      let ids = this.users.map(u => u.id)
-      let gd = {
-        channel: this.channel,
-        gameStart: 1,
-        uid: ids,
-        id: this.challenge.id,
-        users: this.users,
-        host_id: this.uid,
-        defaultTime: defaultTime
-      }
-      this.qt.defaultTime = defaultTime
-      this.qt.time = defaultTime
-      // console.log(gd);
-      axios.post(`/api/gameStart`, gd)
-          .then(res => {
-            this.share = res.data
-            this.game_start = 1
-            this.screen.waiting = 0
-            this.showQuestionOptions(this.questions[0].fileType)
-          })
-      // this.QuestionTimer()
+        console.log('gameStart...')
+        this.sqo = true
+        let ids = this.users.map(u => u.id)
+        let gd = {
+            channel: this.channel,
+            gameStart: 1,
+            uid: ids,
+            id: this.challenge.id,
+            users: this.users,
+            host_id: this.uid,
+            defaultTime: defaultTime,
+            mode: 'challenge'
+        }
+        this.qt.defaultTime = defaultTime
+        this.qt.time = defaultTime
+        // console.log(gd);
+        axios.post(`/api/gameStart`, gd)
+            .then(res => {
+                console.log('res.data', res.data)
+                this.share = res.data
+                this.game_start = 1
+                this.screen.waiting = 0
+                this.showQuestionOptions(this.questions[0].fileType)
+            })
+        // this.QuestionTimer()
     },
     showQuestionOptions(question) {
       if (this.gameEnded) return;

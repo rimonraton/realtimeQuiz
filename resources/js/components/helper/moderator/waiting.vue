@@ -2,7 +2,15 @@
 	<div class="waiting">
 	    <div class="card" style="width: 24rem; ">
 	        <div class="card-header" v-if="user.id != uid">
-	            <span  class="ml-1 text-primary">{{tbe('দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..','Please wait, the Quiz Master will start the game soon..',user.lang)}}</span>
+	            <span  class="ml-1 text-primary">
+                    {{
+                        tbe(
+                            'দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..',
+                            'Please wait, the Quiz Master will start the game soon..',
+                            user.lang
+                        )
+                    }}
+                </span>
 	        </div>
 	        <div class="card-body" style="max-height:90vh; overflow:auto">
 <!--                <h1 class="animate__animated animate__bounce">An animated element</h1>-->
@@ -28,7 +36,15 @@
 <!--                            <img class="img-fluid" src="http://grafreez.com/wp-content/temp_demos/river/img/politics.jpg" alt="">-->
                             <div class="card-body">
                                 <div class="news-title">
-                                    <h2 class=" title-small">{{team.name}} <span class="text-danger float-right" style="cursor:pointer" @click="deleteTeam(team.id)" v-if="user.id == uid">X</span></h2>
+                                    <h2 class=" title-small">
+                                        {{team.name}}
+                                        <span class="text-danger float-right"
+                                              style="cursor:pointer"
+                                              @click="deleteTeam(team.id)"
+                                              v-if="user.id == uid">
+                                            X
+                                        </span>
+                                    </h2>
                                 </div>
                                 <p class="card-text"><span class="badge badge-info mr-1" v-for="user in getTeamUsers(team.id)" :key="user.id" v-if="!!user">{{ user.name }}</span></p>
                             </div>
@@ -38,8 +54,12 @@
 
 	            <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
 	            <div class="d-flex justify-content-between">
-                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">{{ tbe('শুরু করুন','START',user.lang) }}</a>
-                    <a @click="open_team_modal" v-if="user.id == uid" class="btn btn-sm btn-outline-info mt-4 pull-right">{{ tbe('দল যুক্ত করুন','Add Team',user.lang) }}</a>
+                    <a @click="$emit('gameStart')" v-if="user.id == uid" class="btn btn-sm btn-outline-success mt-4 pull-right">
+                        {{ tbe('শুরু করুন','START',user.lang) }}
+                    </a>
+                    <a @click="open_team_modal" v-if="user.id == uid" class="btn btn-sm btn-outline-info mt-4 pull-right">
+                        {{ tbe('দল যুক্ত করুন','Add Team',user.lang) }}
+                    </a>
 <!--                    <a class="btn btn-sm btn-outline-danger mt-4 " v-html="schedule">-->
 <!--                    </a>-->
 
@@ -73,8 +93,12 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="addemitTeam" >{{ tbe('দল যুক্ত করুন','ADD TEAM',user.lang) }}</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">{{ tbe('বাতিল করুন','Cancel',user.lang) }}</button>
+                        <button type="button" class="btn btn-primary" @click="addemitTeam" >
+                            {{ tbe('দল যুক্ত করুন','ADD TEAM',user.lang) }}
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            {{ tbe('বাতিল করুন','Cancel',user.lang) }}
+                        </button>
                     </div>
                 </div>
             </div>

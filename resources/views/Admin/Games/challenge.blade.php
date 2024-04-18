@@ -227,7 +227,7 @@
                                    class="btn btn-xs btn-outline-info align-self-center" >
                                     {{__('msg.instant')}}
                                 </a>
-                                <a href="{{ url('Challenge/'. $ch->id . '/' . Auth::id()) }}"
+                                <a href="{{ route('game.challenge.start', [$ch->id, Auth::id()]) }}"
                                    class="btn btn-xs btn-outline-info align-self-center" >
                                     {{__('msg.start')}}
                                 </a>

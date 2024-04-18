@@ -26,13 +26,22 @@ Broadcast::channel('chat', function ($user) {
     return $user;
 });
 
-Broadcast::channel('Challenge.{id}.{uid}', function ($user, $id, $uid) {
+Broadcast::channel('challenge.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation();
     if($geoip->getIp()) $geoip->setIP('27.147.187.184');
     $country = strtolower($geoip->getCountryCode());
     $user['country'] =  $country == null ? 'bd': $country;
     return $user;
 });
+
+Broadcast::channel('quizMaster.{id}.{uid}', function ($user, $id, $uid) {
+    $geoip = new GeoIPLocation();
+    if($geoip->getIp()) $geoip->setIP('27.147.187.184');
+    $country = strtolower($geoip->getCountryCode());
+    $user['country'] =  $country == null ? 'bd': $country;
+    return $user;
+});
+
 
 Broadcast::channel('team.{id}.{uid}', function ($user, $id, $uid) {
 	$geoip = new GeoIPLocation();

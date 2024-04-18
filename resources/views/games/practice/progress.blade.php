@@ -19,7 +19,7 @@
 				<td>{{ $p->created_at->diffForHumans()   }}</td>
 				<td>{{ $p->start_at }}</td>
 				<td>{{ $p->created_at }}</td>
-				<td>@include('includes.stars.1')</td>
+				<td>@include('includes.stars.'.$p->stars)</td>
 			</tr>
 		@endforeach
 

@@ -1797,7 +1797,7 @@ if (Tablesaw.mustard) {
 	};
 	var defaultMode = "stack";
 	var initSelector = "table";
-	var initFilterSelector = "[data-tablesaw],[data-tablesaw-mode],[data-tablesaw-sortable]";
+	var initFilterSelector = "[data-tablesaw],[data-tablesaw-practice],[data-tablesaw-sortable]";
 	var defaultConfig = {};
 
 	Tablesaw.events = events;
@@ -1819,7 +1819,7 @@ if (Tablesaw.mustard) {
 		// multiple <tbody> are allowed, per the specification
 		this.$tbody = this.$table.children().filter("tbody");
 
-		this.mode = this.$table.attr("data-tablesaw-mode") || defaultMode;
+		this.mode = this.$table.attr("data-tablesaw-practice") || defaultMode;
 
 		this.$toolbar = null;
 
@@ -2159,7 +2159,7 @@ if (Tablesaw.mustard) {
 		this.$toolbar = $toolbar;
 
 		if (this.mode) {
-			this.$toolbar.addClass("tablesaw-mode-" + this.mode);
+			this.$toolbar.addClass("tablesaw-practice-" + this.mode);
 		}
 	};
 
@@ -3641,10 +3641,10 @@ if (Tablesaw.mustard) {
 (function() {
 	var S = {
 		selectors: {
-			init: "table[data-tablesaw-mode-switch]"
+			init: "table[data-tablesaw-practice-switch]"
 		},
 		attributes: {
-			excludeMode: "data-tablesaw-mode-exclude"
+			excludeMode: "data-tablesaw-practice-exclude"
 		},
 		classes: {
 			main: "tablesaw-modeswitch",
@@ -3665,7 +3665,7 @@ if (Tablesaw.mustard) {
 						Tablesaw.i18n.modeSwitchColumns +
 						"</span>:"
 				],
-				dataMode = $table.attr("data-tablesaw-mode"),
+				dataMode = $table.attr("data-tablesaw-practice"),
 				isSelected;
 
 			// TODO next major version: remove .btn
@@ -3711,7 +3711,7 @@ if (Tablesaw.mustard) {
 			$switcher.remove();
 			tblsaw.destroy();
 
-			$table.attr("data-tablesaw-mode", val);
+			$table.attr("data-tablesaw-practice", val);
 			$table.tablesaw();
 		}
 	};

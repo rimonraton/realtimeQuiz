@@ -154,7 +154,7 @@
                                                 </th>
                                                 <th class="text-center">
                                                     <span class="badge {{$exam->exam_time ? 'badge-info' : ($exam->question_time ? 'badge-primary' : 'badge-danger')}}">
-                                                        {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No mode')}}
+                                                        {{$exam->exam_time ? __('exam.normal') : ($exam->question_time ? __('exam.set_of_q') : 'No practice')}}
                                                     </span>
                                                     <span class="badge badge-success">
                                                         {{ convert_seconds($exam->exam_time ? $exam->exam_time : ($exam->question_time ? $exam->question_time : 0)) }}
@@ -278,7 +278,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal form-material" method="POST" action="{{url('mode-update')}}" autocomplete="off">
+                    <form class="form-horizontal form-material" method="POST" action="{{url('practice-update')}}" autocomplete="off">
                         @csrf
                         <input type="hidden" id="muid" name="id">
                         <h4 class="text-center">{{__('exam.change_exam_type')}}</h4>
@@ -641,7 +641,7 @@
                 } else {
                     $('#optLayout').addClass('d-none')
                 }
-                $('#edit-mode').modal('show');
+                $('#edit-practice').modal('show');
             })
 
             $(document).on('click', ".delete", function() {
@@ -710,7 +710,7 @@
                 }
             });
         })
-        $('input[type=radio][name=mode]').change(function() {
+        $('input[type=radio][name=practice]').change(function() {
             console.log($(this).val(), 'radio value..')
             if($(this).val() == 'qt') {
                 $('#optLayout').removeClass('d-none')

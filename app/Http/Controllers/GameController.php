@@ -71,16 +71,23 @@ class GameController extends Controller
 
     public function gameStart(Request $request)
     {
+        $message = 'success';
+        if($request->mode === 'challenge') {
+            $message = $this->challengeShareData($request);
+            $request->request->add(['share' => $message]);
+        }
+
+        broadcast(new GameStartEvent($request->post()))->toOthers();
+        return $message;
+    }
+
+    public function challengeShareData($request)
+    {
         $uid = implode(',', $request->uid);
         $link = Str::random(50);
         $share = new Share(array('users_id' => $uid, 'link' => $link, 'users' => json_encode($request->users),'host_id'=>$request->host_id));
         $challenge = Challenge::find($request->id);
-        $cs = $challenge->share()->save($share);
-        $request->request->add(['share' => $cs]);
-
-        broadcast(new GameStartEvent($request))->toOthers();
-        return $cs;
-
+        return $challenge->share()->save($share);
     }
     public function gameTeamModeratorStart(Request $request)
     {

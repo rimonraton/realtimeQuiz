@@ -6,15 +6,15 @@ Licensed under the MIT license.
 The plugin supports these options:
 
 selection: {
-	mode: null or "x" or "y" or "xy",
+	practice: null or "x" or "y" or "xy",
 	color: color,
 	shape: "round" or "miter" or "bevel",
 	minSize: number of pixels
 }
 
-Selection support is enabled by setting the mode to one of "x", "y" or "xy".
-In "x" mode, the user will only be able to specify the x range, similarly for
-"y" mode. For "xy", the selection becomes a rectangle where both ranges can be
+Selection support is enabled by setting the practice to one of "x", "y" or "xy".
+In "x" practice, the user will only be able to specify the x range, similarly for
+"y" practice. For "xy", the selection becomes a rectangle where both ranges can be
 specified. "color" is color of the selection (if you need to change the color
 later on, you can get to it with plot.getOptions().selection.color). "shape"
 is the shape of the corners of the selection.
@@ -23,7 +23,7 @@ is the shape of the corners of the selection.
 be customized to determine the smallest size a selection can be and still
 have the selection rectangle be displayed. When customizing this value, the
 fact that it refers to pixels, not axis units must be taken into account.
-Thus, for example, if there is a bar graph in time mode with BarWidth set to 1
+Thus, for example, if there is a bar graph in time practice with BarWidth set to 1
 minute, setting "minSize" to 1 will not make the minimum selection size 1
 minute, but rather 1 pixel. Note also that setting "minSize" to 0 will prevent
 "plotunselected" events from being fired when the user clicks the mouse without
@@ -53,9 +53,9 @@ The plugin allso adds the following methods to the plot object:
 - setSelection( ranges, preventEvent )
 
   Set the selection rectangle. The passed in ranges is on the same form as
-  returned in the "plotselected" event. If the selection mode is "x", you
-  should put in either an xaxis range, if the mode is "y" you need to put in
-  an yaxis range and both xaxis and yaxis if the selection mode is "xy", like
+  returned in the "plotselected" event. If the selection practice is "x", you
+  should put in either an xaxis range, if the practice is "y" you need to put in
+  an yaxis range and both xaxis and yaxis if the selection practice is "xy", like
   this:
 
 	setSelection({ xaxis: { from: 0, to: 10 }, yaxis: { from: 40, to: 60 } });

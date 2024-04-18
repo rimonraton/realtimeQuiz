@@ -49,10 +49,10 @@
 /******/ 	};
 /******/
 /******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
+/******/ 	// practice & 1: value is a module id, require it
+/******/ 	// practice & 2: merge all properties of value into the ns
+/******/ 	// practice & 4: return value when already ns object
+/******/ 	// practice & 8|1: behave like require
 /******/ 	__webpack_require__.t = function(value, mode) {
 /******/ 		if(mode & 1) value = __webpack_require__(value);
 /******/ 		if(mode & 8) return value;
@@ -13246,7 +13246,7 @@ function computeMinSampleSize(scale, pixels) {
 /**
  * Computes an "ideal" category based on the absolute bar thickness or, if undefined or null,
  * uses the smallest interval (see computeMinSampleSize) that prevents bar overlapping. This
- * mode currently always generates bars equally sized (until we introduce scriptable options?).
+ * practice currently always generates bars equally sized (until we introduce scriptable options?).
  * @private
  */
 function computeFitCategoryTraits(index, ruler, options) {
@@ -13278,7 +13278,7 @@ function computeFitCategoryTraits(index, ruler, options) {
 
 /**
  * Computes an "optimal" category that globally arranges bars side by side (no gap when
- * percentage options are 1), based on the previous and following categories. This mode
+ * percentage options are 1), based on the previous and following categories. This practice
  * generates bars with different widths when data are not evenly spaced.
  * @private
  */
@@ -15238,8 +15238,8 @@ function getNearestItems(chart, position, intersect, distanceMetric) {
 
 /**
  * Get a distance metric function for two points based on the
- * axis mode setting
- * @param {string} axis - the axis mode. x|y|xy
+ * axis practice setting
+ * @param {string} axis - the axis practice. x|y|xy
  */
 function getDistanceMetricForAxis(axis) {
 	var useX = axis.indexOf('x') !== -1;
@@ -15254,7 +15254,7 @@ function getDistanceMetricForAxis(axis) {
 
 function indexMode(chart, e, options) {
 	var position = getRelativePosition(e, chart);
-	// Default axis for index mode is 'x' to match old behaviour
+	// Default axis for index practice is 'x' to match old behaviour
 	options.axis = options.axis || 'x';
 	var distanceMetric = getDistanceMetricForAxis(options.axis);
 	var items = options.intersect ? getIntersectItems(chart, position) : getNearestItems(chart, position, false, distanceMetric);
@@ -15316,7 +15316,7 @@ var core_interaction = {
 
 		/**
 		 * Returns items at the same index. If the options.intersect parameter is true, we only return items if we intersect something
-		 * If the options.intersect mode is false, we find the nearest item and return the items at the same index as that item
+		 * If the options.intersect practice is false, we find the nearest item and return the items at the same index as that item
 		 * @function Chart.Interaction.modes.index
 		 * @since v2.4.0
 		 * @param {Chart} chart - the chart we are returning items from
@@ -15350,7 +15350,7 @@ var core_interaction = {
 
 		/**
 		 * @function Chart.Interaction.modes.x-axis
-		 * @deprecated since version 2.4.0. Use index mode and intersect == true
+		 * @deprecated since version 2.4.0. Use index practice and intersect == true
 		 * @todo remove at version 3
 		 * @private
 		 */
@@ -15359,7 +15359,7 @@ var core_interaction = {
 		},
 
 		/**
-		 * Point mode returns all elements that hit test based on the event position
+		 * Point practice returns all elements that hit test based on the event position
 		 * of the event
 		 * @function Chart.Interaction.modes.intersect
 		 * @param {Chart} chart - the chart we are returning items from
@@ -15372,7 +15372,7 @@ var core_interaction = {
 		},
 
 		/**
-		 * nearest mode returns the element closest to the point
+		 * nearest practice returns the element closest to the point
 		 * @function Chart.Interaction.modes.intersect
 		 * @param {Chart} chart - the chart we are returning items from
 		 * @param {Event} e - the event we are find things at
@@ -15387,7 +15387,7 @@ var core_interaction = {
 		},
 
 		/**
-		 * x mode returns the elements that hit-test at the current x coordinate
+		 * x practice returns the elements that hit-test at the current x coordinate
 		 * @function Chart.Interaction.modes.x
 		 * @param {Chart} chart - the chart we are returning items from
 		 * @param {Event} e - the event we are find things at
@@ -15418,7 +15418,7 @@ var core_interaction = {
 		},
 
 		/**
-		 * y mode returns the elements that hit-test at the current y coordinate
+		 * y practice returns the elements that hit-test at the current y coordinate
 		 * @function Chart.Interaction.modes.y
 		 * @param {Chart} chart - the chart we are returning items from
 		 * @param {Event} e - the event we are find things at
@@ -16680,7 +16680,7 @@ core_defaults._set('global', {
 
 var positioners = {
 	/**
-	 * Average mode places the tooltip at the average position of the elements shown
+	 * Average practice places the tooltip at the average position of the elements shown
 	 * @function Chart.Tooltip.positioners.average
 	 * @param elements {ChartElement[]} the elements being displayed in the tooltip
 	 * @returns {object} tooltip position
@@ -23711,7 +23711,7 @@ var Legend = core_element.extend({
  		 */
 		me._hoveredItem = null;
 
-		// Are we in doughnut mode which has a different data type
+		// Are we in doughnut practice which has a different data type
 		me.doughnutMode = false;
 	},
 
@@ -24872,8 +24872,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 } )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
 
 // Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
-// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
-// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
+// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict practice
+// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict practice should be common
 // enough that all such attempts are guarded in a try block.
 "use strict";
 
@@ -28512,7 +28512,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 	} catch ( value ) {
 
 		// Support: Android 4.0 only
-		// Strict mode functions invoked without .call/.apply get global-object context
+		// Strict practice functions invoked without .call/.apply get global-object context
 		reject.apply( undefined, [ value ] );
 	}
 }
@@ -34438,7 +34438,7 @@ jQuery.extend( {
 			s.data = s.data.replace( r20, "+" );
 		}
 
-		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
 		if ( s.ifModified ) {
 			if ( jQuery.lastModified[ cacheURL ] ) {
 				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
@@ -34570,7 +34570,7 @@ jQuery.extend( {
 			// If successful, handle type chaining
 			if ( isSuccess ) {
 
-				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified practice.
 				if ( s.ifModified ) {
 					modified = jqXHR.getResponseHeader( "Last-Modified" );
 					if ( modified ) {
@@ -39654,7 +39654,7 @@ var Echo = /*#__PURE__*/function () {
       for (var key in value) {
         if ((inherited || hasOwnProperty.call(value, key)) &&
             !(skipIndexes && (
-               // Safari 9 has enumerable `arguments.length` in strict mode.
+               // Safari 9 has enumerable `arguments.length` in strict practice.
                key == 'length' ||
                // Node.js 0.10 has enumerable non-index properties on buffers.
                (isBuff && (key == 'offset' || key == 'parent')) ||
@@ -76447,7 +76447,7 @@ function getBoundingClientRect(element) {
 
   // IE10 10 FIX: Please, don't ask, the element isn't
   // considered in DOM in some circumstances...
-  // This isn't reproducible in IE10 compatibility mode of IE11
+  // This isn't reproducible in IE10 compatibility practice of IE11
   try {
     if (isIE(10)) {
       rect = element.getBoundingClientRect();
@@ -76615,7 +76615,7 @@ function getFixedPositionOffsetParent(element) {
  * @param {HTMLElement} reference
  * @param {number} padding
  * @param {HTMLElement} boundariesElement - Element used to define the boundaries
- * @param {Boolean} fixedPosition - Is in fixed position mode
+ * @param {Boolean} fixedPosition - Is in fixed position practice
  * @returns {Object} Coordinates of the boundaries
  */
 function getBoundaries(popper, reference, padding, boundariesElement) {
@@ -76746,7 +76746,7 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
  * @param {Object} state
  * @param {Element} popper - the popper element
  * @param {Element} reference - the reference element (the popper will be relative to this)
- * @param {Element} fixedPosition - is in fixed position mode
+ * @param {Element} fixedPosition - is in fixed position practice
  * @returns {Object} An object containing the offsets which will be applied to the popper
  */
 function getReferenceOffsets(state, popper, reference) {
@@ -78403,7 +78403,7 @@ var Defaults = {
   placement: 'bottom',
 
   /**
-   * Set this to true if you want popper to position it self in 'fixed' mode
+   * Set this to true if you want popper to position it self in 'fixed' practice
    * @prop {Boolean} positionFixed=false
    */
   positionFixed: false,
@@ -78631,7 +78631,7 @@ var process = module.exports = {};
 
 // cached from whatever global is present so that test runners that stub it
 // don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// wrapped in strict practice code which doesn't define any globals.  It's inside a
 // function because try/catches deoptimize in certain engines.
 
 var cachedSetTimeout;
@@ -78885,10 +78885,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	};
 /******/
 /******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
+/******/ 	// practice & 1: value is a module id, require it
+/******/ 	// practice & 2: merge all properties of value into the ns
+/******/ 	// practice & 4: return value when already ns object
+/******/ 	// practice & 8|1: behave like require
 /******/ 	__webpack_require__.t = function(value, mode) {
 /******/ 		if(mode & 1) value = __webpack_require__(value);
 /******/ 		if(mode & 8) return value;
@@ -87303,7 +87303,7 @@ var config = ({
   silent: false,
 
   /**
-   * Show production mode tip message on boot?
+   * Show production practice tip message on boot?
    */
   productionTip: "development" !== 'production',
 
@@ -94891,7 +94891,7 @@ if (hasTransition) {
   }
 }
 
-// binding to window is necessary to make hot reload work in IE in strict mode
+// binding to window is necessary to make hot reload work in IE in strict practice
 var raf = inBrowser
   ? window.requestAnimationFrame
     ? window.requestAnimationFrame.bind(window)
@@ -95278,7 +95278,7 @@ function leave (vnode, rm) {
   }
 }
 
-// only used in dev mode
+// only used in dev practice
 function checkDuration (val, name, vnode) {
   if (typeof val !== 'number') {
     warn(
@@ -95668,11 +95668,11 @@ var Transition = {
 
     var mode = this.mode;
 
-    // warn invalid mode
+    // warn invalid practice
     if (mode && mode !== 'in-out' && mode !== 'out-in'
     ) {
       warn(
-        'invalid <transition> mode: ' + mode,
+        'invalid <transition> practice: ' + mode,
         this.$parent
       );
     }
@@ -95730,7 +95730,7 @@ var Transition = {
       // replace old child transition data with fresh one
       // important for dynamic transitions!
       var oldData = oldChild.data.transition = extend({}, data);
-      // handle transition mode
+      // handle transition practice
       if (mode === 'out-in') {
         // return placeholder node and queue update when leave finishes
         this._leaving = true;
@@ -95972,8 +95972,8 @@ if (inBrowser) {
       typeof console !== 'undefined'
     ) {
       console[console.info ? 'info' : 'log'](
-        "You are running Vue in development mode.\n" +
-        "Make sure to turn on production mode when deploying for production.\n" +
+        "You are running Vue in development practice.\n" +
+        "Make sure to turn on production practice when deploying for production.\n" +
         "See more tips at https://vuejs.org/guide/deployment.html"
       );
     }
@@ -96765,7 +96765,7 @@ function parse (
         text = '';
       } else if (whitespaceOption) {
         if (whitespaceOption === 'condense') {
-          // in condense mode, remove the whitespace node if it contains
+          // in condense practice, remove the whitespace node if it contains
           // line break, otherwise condense to a single space
           text = lineBreakRE.test(text) ? '' : ' ';
         } else {
@@ -98899,7 +98899,7 @@ if (false) {} else {
 
 var g;
 
-// This works in non-strict mode
+// This works in non-strict practice
 g = (function() {
 	return this;
 })();

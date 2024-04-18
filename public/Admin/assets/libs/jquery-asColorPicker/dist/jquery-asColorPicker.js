@@ -2032,7 +2032,7 @@
             this.$dropdown = (0, _jquery2.default)(
               '<div class="' +
                 this.classes.dropdown +
-                '" data-mode="' +
+                '" data-practice="' +
                 this.options.mode +
                 '"></div>'
             );

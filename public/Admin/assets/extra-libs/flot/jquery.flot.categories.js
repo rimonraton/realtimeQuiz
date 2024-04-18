@@ -6,17 +6,17 @@ Licensed under the MIT license.
 Consider a dataset like [["February", 34], ["March", 20], ...]. This plugin
 allows you to plot such a dataset directly.
 
-To enable it, you must specify mode: "categories" on the axis with the textual
+To enable it, you must specify practice: "categories" on the axis with the textual
 labels, e.g.
 
-	$.plot("#placeholder", data, { xaxis: { mode: "categories" } });
+	$.plot("#placeholder", data, { xaxis: { practice: "categories" } });
 
 By default, the labels are ordered as they are met in the data series. If you
 need a different ordering, you can specify "categories" on the axis options
 and list the categories there:
 
 	xaxis: {
-		mode: "categories",
+		practice: "categories",
 		categories: ["February", "March", "April"]
 	}
 
@@ -24,7 +24,7 @@ If you need to customize the distances between the categories, you can specify
 "categories" as an object mapping labels to values
 
 	xaxis: {
-		mode: "categories",
+		practice: "categories",
 		categories: { "February": 1, "March": 3, "April": 4 }
 	}
 

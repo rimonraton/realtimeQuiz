@@ -10,11 +10,11 @@
  *                           $("div.PrintArea").printArea( [OPTIONS] );
  *                       });
  *                     </script>
- *  options are passed as json (example: {mode: "popup", popClose: false})
+ *  options are passed as json (example: {practice: "popup", popClose: false})
  *
  *  {OPTIONS}   | [type]     | (default), values      | Explanation
  *  ---------   | ---------  | ---------------------- | -----------
- *  @mode       | [string]   | (iframe),popup         | printable window is either iframe or browser popup
+ *  @practice       | [string]   | (iframe),popup         | printable window is either iframe or browser popup
  *  @popHt      | [number]   | (500)                  | popup window height
  *  @popWd      | [number]   | (400)                  | popup window width
  *  @popX       | [number]   | (500)                  | popup window screen X position

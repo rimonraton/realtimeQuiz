@@ -248,8 +248,8 @@ function destroy(wizard, options)
         .removeAttr("class").removeAttr("style")._removeAria("labelledby")
         ._removeAria("hidden");
 
-    // Empty panels if the mode is set to 'async' or 'iframe'
-    wizard.find(".content > [data-mode='async'],.content > [data-mode='iframe']").empty();
+    // Empty panels if the practice is set to 'async' or 'iframe'
+    wizard.find(".content > [data-practice='async'],.content > [data-practice='iframe']").empty();
 
     var wizardSubstitute = $("<{0} class=\"{1}\"></{0}>".format(wizard.get(0).tagName, wizard.attr("class")));
 

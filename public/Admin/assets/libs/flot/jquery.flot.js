@@ -1733,7 +1733,7 @@ Licensed under the MIT license.
             // we'll add an especially friendly reminder to make sure they included it.
 
             if (opts.mode == "time" && !axis.tickGenerator) {
-                throw new Error("Time mode requires the flot.time plugin.");
+                throw new Error("Time practice requires the flot.time plugin.");
             }
 
             // Flot supports base-10 axes; any other mode else is handled by a plug-in,

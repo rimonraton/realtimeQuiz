@@ -6851,13 +6851,13 @@ var BaseTooltip = function (_Tooltip) {
       this.root.classList.add('ql-editing');
       if (preview != null) {
         this.textbox.value = preview;
-      } else if (mode !== this.root.getAttribute('data-mode')) {
+      } else if (mode !== this.root.getAttribute('data-practice')) {
         this.textbox.value = '';
       }
       this.position(this.quill.getBounds(this.quill.selection.savedRange));
       this.textbox.select();
       this.textbox.setAttribute('placeholder', this.textbox.getAttribute('data-' + mode) || '');
-      this.root.setAttribute('data-mode', mode);
+      this.root.setAttribute('data-practice', mode);
     }
   }, {
     key: 'restoreFocus',
@@ -6870,7 +6870,7 @@ var BaseTooltip = function (_Tooltip) {
     key: 'save',
     value: function save() {
       var value = this.textbox.value;
-      switch (this.root.getAttribute('data-mode')) {
+      switch (this.root.getAttribute('data-practice')) {
         case 'link':
           {
             var scrollTop = this.quill.root.scrollTop;
@@ -6894,8 +6894,8 @@ var BaseTooltip = function (_Tooltip) {
             var range = this.quill.getSelection(true);
             if (range != null) {
               var index = range.index + range.length;
-              this.quill.insertEmbed(index, this.root.getAttribute('data-mode'), value, _emitter2.default.sources.USER);
-              if (this.root.getAttribute('data-mode') === 'formula') {
+              this.quill.insertEmbed(index, this.root.getAttribute('data-practice'), value, _emitter2.default.sources.USER);
+              if (this.root.getAttribute('data-practice') === 'formula') {
                 this.quill.insertText(index + 1, ' ', _emitter2.default.sources.USER);
               }
               this.quill.setSelection(index + 2, _emitter2.default.sources.USER);
@@ -9947,7 +9947,7 @@ var SnowTooltip = function (_BaseTooltip) {
     key: 'show',
     value: function show() {
       _get(SnowTooltip.prototype.__proto__ || Object.getPrototypeOf(SnowTooltip.prototype), 'show', this).call(this);
-      this.root.removeAttribute('data-mode');
+      this.root.removeAttribute('data-practice');
     }
   }]);
 

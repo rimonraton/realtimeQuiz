@@ -50,6 +50,7 @@ const app = new Vue({
         'Qrcode': () => import('./components/helper/singleDisplay/Qrcode'),
 	    'TeamQuiz': () => import('./components/games/TeamQuiz'),
 	    'Moderator': () => import('./components/games/Moderator'),
+	    'ModeratorNew': () => import('./components/games/ModeratorNew'),
 	    'Team': () => import('./components/games/Team'),
         'TeamModerator': () => import('./components/games/TeamModerator'),
         'ExamQuestionTimeMode' : () => import('./components/games/ExamQuestionTimeMode'),

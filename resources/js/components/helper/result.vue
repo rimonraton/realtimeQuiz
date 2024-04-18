@@ -10,28 +10,29 @@
       </div>
     </div>
         <div class="card mt-1" style="width: 24rem;" v-if="showResult">
+          <div v-if="mode !== 'moderator'">
             <div class="d-flex justify-content-between p-2" v-if="uid == user.id">
-                <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
-                <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
-                <button v-if="isDisabledHost()" type="button" class="btn btn-secondary disabled">
-                    Make host
-                </button>
-                <button v-else type="button" class="btn btn-success" @click="makeHostByHost()">
-                    Make host
-                </button>
+              <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>
+              <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>
+              <button v-if="isDisabledHost()" type="button" class="btn btn-secondary disabled">
+                Make host
+              </button>
+              <button v-else type="button" class="btn btn-success" @click="makeHostByHost()">
+                Make host
+              </button>
             </div>
 
-          <div class="d-flex justify-content-between p-2" v-else>
-<!--            <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>-->
-<!--            <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>-->
-            <button v-if="isDisabled()" type="button" class="btn btn-secondary disabled">
+            <div class="d-flex justify-content-between p-2" v-else>
+              <!--            <button type="button" class="btn btn-primary" @click="$emit('playAgain', true)">Play again</button>-->
+              <!--            <button type="button" class="btn btn-secondary" @click="$emit('newQuiz', makeUid)">New quiz</button>-->
+              <button v-if="isDisabled()" type="button" class="btn btn-secondary disabled">
                 Request Pending
-            </button>
-              <button v-else type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)" >
-                 Make host
               </button>
+              <button v-else type="button" class="btn btn-success" @click="$emit('makeHost', makeUid)" >
+                Make host
+              </button>
+            </div>
           </div>
-
             <div class="card-header">Results</div>
             <div class="card-body">
 <!--                <img class="card-img img-responsive" :src="addImage()">-->
@@ -42,8 +43,12 @@
                         <span v-html="getMedel(i)"></span>
                         {{v.name}} <span v-if="v.id == user.id">(You)</span>
                       <span v-if="v.id == uid" class="ml-1 badge badge-info">Host</span>
-                      <span v-if="requestHostUser" class="ml-1 badge badge-danger">{{ v.id == requestHostUser.id ? 'Requested' : '' }}</span>
-                        <span class="badge badge-primary float-right mt-1 text-white">{{ v.score }}</span>
+                      <span v-if="requestHostUser" class="ml-1 badge badge-danger">
+                        {{ v.id == requestHostUser.id ? 'Requested' : '' }}
+                      </span>
+                      <span class="badge badge-primary float-right mt-1 text-white">
+                        {{ v.score }}
+                      </span>
                     </li>
                 </ul>
 <!--                <ul class="list-group ">-->
@@ -59,7 +64,13 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
                     <button @click="back" class="btn btn-sm btn-success">Dashboard</button>
-                    <button class="btn btn-sm btn-info" @click="showDetail">Show your result</button>
+                    <button
+                        v-if="mode !== 'moderator'"
+                        class="btn btn-sm btn-info"
+                        @click="showDetail"
+                    >
+                      Show your result
+                    </button>
                 </div>
 <!--                <a href="/#about" class="btn btn-sm btn-secondary text-center">Game List</a>-->
             </div>
@@ -142,7 +153,7 @@
 
 <script>
 export default{
-	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
+	props:['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser', 'mode'],
     data(){
 	    return{
             showResult:true,
@@ -193,7 +204,7 @@ export default{
         },
         back(){
             // window.history.back()
-            window.location = '/game/mode/challenge';
+            window.location = '/game/practice/challenge';
         },
         getMedel(index){
             if(index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>'

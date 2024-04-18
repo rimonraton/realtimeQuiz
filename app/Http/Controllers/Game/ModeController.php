@@ -26,18 +26,9 @@ class ModeController extends Controller
             ->where('is_published',1)
             ->where('admin_id', 1)
             ->get();
-        return view('mode', compact('quiz', 'user', 'categories', 'type', 'ban'));
+        return view('practice', compact('quiz', 'user', 'categories', 'type', 'ban'));
     }
 
-    public function getCategory($type, $category)
-    {
-        if($category == 'Select Quiz Category'){
-            $quiz = Quiz::with('quizCategory', 'progress')->paginate(9);
-            return view('categorized', compact('quiz', 'type'));
-        }
-        $cat_id = Category::where('bn_name', $category)->orWhere('name', $category)->first()->id;
-        $quiz = Quiz::with('quizCategory', 'progress')->where('category_id', $cat_id)->paginate(9);
-        return view('categorized', compact('quiz', 'type'));
-    }
+
 
 }

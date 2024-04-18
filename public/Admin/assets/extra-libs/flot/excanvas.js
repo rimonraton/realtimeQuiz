@@ -21,9 +21,9 @@
 // * Clipping paths are not implemented.
 // * Coordsize. The width and height attribute have higher priority than the
 //   width and height style values which isn't correct.
-// * Painting mode isn't implemented.
+// * Painting practice isn't implemented.
 // * Canvas width/height should is using content-box by default. IE in
-//   Quirks mode will draw the canvas using border-box. Either change your
+//   Quirks practice will draw the canvas using border-box. Either change your
 //   doctype to HTML5
 //   (http://www.whatwg.org/specs/web-apps/current-work/#the-doctype)
 //   or use Box Sizing Behavior from WebFX

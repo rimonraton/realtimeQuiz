@@ -166,7 +166,8 @@ export default {
             pm: '',
             av: true,
             sqo: true,
-            endAVWait: false
+            endAVWait: false,
+            stars:0
         };
     },
     watch: {
@@ -225,6 +226,7 @@ export default {
 
         firstPlace: function() {
             this.place = 1
+            this.stars = 5
             confetti({
               zIndex: 999999, particleCount: 200, spread: 120, origin: {y: 0.6}
             });
@@ -236,6 +238,7 @@ export default {
         },
         secondPlace: function() {
             this.place = 2
+            this.stars = 4
             let colors = ['#bb0000', '#0AE84E'];
 
             confetti({
@@ -247,6 +250,7 @@ export default {
         },
         thirdPlace: function() {
             this.place = 3
+            this.stars = 3
             const defaults = {
               spread: 360,
               ticks: 50,
@@ -289,6 +293,12 @@ export default {
             }else if(perform >= 75) {
               this.thirdPlace()
             }
+            else if(perform >= 50) {
+              this.stars = 2
+            }
+            else if(perform >= 30) {
+              this.stars = 1
+            }
             if (!this.user.log > 0) {
                 this.saveQuiz();
             }
@@ -302,6 +312,7 @@ export default {
                 answers: JSON.stringify(this.results),
                 start_at: this.user.start_at,
                 pm_id: this.pm.id,
+                stars: this.stars,
             }
             axios.post(`/api/savePractice`, gd).then(response => console.log(response.data))
         },

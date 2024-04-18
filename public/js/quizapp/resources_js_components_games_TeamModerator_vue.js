@@ -343,7 +343,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       team: null,
       isModalVisible: false,
       existing_qid: [],
-      q_lenght: this.questions.length,
       team_ranking: null,
       perform: null,
       position: null,
@@ -632,7 +631,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         });
         // this.questions.map(q=>this.existing_qid.push(q.id))
         console.log(res.data);
-        _this7.q_lenght = _this7.questions.length;
         // this.questions.push(res.data);
         // $('#qmodal').modal('hide');
       });
@@ -1002,7 +1000,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
   },
   computed: {
     isLastQuestion: function isLastQuestion() {
-      return this.q_lenght > this.qid + 1;
+      return this.questions.length > this.qid + 1;
     },
     userGroup: function userGroup() {
       return _(this.users).groupBy('group.name').map(function (value, key) {
@@ -1749,6 +1747,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['questions', 'qid', 'topics', 'user'],
@@ -1849,6 +1858,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2091,6 +2124,9 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var quizHelpers = {
+  data: function data() {
+    return {};
+  },
   created: function created() {
     // console.log('Mixin loaded')
   },
@@ -2275,6 +2311,14 @@ var quizHelpers = {
       return {
         'width': this.progress + '%'
       };
+    },
+    currentQuestionType: function currentQuestionType() {
+      if (!this.questions) return;
+      return this.questions[this.qid].fileType;
+    },
+    isLastQuestion: function isLastQuestion() {
+      if (!this.questions) return;
+      return this.questions.length > this.qid + 1;
     }
   }
 };
@@ -43531,8 +43575,6 @@ var render = function () {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v("Moderator Questions..")]),
-      _vm._v(" "),
       _vm._l(_vm.questiondata, function (question, index) {
         return _c(
           "div",
@@ -43567,13 +43609,15 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          _vm._s(
-                            !_vm.fileType(question.fileType)
-                              ? _vm.user.lang == "gb"
-                                ? index + 1
-                                : _vm.q2bNumber(index + 1)
-                              : ""
-                          )
+                          "\n                        " +
+                            _vm._s(
+                              !_vm.fileType(question.fileType)
+                                ? _vm.user.lang == "gb"
+                                  ? index + 1
+                                  : _vm.q2bNumber(index + 1)
+                                : ""
+                            ) +
+                            "\n                    "
                         ),
                       ]
                     ),
@@ -43784,11 +43828,11 @@ var render = function () {
           },
           [
             _vm._v(
-              "\n                " +
+              "\n            " +
                 _vm._s(
                   _vm.tbe("প্রশ্ন যুক্ত করুন", "ADD QUESTION", _vm.user.lang)
                 ) +
-                "\n            "
+                "\n        "
             ),
           ]
         ),
@@ -43817,13 +43861,15 @@ var render = function () {
                 _c("div", { staticClass: "modal-header" }, [
                   _c("h5", { staticClass: "modal-title" }, [
                     _vm._v(
-                      _vm._s(
-                        _vm.tbe(
-                          "প্রশ্ন যুক্ত করুন",
-                          "ADD QUESTION",
-                          _vm.user.lang
-                        )
-                      )
+                      "\n                      " +
+                        _vm._s(
+                          _vm.tbe(
+                            "প্রশ্ন যুক্ত করুন",
+                            "ADD QUESTION",
+                            _vm.user.lang
+                          )
+                        ) +
+                        "\n                    "
                     ),
                   ]),
                   _vm._v(" "),
@@ -43869,7 +43915,7 @@ var render = function () {
                         [
                           _c("option", { attrs: { value: "0" } }, [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(
                                   _vm.tbe(
                                     "দয়া করে বিষয় নির্বাচন করুন",
@@ -43877,7 +43923,7 @@ var render = function () {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                                    "
+                                "\n                                "
                             ),
                           ]),
                           _vm._v(" "),
@@ -43887,9 +43933,9 @@ var render = function () {
                               { key: index, domProps: { value: topic.id } },
                               [
                                 _vm._v(
-                                  "\n                                        " +
+                                  "\n                                    " +
                                     _vm._s(topic.name) +
-                                    "\n                                    "
+                                    "\n                                "
                                 ),
                               ]
                             )
@@ -43948,13 +43994,15 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        _vm._s(
-                          _vm.tbe(
-                            "প্রশ্ন যুক্ত করুন",
-                            "ADD QUESTION",
-                            _vm.user.lang
-                          )
-                        )
+                        "\n                      " +
+                          _vm._s(
+                            _vm.tbe(
+                              "প্রশ্ন যুক্ত করুন",
+                              "ADD QUESTION",
+                              _vm.user.lang
+                            )
+                          ) +
+                          "\n                    "
                       ),
                     ]
                   ),
@@ -43967,7 +44015,11 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang))
+                        "\n                      " +
+                          _vm._s(
+                            _vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang)
+                          ) +
+                          "\n                    "
                       ),
                     ]
                   ),
@@ -44032,13 +44084,15 @@ var render = function () {
         ? _c("div", { staticClass: "card-header" }, [
             _c("span", { staticClass: "ml-1 text-primary" }, [
               _vm._v(
-                _vm._s(
-                  _vm.tbe(
-                    "দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..",
-                    "Please wait, the Quiz Master will start the game soon..",
-                    _vm.user.lang
-                  )
-                )
+                "\n                    " +
+                  _vm._s(
+                    _vm.tbe(
+                      "দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..",
+                      "Please wait, the Quiz Master will start the game soon..",
+                      _vm.user.lang
+                    )
+                  ) +
+                  "\n                "
               ),
             ]),
           ])
@@ -44081,7 +44135,11 @@ var render = function () {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "news-title" }, [
                         _c("h2", { staticClass: "title-small" }, [
-                          _vm._v(_vm._s(team.name) + " "),
+                          _vm._v(
+                            "\n                                        " +
+                              _vm._s(team.name) +
+                              "\n                                        "
+                          ),
                           _vm.user.id == _vm.uid
                             ? _c(
                                 "span",
@@ -44094,7 +44152,11 @@ var render = function () {
                                     },
                                   },
                                 },
-                                [_vm._v("X")]
+                                [
+                                  _vm._v(
+                                    "\n                                            X\n                                        "
+                                  ),
+                                ]
                               )
                             : _vm._e(),
                         ]),
@@ -44138,7 +44200,13 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v(_vm._s(_vm.tbe("শুরু করুন", "START", _vm.user.lang)))]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.tbe("শুরু করুন", "START", _vm.user.lang)) +
+                        "\n                    "
+                    ),
+                  ]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -44151,9 +44219,11 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(
-                        _vm.tbe("দল যুক্ত করুন", "Add Team", _vm.user.lang)
-                      )
+                      "\n                        " +
+                        _vm._s(
+                          _vm.tbe("দল যুক্ত করুন", "Add Team", _vm.user.lang)
+                        ) +
+                        "\n                    "
                     ),
                   ]
                 )
@@ -44281,9 +44351,11 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(
-                        _vm.tbe("দল যুক্ত করুন", "ADD TEAM", _vm.user.lang)
-                      )
+                      "\n                            " +
+                        _vm._s(
+                          _vm.tbe("দল যুক্ত করুন", "ADD TEAM", _vm.user.lang)
+                        ) +
+                        "\n                        "
                     ),
                   ]
                 ),
@@ -44296,7 +44368,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang))
+                      "\n                            " +
+                        _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang)) +
+                        "\n                        "
                     ),
                   ]
                 ),

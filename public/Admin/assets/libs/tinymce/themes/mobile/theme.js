@@ -10983,8 +10983,8 @@ var mobile = (function (domGlobals) {
       };
     };
 
-    var READ_ONLY_MODE_CLASS = constant(Styles.resolve('readonly-mode'));
-    var EDIT_MODE_CLASS = constant(Styles.resolve('edit-mode'));
+    var READ_ONLY_MODE_CLASS = constant(Styles.resolve('readonly-practice'));
+    var EDIT_MODE_CLASS = constant(Styles.resolve('edit-practice'));
     function OuterContainer (spec) {
       var root = build$1(Container.sketch({
         dom: { classes: [Styles.resolve('outer-container')].concat(spec.classes) },
@@ -12401,7 +12401,7 @@ var mobile = (function (domGlobals) {
               }, {})]
           };
           var readOnlyGroup = {
-            label: 'The read only mode group',
+            label: 'The read only practice group',
             scrollable: true,
             items: []
           };

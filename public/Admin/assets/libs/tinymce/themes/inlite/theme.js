@@ -546,7 +546,7 @@ var inlite = (function (domGlobals) {
       throw new Error(message);
     };
     var renderUI = function (editor, panel) {
-      return editor.inline ? renderInlineUI(editor, panel) : fail('inlite theme only supports inline mode.');
+      return editor.inline ? renderInlineUI(editor, panel) : fail('inlite theme only supports inline practice.');
     };
     var Render = { renderUI: renderUI };
 

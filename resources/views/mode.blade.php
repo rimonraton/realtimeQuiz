@@ -203,19 +203,19 @@
 <div class="container glass  animate__zoomIn ">
   <div class="row justify-content-center">
     <div class="btn-group " role="group" aria-label="Game Mode">
-      <a href="{{ url('Mode/Practice') }}" class="btn btn-{{ $type =='Practice' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('Mode/Practice') }}" class="btn btn-outline-success">
         <i class="fas fa-address-card "></i>
         {{ __('msg.practice') }}
       </a>
-      <a href="{{ url('game/mode/challenge') }}" class="btn btn-{{ $type =='Challenge' ? 'outline-success':'outline-primary' }}">
+      <a href="{{ url('game/practice/challenge') }}" class="btn btn-outline-primary">
         <i class="fas fa-people-arrows "></i>
         {{ __('msg.challenge') }}
       </a>
-      <a href="{{ url('Mode/Moderator') }}" class="btn btn-{{ $type =='Moderator' ? 'outline-success':'outline-primary' }} disabled">
+      <a href="{{ url('Mode/Moderator') }}" class="btn btn-outline-primary">
         <i class="fas fa-user "></i>
         {{ __('msg.quizmaster') }}
       </a>
-      <a href="{{ url('Mode/Team') }}" class="btn btn-{{ $type =='Team' ? 'outline-success':'outline-primary' }} disabled" >
+      <a href="{{ url('team_quiz') }}" class="btn btn-outline-primary" >
         <i class="fas fa-users "></i>
         {{ __('msg.team') }}
       </a>

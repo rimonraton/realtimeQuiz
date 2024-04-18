@@ -357,7 +357,7 @@
 				});
 			}
 
-			// ie7 must use absolute positioning in quirks mode and to account for activex issues (when scrolling)
+			// ie7 must use absolute positioning in quirks practice and to account for activex issues (when scrolling)
 			var expr = setExpr && (!$.support.boxModel || $('object,embed', full ? null : el).length > 0);
 			if (ie6 || expr) {
 				// give body 100% height

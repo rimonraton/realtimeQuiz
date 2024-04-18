@@ -7388,7 +7388,7 @@
                   ['insert', ['link', 'picture']]
               ]
           },
-          // air mode: inline editor
+          // air practice: inline editor
           airMode: false,
           width: null,
           height: null,

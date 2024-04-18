@@ -1334,7 +1334,7 @@
 
             })
 
-            $('input[type=radio][name=mode]').change(function() {
+            $('input[type=radio][name=practice]').change(function() {
                 console.log($(this).val(), 'radio value..')
                 if($(this).val() == 'qt') {
                     $('#optLay').removeClass('d-none')

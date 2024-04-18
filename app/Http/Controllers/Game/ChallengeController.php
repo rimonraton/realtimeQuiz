@@ -25,7 +25,7 @@ class ChallengeController extends Controller
     {
         $quiz =  Quiz::with('quizCategory', 'progress')->paginate(9);
         $user = \Auth::user();
-        return view('games.mode.practice', compact('quiz', 'user'));
+        return view('games.practice.practice', compact('quiz', 'user'));
     }
     public function shareChallengeBtnLink($game,$id, $uid)
     {
@@ -36,8 +36,9 @@ class ChallengeController extends Controller
         return view('share_btn_link_challenge', compact('game','id', 'uid'));
     }
 
-    public function gameInAdmin($type, $id = null)
+    public function gameInAdmin($id = null)
     {
+//        return 'challenge Mode';
         $questionHasTopics = Category::whereHas('questioncount')
             ->withCount(['questioncount', 'easy', 'intermidiate', 'difficult'])
             ->get();

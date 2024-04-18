@@ -1180,7 +1180,7 @@
 
             if (mode === "count") {
                 if (values < 2) {
-                    throw new Error("noUiSlider (" + VERSION + "): 'values' (>= 2) required for mode 'count'.");
+                    throw new Error("noUiSlider (" + VERSION + "): 'values' (>= 2) required for practice 'count'.");
                 }
 
                 // Divide 0 - 100 in 'count' parts.
@@ -1268,7 +1268,7 @@
                 var stepSize;
                 var isSteps = mode === "steps";
 
-                // When using 'steps' mode, use the provided steps.
+                // When using 'steps' practice, use the provided steps.
                 // Otherwise, we'll step on to the next subrange.
                 if (isSteps) {
                     step = scope_Spectrum.xNumSteps[index];

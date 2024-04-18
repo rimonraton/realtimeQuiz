@@ -188,7 +188,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       pm: '',
       av: true,
       sqo: true,
-      endAVWait: false
+      endAVWait: false,
+      stars: 0
     };
   },
   watch: {
@@ -243,6 +244,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     firstPlace: function firstPlace() {
       this.place = 1;
+      this.stars = 5;
       confetti({
         zIndex: 999999,
         particleCount: 200,
@@ -264,6 +266,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     secondPlace: function secondPlace() {
       this.place = 2;
+      this.stars = 4;
       var colors = ['#bb0000', '#0AE84E'];
       confetti({
         zIndex: 999999,
@@ -288,6 +291,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     thirdPlace: function thirdPlace() {
       this.place = 3;
+      this.stars = 3;
       var defaults = {
         spread: 360,
         ticks: 50,
@@ -324,6 +328,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         this.secondPlace();
       } else if (perform >= 75) {
         this.thirdPlace();
+      } else if (perform >= 50) {
+        this.stars = 2;
+      } else if (perform >= 30) {
+        this.stars = 1;
       }
       if (!this.user.log > 0) {
         this.saveQuiz();
@@ -336,7 +344,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         quiz_id: this.id,
         answers: JSON.stringify(this.results),
         start_at: this.user.start_at,
-        pm_id: this.pm.id
+        pm_id: this.pm.id,
+        stars: this.stars
       };
       axios.post("/api/savePractice", gd).then(function (response) {
         return console.log(response.data);
@@ -546,7 +555,7 @@ __webpack_require__.r(__webpack_exports__);
       window.location.reload();
     },
     back: function back() {
-      window.history.back();
+      window.location.replace("/Practice");
       // window.history.back()
     },
     isImg: function isImg(link) {
@@ -1293,7 +1302,7 @@ var render = function () {
                 staticClass: "list-group text-dark",
                 staticStyle: { "max-height": "380px", overflow: "auto" },
               },
-              _vm._l(_vm.results, function (result) {
+              _vm._l(_vm.results.slice().reverse(), function (result) {
                 return _c(
                   "li",
                   {

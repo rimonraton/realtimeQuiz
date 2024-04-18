@@ -20,9 +20,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-
-
-
     <style type="text/css">
         .cursor {
             cursor: pointer;

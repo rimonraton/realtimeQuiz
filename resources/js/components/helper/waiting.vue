@@ -2,7 +2,7 @@
 	<div class="waiting">
 	    <div class="card" style="min-width: 24rem">
         <div id="shareBtn" class="show_share shareBtnDiv" v-show="share">
-          <iframe id="shareFrame" :src="`/Challenge/${challenge.id}/${uid}/share`" frameborder="0" class="iframe-size"></iframe>
+          <iframe id="shareFrame" :src="getShareLink" frameborder="0" class="iframe-size"></iframe>
         </div>
         <div class="d-flex justify-content-between card-header text-center">
           <span class="btn btn-sm btn-danger align-self-start" @click="back">
@@ -12,14 +12,14 @@
             Please wait, the Quiz Host will start the game soon.
           </span>
           <span v-else class="ml-1 text-primary">
-            <span>User List</span>
+            <i v-if="users.length" class="fa fa-users fa-2x" aria-hidden="true"> {{users.length}}</i>
           </span>
-          <div>
+          <div v-if="user.id === uid">
             <button
                 class="btn btn-sm align-self-start"
                 :class="[qr ? 'btn-dark' : 'btn-outline-secondary']"
                 @click="qr = !qr" >
-              {{qr? 'Close QR' : 'QR'}}
+              {{qr? 'Close QR' : 'QR'}}s
             </button>
             <button
                 class="btn btn-sm btn-outline-info"
@@ -28,30 +28,30 @@
             </button>
           </div>
         </div>
-        <div class="card-body" style="max-height:90vh; overflow:auto">
-<!--                <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">-->
-              <div id="reader" width="300px"></div>
-              <qrcode-vue :value="value" :size="size" level="H" v-if="qr" class="text-center" />
-            <ul class="list-group ">
-                <li class="list-group-item rounded-lg"
-                    v-for="u in users" :key="u.id"
-                    :class="{ 'border border-success text-success' : u.id == user.id}"
-                    >
-                    <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
-                    <span class="ml-5">{{ u.name }} <span v-if="u.id == user.id">(You)</span></span>
-                    <span v-if="u.id == uid" class="ml-1 badge badge-danger">Host</span>
+        <div class="card-body todos" style="max-height:90vh; overflow:auto">
+<!--  <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">-->
+          <div id="reader" width="300px"></div>
+          <qrcode-vue :value="value" :size="size" level="H" v-if="qr" class="text-center" />
+          <transition-group tag="ul" name="list">
+              <li class="list-group-item rounded-lg"
+                  v-for="u in users" :key="u.id"
+                  :class="{ 'border border-success text-success' : u.id == user.id}"
+                  >
+                  <img :src="getAvatar(u.avatar)" :alt="getAvatarAlt(u.name)" class="circle mr-2">
+                  <span class="ml-5">{{ u.name }} <span v-if="u.id == user.id">(You)</span></span>
+                  <span v-if="u.id == uid" class="ml-1 badge badge-danger">Host</span>
 
-                    <span class="flag" >
-                      <img :src="getFlag(u.country)">
-                    </span>
-                    <button
-                      v-if="(u.id != user.id) && (user.id == uid)"
-                      @click="kickingUser(u.id)"
-                      class="close">
-                        <span title="Kick User">&times;</span>
-                    </button>
-                </li>
-            </ul>
+                  <span class="flag" >
+                    <img :src="getFlag(u.country)">
+                  </span>
+                  <button
+                    v-if="(u.id != user.id) && (user.id == uid)"
+                    @click="kickingUser(u.id)"
+                    class="close">
+                      <span title="Kick User">&times;</span>
+                  </button>
+              </li>
+          </transition-group>
             <!-- <a @click="$emit('gameReset')" v-if="user.id == uid" class="btn btn-sm btn-outline-danger mt-4">RESET</a> -->
             <div v-if="user.id == uid" class="d-flex justify-content-between">
                 <div class="mt-4">
@@ -61,9 +61,10 @@
                     </div>
                 </div>
                 <a @click="$emit('gameStart', defaultTime)"
-                   class="btn btn-sm btn-outline-success mt-4 pull-right">START
+                   class="btn btn-sm btn-outline-success mt-4 pull-right">
+                  START
                 </a>
-              </div>
+            </div>
         </div>
 <!--             Uncomment share.js in app.blade.php file -->
 <!--	       <div class="card-footer">-->
@@ -75,12 +76,13 @@
 </template>
 
 <script>
-import QrcodeVue from 'qrcode.vue' // Share Link
+import QrcodeVue from 'qrcode.vue'
+import info from '../helper/moderator/info.vue'
 
 export default{
 	props:['user', 'uid', 'users', 'time', 'challenge', 'defTime'],
     components: {
-        QrcodeVue,
+      QrcodeVue, info
     },
     data() {
         return {
@@ -99,11 +101,11 @@ export default{
     },
     methods:{
       back(){
-        // window.history.back()
-        window.location = '/game/mode/challenge';
+        window.history.back()
+        //window.location = '/game/practice/challenge';
       },
-    	kickingUser(id){
-    		this.$emit("kickingUser", id);
+        kickingUser(id){
+            this.$emit("kickingUser", id);
         },
 
       getAvatar(link){
@@ -140,8 +142,11 @@ export default{
         // console.log('scheduledTimer started')
     },
     computed: {
-        getQr(){
-            return 'https://api.qrserver.com/v1/create-qr-code/?size=430x430&data='+window.location;
+        // getQr(){
+        //     return 'https://api.qrserver.com/v1/create-qr-code/?size=430x430&data='+window.location;
+        // },
+        getShareLink(){
+            return window.location +'/share'
         },
     },
 
@@ -194,5 +199,47 @@ export default{
     transition: .5s linear;
     opacity: 1;
     top: -45px;
+  }
+
+
+//Animations
+
+  .todos {
+    position: relative;
+  }
+
+  .todos ul {
+    position: relative;
+  }
+  .todos li {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .list-move {
+    transition: all 0.4s ease;
+  }
+  .list-enter-from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  .list-enter-to {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  .list-enter-active {
+    transition: all 0.4s ease;
+  }
+  .list-leave-from {
+    opacity: 1;
+    transform: scale(.8);
+  }
+  .list-leave-to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  .list-leave-active {
+    transition: all 0.4s ease;
+    position: absolute;
   }
 </style>

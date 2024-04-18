@@ -96,7 +96,7 @@ if (Tablesaw.mustard) {
 	};
 	var defaultMode = "stack";
 	var initSelector = "table";
-	var initFilterSelector = "[data-tablesaw],[data-tablesaw-mode],[data-tablesaw-sortable]";
+	var initFilterSelector = "[data-tablesaw],[data-tablesaw-practice],[data-tablesaw-sortable]";
 	var defaultConfig = {};
 
 	Tablesaw.events = events;
@@ -118,7 +118,7 @@ if (Tablesaw.mustard) {
 		// multiple <tbody> are allowed, per the specification
 		this.$tbody = this.$table.children().filter("tbody");
 
-		this.mode = this.$table.attr("data-tablesaw-mode") || defaultMode;
+		this.mode = this.$table.attr("data-tablesaw-practice") || defaultMode;
 
 		this.$toolbar = null;
 
@@ -458,7 +458,7 @@ if (Tablesaw.mustard) {
 		this.$toolbar = $toolbar;
 
 		if (this.mode) {
-			this.$toolbar.addClass("tablesaw-mode-" + this.mode);
+			this.$toolbar.addClass("tablesaw-practice-" + this.mode);
 		}
 	};
 

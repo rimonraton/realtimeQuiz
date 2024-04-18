@@ -738,6 +738,30 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'uid', 'users', 'time', 'teamUser', 'teams'],
@@ -1001,9 +1025,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser'],
+  props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser', 'mode'],
   data: function data() {
     return {
       showResult: true,
@@ -1054,7 +1089,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     back: function back() {
       // window.history.back()
-      window.location = '/game/mode/challenge';
+      window.location = '/game/practice/challenge';
     },
     getMedel: function getMedel(index) {
       if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';
@@ -1884,13 +1919,15 @@ var render = function () {
         ? _c("div", { staticClass: "card-header" }, [
             _c("span", { staticClass: "ml-1 text-primary" }, [
               _vm._v(
-                _vm._s(
-                  _vm.tbe(
-                    "দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..",
-                    "Please wait, the Quiz Master will start the game soon..",
-                    _vm.user.lang
-                  )
-                )
+                "\n                    " +
+                  _vm._s(
+                    _vm.tbe(
+                      "দয়া করে অপেক্ষা করুন, কুইজ মাস্টার শীঘ্রই গেমটি শুরু করবে ..",
+                      "Please wait, the Quiz Master will start the game soon..",
+                      _vm.user.lang
+                    )
+                  ) +
+                  "\n                "
               ),
             ]),
           ])
@@ -1933,7 +1970,11 @@ var render = function () {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "news-title" }, [
                         _c("h2", { staticClass: "title-small" }, [
-                          _vm._v(_vm._s(team.name) + " "),
+                          _vm._v(
+                            "\n                                        " +
+                              _vm._s(team.name) +
+                              "\n                                        "
+                          ),
                           _vm.user.id == _vm.uid
                             ? _c(
                                 "span",
@@ -1946,7 +1987,11 @@ var render = function () {
                                     },
                                   },
                                 },
-                                [_vm._v("X")]
+                                [
+                                  _vm._v(
+                                    "\n                                            X\n                                        "
+                                  ),
+                                ]
                               )
                             : _vm._e(),
                         ]),
@@ -1990,7 +2035,13 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v(_vm._s(_vm.tbe("শুরু করুন", "START", _vm.user.lang)))]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.tbe("শুরু করুন", "START", _vm.user.lang)) +
+                        "\n                    "
+                    ),
+                  ]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -2003,9 +2054,11 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(
-                        _vm.tbe("দল যুক্ত করুন", "Add Team", _vm.user.lang)
-                      )
+                      "\n                        " +
+                        _vm._s(
+                          _vm.tbe("দল যুক্ত করুন", "Add Team", _vm.user.lang)
+                        ) +
+                        "\n                    "
                     ),
                   ]
                 )
@@ -2133,9 +2186,11 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(
-                        _vm.tbe("দল যুক্ত করুন", "ADD TEAM", _vm.user.lang)
-                      )
+                      "\n                            " +
+                        _vm._s(
+                          _vm.tbe("দল যুক্ত করুন", "ADD TEAM", _vm.user.lang)
+                        ) +
+                        "\n                        "
                     ),
                   ]
                 ),
@@ -2148,7 +2203,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang))
+                      "\n                            " +
+                        _vm._s(_vm.tbe("বাতিল করুন", "Cancel", _vm.user.lang)) +
+                        "\n                        "
                     ),
                   ]
                 ),
@@ -2341,107 +2398,111 @@ var render = function () {
           "div",
           { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
           [
-            _vm.uid == _vm.user.id
-              ? _c(
-                  "div",
-                  { staticClass: "d-flex justify-content-between p-2" },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("playAgain", true)
-                          },
-                        },
-                      },
-                      [_vm._v("Play again")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("newQuiz", _vm.makeUid)
-                          },
-                        },
-                      },
-                      [_vm._v("New quiz")]
-                    ),
-                    _vm._v(" "),
-                    _vm.isDisabledHost()
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-secondary disabled",
-                            attrs: { type: "button" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                    Make host\n                "
-                            ),
-                          ]
-                        )
-                      : _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.makeHostByHost()
+            _vm.mode !== "moderator"
+              ? _c("div", [
+                  _vm.uid == _vm.user.id
+                    ? _c(
+                        "div",
+                        { staticClass: "d-flex justify-content-between p-2" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.$emit("playAgain", true)
+                                },
                               },
                             },
-                          },
-                          [
-                            _vm._v(
-                              "\n                    Make host\n                "
-                            ),
-                          ]
-                        ),
-                  ]
-                )
-              : _c(
-                  "div",
-                  { staticClass: "d-flex justify-content-between p-2" },
-                  [
-                    _vm.isDisabled()
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-secondary disabled",
-                            attrs: { type: "button" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                Request Pending\n            "
-                            ),
-                          ]
-                        )
-                      : _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.$emit("makeHost", _vm.makeUid)
+                            [_vm._v("Play again")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-secondary",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.$emit("newQuiz", _vm.makeUid)
+                                },
                               },
                             },
-                          },
-                          [
-                            _vm._v(
-                              "\n                 Make host\n              "
-                            ),
-                          ]
-                        ),
-                  ]
-                ),
+                            [_vm._v("New quiz")]
+                          ),
+                          _vm._v(" "),
+                          _vm.isDisabledHost()
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary disabled",
+                                  attrs: { type: "button" },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Make host\n              "
+                                  ),
+                                ]
+                              )
+                            : _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.makeHostByHost()
+                                    },
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Make host\n              "
+                                  ),
+                                ]
+                              ),
+                        ]
+                      )
+                    : _c(
+                        "div",
+                        { staticClass: "d-flex justify-content-between p-2" },
+                        [
+                          _vm.isDisabled()
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-secondary disabled",
+                                  attrs: { type: "button" },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Request Pending\n              "
+                                  ),
+                                ]
+                              )
+                            : _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.$emit("makeHost", _vm.makeUid)
+                                    },
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Make host\n              "
+                                  ),
+                                ]
+                              ),
+                        ]
+                      ),
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "card-header" }, [_vm._v("Results")]),
             _vm._v(" "),
@@ -2486,11 +2547,13 @@ var render = function () {
                             { staticClass: "ml-1 badge badge-danger" },
                             [
                               _vm._v(
-                                _vm._s(
-                                  v.id == _vm.requestHostUser.id
-                                    ? "Requested"
-                                    : ""
-                                )
+                                "\n                        " +
+                                  _vm._s(
+                                    v.id == _vm.requestHostUser.id
+                                      ? "Requested"
+                                      : ""
+                                  ) +
+                                  "\n                      "
                               ),
                             ]
                           )
@@ -2502,7 +2565,13 @@ var render = function () {
                           staticClass:
                             "badge badge-primary float-right mt-1 text-white",
                         },
-                        [_vm._v(_vm._s(v.score))]
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(v.score) +
+                              "\n                      "
+                          ),
+                        ]
                       ),
                     ]
                   )
@@ -2522,14 +2591,20 @@ var render = function () {
                   [_vm._v("Dashboard")]
                 ),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info",
-                    on: { click: _vm.showDetail },
-                  },
-                  [_vm._v("Show your result")]
-                ),
+                _vm.mode !== "moderator"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-info",
+                        on: { click: _vm.showDetail },
+                      },
+                      [
+                        _vm._v(
+                          "\n                      Show your result\n                    "
+                        ),
+                      ]
+                    )
+                  : _vm._e(),
               ]),
             ]),
           ]

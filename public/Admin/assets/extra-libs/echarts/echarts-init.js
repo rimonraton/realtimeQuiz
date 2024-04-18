@@ -212,7 +212,7 @@ option = {
     color: ["#f62d51", "#dddddd", "#ffbc34", "#7460ee", "#009efb", "#2f3d4a", "#90a4ae", "#55ce63"],
     calculable: true,
     series: [{
-            name: 'Radius mode',
+            name: 'Radius practice',
             type: 'pie',
             radius: [20, 110],
             center: ['25%', 200],
@@ -249,7 +249,7 @@ option = {
             ]
         },
         {
-            name: 'Area mode',
+            name: 'Area practice',
             type: 'pie',
             radius: [30, 110],
             center: ['75%', 200],

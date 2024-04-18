@@ -1562,9 +1562,9 @@ $.extend( $.validator, {
 
 } );
 
-// Ajax mode: abort
-// usage: $.ajax({ mode: "abort"[, port: "uniqueport"]});
-// if mode:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort()
+// Ajax practice: abort
+// usage: $.ajax({ practice: "abort"[, port: "uniqueport"]});
+// if practice:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort()
 
 var pendingRequests = {},
 	ajax;

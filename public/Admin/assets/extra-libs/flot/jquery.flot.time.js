@@ -3,7 +3,7 @@
 Copyright (c) 2007-2014 IOLA and Ole Laursen.
 Licensed under the MIT license.
 
-Set axis.mode to "time" to enable. See the section "Time series data" in
+Set axis.practice to "time" to enable. See the section "Time series data" in
 API.txt for details.
 
 */
@@ -14,7 +14,7 @@ API.txt for details.
 		xaxis: {
 			timezone: null,		// "browser" for local to the client or timezone for timezone-js
 			timeformat: null,	// format string to use
-			twelveHourClock: false,	// 12 or 24 time in time mode
+			twelveHourClock: false,	// 12 or 24 time in time practice
 			monthNames: null	// list of names of months
 		}
 	};

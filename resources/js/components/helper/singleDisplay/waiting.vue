@@ -109,7 +109,7 @@ export default{
     methods:{
         back(){
             // window.history.back()
-            window.location = '/game/mode/challenge';
+            window.location = '/game/practice/challenge';
         },
     	kickingUser(id){
     		this.$emit("kickingUser", id);

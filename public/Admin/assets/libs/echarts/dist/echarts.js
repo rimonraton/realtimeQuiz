@@ -79540,7 +79540,7 @@ VMLPainter.prototype = {
 // Not supported methods
 function createMethodNotSupport(method) {
     return function () {
-        zrLog('In IE8.0 VML mode painter not support method "' + method + '"');
+        zrLog('In IE8.0 VML practice painter not support method "' + method + '"');
     };
 }
 
@@ -81459,7 +81459,7 @@ SVGPainter.prototype = {
 // Not supported methods
 function createMethodNotSupport$1(method) {
     return function () {
-        zrLog('In SVG mode painter not support method "' + method + '"');
+        zrLog('In SVG practice painter not support method "' + method + '"');
     };
 }
 

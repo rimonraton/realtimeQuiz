@@ -1,4 +1,8 @@
 export const quizHelpers = {
+    data() {
+        return {
+        };
+    },
     created() {
         // console.log('Mixin loaded')
     },
@@ -147,6 +151,14 @@ export const quizHelpers = {
 
         progressWidth(){
             return {'width':this.progress + '%', }
+        },
+        currentQuestionType() {
+            if(!this.questions) return
+            return this.questions[this.qid].fileType
+        },
+        isLastQuestion() {
+            if(!this.questions) return
+            return this.questions.length > this.qid + 1;
         },
 
     }

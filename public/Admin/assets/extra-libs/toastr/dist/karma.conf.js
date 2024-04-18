@@ -66,7 +66,7 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
 
-        // Continuous Integration mode
+        // Continuous Integration practice
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: true
     });

@@ -26,7 +26,7 @@ function InsertHTML() {
 	var editor = CKEDITOR.instances.editor1;
 	var value = document.getElementById( 'htmlArea' ).value;
 
-	// Check the active editing mode.
+	// Check the active editing practice.
 	if ( editor.mode == 'wysiwyg' )
 	{
 		// Insert HTML code.
@@ -34,7 +34,7 @@ function InsertHTML() {
 		editor.insertHtml( value );
 	}
 	else
-		alert( 'You must be in WYSIWYG mode!' );
+		alert( 'You must be in WYSIWYG practice!' );
 }
 
 function InsertText() {
@@ -42,7 +42,7 @@ function InsertText() {
 	var editor = CKEDITOR.instances.editor1;
 	var value = document.getElementById( 'txtArea' ).value;
 
-	// Check the active editing mode.
+	// Check the active editing practice.
 	if ( editor.mode == 'wysiwyg' )
 	{
 		// Insert as plain text.
@@ -50,7 +50,7 @@ function InsertText() {
 		editor.insertText( value );
 	}
 	else
-		alert( 'You must be in WYSIWYG mode!' );
+		alert( 'You must be in WYSIWYG practice!' );
 }
 
 function SetContents() {
@@ -76,7 +76,7 @@ function ExecuteCommand( commandName ) {
 	// Get the editor instance that we want to interact with.
 	var editor = CKEDITOR.instances.editor1;
 
-	// Check the active editing mode.
+	// Check the active editing practice.
 	if ( editor.mode == 'wysiwyg' )
 	{
 		// Execute the command.
@@ -84,7 +84,7 @@ function ExecuteCommand( commandName ) {
 		editor.execCommand( commandName );
 	}
 	else
-		alert( 'You must be in WYSIWYG mode!' );
+		alert( 'You must be in WYSIWYG practice!' );
 }
 
 function CheckDirty() {

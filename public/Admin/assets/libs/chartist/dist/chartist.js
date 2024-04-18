@@ -2347,9 +2347,9 @@ var Chartist = {
    * ```
    * **Automatic unit conversion**
    * For the `dur` and the `begin` animate attribute you can also omit a unit by passing a number. The number will automatically be converted to milli seconds.
-   * **Guided mode**
-   * The default behavior of SMIL animations with offset using the `begin` attribute is that the attribute will keep it's original value until the animation starts. Mostly this behavior is not desired as you'd like to have your element attributes already initialized with the animation `from` value even before the animation starts. Also if you don't specify `fill="freeze"` on an animate element or if you delete the animation after it's done (which is done in guided mode) the attribute will switch back to the initial value. This behavior is also not desired when performing simple one-time animations. For one-time animations you'd want to trigger animations immediately instead of relative to the document begin time. That's why in guided mode Chartist.Svg will also use the `begin` property to schedule a timeout and manually start the animation after the timeout. If you're using multiple SMIL definition objects for an attribute (in an array), guided mode will be disabled for this attribute, even if you explicitly enabled it.
-   * If guided mode is enabled the following behavior is added:
+   * **Guided practice**
+   * The default behavior of SMIL animations with offset using the `begin` attribute is that the attribute will keep it's original value until the animation starts. Mostly this behavior is not desired as you'd like to have your element attributes already initialized with the animation `from` value even before the animation starts. Also if you don't specify `fill="freeze"` on an animate element or if you delete the animation after it's done (which is done in guided practice) the attribute will switch back to the initial value. This behavior is also not desired when performing simple one-time animations. For one-time animations you'd want to trigger animations immediately instead of relative to the document begin time. That's why in guided practice Chartist.Svg will also use the `begin` property to schedule a timeout and manually start the animation after the timeout. If you're using multiple SMIL definition objects for an attribute (in an array), guided practice will be disabled for this attribute, even if you explicitly enabled it.
+   * If guided practice is enabled the following behavior is added:
    * - Before the animation starts (even when delayed with `begin`) the animated attribute will be set already to the `from` value of the animation
    * - `begin` is explicitly set to `indefinite` so it can be started manually without relying on document begin time (creation)
    * - The animate element will be forced to use `fill="freeze"`
@@ -2358,8 +2358,8 @@ var Chartist = {
    * - The animate element is deleted from the DOM
    *
    * @memberof Chartist.Svg
-   * @param {Object} animations An animations object where the property keys are the attributes you'd like to animate. The properties should be objects again that contain the SMIL animation attributes (usually begin, dur, from, and to). The property begin and dur is auto converted (see Automatic unit conversion). You can also schedule multiple animations for the same attribute by passing an Array of SMIL definition objects. Attributes that contain an array of SMIL definition objects will not be executed in guided mode.
-   * @param {Boolean} guided Specify if guided mode should be activated for this animation (see Guided mode). If not otherwise specified, guided mode will be activated.
+   * @param {Object} animations An animations object where the property keys are the attributes you'd like to animate. The properties should be objects again that contain the SMIL animation attributes (usually begin, dur, from, and to). The property begin and dur is auto converted (see Automatic unit conversion). You can also schedule multiple animations for the same attribute by passing an Array of SMIL definition objects. Attributes that contain an array of SMIL definition objects will not be executed in guided practice.
+   * @param {Boolean} guided Specify if guided practice should be activated for this animation (see Guided practice). If not otherwise specified, guided practice will be activated.
    * @param {Object} eventEmitter If specified, this event emitter will be notified when an animation starts or ends.
    * @return {Chartist.Svg} The current element where the animation was added
    */
@@ -2396,14 +2396,14 @@ var Chartist = {
           animationDefinition.keyTimes = '0;1';
         }
 
-        // Adding "fill: freeze" if we are in guided mode and set initial attribute values
+        // Adding "fill: freeze" if we are in guided practice and set initial attribute values
         if(guided) {
           animationDefinition.fill = 'freeze';
-          // Animated property on our element should already be set to the animation from value in guided mode
+          // Animated property on our element should already be set to the animation from value in guided practice
           attributeProperties[attribute] = animationDefinition.from;
           this.attr(attributeProperties);
 
-          // In guided mode we also set begin to indefinite so we can trigger the start manually and put the begin
+          // In guided practice we also set begin to indefinite so we can trigger the start manually and put the begin
           // which needs to be in ms aside
           timeout = Chartist.quantity(animationDefinition.begin || 0).value;
           animationDefinition.begin = 'indefinite';
@@ -2460,7 +2460,7 @@ var Chartist = {
         }.bind(this));
       }
 
-      // If current attribute is an array of definition objects we create an animate for each and disable guided mode
+      // If current attribute is an array of definition objects we create an animate for each and disable guided practice
       if(animations[attribute] instanceof Array) {
         animations[attribute].forEach(function(animationDefinition) {
           createAnimate.bind(this)(animationDefinition, false);
@@ -3729,7 +3729,7 @@ var Chartist = {
     // If set to true this property will cause the series bars to be stacked. Check the `stackMode` option for further stacking options.
     stackBars: false,
     // If set to 'overlap' this property will force the stacked bars to draw from the zero line.
-    // If set to 'accumulate' this property will form a total for each series point. This will also influence the y-axis and the overall bounds of the chart. In stacked mode the seriesBarDistance property will have no effect.
+    // If set to 'accumulate' this property will form a total for each series point. This will also influence the y-axis and the overall bounds of the chart. In stacked practice the seriesBarDistance property will have no effect.
     stackMode: 'accumulate',
     // Inverts the axes of the bar chart in order to draw a horizontal bar chart. Be aware that you also need to invert your axis settings as the Y Axis will now display the labels and the X Axis the values.
     horizontalBars: false,
@@ -3985,7 +3985,7 @@ var Chartist = {
         positions[labelAxis.units.pos + '2'] = projected[labelAxis.units.pos];
 
         if(options.stackBars && (options.stackMode === 'accumulate' || !options.stackMode)) {
-          // Stack mode: accumulate (default)
+          // Stack practice: accumulate (default)
           // If bars are stacked we use the stackedBarValues reference and otherwise base all bars off the zero line
           // We want backwards compatibility, so the expected fallback without the 'stackMode' option
           // to be the original behaviour (accumulate)
@@ -3993,7 +3993,7 @@ var Chartist = {
           positions[labelAxis.counterUnits.pos + '2'] = stackedBarValues[valueIndex];
         } else {
           // Draw from the zero line normally
-          // This is also the same code for Stack mode: overlap
+          // This is also the same code for Stack practice: overlap
           positions[labelAxis.counterUnits.pos + '1'] = zeroPoint;
           positions[labelAxis.counterUnits.pos + '2'] = projected[labelAxis.counterUnits.pos];
         }

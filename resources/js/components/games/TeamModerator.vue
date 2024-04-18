@@ -310,7 +310,6 @@ export default {
             team: null,
             isModalVisible: false,
             existing_qid:[],
-            q_lenght:this.questions.length,
             team_ranking:null,
             perform:null,
             position:null,
@@ -582,14 +581,14 @@ export default {
            let ext_qids = this.questions.map(q=> {
                return q.id
            });
-            axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData,existing_qids:ext_qids}).then(res => {
-                res.data.map(q=>this.questions.push(q))
-                // this.questions.map(q=>this.existing_qid.push(q.id))
-                console.log(res.data)
-                this.q_lenght = this.questions.length;
-                // this.questions.push(res.data);
-                // $('#qmodal').modal('hide');
-            })
+            axios.post(`/api/addQuestion`, {channel: this.channel,formdata:formData,existing_qids:ext_qids})
+                .then(res => {
+                    res.data.map(q=>this.questions.push(q))
+                    // this.questions.map(q=>this.existing_qid.push(q.id))
+                    console.log(res.data)
+                    // this.questions.push(res.data);
+                    // $('#qmodal').modal('hide');
+                })
         },
         getTeamUsers(team){
             let users = this.users.map(u => {
@@ -927,7 +926,7 @@ export default {
     },
     computed: {
         isLastQuestion(){
-           return  this.q_lenght > this.qid + 1;
+           return  this.questions.length > this.qid + 1;
         },
         userGroup(){
             return _(this.users)

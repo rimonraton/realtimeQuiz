@@ -236,31 +236,22 @@
                                     <p class="right-text"><strong>{{__('msg.challenge')}}</strong></p>
                                     <p class="left-text"> <strong>{{__('msg.team')}}</strong></p>
                                     <p class="bottom-text"><strong>{{__('msg.quizmaster')}}</strong></p>
-                                    <a href="{{url('Mode/Practice')}}" class="menu-item menu-red top-cercle">
-                                        <i class="fas fa-address-card text-white"></i>
-                                    </a>
                                     <div class="borogoldiv d-flex justify-content-center align-items-center">
                                         <a data-url="A4jqX3Psbig" href="#" class="play-btn mb-4 yt"></a>
                                     </div>
 
-                                    <a href="{{url('game/mode/challenge')}}" class="menu-item menu-green right-cercle">
+                                    <a href="{{route('game.practice')}}" class="menu-item menu-red top-cercle">
+                                        <i class="fas fa-address-card text-white"></i>
+                                    </a>
+                                    <a href="{{route('game.challenge')}}" class="menu-item menu-green right-cercle">
                                         <i class="fas fa-people-arrows text-white"></i>
                                     </a>
-{{--                                    exampleModal--}}
-                                    <a href="{{url('Mode/Moderator')}}" class="menu-item menu-blue bottom-cercle">
+                                    <a href="{{route('game.moderator')}}" class="menu-item menu-blue bottom-cercle">
                                         <i class="fas fa-user text-white"></i>
                                     </a>
-{{--                                    <a href="#" class="menu-item menu-blue bottom-cercle alt_notify">--}}
-{{--                                        <i class="fas fa-user text-white"></i>--}}
-{{--                                    </a>--}}
-
-                                    <a href="{{url('Mode/Team')}}" class="menu-item menu-purple left-cercle">
+                                    <a href="{{route('game.team')}}" class="menu-item menu-purple left-cercle">
                                         <i class="fas fa-users text-white"></i>
                                     </a>
-                                    <a href="{{url('team_quiz')}}" class="menu-item menu-purple left-cercle">
-                                        <i class="fas fa-users text-white"></i>
-                                    </a>
-
                                 </div>
                             </div>
                         </div>
@@ -574,9 +565,9 @@
                 <div class="modal-body">
 
                     @if($lang=='gb')
-                        Coming very soon. Please try <a href="{{url('Mode/Practice')}}">Practice</a> Or <a href="{{url('game/mode/challenge')}}">Challenge.</a>
+                        Coming very soon. Please try <a href="{{url('Mode/Practice')}}">Practice</a> Or <a href="{{url('game/practice/challenge')}}">Challenge.</a>
                     @else
-                        খুব শীঘ্রই আসছে. দয়া করে <a href="{{url('Mode/Practice')}}">অনুশীলন</a> অথবা <a href="{{url('game/mode/challenge')}}">প্রতিযোগিতা</a> চেষ্টা করুন।
+                        খুব শীঘ্রই আসছে. দয়া করে <a href="{{url('Mode/Practice')}}">অনুশীলন</a> অথবা <a href="{{url('game/practice/challenge')}}">প্রতিযোগিতা</a> চেষ্টা করুন।
                     @endif
                 </div>
                 <div class="modal-footer">

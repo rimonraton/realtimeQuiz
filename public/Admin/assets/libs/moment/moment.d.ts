@@ -439,11 +439,11 @@ declare namespace moment {
      */
     valueOf(): number;
 
-    // current date/time in local mode
+    // current date/time in local practice
     local(keepLocalTime?: boolean): Moment;
     isLocal(): boolean;
 
-    // current date/time in UTC mode
+    // current date/time in UTC practice
     utc(keepLocalTime?: boolean): Moment;
     isUTC(): boolean;
     /**

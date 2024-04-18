@@ -12,7 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 class GameStartEvent implements ShouldBroadcast
 {
-    public $channel, $gameStart, $uid, $id, $share,$host_id, $users, $defaultTime;
+//    public $channel, $gameStart, $uid, $id, $share,$host_id, $users, $defaultTime;
+
+    public $gameData;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,14 +25,15 @@ class GameStartEvent implements ShouldBroadcast
      */
     public function __construct($request)
     {
-        $this->channel = $request->channel;
-        $this->gameStart = $request->gameStart;
-        $this->uid = $request->uid;
-        $this->id = $request->id;
-        $this->share = $request->share;
-        $this->host_id = $request->host_id;
-        $this->users = $request->users;
-        $this->defaultTime = $request->defaultTime;
+        $this->gameData = $request;
+//        $this->channel = $request->channel;
+//        $this->gameStart = $request->gameStart;
+//        $this->uid = $request->uid;
+//        $this->id = $request->id;
+//        $this->share = $request->share;
+//        $this->host_id = $request->host_id;
+//        $this->users = $request->users;
+//        $this->defaultTime = $request->defaultTime;
 
     }
 
@@ -41,6 +44,6 @@ class GameStartEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel($this->channel);
+        return new Channel($this->gameData['channel']);
     }
 }

@@ -305,12 +305,12 @@ chart.on('draw', function(data) {
       animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
     }
 
-    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+    // We need to set an initial value before the animation starts as we are not in guided practice which would do that for us
     data.element.attr({
       'stroke-dashoffset': -pathLength + 'px'
     });
 
-    // We can't use guided mode as the animations need to rely on setting begin manually
+    // We can't use guided practice as the animations need to rely on setting begin manually
     // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
     data.element.animate(animationDefinition, false);
   }

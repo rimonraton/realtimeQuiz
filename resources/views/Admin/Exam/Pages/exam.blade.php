@@ -31,12 +31,12 @@
                                 </exam-time-mode>
 {{--                                <div class="row justify-content-center">--}}
 {{--                                    <div class="col-md-7">--}}
-{{--                                        <exam-time-mode--}}
+{{--                                        <exam-time-practice--}}
 {{--                                            :questions="{{ $questions }}"--}}
 {{--                                            :qid="{{$id}}"--}}
 {{--                                            :user="{{ $user }}"--}}
 {{--                                            @addQuestion="addQuestion($event)">--}}
-{{--                                        </exam-time-mode>--}}
+{{--                                        </exam-time-practice>--}}
 {{--                                    </div>--}}
 
 {{--                                    <div class="col-md-5">--}}
