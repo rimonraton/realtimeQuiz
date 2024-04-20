@@ -8,7 +8,7 @@
           <span class="btn btn-sm btn-danger align-self-start" @click="back">
             Back
           </span>
-          <span v-if="user.id != uid" class="ml-1 text-primary">
+          <span v-if="!isHost" class="ml-1 text-primary">
             Please wait, the Quiz Host will start the game soon.
           </span>
           <span v-else class="ml-1 text-primary">
@@ -200,9 +200,6 @@ export default{
     opacity: 1;
     top: -45px;
   }
-
-
-//Animations
 
   .todos {
     position: relative;

@@ -42636,7 +42636,7 @@ var render = function () {
             [_vm._v("\n            Back\n          ")]
           ),
           _vm._v(" "),
-          _vm.user.id != _vm.uid
+          !_vm.isHost
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
                   "\n            Please wait, the Quiz Host will start the game soon.\n          "
