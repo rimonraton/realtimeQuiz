@@ -1155,24 +1155,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['progress', 'color', 'info'],
+  props: ['progress', 'color', 'users', 'answered'],
   data: function data() {
-    return {
-      progres: this.progress,
-      information: this.info
-    };
-  },
-  methods: {
-    increase: function increase() {
-      this.progres++;
-      this.information++;
-    }
+    return {};
   },
   computed: {
     getBackground: function getBackground() {
-      return "conic-gradient(".concat(this.color, " ").concat(this.progres, "%, transparent ").concat(this.progres, "%)");
+      return "conic-gradient(".concat(this.color, " ").concat(100 - this.progress, "%, transparent ").concat(100 - this.progress, "%)");
     }
   }
 });
@@ -1491,6 +1483,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -1519,6 +1514,10 @@ __webpack_require__.r(__webpack_exports__);
     back: function back() {
       window.history.back();
       //window.location = '/game/practice/challenge';
+    },
+    isHost: function isHost() {
+      console.log('isHost =>', this.uid === this.user.id);
+      return this.uid === this.user.id;
     },
     kickingUser: function kickingUser(id) {
       this.$emit("kickingUser", id);
@@ -1621,7 +1620,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.circle{\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        text-align: center;\n        position: absolute;\n        top: 4px;\n        left: 15px;\n        font-size: 1.5rem;\n        background: gray;\n        color: white;\n}\n.flag{\n  position: absolute;\n  right: 15px;\n  top: 8px;\n}\n.close{\n    position: absolute;\n    top: -5px;\n    right: 0px;\n    color: red;\n}\n.activeItem{\n      z-index: 2;\n      color: #20c899;\n      border-color: #3490dc;\n      border-radius: 5px;\n}\n.iframe-size{\n    width: 90vw;\n    height: 90vh;\n    left: 3vw;\n}\n.show_share {\n    position: absolute;\n    right: 0;\n    height: 40px;\n    width: 300px;\n    overflow: hidden;\n    transition: .5s linear;\n    opacity: 1;\n    top: -45px;\n}\n//Animations\n\n  .todos {\n    position: relative;\n}\n.todos ul {\n    position: relative;\n}\n.todos li {\n    display: block;\n    margin-bottom: 5px;\n}\n.list-move {\n    transition: all 0.4s ease;\n}\n.list-enter-from {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-enter-to {\n    opacity: 1;\n    transform: scale(1.2);\n}\n.list-enter-active {\n    transition: all 0.4s ease;\n}\n.list-leave-from {\n    opacity: 1;\n    transform: scale(.8);\n}\n.list-leave-to {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-leave-active {\n    transition: all 0.4s ease;\n    position: absolute;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.circle {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    text-align: center;\n    position: absolute;\n    top: 4px;\n    left: 15px;\n    font-size: 1.5rem;\n    background: gray;\n    color: white;\n}\n.flag {\n    position: absolute;\n    right: 15px;\n    top: 8px;\n}\n.close {\n    position: absolute;\n    top: -5px;\n    right: 0px;\n    color: red;\n}\n.activeItem {\n    z-index: 2;\n    color: #20c899;\n    border-color: #3490dc;\n    border-radius: 5px;\n}\n.iframe-size {\n    width: 90vw;\n    height: 90vh;\n    left: 3vw;\n}\n.show_share {\n    position: absolute;\n    right: 0;\n    height: 40px;\n    width: 300px;\n    overflow: hidden;\n    transition: .5s linear;\n    opacity: 1;\n    top: -45px;\n}\n.todos {\n    position: relative;\n}\n.todos ul {\n    position: relative;\n}\n.todos li {\n    display: block;\n    margin-bottom: 5px;\n}\n.list-move {\n    transition: all 0.4s ease;\n}\n.list-enter-from {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-enter-to {\n    opacity: 1;\n    transform: scale(1.2);\n}\n.list-enter-active {\n    transition: all 0.4s ease;\n}\n.list-leave-from {\n    opacity: 1;\n    transform: scale(.8);\n}\n.list-leave-to {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-leave-active {\n    transition: all 0.4s ease;\n    position: absolute;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -3619,9 +3618,15 @@ var render = function () {
       },
       [
         _c("div", { staticClass: "number" }, [
-          _vm._v(
-            "\n                " + _vm._s(_vm.information) + "\n            "
-          ),
+          _vm.answered > 0
+            ? _c("span", [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.users + "/" + _vm.answered) +
+                    "\n            "
+                ),
+              ])
+            : _vm._e(),
         ]),
       ]
     ),
@@ -4236,13 +4241,13 @@ var render = function () {
               staticClass: "btn btn-sm btn-danger align-self-start",
               on: { click: _vm.back },
             },
-            [_vm._v("\n            Back\n          ")]
+            [_vm._v("\n                    Back\n                ")]
           ),
           _vm._v(" "),
-          !_vm.isHost
+          !_vm.isHost()
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
-                  "\n            Please wait, the Quiz Host will start the game soon.\n          "
+                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
@@ -4253,7 +4258,13 @@ var render = function () {
                         staticClass: "fa fa-users fa-2x",
                         attrs: { "aria-hidden": "true" },
                       },
-                      [_vm._v(" " + _vm._s(_vm.users.length))]
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.users.length) +
+                            "\n                    "
+                        ),
+                      ]
                     )
                   : _vm._e(),
               ]),
@@ -4273,9 +4284,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n              " +
+                      "\n                        " +
                         _vm._s(_vm.qr ? "Close QR" : "QR") +
-                        "s\n            "
+                        "s\n                    "
                     ),
                   ]
                 ),
@@ -4290,7 +4301,11 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v("\n              Share\n            ")]
+                  [
+                    _vm._v(
+                      "\n                        Share\n                    "
+                    ),
+                  ]
                 ),
               ])
             : _vm._e(),
@@ -4429,7 +4444,11 @@ var render = function () {
                       },
                     },
                   },
-                  [_vm._v("\n                  START\n                ")]
+                  [
+                    _vm._v(
+                      "\n                        START\n                    "
+                    ),
+                  ]
                 ),
               ])
             : _vm._e(),

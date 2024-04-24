@@ -4,32 +4,26 @@
              :style="{background: getBackground }"
         >
             <div class="number" >
-                {{ information }}
+                <span v-if="answered > 0">
+                    {{ users +'/'+ answered }}
+                </span>
             </div>
 
         </div>
-<!--        <button @click="increase">++</button>-->
     </div>
 </template>
 
 <script>
 export default{
-	props:['progress', 'color', 'info'],
+	props:['progress', 'color', 'users', 'answered'],
     data() {
         return {
-            progres: this.progress,
-            information: this.info
-        };
-    },
-    methods: {
-        increase() {
-            this.progres ++
-            this.information ++
+
         }
     },
     computed: {
         getBackground() {
-            return `conic-gradient(${this.color} ${this.progres}%, transparent ${this.progres}%)`;
+            return `conic-gradient(${this.color} ${100-this.progress}%, transparent ${100 - this.progress}%)`;
         },
     }
 };

@@ -18,7 +18,7 @@ export const quizHelpers = {
             this.qt.ms = 0
             this.qt.time = time
             this.progress = 100
-            this.answered = 0
+            // this.answered = 0
             this.counter = 2
             this.screen.waiting = 0
             this.screen.loading = 0
@@ -148,7 +148,6 @@ export const quizHelpers = {
         progressClass(){
             return this.progress > 66? 'bg-success': this.progress > 33? 'bg-info': 'bg-danger'
         },
-
         progressWidth(){
             return {'width':this.progress + '%', }
         },

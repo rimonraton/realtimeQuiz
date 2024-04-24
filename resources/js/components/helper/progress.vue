@@ -12,10 +12,9 @@
 <script>
 import {quizHelpers} from "../mixins/quizHelpers";
 
-export default{
-	props:['progress'],
-  mixins: [quizHelpers]
-
+export default {
+    props: ['progress'],
+    mixins: [quizHelpers]
 };
 
 </script>

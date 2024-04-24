@@ -72,68 +72,13 @@
 
         <!--Game Screen-->
         <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="row justify-content-center" v-if="user.id == uid">
-<!--                    <div class="col-md-7">-->
-<!--                        <questions-comp-->
-<!--                            :questions="questions" :qid="qid" :topics="topics" :user="user"-->
-<!--                            @addQuestion="addQuestion($event)"-->
-<!--                        />-->
-<!--                    </div>-->
-<!--                    <div class="col-md-5">-->
-<!--                        <div class="form-group mt-1">-->
-<!--                            <input type="number" class="form-control" placeholder="Enter Time in Seconds" v-model="question_time">-->
-<!--                        </div>-->
-<!--                        <div class="card text-white bg-secondary">-->
-<!--                            <div class="card-header card-title d-flex justify-content-between">-->
-<!--                                <a class="btn btn-sm btn-info" v-if="!isLastQuestion" @click="quizEnd">-->
-<!--                                    {{ tbe('খেলা শেষ করুন','Game Finish',user.lang) }}-->
-<!--                                </a>-->
-<!--                                <a class="btn btn-sm btn-warning" v-if="isLastQuestion" @click="nextQuestion">-->
-<!--                                    {{ tbe('পরবর্তী প্রশ্ন','NEXT QUESTION',user.lang) }}-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="card my-4" v-if="results.length>0">-->
-<!--                            <div class="card-header">-->
-<!--                                Score Board-->
-<!--                                <a @click="gameResetCall" v-if="user.id == uid && qid > 0 " class="btn btn-sm btn-danger float-right">-->
-<!--                                    RESET-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="card-body">-->
-<!--                                <transition-group name="slide-up" class="list-group" tag="ul" appear>-->
-<!--                                    <li-->
-<!--                                        class="list-group-item user-list"-->
-<!--                                        :class="{active : res.id == user.id}"-->
-<!--                                        v-for="(res, index) in results"-->
-<!--                                        :key="res.id">-->
-<!--                                      <span v-html="getMedel(index)"></span>-->
-<!--                                      {{ res.name }}-->
-<!--                                      <span class="badge badge-dark float-right mt-1">-->
-<!--                                        {{ res.score }}-->
-<!--                                      </span>-->
-<!--                                    </li>-->
-<!--                                </transition-group>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="card text-white bg-secondary">-->
-<!--                            <transition name="slide-up">-->
-<!--                                <info :progress="50" color="red" :info="50"></info>-->
-<!--                            </transition>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
-            </div>
-            <div class="col-md-12 pxs-0" v-if="gameActive || isHost">
-                <Progress :progress="Math.floor(progress)" />
 
-              <div class="d-flex justify-content-center align-items-center">
-                <info
-                    v-if="isHost() && (users.length > 0)"
-                    :progress="Math.floor(100 / users.length)"
-                    color="red" :info="users.length +'/'+ 1 "  />
-              </div>
+            <div class="col-md-12 pxs-0" v-if="gameActive || isHost()">
+                <Progress :progress="Math.floor(progress)" v-if="!isHost()" />
+
+<!--              <div class="d-flex justify-content-center align-items-center" v-if="isHost() && (users.length > 0)">-->
+<!--                  -->
+<!--              </div>-->
 
                 <div class="card my-4" v-for="question in questions" v-if="question.id == current">
                     <div class="card-body animate__animated animate__backInRight animate__faster position-relative">
@@ -209,11 +154,17 @@
                     </div>
                 </div>
 
-                <div class="text-right d-flex justify-content-between" v-if="isHost">
+                <div class="text-right d-flex justify-content-between align-items-center" v-if="isHost()">
                   <add-question
                       :topics="topics" :user="user"
                       @addQuestion="addQuestionFnc($event)"
                   />
+                    <info
+                        color="#00A988"
+                        :progress="Math.floor(progress)"
+                        :users="users.length"
+                        :answered="answered"
+                    />
 
                   <div>
                     <a
@@ -366,6 +317,7 @@ export default {
             .listen('QuestionClickedEvent', (data) => {
                 console.log('QuestionClickedEvent.............')
                 this.answered_user_data.push(data)
+                this.answered ++
                 this.getResult()
             })
             .listen('AddQuestionEvent', (data) => {
@@ -401,6 +353,8 @@ export default {
             })
             .listen('NextQuestionEvent', (data) => {
                 this.screen.message = 0
+                this.answered = 0
+                this.screen.resultWaiting = 0
                 this.av = true
                 this.sqo = true
                 console.log('sqo...', this.sqo)
@@ -447,8 +401,8 @@ export default {
                     this.users.unshift(user);
                 console.log(`${user.name} join`);
 
-                if (this.game_start)
-                    this.kickUser(user.id)
+                // if (this.game_start)
+                //     this.kickUser(user.id)
             })
             .leaving((user) => {
                 this.users = this.users.filter(u => u.id != user.id);
@@ -487,11 +441,12 @@ export default {
 
     methods: {
         nextQuestion() {
+            this.answered = 0
             // this.onEnd()
             // this.QuestionTimer()
             console.log('video element.......', document.getElementsByClassName('avf'))
             console.log('NextQuestion Clicked', this.av)
-          this.screen.resultWaiting = 0
+            this.screen.resultWaiting = 0
             if (this.qid + 1 == this.questions.length) {
                 clearInterval(this.timer);
                 this.winner()
@@ -501,7 +456,10 @@ export default {
             this.qid++
             this.current = this.questions[this.qid].id
             let next = { channel: this.channel, qid: this.qid, qtime: this.question_time }
-            axios.post(`/api/nextQuestion`, next)
+            axios.post(`/api/nextQuestion`, next).then(res => {
+                this.questionInit(this.qt.defaultTime);
+                this.QuestionTimer()
+            })
         },
         reloadPage() {
             axios.post(`/api/pageReload`, { channel: this.channel })
@@ -574,7 +532,6 @@ export default {
         },
         QuestionTimer() {
             console.log('QuestionTimer...')
-
             if (this.qid == this.questions.length || this.av == false || this.gameEnded === true) {
                 return;
             }
@@ -586,8 +543,11 @@ export default {
                     // console.log('this.qt.time', this.qt.time)
                     if (this.qt.time <= 0) {
                         this.questionInit(this.qt.defaultTime);
-                        this.checkAnswer(this.qid, 'Not Answered', 0);
-                        // this.resultScreen();
+                        if(this.answered == 0) {
+                            this.checkAnswer(this.qid, 'Not Answered', 0);
+                        }
+                        this.screen.resultWaiting = 0
+                        this.resultScreen();
                     } else {
                         this.qt.ms++
                         this.progress -= pdec
@@ -622,9 +582,9 @@ export default {
             this.gamedata['isCorrect'] = rw == 1 ? Math.floor(this.progress) : 0
             let clone = { ...this.gamedata }
             axios.post(`/api/questionClick`, clone)
-                .then(res => {
-                    this.resultScreen();
-                })
+                // .then(res => {
+                //     this.resultScreen();
+                // })
             this.answered_user_data.push(clone)
             this.screen.loading = true
         },
