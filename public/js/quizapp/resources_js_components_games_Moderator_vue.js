@@ -766,11 +766,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['progress', 'color', 'users', 'answered'],
+  props: ['progress', 'color', 'users', 'answered', 'results', 'correct'],
   data: function data() {
     return {};
+  },
+  methods: {
+    getClass: function getClass(index) {
+      var bgClas = 'list-group-item-success';
+      switch (index) {
+        case 0:
+          bgClas = 'list-group-item-primary';
+          break;
+        case 1:
+          bgClas = 'list-group-item-success';
+          break;
+        case 2:
+          bgClas = 'list-group-item-warning';
+          break;
+        default:
+          bgClas = 'list-group-item-info';
+      }
+      return bgClas;
+    }
   },
   computed: {
     getBackground: function getBackground() {
@@ -17601,7 +17642,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.progress-circle {\n    width: 100px;\n    height: 100px;\n    border-radius: 50%;\n    font-size: 2rem;\n    //background: conic-gradient(red 25%, transparent 25%);\n    display: flex;\n    transition: ease-in;\n}\n.progress-circle .number {\n    background: #e3e3e3;\n    width: 90%;\n    height: 90%;\n    border-radius: inherit;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin: auto;\n    color: black;\n    transition: ease-in;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.progress-circle {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  font-size: 2rem;\n//background: conic-gradient(red 25%, transparent 25%); display: flex;\n  transition: ease-in;\n}\n.progress-circle .number {\n  background: #e3e3e3;\n  width: 90%;\n  height: 90%;\n  border-radius: inherit;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: auto;\n  color: black;\n  transition: ease-in;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -42046,27 +42087,84 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass: "progress-circle",
-        style: { background: _vm.getBackground },
-      },
-      [
-        _c("div", { staticClass: "number" }, [
-          _vm.answered > 0
-            ? _c("span", [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.users + "/" + _vm.answered) +
-                    "\n            "
-                ),
-              ])
-            : _vm._e(),
-        ]),
-      ]
-    ),
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md" }, [
+      _c(
+        "div",
+        { staticClass: "d-flex justify-content-center align-items-center" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "progress-circle",
+              style: { background: _vm.getBackground },
+            },
+            [
+              _c("div", { staticClass: "number" }, [
+                _vm.answered > 0
+                  ? _c("span", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.users + "/" + _vm.answered) +
+                          "\n                "
+                      ),
+                    ])
+                  : _vm._e(),
+              ]),
+            ]
+          ),
+        ]
+      ),
+      _vm._v(" "),
+      _vm.users == _vm.answered
+        ? _c("div", [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.results, function (result, index) {
+                return _c(
+                  "li",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center list-group-item",
+                    class: _vm.getClass(index),
+                  },
+                  [
+                    result.flag === "img"
+                      ? _c("img", {
+                          staticClass: "image rounded img-thumbnail",
+                          staticStyle: { width: "100px" },
+                          attrs: { src: "/" + result.option, alt: "" },
+                        })
+                      : _c("span", [_vm._v(_vm._s(result.option))]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "badge badge-pill",
+                        class: [
+                          result.option === _vm.correct
+                            ? "badge-success"
+                            : "badge-primary",
+                        ],
+                      },
+                      [
+                        result.option === _vm.correct
+                          ? _c("i", { staticClass: "fas fa-check" })
+                          : _vm._e(),
+                        _vm._v(
+                          "\n              " + _vm._s(result.score) + "\n"
+                        ),
+                      ]
+                    ),
+                  ]
+                )
+              }),
+              0
+            ),
+          ])
+        : _vm._e(),
+    ]),
   ])
 }
 var staticRenderFns = []
