@@ -45,7 +45,7 @@ export default {
     streamLink() {
       // just a quick fix. can be improved by setting the app_url
       if (this.env === "production") {
-        return `https://laravel-video-call.herokuapp.com/streaming/${this.streamId}`;
+        return `https://gyankosh.org/streaming/${this.streamId}`;
       } else {
         return `https://quiz.test/streaming/${this.streamId}`;
       }
@@ -75,13 +75,13 @@ export default {
             config: {
               iceServers: [
                 {
-                  urls: "stun:stun.stunprotocol.org",
+                  urls: "stun:stun.l.google.com:19302",
                 },
-                {
-                  urls: this.turn_url,
-                  username: this.turn_username,
-                  credential: this.turn_credential,
-                },
+                // {
+                //   urls: this.turn_url,
+                //   username: this.turn_username,
+                //   credential: this.turn_credential,
+                // },
               ],
             },
           });

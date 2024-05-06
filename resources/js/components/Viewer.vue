@@ -14,6 +14,8 @@
 
 <script>
 import Peer from "simple-peer";
+// urls: "stun:stun.stunprotocol.org",
+
 export default {
   name: "Viewer",
   props: [
@@ -47,13 +49,13 @@ export default {
         config: {
           iceServers: [
             {
-              urls: "stun:stun.stunprotocol.org",
+              urls: "stun:stun.l.google.com:19302",
             },
-            {
-              urls: this.turn_url,
-              username: this.turn_username,
-              credential: this.turn_credential,
-            },
+            // {
+            //   urls: this.turn_url,
+            //   username: this.turn_username,
+            //   credential: this.turn_credential,
+            // },
           ],
         },
       });
