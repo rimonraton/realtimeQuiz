@@ -446,6 +446,15 @@ export default {
   // },
 
   methods: {
+    async startWebRTC() {
+      // Code to initiate WebRTC
+      // Capture audio and video, establish peer connection, etc.
+    },
+
+    handleSignalingData(data) {
+      // Code to handle signaling data
+      // Exchange offer, answer, and ICE candidates
+    },
     getClass(index) {
       let bgClas = 'list-group-item-success'
       switch (index) {
@@ -869,7 +878,7 @@ export default {
         this.answered_user_data
           .filter(ad => ad.question === qt)
           .map(ans => {
-            if(ans.selected === ebOption){
+            if(ans.selected.trim() === ebOption.trim()){
               score ++
             }
           })

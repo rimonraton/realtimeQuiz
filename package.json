@@ -36,6 +36,7 @@
         "laravel-echo": "^1.10.0",
         "pusher-js": "^7.0.2",
         "qrcode.vue": "^1.7.0",
+        "simple-peer": "^9.11.1",
         "vue": "^2.6.12",
         "vue-chartjs": "^3.5.1",
         "vue-sweetalert2": "^4.3.1",

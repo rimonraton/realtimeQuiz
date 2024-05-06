@@ -44,6 +44,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const app = new Vue({
     el: '#app',
     components: {
+        'broadcaster' : () => import('./components/Broadcaster'),
+        'viewer' : () => import('./components/Viewer'),
         'Practice' : () => import('./components/games/Practice'),
 	    'Challenge': () => import('./components/games/Challenge'),
         'SingleQuestion': () => import('./components/games/SingleQuestion'),
@@ -57,6 +59,7 @@ const app = new Vue({
         'ExamTimeMode' : () => import('./components/games/ExamTimeMode'),
         'ExamResult' : () => import('./components/games/ExamResult'),
         'ExamResultWhenEmpty' : () => import('./components/games/ExamResultWhenSubmitEmpty'),
+
 	}
     // router
 });

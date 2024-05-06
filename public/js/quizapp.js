@@ -12257,6 +12257,12 @@ Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTE
 var app = new Vue({
   el: '#app',
   components: {
+    'broadcaster': function broadcaster() {
+      return __webpack_require__.e(/*! import() */ "resources_js_components_Broadcaster_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Broadcaster */ "./resources/js/components/Broadcaster.vue"));
+    },
+    'viewer': function viewer() {
+      return __webpack_require__.e(/*! import() */ "resources_js_components_Viewer_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Viewer */ "./resources/js/components/Viewer.vue"));
+    },
     'Practice': function Practice() {
       return __webpack_require__.e(/*! import() */ "resources_js_components_games_Practice_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/games/Practice */ "./resources/js/components/games/Practice.vue"));
     },
@@ -70644,7 +70650,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = function(chunkId) {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_games_Practice_vue":1,"resources_js_components_games_Challenge_vue":1,"resources_js_components_games_SingleQuestion_vue":1,"resources_js_components_helper_singleDisplay_Qrcode_vue":1,"resources_js_components_games_TeamQuiz_vue":1,"resources_js_components_games_Moderator_vue":1,"resources_js_components_games_ModeratorNew_vue":1,"resources_js_components_games_Team_vue":1,"resources_js_components_games_TeamModerator_vue":1,"resources_js_components_games_ExamQuestionTimeMode_vue":1,"resources_js_components_games_ExamTimeMode_vue":1,"resources_js_components_games_ExamResult_vue":1,"resources_js_components_games_ExamResultWhenSubmitEmpty_vue":1,"chunk-vue-tel-input":1}[chunkId]) return "js/quizapp/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Broadcaster_vue":1,"resources_js_components_Viewer_vue":1,"resources_js_components_games_Practice_vue":1,"resources_js_components_games_Challenge_vue":1,"resources_js_components_games_SingleQuestion_vue":1,"resources_js_components_helper_singleDisplay_Qrcode_vue":1,"resources_js_components_games_TeamQuiz_vue":1,"resources_js_components_games_Moderator_vue":1,"resources_js_components_games_ModeratorNew_vue":1,"resources_js_components_games_Team_vue":1,"resources_js_components_games_TeamModerator_vue":1,"resources_js_components_games_ExamQuestionTimeMode_vue":1,"resources_js_components_games_ExamTimeMode_vue":1,"resources_js_components_games_ExamResult_vue":1,"resources_js_components_games_ExamResultWhenSubmitEmpty_vue":1,"chunk-vue-tel-input":1}[chunkId]) return "js/quizapp/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
