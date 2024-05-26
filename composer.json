@@ -16,6 +16,7 @@
         "intervention/image": "^2.5",
         "laravel/framework": "^7.9",
         "laravel/helpers": "^1.4",
+        "laravel/sanctum": "^2.15",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "2.4",

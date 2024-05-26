@@ -3,6 +3,7 @@
 use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\AuthTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('token', [AuthTokenController::class, 'requestToken']);
 
 Route::post('questionClick', [GameController::class, 'questionClick']);
 Route::post('gameStart', [GameController::class, 'gameStart']);
@@ -55,7 +58,7 @@ Route::post('teamResult',[GameController::class,'teamResult']);
 
 
 // api section
-Route::get('get-categories', [APIController::class, 'getCategories']);
+Route::get('get-categories', [APIController::class, 'getCategories'])->middleware('auth:sanctum');
 Route::get('get-sub-categories/{categoryId}', [APIController::class, 'getSubCategories']);
 Route::get('get-quizzes/{subCategoryId}', [APIController::class, 'getQuizzes']);
 Route::get('get-questions/{quizId}', [APIController::class, 'getQuestions']);
