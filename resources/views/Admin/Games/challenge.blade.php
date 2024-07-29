@@ -351,6 +351,7 @@
             let hasShow = $('#shareBtn'+id).hasClass('show_share');
             let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
             let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
+            console.log('sharebtn',url);
 
             $('.show_share').empty();
             $('#shareBtn'+id).append(iframe);

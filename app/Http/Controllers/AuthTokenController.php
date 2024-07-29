@@ -10,7 +10,8 @@ class AuthTokenController extends Controller
 {
     public function requestToken(Request $request): string
     {
-        $request->validate([
+        return $request->all();
+         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
@@ -24,14 +25,7 @@ class AuthTokenController extends Controller
             ]);
         }
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
-
-        return response()->json(
-            [
-                'code' => 200,
-                'token' => $token
-            ], 200);
-     
+        return $user->createToken($request->device_name)->plainTextToken;
         
     }
 }
