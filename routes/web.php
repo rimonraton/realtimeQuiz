@@ -25,12 +25,15 @@ use Illuminate\Support\Facades\Route;
 //use Mail;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
 
+Route::get('getLoginFromFlutter/{user}/{email}', [\App\Http\Controllers\Game\PracticeController::class, 'getLoginFromFlutter'])->name('flutter.login');
+
 Route::get('/streaming', [App\Http\Controllers\WebrtcStreamingController::class, 'index']);
 Route::get('/streaming/{streamId}', [App\Http\Controllers\WebrtcStreamingController::class, 'consumer']);
 Route::post('/stream-offer', [App\Http\Controllers\WebrtcStreamingController::class, 'makeStreamOffer']);
 Route::post('/stream-answer', [App\Http\Controllers\WebrtcStreamingController::class, 'makeStreamAnswer']);
 
 Route::get('/', [LandingPageController::class, 'index']);
+
 
 // website setup
 Route::post('features/save', [SetupController::class,'featureStore'])->name('features.save');

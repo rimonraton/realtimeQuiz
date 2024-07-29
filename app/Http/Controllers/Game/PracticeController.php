@@ -11,9 +11,26 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class PracticeController extends Controller
 {
+
+  public function getLoginFromFlutter($user, $email)
+  {
+    	$credentials = \App\User::where('email', $email)->first();
+	//Auth::logout();
+	//auth()->user();
+
+    if (Hash::check($user, $credentials->password)) {
+        Auth::login($credentials);
+	//return auth()->user();
+        return redirect('/dashboard');
+    }
+
+  }
+
+
     public function index()
     {
         $quiz =  Quiz::where('game_id', 1)->with('quizCategory', 'progress');

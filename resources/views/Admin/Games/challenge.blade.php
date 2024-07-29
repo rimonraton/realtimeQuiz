@@ -349,7 +349,7 @@
             $('.loading'+id).addClass('spinner-grow spinner-grow-sm');
 
             let hasShow = $('#shareBtn'+id).hasClass('show_share');
-            let url = "{{ url('/Challenge') }}/" + id + "/{{ Auth::id() }}/share";
+            let url = "{{ url('/challenge') }}/" + id + "/{{ Auth::id() }}/share";
             let iframe ='<iframe id="shareFrame'+id+'" src="'+url+'" frameborder="0" class="iframe-size"></iframe>';
             console.log('sharebtn',url);
 

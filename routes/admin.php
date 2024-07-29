@@ -19,3 +19,9 @@ Route::get('setAdminId/{modelName}', function ($modelName){
     return 'Successfully set admin_id to Model => '. $modelName;
 
 })->middleware('auth');
+
+
+
+
+
+ 

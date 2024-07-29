@@ -17,8 +17,11 @@ class HasAccess
         if(auth()->user()->roleuser->role->role_name == 'Super Admin'){
             return $next($request);
         }
-        $routeName = Route::currentRouteName();
-        if (Permission::can($routeName)) {
+        
+	$routeName = Route::currentRouteName();
+
+
+        if (Permission::can($routeName) || $routeName == 'flutter.login') {
             return $next($request);
         };
         return redirect('dashboard');

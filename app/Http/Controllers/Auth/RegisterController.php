@@ -152,4 +152,22 @@ class RegisterController extends Controller
         return $user;
     }
 
+  public function registerFlutter(Request $request)
+  {
+	$data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+    	]);
+	$data['special_name'] = $data['name'];
+	$user = $this->create($data);
+	$user->markEmailAsVerified();
+return $user;
+
+
+
+
+  }
+
+
 }
