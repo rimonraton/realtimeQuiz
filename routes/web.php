@@ -34,7 +34,6 @@ Route::post('/stream-answer', [App\Http\Controllers\WebrtcStreamingController::c
 
 Route::get('/', [LandingPageController::class, 'index']);
 
-
 // website setup
 Route::post('features/save', [SetupController::class,'featureStore'])->name('features.save');
 Route::post('features/update', [SetupController::class,'featureUpdate'])->name('features.update');

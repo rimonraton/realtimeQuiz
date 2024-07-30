@@ -6,7 +6,7 @@ Firewall ===>>>
 MySQL ===>>>
 sudo apt-get install mysql-server
 
-Configuring MySQL ===>>> gyankosh@2021
+Configuring MySQL ===>>> gyankosh
 mysql -u root -p
 
 CREATE DATABASE gyankosh DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
