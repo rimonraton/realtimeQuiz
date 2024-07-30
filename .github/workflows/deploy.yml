@@ -24,7 +24,7 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
-          cd /var/www/html/gyankosh/
+          cd /var/www/sites/gyankosh.org/
           git checkout -f
           git pull
           npm install
