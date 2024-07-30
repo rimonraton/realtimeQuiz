@@ -15,9 +15,7 @@ jobs:
     # username: ${{ secrets.SSH_USERNAME }}
     # key: ${{ secrets.SSH_PRIVATE_KEY }}
     # passphrase: ${{ secrets.SSH_PASSPHRASE }}
-    # key: ${{ secrets.SSH_PRIVATE_KEY }}
     # key: ${{ secrets.PRIVATE_KEY }}
-    #passphrase: ${{ secrets.SSH_PASSPHRASE }}
 
     - name: Deployment
       uses: appleboy/ssh-action@master
