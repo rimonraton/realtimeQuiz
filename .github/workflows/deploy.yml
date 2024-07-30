@@ -22,7 +22,9 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASS }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        #password: ${{ secrets.PASS }}
         port: 22
         script: |
           cd /var/www/sites/gyankosh.org/
