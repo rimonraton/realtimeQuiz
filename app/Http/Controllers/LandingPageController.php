@@ -21,14 +21,22 @@ class LandingPageController extends Controller
 
   public function loginFlutter(Request $request)
   {
-	$credentials = User::where('email', $request->email)->first();
-	if (Hash::check($request->password, $credentials->password)) {
-		return $credentials;
-       	}
-	return response('Password', 201)
-                  ->header('Content-Type', 'text/plain');
+    $credentials = User::where('email', $request->email)->first();
+    if (Hash::check($request->password, $credentials->password)) {
+      return $credentials;
+    }
+    return response('Password', 201)
+      ->header('Content-Type', 'text/plain');
   }
 
-
+  public function resetPassword(Request $request)
+  {
+    $user = User::where('email', $request->email)->first();
+    if($user) {
+      return $user;
+    }
+    return response('Email not found!', 201)
+      ->header('Content-Type', 'text/plain');
+  }
 
 }

@@ -79,8 +79,9 @@ Route::post('unlock-exam', [GameController::class, 'unlockExistExam']);
 //Flutter Routes
 //Route::post('loginFromFlutter', [\App\Http\Controllers\Auth\LoginController::class, 'loginFromFlutter']);
 Route::get('getLoginFromFlutter/{user}/{email}', [\App\Http\Controllers\Auth\LoginController::class, 'getLoginFromFlutter']);
-//temporary 
+//temporary
 Route::post('loginFlutter', [\App\Http\Controllers\LandingPageController::class, 'loginFlutter']);
+Route::get('resetPassword', [\App\Http\Controllers\LandingPageController::class, 'resetPassword']);
 Route::post('registration', [\App\Http\Controllers\Auth\RegisterController::class, 'registerFlutter']);
 
 

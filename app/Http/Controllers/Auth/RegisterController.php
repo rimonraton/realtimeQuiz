@@ -116,7 +116,7 @@ class RegisterController extends Controller
 //    }
 
 
-    protected function create(array $data)
+    protected function create(array $data): User
     {
         $email = '';
         $ui = new UserInfo();
@@ -152,22 +152,18 @@ class RegisterController extends Controller
         return $user;
     }
 
-  public function registerFlutter(Request $request)
+  public function registerFlutter(Request $request): User
   {
-	$data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-    	]);
-	$data['special_name'] = $data['name'];
-	$user = $this->create($data);
-	$user->markEmailAsVerified();
-return $user;
-
-
-
+    $data = $request->validate([
+      'name' => ['required', 'string', 'max:255'],
+      'email' => ['required', 'string', 'max:255', 'unique:users'],
+      'password' => ['required', 'string', 'min:8'],
+    ]);
+    $data['special_name'] = $data['name'];
+    $user = $this->create($data);
+    $user->markEmailAsVerified();
+    return $user;
 
   }
-
 
 }
