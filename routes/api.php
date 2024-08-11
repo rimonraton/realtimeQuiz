@@ -77,12 +77,10 @@ Route::post('delete-exist-exam-given-user', [GameController::class, 'deleteExist
 Route::post('unlock-exam', [GameController::class, 'unlockExistExam']);
 
 //Flutter Routes
-//Route::post('loginFromFlutter', [\App\Http\Controllers\Auth\LoginController::class, 'loginFromFlutter']);
-Route::get('getLoginFromFlutter/{user}/{email}', [\App\Http\Controllers\Auth\LoginController::class, 'getLoginFromFlutter']);
-//temporary
-Route::post('loginFlutter', [\App\Http\Controllers\LandingPageController::class, 'loginFlutter']);
-Route::post('resetPassword', [\App\Http\Controllers\LandingPageController::class, 'resetPassword']);
-Route::post('registration', [\App\Http\Controllers\Auth\RegisterController::class, 'registerFlutter']);
+//Route::get('getLoginFromFlutter/{user}/{email}', [\App\Http\Controllers\Auth\LoginController::class, 'getLoginFromFlutter']);
+//Route::post('loginFlutter', [\App\Http\Controllers\LandingPageController::class, 'loginFlutter']);
+//Route::post('resetPassword', [\App\Http\Controllers\LandingPageController::class, 'resetPassword']);
+//Route::post('registration', [\App\Http\Controllers\Auth\RegisterController::class, 'registerFlutter']);
 
 
 
