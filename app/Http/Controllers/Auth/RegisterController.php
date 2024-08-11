@@ -14,9 +14,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Mail;
 
 class RegisterController extends Controller
 {
@@ -143,7 +143,7 @@ class RegisterController extends Controller
         $ru->role_id = 5;
         $ru->save();
         if(is_numeric($data['email'])){
-
+          return $user;
         }
         else{
             Mail::to($user->email)->send(new WelcomeMail($user));
@@ -152,18 +152,5 @@ class RegisterController extends Controller
         return $user;
     }
 
-  public function registerFlutter(Request $request): User
-  {
-    $data = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8'],
-    ]);
-    $data['special_name'] = $data['name'];
-    $user = $this->create($data);
-    $user->markEmailAsVerified();
-    return $user;
-
-  }
 
 }
