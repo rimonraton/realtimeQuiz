@@ -41,7 +41,8 @@ class FlutterController extends Controller
     if($user) {
       $verification = rand(6, 999999);
       Mail::to($user->email)->send(new PasswordResetFlutter($user, $verification));
-      return $user['verification'] = $verification;
+      $user['verification'] = $verification;
+      return $user;
     }
     return response('Email not found!', 201)
       ->header('Content-Type', 'text/plain');
@@ -60,17 +61,9 @@ class FlutterController extends Controller
     return $user;
 
   }
-  public function forgotPassword(Request $request): User
+  public function updatePassword(Request $request)
   {
-    $data = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8'],
-    ]);
-    $data['special_name'] = $data['name'];
-    $user = $this->create($data);
-    $user->markEmailAsVerified();
-    return $user;
+    return $request->all();
 
   }
 
