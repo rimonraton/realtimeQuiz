@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\RoleUser;
 use App\UserInfo;
-use Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -14,7 +13,6 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-use DB;
 use function React\Promise\Stream\first;
 
 class LoginController extends Controller
@@ -84,22 +82,5 @@ class LoginController extends Controller
     }
 
 
-
-  public function getLoginFromFlutter($user, $email)
-  {
-    	return $credentials = \App\User::where('email', $email)->first();
-	//Auth::logout();
-	//auth()->user();
-
-    if (Hash::check($user, $credentials->password)) {
-        Auth::login($credentials);
-	//return auth()->user();
-        return redirect('/dashboard');
-    }
-
-  }
-
-
-	
 
 }
