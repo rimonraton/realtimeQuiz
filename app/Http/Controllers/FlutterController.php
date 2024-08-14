@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetFlutter;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 
 class FlutterController extends Controller
@@ -37,7 +39,9 @@ class FlutterController extends Controller
   {
     $user = User::where('email', trim($request->email))->first();
     if($user) {
-      return $user['verification'] = rand(6, 999999);
+      $verification = rand(6, 999999);
+      Mail::to($user->email)->send(new PasswordResetFlutter($user, $verification));
+      return $user['verification'] = $verification;
     }
     return response('Email not found!', 201)
       ->header('Content-Type', 'text/plain');

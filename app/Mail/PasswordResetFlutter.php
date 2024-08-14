@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,14 +12,12 @@ class PasswordResetFlutter extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $user;
+    public $verification;
+    public function __construct(User $user, $verification)
     {
-        //
+      $this->user = $user;
+      $this->verification = $verification;
     }
 
     /**
