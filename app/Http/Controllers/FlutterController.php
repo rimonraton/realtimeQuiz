@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\PasswordResetFlutter;
 use App\User;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class FlutterController extends Controller
 {
   public function getLoginFromFlutter($random, $user, $email)
   {
-    if(strlen($random) !== 136) {
+    if(strlen($random) > 100) {
       abort(404);
     }
     $credentials = \App\User::where('email', $email)->first();
@@ -27,7 +28,7 @@ class FlutterController extends Controller
 
   public function loginFlutter(Request $request)
   {
-    $credentials = User::where('email', $request->email)->first();
+    $credentials = User::where('email', trim($request->email))->first();
     if (Hash::check($request->password, $credentials->password)) {
       return $credentials;
     }
@@ -56,14 +57,23 @@ class FlutterController extends Controller
       'password' => ['required', 'string', 'min:8'],
     ]);
     $data['special_name'] = $data['name'];
-    $user = $this->create($data);
+    $registerCtl = new RegisterController();
+    $user = $registerCtl->create($data);
     $user->markEmailAsVerified();
     return $user;
 
   }
   public function updatePassword(Request $request)
   {
-    return $request->all();
+    $user = User::where('email', trim($request->email))->first();
+    if($user) {
+      $user['password'] = Hash::make($request->password);
+      $user->save();
+      return $user;
+    }
+
+    return response('Email not found!', 201)
+      ->header('Content-Type', 'text/plain');
 
   }
 
