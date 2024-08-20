@@ -1424,8 +1424,9 @@ __webpack_require__.r(__webpack_exports__);
       return "/images/gp/".concat(random, ".jpg");
     },
     back: function back() {
-      // window.history.back()
-      window.location = '/game/practice/challenge';
+      var path = window.location.pathname.split('/');
+      // `${path[1]}.${path[2]}.${path[3]}`
+      window.location = "/".concat(path[1]);
     },
     getMedel: function getMedel(index) {
       if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';
@@ -1641,7 +1642,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.progress-circle {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  font-size: 2rem;\n//background: conic-gradient(red 25%, transparent 25%); display: flex;\n  transition: ease-in;\n}\n.progress-circle .number {\n  background: #e3e3e3;\n  width: 90%;\n  height: 90%;\n  border-radius: inherit;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: auto;\n  color: black;\n  transition: ease-in;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.progress-circle {\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 50%;\r\n  font-size: 2rem;\r\n//background: conic-gradient(red 25%, transparent 25%); display: flex;\r\n  transition: ease-in;\n}\n.progress-circle .number {\r\n  background: #e3e3e3;\r\n  width: 90%;\r\n  height: 90%;\r\n  border-radius: inherit;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  margin: auto;\r\n  color: black;\r\n  transition: ease-in;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1661,7 +1662,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.circle {\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    text-align: center;\n    position: absolute;\n    top: 4px;\n    left: 15px;\n    font-size: 1.5rem;\n    background: gray;\n    color: white;\n}\n.flag {\n    position: absolute;\n    right: 15px;\n    top: 8px;\n}\n.close {\n    position: absolute;\n    top: -5px;\n    right: 0px;\n    color: red;\n}\n.activeItem {\n    z-index: 2;\n    color: #20c899;\n    border-color: #3490dc;\n    border-radius: 5px;\n}\n.iframe-size {\n    width: 90vw;\n    height: 90vh;\n    left: 3vw;\n}\n.show_share {\n    position: absolute;\n    right: 0;\n    height: 40px;\n    width: 300px;\n    overflow: hidden;\n    transition: .5s linear;\n    opacity: 1;\n    top: -45px;\n}\n.todos {\n    position: relative;\n}\n.todos ul {\n    position: relative;\n}\n.todos li {\n    display: block;\n    margin-bottom: 5px;\n}\n.list-move {\n    transition: all 0.4s ease;\n}\n.list-enter-from {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-enter-to {\n    opacity: 1;\n    transform: scale(1.2);\n}\n.list-enter-active {\n    transition: all 0.4s ease;\n}\n.list-leave-from {\n    opacity: 1;\n    transform: scale(.8);\n}\n.list-leave-to {\n    opacity: 0;\n    transform: scale(0.5);\n}\n.list-leave-active {\n    transition: all 0.4s ease;\n    position: absolute;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.circle {\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 50%;\r\n    text-align: center;\r\n    position: absolute;\r\n    top: 4px;\r\n    left: 15px;\r\n    font-size: 1.5rem;\r\n    background: gray;\r\n    color: white;\n}\n.flag {\r\n    position: absolute;\r\n    right: 15px;\r\n    top: 8px;\n}\n.close {\r\n    position: absolute;\r\n    top: -5px;\r\n    right: 0px;\r\n    color: red;\n}\n.activeItem {\r\n    z-index: 2;\r\n    color: #20c899;\r\n    border-color: #3490dc;\r\n    border-radius: 5px;\n}\n.iframe-size {\r\n    width: 90vw;\r\n    height: 90vh;\r\n    left: 3vw;\n}\n.show_share {\r\n    position: absolute;\r\n    right: 0;\r\n    height: 40px;\r\n    width: 300px;\r\n    overflow: hidden;\r\n    transition: .5s linear;\r\n    opacity: 1;\r\n    top: -45px;\n}\n.todos {\r\n    position: relative;\n}\n.todos ul {\r\n    position: relative;\n}\n.todos li {\r\n    display: block;\r\n    margin-bottom: 5px;\n}\n.list-move {\r\n    transition: all 0.4s ease;\n}\n.list-enter-from {\r\n    opacity: 0;\r\n    transform: scale(0.5);\n}\n.list-enter-to {\r\n    opacity: 1;\r\n    transform: scale(1.2);\n}\n.list-enter-active {\r\n    transition: all 0.4s ease;\n}\n.list-leave-from {\r\n    opacity: 1;\r\n    transform: scale(.8);\n}\n.list-leave-to {\r\n    opacity: 0;\r\n    transform: scale(0.5);\n}\n.list-leave-active {\r\n    transition: all 0.4s ease;\r\n    position: absolute;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

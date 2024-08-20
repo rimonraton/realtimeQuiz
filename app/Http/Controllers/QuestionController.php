@@ -390,9 +390,9 @@ class QuestionController extends Controller
 
     public function editQuestion($id)
     {
-         $QwithO = Question::with('options')->where('id', $id)->first();
-        $difficulty = Difficulty::all();
-        return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty'));
+      $QwithO = Question::with('options')->where('id', $id)->first();
+      $difficulty = Difficulty::all();
+      return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty'));
     }
 
     public function viewQuestion($id)

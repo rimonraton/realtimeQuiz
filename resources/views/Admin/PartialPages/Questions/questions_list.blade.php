@@ -178,7 +178,9 @@
                 <input type="hidden" id="question_id">
                 <div class="form-group">
                     {{--                    <label for="password">{{$lang == 'gb' ? 'Password' : 'পাসওয়ার্ড'}}</label>--}}
-                    <input type="password" class="form-control" placeholder="{{$lang == 'gb' ? 'Enter Your Password' : 'আপনার পাসওয়ার্ড লিখুন' }}" id="password" name="password" autocomplete="off">
+                    <input type="password" class="form-control"
+                           placeholder="{{$lang == 'gb' ? 'Enter Your Password' : 'আপনার পাসওয়ার্ড লিখুন' }}"
+                           id="password" name="password" autocomplete="off">
                 </div>
                 {{--                <div class="form-group">--}}
                 {{--                    <label for="confirm-password">Confirm Password</label>--}}
@@ -208,7 +210,7 @@
         $('body').on('click', '.pagination a', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            alert(url);
+            // alert(url);
             // return;
             $.ajax({
                 url: url,
@@ -463,19 +465,21 @@
     })
 
     $(document).on('click', '.edit', function() {
-        // var id = $(this).attr('data-id');
         $('#question_id').val($(this).attr('data-id'))
-        $('#verification').modal('show')
-        // alert(id);
-        {{--$('#uqid').val(id);--}}
-        {{--$.ajax({--}}
-        {{--    url: "{{url('question/edit')}}/" + id,--}}
-        {{--    type: 'GET',--}}
-        {{--    success: function(data) {--}}
-        {{--        $('#quistion_view').html(data);--}}
-        {{--        $('#edit-questions').modal('show');--}}
-        {{--    }--}}
-        {{--})--}}
+        // $('#verification').modal('show')
+      // Without Verification
+        var id = $(this).attr('data-id');
+        $('#uqid').val(id);
+        $.ajax({
+            url: "{{url('question/edit')}}/" + id,
+            type: 'GET',
+            success: function(data) {
+                $('#quistion_view').html(data);
+                $('#edit-questions').modal('show');
+            }
+        })
+      // Without Verification
+
     })
 
     $(document).on('click','.delete_q',function (){

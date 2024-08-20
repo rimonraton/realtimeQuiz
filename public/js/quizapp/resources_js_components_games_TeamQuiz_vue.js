@@ -1088,8 +1088,9 @@ __webpack_require__.r(__webpack_exports__);
       return "/images/gp/".concat(random, ".jpg");
     },
     back: function back() {
-      // window.history.back()
-      window.location = '/game/practice/challenge';
+      var path = window.location.pathname.split('/');
+      // `${path[1]}.${path[2]}.${path[3]}`
+      window.location = "/".concat(path[1]);
     },
     getMedel: function getMedel(index) {
       if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';

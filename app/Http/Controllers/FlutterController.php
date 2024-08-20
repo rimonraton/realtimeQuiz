@@ -15,7 +15,7 @@ class FlutterController extends Controller
 {
   public function getLoginFromFlutter($random, $user, $email)
   {
-    if(strlen($random) > 100) {
+    if(strlen($random) !== 136) {
       abort(404);
     }
     $credentials = \App\User::where('email', $email)->first();

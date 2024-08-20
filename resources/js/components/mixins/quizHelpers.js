@@ -1,3 +1,5 @@
+import {isEmpty} from "lodash/lang";
+
 export const quizHelpers = {
     data() {
         return {
@@ -26,14 +28,18 @@ export const quizHelpers = {
             this.screen.winner = 0
             this.endAVWait = false
         },
+        isEmpty(val) {
+          return (val === undefined || val == null || val.length <= 0) ? true : false;
+        },
         tbe(b, e, l) {
-            if(b !== null && e !== null){
-                if(l === 'bd') return b;
-                return e;
-            }
-            else if(b !== null && e === null) return b;
-            else if(b === null && e !== null) return e;
-            return b;
+          if(isEmpty(b) && isEmpty(e)){
+            return 'No options found!'
+          }
+          if(l !== 'bd') {
+            if(isEmpty(e)) return b;
+            return e;
+          }
+          return b;
         },
         qne2b(q, qn, l) {
             if (l === 'gb') {

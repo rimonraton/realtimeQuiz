@@ -203,8 +203,9 @@ export default{
             return `/images/gp/${random}.jpg`;
         },
         back(){
-            // window.history.back()
-            window.location = '/game/practice/challenge';
+          let path = window.location.pathname.split('/')
+           // `${path[1]}.${path[2]}.${path[3]}`
+            window.location = `/${path[1]}`;
         },
         getMedel(index){
             if(index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>'

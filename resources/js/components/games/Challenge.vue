@@ -118,6 +118,7 @@
                     <div class="d-flex align-items-center question-title">
                       <h3 class="text-danger">Q.</h3>
                       <h5 class="mt-1 ml-2">
+<!--                        Question Text-->
                         {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
                       </h5>
                     </div>
@@ -151,12 +152,13 @@
                     <div class="list-group" v-if="option.flag != 'img'"
                          :class="getOptionClass(i, challenge.option_view_time)"
                     >
-                                            <span
-                                                @click.once="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
-                                                class="list-group-item list-group-item-action cursor my-1"
-                                                v-html="tbe(option.bd_option, option.option, user.lang)">
+                      <span
+                          @click.once="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
+                          class="list-group-item list-group-item-action cursor my-1"
+                          v-html="tbe(option.bd_option, option.option, user.lang)">
+                        {{ tbe(option.bd_option + "Raton", option.option + 'Rimon', user.lang) }}
 
-                                            </span>
+                      </span>
                     </div>
                     <div
                         v-else
