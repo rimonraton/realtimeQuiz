@@ -162,6 +162,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -547,6 +548,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'ws', 'correct', 'wrong', 'lang'],
@@ -605,7 +607,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\r\n    max-width: 500px !important;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#accordion{\n    max-width: 500px !important;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1009,7 +1011,11 @@ var render = function () {
                               },
                               [
                                 _c("h3", { staticClass: "text-danger" }, [
-                                  _vm._v("Q."),
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.tbe("প্রশ্ন.", "Q.", _vm.user.lang)
+                                    )
+                                  ),
                                 ]),
                                 _vm._v(" "),
                                 _c("h5", { staticClass: "mt-1 ml-2" }, [
@@ -1160,7 +1166,13 @@ var render = function () {
                       staticClass: "btn btn-sm btn-warning float-right",
                       on: { click: _vm.reloadPage },
                     },
-                    [_vm._v("Reset\n                        ")]
+                    [
+                      _vm._v(
+                        "\n                          " +
+                          _vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)) +
+                          "\n                        "
+                      ),
+                    ]
                   )
                 : _vm._e(),
             ]
@@ -1282,7 +1294,28 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "w-100", attrs: { id: "accordion" } }, [
     _c("div", { staticClass: "card" }, [
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass: "card-header py-1",
+          attrs: {
+            id: "headingOne",
+            "data-toggle": "collapse",
+            "data-target": "#collapseOne",
+            "aria-expanded": "true",
+            "aria-controls": "collapseOne",
+          },
+        },
+        [
+          _c("small", { staticClass: "mb-0 cursor" }, [
+            _vm._v(
+              "\n\n            " +
+                _vm._s(_vm.tbe("ফলাফল", "Result Details", _vm.lang)) +
+                "\n          "
+            ),
+          ]),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -1541,31 +1574,7 @@ var render = function () {
     ]),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card-header py-1",
-        attrs: {
-          id: "headingOne",
-          "data-toggle": "collapse",
-          "data-target": "#collapseOne",
-          "aria-expanded": "true",
-          "aria-controls": "collapseOne",
-        },
-      },
-      [
-        _c("small", { staticClass: "mb-0 cursor" }, [
-          _vm._v("\n              Result Details\n          "),
-        ]),
-      ]
-    )
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -60,7 +60,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex flex-row align-items-center question-title">
-                                        <h3 class="text-danger">Q.</h3>
+                                        <h3 class="text-danger">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
                                         <h5 class="mt-1 ml-2">
                                           {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
                                         </h5>
@@ -108,7 +108,8 @@
                         <strong>{{ __('games.information') }}</strong>
                         <div class="btn btn-sm btn-warning float-right"
                              v-if="qid > 0"
-                             @click="reloadPage">Reset
+                             @click="reloadPage">
+                          {{ tbe('রিসেট', 'Reset', user.lang)}}
                         </div>
                     </div>
                     <div class="card-body">
@@ -337,9 +338,9 @@ export default {
             // }
         },
         qne2b(q, qn, l) {
-            if (l === 'gb')
-                return `Question ${q + 1} of ${qn} `;
-            return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+          if (l === 'gb')
+            return `Question ${q + 1} of ${qn} `;
+          return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
         },
         onEnd() {
           console.log('onEnded....')

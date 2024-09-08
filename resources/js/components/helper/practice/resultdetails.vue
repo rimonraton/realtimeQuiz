@@ -3,7 +3,8 @@
         <div class="card">
             <div class="card-header py-1 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <small class="mb-0 cursor">
-                  Result Details
+
+                {{ tbe('ফলাফল', 'Result Details', lang) }}
               </small>
             </div>
 
@@ -77,9 +78,9 @@
                 // console.log(data.length > 1)
                 // return data.length > 1
             },
-            tbe(b, e, l) {
-                return l === 'bd' ? (!!b ? b : e) : (!!e ? e : b)
-            }
+          tbe(b, e, l) {
+            return l === 'bd' ? (!!b ? b : e) : (!!e ? e : b)
+          }
         }
 
     };
