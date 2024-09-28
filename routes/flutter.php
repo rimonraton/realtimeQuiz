@@ -8,6 +8,8 @@ Route::post('loginFlutter', [FlutterController::class, 'loginFlutter']);
 Route::post('resetPassword', [FlutterController::class, 'resetPassword']);
 Route::post('registration', [FlutterController::class, 'registerFlutter']);
 Route::post('updatePassword', [FlutterController::class, 'updatePassword']);
+Route::get('template', [FlutterController::class, 'template'])->name('game.template');
+
 
 
 

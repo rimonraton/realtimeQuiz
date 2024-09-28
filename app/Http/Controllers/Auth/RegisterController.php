@@ -116,7 +116,7 @@ class RegisterController extends Controller
 //    }
 
 
-    protected function create(array $data): User
+    public function create(array $data): User
     {
         $email = '';
         $ui = new UserInfo();

@@ -21,7 +21,8 @@ class FlutterController extends Controller
     $credentials = \App\User::where('email', $email)->first();
     if (Hash::check($user, $credentials->password)) {
       Auth::login($credentials);
-      return redirect('/dashboard');
+      session(['isApp' => '1']);
+      return redirect('/api/template');
     }
     abort(404);
   }
@@ -51,7 +52,7 @@ class FlutterController extends Controller
 
   public function registerFlutter(Request $request): User
   {
-    $data = $request->validate([
+     $data = $request->validate([
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'max:255', 'unique:users'],
       'password' => ['required', 'string', 'min:8'],
@@ -75,6 +76,10 @@ class FlutterController extends Controller
     return response('Email not found!', 201)
       ->header('Content-Type', 'text/plain');
 
+  }
+  public function template()
+  {
+    return view('games.practice.template');
   }
 
 

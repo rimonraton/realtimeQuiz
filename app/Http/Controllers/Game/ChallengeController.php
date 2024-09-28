@@ -47,9 +47,16 @@ class ChallengeController extends Controller
 
         $catName = '';
         $lang = $this->lang;
+        $views = 'Admin.Games.challenge';
 
         if ($id) {
-            $catName = Category::find($id)->name;
+            $cat = Category::find($id);
+            if($cat) {
+              $catName = $cat->name;
+            }
+            if($id <8) {
+              $views = 'Admin.Games.challenge' . $id;
+            }
         }
 
         $questionType = QuestionType::all();
@@ -68,7 +75,8 @@ class ChallengeController extends Controller
 
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);
 
-        return view('Admin.Games.challenge', compact([
+
+        return view($views, compact([
             'topic', 'id', 'catName', 'questionType', 'lang', 'challenges', 'questionHasTopics'
         ]));
     }

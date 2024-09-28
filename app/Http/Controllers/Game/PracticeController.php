@@ -30,7 +30,6 @@ class PracticeController extends Controller
 
   }
 
-
     public function index()
     {
         $quiz =  Quiz::where('game_id', 1)->with('quizCategory', 'progress');

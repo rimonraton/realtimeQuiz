@@ -26,7 +26,8 @@ use Illuminate\Support\Facades\Route;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
 
 Route::get('getLoginFromFlutter/{random}/{user}/{email}',
-  [\App\Http\Controllers\FlutterController::class, 'getLoginFromFlutter'])->name('flutter.login');
+  [\App\Http\Controllers\FlutterController::class, 'getLoginFromFlutter'])
+  ->name('flutter.login');
 
 Route::get('/streaming', [App\Http\Controllers\WebrtcStreamingController::class, 'index']);
 Route::get('/streaming/{streamId}', [App\Http\Controllers\WebrtcStreamingController::class, 'consumer']);

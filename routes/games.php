@@ -12,6 +12,7 @@ use App\Http\Controllers\TeamController;
 
 
 //Route::get('Mode/{type}/', [ModeController::class, 'Mode']);
+//Route::get('template', [PracticeController::class, 'template'])->name('game.template');
 Route::get('Practice', [PracticeController::class, 'index'])->name('game.practice');
 Route::get('Practice/{quiz}/{user?}', [PracticeController::class, 'Game'])->name('game.practice.start');
 Route::get('getProgress/{id}', [PracticeController::class, 'getProgress'])->name('getProgress');
@@ -29,7 +30,7 @@ Route::post('challange-Published',[HomeController::class,'challenge_publish'])->
 Route::get('delete_challange/{id}',[HomeController::class,'delete_challange'])->name('deleteChallange');
 Route::get('challange_search/{keyword}',[HomeController::class,'challange_search'])->name('challangeSearch');
 Route::get('ws', function (){
-    event(new WsEvent('Helllo from the other side'));
+    event(new WsEvent('Hello from the other side'));
     return 'success';
 });
 
