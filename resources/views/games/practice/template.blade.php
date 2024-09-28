@@ -9,6 +9,7 @@
   <style>
     body {
       background: url("{{asset('mobiletemplate/images/cover.png')}}");
+      background: white;
       background-size: contain;
       background-repeat: no-repeat;
       background-position: right;
