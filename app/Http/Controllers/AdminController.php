@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function index()
     {
       if (request()->session()->has('isApp')) {
-        return redirect('/api/template');
+        return redirect('/template');
       }
         $admin_users = \auth()->user()->admin->users()->pluck('id');
 
