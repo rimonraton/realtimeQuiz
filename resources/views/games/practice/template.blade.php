@@ -95,6 +95,9 @@
       border-radius: 100%;
       background: white;
     }
+    .circle i {
+      font-size: 25px;
+    }
     .circle-text {
       padding-top: 10px;
       font-size: .65rem;
@@ -177,7 +180,13 @@
           <i class="fa-solid fa-user"></i>
         </div>
         <div class="p-2 d-flex flex-column f-8">
-          <span>Motaharul Islam</span>
+          <span>
+            @if (strlen($user->name) > 15)
+              {{ substr($user->name, 0, 15) . '...' }}
+            @else
+              {{ $user->name }}
+            @endif
+          </span>
           <span>
             <i class="fa-regular fa-star text-warning"></i>
           </span>
@@ -196,7 +205,7 @@
 {{--    top bar End--}}
 
     <div class="pl-3">
-      <p class="mb-0">Hey <strong>Motaharul Islam,</strong></p>
+      <p class="mb-0">Hey <strong>{{ $user->name }},</strong></p>
       <p>ready for some fun?</p>
     </div>
 {{--   games--}}
@@ -242,47 +251,19 @@
 {{--    games End--}}
 {{--    Circle Category--}}
     <div class="container circle-category">
-      <div class="row">
-        <div class="col">
-          <div class="d-flex flex-column">
-            <div class="circle d-flex justify-content-center align-items-center shadow">
-              <i class="fa-solid fa-brain fa-2x text-brain"></i>
-            </div>
-            <div class="d-flex flex-wrap justify-content-center align-items-center circle-text">
-              General Knowledge
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="d-flex flex-column">
-            <div class="circle d-flex justify-content-center align-items-center shadow">
-              <i class="fa-regular fa-futbol fa-2x text-info"></i>
-            </div>
-            <div class="d-flex flex-wrap justify-content-center align-items-center circle-text">
-              Sports
+      <div class="row d-flex">
+        @foreach($categories as $category)
+          <div class="col mb-4">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <div class="circle d-flex justify-content-center align-items-center shadow">
+                {!! $category->icon !!}
+              </div>
+              <div class="d-flex flex-wrap circle-text text-center">
+                  {{ $category->bn_name }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="d-flex flex-column">
-            <div class="circle d-flex justify-content-center align-items-center shadow">
-              <i class="fa-solid fa-palette fa-2x text-danger"></i>
-            </div>
-            <div class="d-flex justify-content-center align-items-center circle-text">
-              Arts & Literature
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="d-flex flex-column">
-            <div class="circle d-flex justify-content-center align-items-center shadow">
-              <i class="fa-solid fa-swatchbook fa-2x text-primary"></i>
-            </div>
-            <div class="d-flex justify-content-center align-items-center circle-text">
-              Culture & Lifestyle
-            </div>
-          </div>
-        </div>
+        @endforeach
       </div>
     </div>
 {{--    Circle Category End--}}

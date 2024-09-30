@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\PasswordResetFlutter;
 use App\User;
@@ -22,7 +23,7 @@ class FlutterController extends Controller
     if (Hash::check($user, $credentials->password)) {
       Auth::login($credentials);
       session(['isApp' => '1']);
-      return redirect('/api/template');
+      return redirect('/template');
     }
     abort(404);
   }
@@ -79,7 +80,9 @@ class FlutterController extends Controller
   }
   public function template()
   {
-    return view('games.practice.template');
+    $categories = Category::where('is_published', 1)->mainTopic()->paginate(8);
+    $user = auth()->user();
+    return view('games.practice.template', compact('user', 'categories'));
   }
 
 

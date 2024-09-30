@@ -5,6 +5,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FlutterController;
 use App\Http\Controllers\Game\SingleQuestionDisplayQuizController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
@@ -24,6 +25,8 @@ use App\Http\Controllers\UserCredential;
 use Illuminate\Support\Facades\Route;
 //use Mail;
 // use Victorybiz\GeoIPLocation\GeoIPLocation;
+Route::get('template', [FlutterController::class, 'template'])
+  ->name('game.template')->middleware('auth');
 
 Route::get('getLoginFromFlutter/{random}/{user}/{email}',
   [\App\Http\Controllers\FlutterController::class, 'getLoginFromFlutter'])
