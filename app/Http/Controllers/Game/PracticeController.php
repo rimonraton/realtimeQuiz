@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Lang\Bengali;
 use App\Question;
 use App\Quiz;
-use Auth;
+//use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,15 +33,22 @@ class PracticeController extends Controller
 
     public function index()
     {
-        $quiz =  Quiz::where('game_id', 1)->with('quizCategory', 'progress');
-        $quiz = $quiz->orderBy('id','desc')->paginate(9);
-        $user = \Auth::user();
+        $selected_category = Category::find(request()->input('category'));
+        $quiz =  Quiz::query()
+          ->where('game_id', 1)
+          ->when($selected_category, function ($query) use($selected_category){
+            return $query->where('category_id', $selected_category->id);
+          })
+          ->with('quizCategory', 'progress')
+          ->orderBy('id','desc')
+          ->paginate(9);
+        $user = Auth::user();
         $categories = Category::query()
             ->where('sub_topic_id', 0)
             ->where('is_published',1)
             ->where('admin_id', 1)
             ->get();
-        return view('games.practice.index', compact('quiz', 'user', 'categories'));
+        return view('games.practice.index', compact('quiz', 'user', 'categories', 'selected_category'));
     }
 
     public function getProgress($id)

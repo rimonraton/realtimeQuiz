@@ -285,14 +285,16 @@
       <div class="row d-flex">
         @foreach($categories as $category)
           <div class="col mb-4">
-            <div class="d-flex flex-column justify-content-center align-items-center">
-              <div class="circle d-flex justify-content-center align-items-center shadow">
-                {!! $category->icon !!}
+            <a href="{{url('/Practice?category='.$category->id)}}" class="text-dark">
+              <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="circle d-flex justify-content-center align-items-center shadow">
+                  {!! $category->icon !!}
+                </div>
+                <div class="d-flex flex-wrap circle-text text-center">
+                    {{ $category->bn_name }}
+                </div>
               </div>
-              <div class="d-flex flex-wrap circle-text text-center">
-                  {{ $category->bn_name }}
-              </div>
-            </div>
+            </a>
           </div>
         @endforeach
       </div>
