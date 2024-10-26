@@ -218,7 +218,7 @@
           $('#name_' + id).html(name);
           $('#bd_name_' + id).html(bd_name);
           Swal.fire({
-            text: 'success',
+            text: 'Update success',
             type: 'success',
             timer: 1000,
             showConfirmButton: false
