@@ -9,15 +9,14 @@ use App\Role;
 use App\RoleUser;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Auth;
 use App\Category;
 use App\Exam;
 use App\Question;
 use App\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Imagick;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Lang\Bengali;
 use Carbon\Carbon;
@@ -200,21 +199,26 @@ class HomeController extends Controller
 
     }
 
-    public function challenge_setup()
-    {
+  public function practiceSetup()
+  {
+    $practices = Quiz::where('game_id', 1)->paginate(30);
+    return view('Admin.Games.practice.index',compact('practices'));
+  }
+  public function challenge_setup()
+  {
 
-        $admin_users = auth()->user()->admin->users()->pluck('id');
-        $role_id = Auth::user()->roleuser->role_id;
-        $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
-       if($role_id < 3){
-           $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
-       }
-       else{
-           $challange =  Auth::user()->challange()->latest()->paginate(10);
-       }
-
-        return view('Admin.Games.challenge_setup',compact('challange',));
+    $admin_users = auth()->user()->admin->users()->pluck('id');
+    $role_id = Auth::user()->roleuser->role_id;
+    $role_user = RoleUser::with('users')->where('role_id','<',3)->pluck('user_id');
+    if($role_id < 3){
+      $challange = Challenge::whereIn('user_id',$role_user)->latest()->paginate(10);
     }
+    else{
+      $challange =  Auth::user()->challange()->latest()->paginate(10);
+    }
+
+    return view('Admin.Games.challenge_setup',compact('challange'));
+  }
 
     public function challenge_publish(Request $req)
     {

@@ -69,8 +69,11 @@ Route::middleware(['hasAccess', 'verified'])->group(function () {
     Route::get('menuPermission',[MenuPermissionController::class,'index'])->name('menuPermission');
 
 //challange
-    Route::get('challenge_setup',[HomeController::class,'challenge_setup'])->name('challengeSetup');
-    Route::get('challenge/resultList', [ShareController::class, 'challengeUserResultList'])->name('challenge.resultList');
+  Route::get('challenge_setup',[HomeController::class,'challenge_setup'])->name('challengeSetup');
+  Route::get('challenge/resultList', [ShareController::class, 'challengeUserResultList'])->name('challenge.resultList');
+
+  //Practice
+  Route::get('practice_setup',[HomeController::class,'practiceSetup'])->name('practiceSetup');
 
 
 //exam

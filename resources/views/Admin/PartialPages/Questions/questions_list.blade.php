@@ -548,30 +548,7 @@
         })
 
     });
-    {{--$('#add_option').on('click',function (e){--}}
-    {{--    e.preventDefault();--}}
-    {{--    var data = '';--}}
-    {{--    data += `<div class="form-group row">--}}
-    {{--                        <label for="option1" class="col-md-2 optionTitle">{{__('form.option')}} :</label>--}}
-    {{--                        <div class="col-sm-4">--}}
-    {{--                        <input name=oid[] class="oid" value='new' type='hidden' />--}}
-    {{--                            <input type="text" class="form-control option" name="option[]" placeholder="{{__('form.option_en_placholder')}}">--}}
-    {{--                        </div>--}}
-    {{--                        <div class="col-sm-4">--}}
-    {{--                            <input type="text" class="form-control bdoption" name="bdoption[]" placeholder="{{__('form.option_bn_placholder')}}">--}}
-    {{--                        </div>--}}
-    {{--                        <div class="col-sm-1 bt-switch">--}}
-    {{--                            <input type="hidden" name="ans[]" class="hi ans" value="0">--}}
-    {{--                            <input type="checkbox" class="chk" data-on-text="{{__('form.yes')}}" data-off-text="{{__('form.no')}}" data-size="normal" />--}}
-    {{--                        </div>--}}
-    {{--                        <div class="col-md-1">--}}
-    {{--                            <a style="cursor: pointer" class="m-4 text-danger remove"><i class="fas fa-trash"></i></a>--}}
-    {{--                        </div>--}}
-    {{--                    </div>`;--}}
-    {{--    $('#quistion_view').append(data);--}}
-    {{--    $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();--}}
-    {{--    numberSerial()--}}
-    {{--})--}}
+
 
     $(document).on('click', '.remove', function() {
         $(this).closest('.row').remove();

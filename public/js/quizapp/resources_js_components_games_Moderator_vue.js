@@ -49915,13 +49915,13 @@ var render = function () {
               staticClass: "btn btn-sm btn-danger align-self-start",
               on: { click: _vm.back },
             },
-            [_vm._v("\n                    Back\n                ")]
+            [_vm._v("\n                Back\n            ")]
           ),
           _vm._v(" "),
           !_vm.isHost()
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
-                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
+                  "\n                Please wait, the Quiz Host will start the game soon.\n            "
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
@@ -49934,9 +49934,9 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                        " +
+                          "\n                    " +
                             _vm._s(_vm.users.length) +
-                            "\n                    "
+                            "\n                "
                         ),
                       ]
                     )
@@ -49958,9 +49958,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n                        " +
+                      "\n                    " +
                         _vm._s(_vm.qr ? "Close QR" : "QR") +
-                        "s\n                    "
+                        "s\n                "
                     ),
                   ]
                 ),
@@ -49975,11 +49975,7 @@ var render = function () {
                       },
                     },
                   },
-                  [
-                    _vm._v(
-                      "\n                        Share\n                    "
-                    ),
-                  ]
+                  [_vm._v("\n                    Share\n                ")]
                 ),
               ])
             : _vm._e(),
@@ -50118,11 +50114,7 @@ var render = function () {
                       },
                     },
                   },
-                  [
-                    _vm._v(
-                      "\n                        START\n                    "
-                    ),
-                  ]
+                  [_vm._v("\n                    START\n                ")]
                 ),
               ])
             : _vm._e(),

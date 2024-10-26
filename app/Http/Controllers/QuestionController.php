@@ -274,24 +274,6 @@ class QuestionController extends Controller
     }
     public function getlist($id, $keyword = '', $qType = '')
     {
-////        return $id;
-//        $admin = auth()->user()->admin;
-//        $admin_users = $admin->users()->pluck('id');
-//
-////        return Question::where('category_id', $id)->get();
-//
-//        $id = explode(',',$id);
-//        $qus = Question::where('category_id', $id)->whereIn('user_id',$admin_users)->count();
-//        if ($qus) {
-//            $questions = QuestionType::all();
-////            with(['questions' => function ($q) use ($id) {
-////                $q->where('category_id', $id);
-////            }, 'questions.options','questions.role.role'])
-//            return view('Admin.PartialPages.Questions.questions_data', compact('questions', 'id','admin_users','keyword'));
-//        }
-//        return '';
-
-
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $questions = null;

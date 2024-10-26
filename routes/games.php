@@ -19,6 +19,14 @@ Route::get('getProgress/{id}', [PracticeController::class, 'getProgress'])->name
 Route::get('getCategory/{category}', [PracticeController::class,'getCategory']);
 //Route::get('getCategory/{type}/{category}', [ModeController::class,'getCategory']);
 
+//For Dashboard
+Route::get('quizPractice', [PracticeController::class, 'quizPractice'])->name('quizPractice');
+Route::get('quizPracticeCreate', [PracticeController::class, 'quizPracticeCreate'])->name('game.quizPractice.create');
+Route::post('quizPracticeSave', [PracticeController::class,'quizPracticeSave'])->name('quizPracticeSave');
+Route::post('publishPractice',[PracticeController::class,'publishPractice'])->name('publishPractice');
+Route::get('deletePractice/{id}',[PracticeController::class,'deletePractice'])->name('deletePractice');
+Route::post('updatePractice',[PracticeController::class,'updatePractice'])->name('updatePractice');
+
 
 //Challenge
 Route::get('challenge/{id?}', [ChallengeController::class, 'gameInAdmin'])->name('game.challenge');

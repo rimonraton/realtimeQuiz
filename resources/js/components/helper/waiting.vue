@@ -44,8 +44,8 @@
                         <span v-if="u.id == uid" class="ml-1 badge badge-danger">Host</span>
 
                         <span class="flag">
-<img :src="getFlag(u.country)">
-</span>
+                          <img :src="getFlag(u.country)">
+                        </span>
                         <button
                             v-if="(u.id != user.id) && (user.id == uid)"
                             @click="kickingUser(u.id)"
@@ -58,8 +58,8 @@
                 <div v-if="user.id == uid" class="d-flex justify-content-between">
                     <div class="mt-4">
                         <div style="position: relative">
-<span
-    style="position: absolute; left: 32px; font-size: 11px; padding-top: 7px; color: gray">Seconds</span>
+                      <span
+                          style="position: absolute; left: 32px; font-size: 11px; padding-top: 7px; color: gray">Seconds</span>
                             <input v-model="defaultTime" type="number" style="width: 100px;">
                         </div>
                     </div>
