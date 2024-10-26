@@ -1,23 +1,31 @@
 <template>
-    <div class="container">
+    <div class="container p-1 px-md-3">
 
         <div class="winner" v-if="winner_screen">
           <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
-            <h2 class="text-center">Quiz Game Over</h2>
-            <h3>{{ pm.perform_message }}</h3>
-            <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong"/>
+<!--            <h2 class="text-center">Quiz Game Over</h2>-->
+            <h3>{{ tbe(pm.bd_perform_message, pm.perform_message, user.lang) }}</h3>
+            <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong" :lang="user.lang" :vh="'70vh'"/>
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="card my-4" v-for="question in questions" v-if="question.id === current" >
-                    <!-- <transition name="fade" mode="out-in"> -->
-                    <div class="card-body animate__animated animate__backInDown animate__faster" :key="qid">
-                        <span class="q_num text-right text-muted">
-                            {{ qne2b(qid, questions.length, user.lang) }}
-                        </span>
+            <div class="col-md-7 p-0 p-md-3">
+                <div class="card" v-for="question in questions" v-if="question.id === current" >
+                  <div class="card-header" v-show="av">
+                     <span class="q_num text-right text-muted">
+                        {{ qne2b(qid, questions.length, user.lang) }}
+                     </span>
+                    <div class="d-flex flex-row align-items-center question-title">
+                      <h3 class="text-danger">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
+                      <h5 class="mt-1 ml-2">
+                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                      </h5>
+                    </div>
+                  </div>
+                    <div class="card-body p-1 p-md-3 animate__animated animate__backInDown animate__faster" :key="qid">
+
                         <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
                         <div v-if="endAVWait">
@@ -53,21 +61,7 @@
                           </div>
                         </div>
                         <div v-show="av">
-<!--                            <p class="my-1 font-bold"-->
-<!--                               v-html="tbe(question.bd_question_text, question.question_text, user.lang)">-->
-<!--                            </p>-->
-<!--                            <div class="card shadow-1" v-html="tbe(question.bd_question_text, question.question_text, user.lang)"></div>-->
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex flex-row align-items-center question-title">
-                                        <h3 class="text-danger">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
-                                        <h5 class="mt-1 ml-2">
-                                          {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-                                        </h5>
-                                    </div>
-<!--                                   <h3 class="text-danger">Q. </h3> {{ tbe(question.bd_question_text, question.question_text, user.lang) }}-->
-                                </div>
-                            </div>
+
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
@@ -101,9 +95,10 @@
 
                     <!-- </transition>                  -->
                 </div>
+
             </div>
-            <div class="col-md-5">
-                <div class="card my-4">
+            <div class="col-md-5 p-0 py-3 p-md-3">
+                <div class="card ">
                     <div class="card-header text-center card-title py-1">
                         <strong>{{ __('games.information') }}</strong>
                         <div class="btn btn-sm btn-warning float-right"
@@ -129,24 +124,26 @@
                                 <span class="badge badge-danger badge-pill">{{ wrong }}</span>
                             </li>
                             <li v-if="qid > 0"
-                                class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                <resultdetails :results='results' :ws="winner_screen" :lang="user.lang"/>
+                                class="list-group-item d-flex justify-content-between align-items-center p-0 py-2">
+                                <resultdetails :results='results' :ws="winner_screen" :lang="user.lang" />
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+      <feed-back :user="user" />
     </div>
 </template>
 
 <script>
 
 import resultdetails from '../helper/practice/resultdetails'
+import feedBack from "../helper/FeedBack.vue";
 
 export default {
     props: ['id', 'user', 'questions', 'gmsg', 'quiz'],
-    components: {resultdetails},
+    components: {resultdetails, feedBack},
 
     data() {
         return {
@@ -219,10 +216,16 @@ export default {
         },
 
         getCorrectAnswertext() {
+
             let qco = this.questions[this.qid].options.find(o => o.correct == 1)
-            if(qco.flag=='img')
-                return qco.img_link;
-            return this.tbe(qco.bd_option, qco.option, this.user.lang)
+          console.log('Bd =>', qco.bd_option, 'EN', qco.option);
+          return this.tbe(qco.bd_option, qco.option, this.user.lang)
+          // if(qco.flag== null)
+          //   console.log('Flag is null...')
+          //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
+          //   if(qco.flag=='img')
+          //       return qco.img_link;
+          //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
         firstPlace: function() {
@@ -430,7 +433,7 @@ export default {
     }
 };
 </script>
-<style>
+<style scoped>
     #ar {
         position: absolute;
         background: transparent;

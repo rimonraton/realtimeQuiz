@@ -1173,11 +1173,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['results', 'ws', 'correct', 'wrong', 'lang'],
+  props: ['results', 'ws', 'correct', 'wrong', 'lang', 'vh'],
   methods: {
+    getStyle: function getStyle() {
+      var Hight = '50vh';
+      if (this.vh) Hight = this.vh;
+      return {
+        'max-height': Hight,
+        overflow: 'auto'
+      };
+    },
     reloadPage: function reloadPage() {
       window.location.reload();
     },
@@ -11921,7 +11928,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-100", attrs: { id: "accordion" } }, [
+  return _c("div", { staticClass: "w-100 px-1", attrs: { id: "accordion" } }, [
     _c("div", { staticClass: "card" }, [
       _c(
         "div",
@@ -11936,9 +11943,9 @@ var render = function () {
           },
         },
         [
-          _c("small", { staticClass: "mb-0 cursor" }, [
+          _c("strong", { staticClass: "mb-0 cursor" }, [
             _vm._v(
-              "\n\n            " +
+              "\n            " +
                 _vm._s(_vm.tbe("ফলাফল", "Result Details", _vm.lang)) +
                 "\n          "
             ),
@@ -11960,10 +11967,7 @@ var render = function () {
           _c("div", { staticClass: "card-body p-0" }, [
             _c(
               "ul",
-              {
-                staticClass: "list-group text-dark",
-                staticStyle: { "max-height": "380px", overflow: "auto" },
-              },
+              { staticClass: "list-group text-dark", style: _vm.getStyle() },
               _vm._l(_vm.results.slice().reverse(), function (result) {
                 return _c(
                   "li",
@@ -12005,7 +12009,7 @@ var render = function () {
                                     _c("img", {
                                       staticClass:
                                         "image mt-1 rounded img-thumbnail",
-                                      staticStyle: { "max-height": "10vh" },
+                                      staticStyle: { "max-height": "30px" },
                                       attrs: {
                                         src: "/" + result.selected,
                                         alt: "",
@@ -12814,13 +12818,13 @@ var render = function () {
               staticClass: "btn btn-sm btn-danger align-self-start",
               on: { click: _vm.back },
             },
-            [_vm._v("\n                    Back\n                ")]
+            [_vm._v("\n                Back\n            ")]
           ),
           _vm._v(" "),
           !_vm.isHost()
             ? _c("span", { staticClass: "ml-1 text-primary" }, [
                 _vm._v(
-                  "\n                    Please wait, the Quiz Host will start the game soon.\n                "
+                  "\n                Please wait, the Quiz Host will start the game soon.\n            "
                 ),
               ])
             : _c("span", { staticClass: "ml-1 text-primary" }, [
@@ -12833,9 +12837,9 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                        " +
+                          "\n                    " +
                             _vm._s(_vm.users.length) +
-                            "\n                    "
+                            "\n                "
                         ),
                       ]
                     )
@@ -12857,9 +12861,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n                        " +
+                      "\n                    " +
                         _vm._s(_vm.qr ? "Close QR" : "QR") +
-                        "s\n                    "
+                        "s\n                "
                     ),
                   ]
                 ),
@@ -12874,11 +12878,7 @@ var render = function () {
                       },
                     },
                   },
-                  [
-                    _vm._v(
-                      "\n                        Share\n                    "
-                    ),
-                  ]
+                  [_vm._v("\n                    Share\n                ")]
                 ),
               ])
             : _vm._e(),
@@ -13017,11 +13017,7 @@ var render = function () {
                       },
                     },
                   },
-                  [
-                    _vm._v(
-                      "\n                        START\n                    "
-                    ),
-                  ]
+                  [_vm._v("\n                    START\n                ")]
                 ),
               ])
             : _vm._e(),

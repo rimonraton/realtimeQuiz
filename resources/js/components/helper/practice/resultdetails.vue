@@ -1,23 +1,22 @@
 <template>
-    <div id="accordion" class="w-100">
-        <div class="card">
+    <div id="accordion" class="w-100 px-1">
+        <div class="card" >
             <div class="card-header py-1 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              <small class="mb-0 cursor">
-
+              <strong class="mb-0 cursor">
                 {{ tbe('ফলাফল', 'Result Details', lang) }}
-              </small>
+              </strong>
             </div>
 
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body p-0">
-                <ul class="list-group text-dark" style="max-height: 380px; overflow:auto;">
+                <ul class="list-group text-dark" :style="getStyle()">
                     <li v-for="result in results.slice().reverse()" :key="result.id" class="list-group-item d-flex justify-content-between align-items-center p-1">
                         <div class="font-weight-light f-13">
                             <span class="font-weight-bold" v-html="result.question"></span>
                             <p v-if="result.isCorrect !=0">
                                 <span>  {{tbe('আপনার উত্তরটি সঠিক হয়েছেঃ ', 'Your answer is correct: ', lang)}}</span>
                              <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                 <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                                 <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:30px" alt="">
                              </span>
                              <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
@@ -62,9 +61,18 @@
 
 <script>
     export default {
-        props: ['results', 'ws', 'correct', 'wrong', 'lang'],
+        props: ['results', 'ws', 'correct', 'wrong', 'lang', 'vh'],
 
         methods: {
+          getStyle(){
+            let Hight = '50vh'
+            if (this.vh) Hight =this.vh
+
+            return {
+              'max-height': Hight,
+              overflow: 'auto'
+            }
+          },
             reloadPage(){
                 window.location.reload()
             },

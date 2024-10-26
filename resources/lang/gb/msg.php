@@ -57,6 +57,7 @@ return [
     'questionsType' => 'Questions Type',
     'quizList' => 'List Of Quiz',
     'createquiz' => 'Create Quiz',
+    'updateQuiz' => 'Update Quiz',
     'game'=>'Game',
     'gameSetup' => 'Game Setup',
     'performMsg' => 'Perform Message',

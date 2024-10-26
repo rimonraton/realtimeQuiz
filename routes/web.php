@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('template', [FlutterController::class, 'template'])
   ->name('game.template')->middleware('auth');
 
+Route::post('feedback', [\App\Http\Controllers\Game\FeedbackController::class, 'store']);
+
 Route::get('getLoginFromFlutter/{random}/{user}/{email}',
   [\App\Http\Controllers\FlutterController::class, 'getLoginFromFlutter'])
   ->name('flutter.login');

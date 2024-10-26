@@ -58,6 +58,7 @@ return [
     'questionsType' => 'প্রশ্ন টাইপ',
     'quizList' => 'কুইজের তালিকা',
     'createquiz' => 'কুইজ তৈরি করুন',
+    'updateQuiz' => 'কুইজ আপডেট করুন',
     'game' => 'গেম',
     'gameSetup' => 'গেম সেটআপ',
     'performMsg' => 'সম্পাদনা বার্তা',
