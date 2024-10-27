@@ -18,7 +18,11 @@ class AdminController extends Controller
     }
     public function index()
     {
+
       if (request()->session()->has('isApp')) {
+        return redirect('/template');
+      }
+      if (auth()->user()->roleuser->role->id > 3) {
         return redirect('/template');
       }
         $admin_users = \auth()->user()->admin->users()->pluck('id');
