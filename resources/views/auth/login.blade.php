@@ -63,8 +63,8 @@
                 </div>
             </div>
             <div class="form-group mb-0">
-                <div class="col-sm-12 text-center ">
-                    <img src="{{asset('images/logobe.png')}}" alt="" width="50px">
+                <div class="col-sm-12 text-center p-0 pt-2 ">
+                    <img src="{{asset('mobiletemplate/images/logo.png')}}" alt="" width="120px">
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
 
         <div id="loginform">
             <div class="logo">
-                <h3 class="box-title mb-3">{{__('auth.login')}}</h3>
+                <h5 class="box-title mb-3">{{__('auth.login')}}</h5>
             </div>
             <!-- Form -->
             <div class="row">

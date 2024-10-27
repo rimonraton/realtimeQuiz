@@ -247,12 +247,8 @@
       $('.view').on('click', function(e) {
         var id = $(this).data('id');
         $.ajax({
-          url: "{{url('practiceViewQuestions')}}",
-          type: "POST",
-          data: {
-            "_token": "{{ csrf_token() }}",
-            'id': id,
-          },
+          url: "{{url('practiceViewQuestions')}}/"+id,
+          type: "get",
           success: function(data) {
             $("#viewQuestionsModal").html(data);
           }
