@@ -64,11 +64,11 @@ class PracticeController extends Controller
     {
         $cat_id = Category::where('bn_name', $category)->orWhere('name', $category)->first();
         if(!$cat_id) {
-            $quiz =  Quiz::where('game_id', 1)->with('quizCategory', 'progress');
+            $quiz =  Quiz::where('game_id', 1)->published()->with('quizCategory', 'progress');
             $quiz = $quiz->orderBy('id','desc')->paginate(9);
             return view('games.practice.categorized', compact('quiz'));
         }
-        $quiz = Quiz::with('quizCategory', 'progress')->where('category_id', $cat_id->id)->paginate(9);
+        $quiz = Quiz::published()->with('quizCategory', 'progress')->where('category_id', $cat_id->id)->paginate(9);
         return view('games.practice.categorized', compact('quiz'));
     }
 
@@ -127,6 +127,11 @@ class PracticeController extends Controller
     $quiz->quiz_name = $request->name;
     $quiz->bd_quiz_name = $request->bd_name;
     $quiz->update();
+    return $quiz;
+  }
+
+  public function practiceViewQuestions(Quiz $quiz)
+  {
     return $quiz;
   }
 

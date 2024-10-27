@@ -32,4 +32,11 @@ class Quiz extends Model
     {
         return $query->where('status', 1);
     }
+
+//  protected static function booted()
+//  {
+//    static::addGlobalScope('active', function (Builder $builder) {
+//      $builder->where('status', 1);
+//    });
+//  }
 }

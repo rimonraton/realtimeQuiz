@@ -516,16 +516,21 @@
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>{{__('msg.links')}}</h4>
                         <ul>
-                            <li><i class="fas fa-home pr-1"></i><a href="#">{{__('msg.home')}}</a></li>
-                            <li><i class="fas fa-brain pr-1"></i><a href="#about">{{__('msg.about')}}</a></li>
-                            <li><i class="fas fa-list-ul pr-1"></i><a href="#features">{{__('msg.features')}}</a></li>
-                            <li><i class="fas fa-book-reader pr-1"></i><a href="#topics">{{__('msg.topics')}}</a></li>
-                            <li><i class="fas fa-address-book pr-1"></i><a href="#contact">{{__('msg.contact')}}</a></li>
+                            <li><i class="fas fa-home pr-3"></i><a href="#">{{__('msg.home')}}</a></li>
+                            <li><i class="fas fa-brain pr-3"></i><a href="#about">{{__('msg.about')}}</a></li>
+                            <li><i class="fas fa-list-ul pr-3"></i><a href="#features">{{__('msg.features')}}</a></li>
+                            <li><i class="fas fa-book-reader pr-3"></i><a href="#topics">{{__('msg.topics')}}</a></li>
+                            <li><i class="fas fa-address-book pr-3"></i><a href="#contact">{{__('msg.contact')}}</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-info">
-                            <img src="{{asset('images/logobe.png')}}" width="170px" class="img-fluid animated" alt="">
+                          <a href="https://play.google.com/store/apps/details?id=com.gyankosh.info"
+                             TARGET="_blank" class="d-flex flex-column justify-content-center align-items-center"
+                          >
+                            <img src="{{asset('images/logobe.png')}}" width="100px" class="img-fluid animated" alt="">
+                            <img src="{{asset('images/google_play.png')}}" width="200px" class="img-fluid animated" alt="">
+                          </a>
                         </div>
                     </div>
 

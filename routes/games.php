@@ -26,6 +26,7 @@ Route::post('quizPracticeSave', [PracticeController::class,'quizPracticeSave'])-
 Route::post('publishPractice',[PracticeController::class,'publishPractice'])->name('publishPractice');
 Route::get('deletePractice/{id}',[PracticeController::class,'deletePractice'])->name('deletePractice');
 Route::post('updatePractice',[PracticeController::class,'updatePractice'])->name('updatePractice');
+Route::get('practiceViewQuestions/{quiz}',[PracticeController::class,'practiceViewQuestions'])->name('practiceViewQuestions');
 
 
 //Challenge

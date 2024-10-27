@@ -61,12 +61,16 @@
                                 </div>
                               </td>
                               <td class="text-center">
-                                <button class="delete btn btn-sm btn-outline-danger rounded mr-1"
+                                <button class="delete btn btn-sm btn-outline-light-danger rounded mr-1"
                                    data-id="{{$practice->id}}" title="Delete">
                                   <i class="fas fa-trash"></i>
                                 </button>
+                                <button class="view btn btn-sm btn-outline-light-info rounded mr-1"
+                                   data-id="{{$practice->id}}" title="View">
+                                  <i class="fas fa-eye"></i>
+                                </button>
                                 <button
-                                  class="edit btn btn-sm btn-outline-dark-info rounded"
+                                  class="edit btn btn-sm btn-outline-info rounded"
                                   title="Edit"
                                   data-name="{{$practice->quiz_name}}"
                                   data-bdname="{{$practice->bd_quiz_name}}"
@@ -129,6 +133,23 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+    <div id="viewModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content ">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">{{__('msg.updateQuiz')}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body" id="viewQuestionsModal">
+
+
+          </div>
+
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
 
   </div>
 
@@ -137,42 +158,7 @@
 
   <script>
     $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
-    $('body').on('click', '.pagination a', function(e) {
-      e.preventDefault();
-      var url = $(this).attr('href');
-      $.ajax({
-        url: url,
-        type: "GET",
-        beforeSend: function() {
-          // $('.loading').show();
-          // $('#msg').hide();
-          // $('#viewData').hide();
-          console.log('BEFORE');
-        },
-        success: function(data) {
-          console.log(data);
-          if (data != '') {
-            $('#viewData').html(data);
-          } else {
 
-            $('#viewData').html(
-              `<div class="text-center">
-                <p>Questions not available.</p>
-              </div>`
-            );
-
-          }
-          console.log(data);
-        },
-        complete: function() {
-          // $('.loading').hide();
-          $('#viewData').show();
-          console.log('COMPLETE');
-
-        }
-      })
-      // window.history.pushState("", "", url);
-    });
     $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
       var id = $(this).attr('data-id');
       if (state == true) {
@@ -258,6 +244,22 @@
       })
     });
     $(function (){
+      $('.view').on('click', function(e) {
+        var id = $(this).data('id');
+        $.ajax({
+          url: "{{url('practiceViewQuestions')}}",
+          type: "POST",
+          data: {
+            "_token": "{{ csrf_token() }}",
+            'id': id,
+          },
+          success: function(data) {
+            $("#viewQuestionsModal").html(data);
+          }
+        })
+        $('#viewModal').modal('show');
+      });
+
       $('.edit').on('click', function(e) {
         $('#qid').val($(this).data('id'));
         $('#editName').val($(this).data('name'));
