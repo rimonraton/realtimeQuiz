@@ -6,198 +6,7 @@
   <title>Template chage</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    body {
-      background: url("{{asset('mobiletemplate/images/cover.png')}}");
-      background: white;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: right;
-    }
-    .avatar {
-      vertical-align: middle;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid gray;
-    }
-    .f-8 {
-      font-size: .8rem;
-    }
-    .practice{
-      background: rgb(255,233,223);
-      background: linear-gradient(90deg, rgba(255,233,223,1) 0%, rgba(182,214,91,1) 100%);
-      color: #318076;
-      border-radius: 10px;
-      padding: 10px;
-      width: 160px;
-      height: 70px;
-      font-size: 1.2rem;
-    }
-    .team{
-      background: rgb(118,165,189);
-      background: linear-gradient(90deg, rgba(118,165,189,1) 0%, rgba(132,211,255,1) 100%);
-      color: white;
-      border-radius: 10px;
-      padding: 10px;
-      width: 160px;
-      height: 100px;
-      font-size: 1.2rem;
-      position: relative;
-    }
-    .team-icon {
-      position: absolute;
-      right: 15px;
-      bottom: 10px;
-    }
-    .challenge{
-      background: rgb(224,224,224);
-      background: linear-gradient(157deg, rgba(224,224,224,1) 0%, rgba(27,162,172,1) 100%);
-      color: #287D84;
-      border-radius: 10px;
-      padding: 10px;
-      width: 160px;
-      height: 140px;
-      font-size: 1.2rem;
-      position: relative;
-
-    }
-    .challenge-icon {
-      position: absolute;
-      bottom: 10px;
-      right: 15px;
-      width: 60px;
-    }
-    .quizMaster{
-      background: rgb(255,255,255);
-      background: linear-gradient(157deg, rgba(255,255,255,1) 0%, rgba(55,179,164,1) 100%);
-      color: #467B99;
-      border-radius: 10px;
-      padding: 10px;
-      width: 160px;
-      height: 110px;
-      font-size: 1.2rem;
-      position: relative;
-    }
-    .quizMaster-icon {
-      position: absolute;
-      bottom: 10px;
-      right: 15px;
-      width: 80px;
-    }
-    .circle-category {
-      background: transparent;
-      padding: 30px 0px;
-    }
-    .circle {
-      width: 60px;
-      height: 60px;
-      border-radius: 100%;
-      background: white;
-    }
-    .circle i {
-      font-size: 25px;
-    }
-    .circle-text {
-      padding-top: 10px;
-      font-size: .65rem;
-      font-weight: bold;
-    }
-    .text-brain {
-      color: #f3b5b8;
-    }
-    .history-img {
-      width: 210px;
-      position: relative;
-      margin-right: 15px;
-    }
-    .bg-img {
-      position: absolute;
-      width: 100%;
-      height: 120px;
-      border-radius: 15px;
-    }
-    .history{
-      height: 170px;
-    }
-    .history-text {
-      background: rgb(198,231,255);
-      background: linear-gradient(157deg, rgba(198,231,255,.4) 0%, rgba(96,129,153,.4) 100%);
-      position: absolute;
-      width: 100%;
-      height: 120px;
-      border-radius: 15px;
-      padding: 10px;
-      color: white;
-    }
-    .highlight {
-      background: rgb(134,195,72);
-      background: linear-gradient(157deg, rgba(134,195,72,.4) 0%, rgba(75,177,185,.4) 100%);
-    }
-    .history-title {
-      font-size: .7rem;
-      font-weight: 700;
-    }
-    .read-more {
-      text-decoration: none;
-      color: white;
-      font-size: .8rem;
-      font-weight: 500;
-      position: absolute;
-      bottom: 10px;
-      right: 20px;
-    }
-    .vc {
-      width: 100%;
-      overflow: scroll;
-      height: 130px;
-    }
-    .vs{
-      width: 150%;
-    }
-    .floating-bottom {
-      position: fixed;
-      left: 3%;
-      bottom: 10px;
-      width: 94%;
-      color: white;
-      text-align: center;
-      background: #F2F2F2;
-      border-radius: 15px;
-      padding: 20px;
-    }
-
-    a:hover{
-      text-decoration:none;
-    }
-    .section-padding {
-      padding: 30px 0;
-    }
-    .bottom {
-      background-color: #0a1c2e;
-    }
-    .bottom .copyright {
-      color: #e5e5e5;
-      font-weight: 600;
-    }
-    .copyright a {
-      color: #f2ff49;
-      margin-left: 3px;
-      padding-right: 3px;
-    }
-    .bottom p {
-      margin-bottom: 0;
-      line-height: 50px;
-      font-size: 16px;
-      font-weight: 400;
-    }
-    .copyright p span {
-      color: #d1caca;
-    }
-    .bottom .copyright p, .bottom .copyright a:hover{
-      color: #6c6d83;
-    }
-  </style>
+  <link rel="stylesheet" href="{{asset('css/qwiz/template.css')}}">
 </head>
 <body>
   <div class="container">
@@ -207,19 +16,35 @@
         <img src="{{asset('mobiletemplate/images/logo.png')}}" width="100px" alt="Logo">
       </div>
       <div class="d-flex align-items-center justify-content-end bg-dark-info w-100">
-        <div class="avatar d-flex justify-content-center align-items-center">
-          <i class="fa-solid fa-user"></i>
+
+        <div class="d-flex" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="p-2 d-flex flex-column f-8">
+            <!-- Example single danger button -->
+
+            <span>
+              @if (strlen($user->name) > 15)
+                {{ substr($user->name, 0, 15) . '...' }}
+              @else
+                {{ $user->name }}
+              @endif
+            </span>
+            <span>
+              <i class="fa-regular fa-star text-warning"></i>
+            </span>
+          </div>
         </div>
-        <div class="p-2 d-flex flex-column f-8">
-          <span>
-            @if (strlen($user->name) > 15)
-              {{ substr($user->name, 0, 15) . '...' }}
-            @else
-              {{ $user->name }}
-            @endif
-          </span>
-          <span>
-            <i class="fa-regular fa-star text-warning"></i>
+
+        <div class="dropdown-menu p-0">
+          <a class="dropdown-item" href="{{url('/profile')}}">
+            <i class="fa-solid fa-user text-info"></i>
+            Profile
+          </a>
+          <span class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+            <i class="fa-solid fa-sign-in-alt text-danger"></i>
+            Logout
           </span>
         </div>
         <div class="p-2 d-flex flex-column">
@@ -349,29 +174,63 @@
 
     <div class="floating-bottom d-flex justify-content-between shadow">
       <div>
-        <i class="fa-regular fa-chart-bar text-secondary fa-2x"></i>
+        <span class="bottomMenu" data-message="Leader Board not yet available.">
+          <i class="fa-regular fa-chart-bar text-secondary fa-2x"></i>
+        </span>
       </div>
       <div>
-        <i class="fa-brands fa-wpexplorer text-secondary fa-2x"></i>
+        <span class="bottomMenu" data-message="Options not yet available.">
+          <i class="fa-brands fa-wpexplorer text-secondary fa-2x"></i>
+        </span>
+
       </div>
       <div>
-        <i class="fa-solid fa-house fa-2x text-primary"></i>
+        <span class="bottomMenu" data-message="Go to Home">
+          <i class="fa-solid fa-house fa-2x text-primary"></i>
+        </span>
       </div>
       <div>
-        <i class="fa-solid fa-bell text-secondary fa-2x"></i>
+         <span class="bottomMenu" data-message="You have no notification.">
+          <i class="fa-solid fa-bell text-secondary fa-2x"></i>
+        </span>
       </div>
       <div>
-        <i class="fa-solid fa-gear text-secondary fa-2x"></i>
+         <span class="pointer" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+          <i class="fa-solid fa-sign-in-alt text-secondary fa-2x"></i>
+        </span>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
       </div>
     </div>
 
 {{--    Floating Bottom Menubar End--}}
 
+{{--Modals--}}
+    <div id="myModal" class="modal fade text-left" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <button type="button" class="close" id="closeModal" data-dismiss="modal" style="color: red;">&times;</button>
+            <h4 class="mt-5" id="moadalMessage"></h4>
+          </div>
 
-
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+  <script>
+    $(function (){
+      $(".bottomMenu").click(function (){
+        $("#moadalMessage").html($(this).data('message'));
+        $("#myModal").modal('show');
+      });
+
+    });
+  </script>
+
 </body>
 </html>

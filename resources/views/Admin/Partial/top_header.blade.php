@@ -14,7 +14,7 @@
                     <!-- Dark Logo icon -->
                     <img src="{{asset(auth()->user()->admin->photo)}}" width="50px" alt="homepage" class="dark-logo" />
                     <!-- Light Logo icon -->
-                    <img src="{{asset(auth()->user()->admin->photo)}}" width="50px" alt="homepage" class="light-logo" />
+                    <img src="{{asset(auth()->user()->admin->photo)}}" width="{{auth()->user()->admin->logo? auth()->user()->admin->logo: 50}}px" alt="homepage" class="light-logo" />
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
