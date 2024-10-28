@@ -27,19 +27,12 @@ class AdminController extends Controller
       }
         $admin_users = \auth()->user()->admin->users()->pluck('id');
 
-        //return Auth::user()->id;
-//        $quiz_counts = sprintf("%02d", count(Quiz::whereIn('user_id',$admin_users)->get()));
-//        $quiz_publish = sprintf("%02d", count(Quiz::where('status', 1)->whereIn('user_id',$admin_users)->get()));
-//        $totalQuestions = sprintf("%02d", count(Question::whereIn('user_id',$admin_users)->where('status', 1)->get()));
         $quiz_counts = Quiz::whereIn('user_id',$admin_users)->count();
-        $quiz_publish = Quiz::where('status', 1)->whereIn('user_id',$admin_users)->count();
+        $quiz_publish = Quiz::published()->whereIn('user_id',$admin_users)->count();
         $totalQuestions = Question::whereIn('user_id',$admin_users)->where('status', 1)->count();
 
         $totalInReviewQuestions = sprintf("%02d", Question::whereIn('user_id',$admin_users)->where('status', 0)->where('isDraft', 0)->count());
         $totalInDraftQuestions = sprintf("%02d", Question::whereIn('user_id',$admin_users)->where('status', 0)->where('isDraft', 1)->count());
-
-        // $quiz_publish = count(Quiz::where('status', 1)->get());
-        // $totalQuestions = count(Question::all());
 
         $admin = Admin::get()->except(1);
 

@@ -12055,7 +12055,7 @@ var render = function () {
                                     _c("img", {
                                       staticClass:
                                         "image mt-1 rounded img-thumbnail",
-                                      staticStyle: { "max-height": "10vh" },
+                                      staticStyle: { "max-height": "40px" },
                                       attrs: {
                                         src: "/" + result.selected,
                                         alt: "",
@@ -12100,7 +12100,7 @@ var render = function () {
                                     _c("img", {
                                       staticClass:
                                         "image mt-1 rounded img-thumbnail",
-                                      staticStyle: { "max-height": "10vh" },
+                                      staticStyle: { "max-height": "40px" },
                                       attrs: {
                                         src: "/" + result.answer,
                                         alt: "",

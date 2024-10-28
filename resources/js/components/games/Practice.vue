@@ -1,13 +1,18 @@
 <template>
-    <div class="container p-1 px-md-3">
-
+    <div class="container mt-3 mt-md-0">
         <div class="winner" v-if="winner_screen">
           <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
           <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
-<!--            <h2 class="text-center">Quiz Game Over</h2>-->
+            <h2 class="text-center">Quiz Game Over</h2>
             <h3>{{ tbe(pm.bd_perform_message, pm.perform_message, user.lang) }}</h3>
-            <resultdetails :results='results' :ws="winner_screen" :correct="correct" :wrong="wrong" :lang="user.lang" :vh="'70vh'"/>
+            <resultdetails
+              :results='results'
+              :ws="winner_screen"
+              :correct="correct"
+              :wrong="wrong"
+              :lang="user.lang"
+              :vh="'70vh'"/>
         </div>
 
         <div class="row justify-content-center">
@@ -61,7 +66,6 @@
                           </div>
                         </div>
                         <div v-show="av">
-
                             <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                                 :class="{'row justify-content-center justify-item-center': imageOption(question.options)}"
                             >
@@ -74,7 +78,6 @@
                                         <span @click="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                                             class="list-group-item list-group-item-action cursor my-1"
                                             v-html="tbe(option.bd_option, option.option, user.lang)" >
-
                                         </span>
                                     </div>
                                     <div
@@ -216,16 +219,14 @@ export default {
         },
 
         getCorrectAnswertext() {
+          let qco = this.questions[this.qid].options.find(o => o.correct == 1)
+          if(qco.flag === 'img'){
+            console.log('qco.img_link', qco.img_link)
 
-            let qco = this.questions[this.qid].options.find(o => o.correct == 1)
-          console.log('Bd =>', qco.bd_option, 'EN', qco.option);
+            return qco.img_link;
+          }
+          console.log('this.tbe(qco.bd_option, qco.option, this.user.lang)', this.tbe(qco.bd_option, qco.option, this.user.lang))
           return this.tbe(qco.bd_option, qco.option, this.user.lang)
-          // if(qco.flag== null)
-          //   console.log('Flag is null...')
-          //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
-          //   if(qco.flag=='img')
-          //       return qco.img_link;
-          //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
         },
 
         firstPlace: function() {
@@ -324,7 +325,7 @@ export default {
             window.location.reload()
         },
         tbe(b, e, l) {
-            // console.log(b,e,l)
+            console.log(b,e,l)
             return l === 'bd' ? (!!b ? b : e) : (!!e ? e : b)
             // if(l === 'bd') {
             //     if (!!b){

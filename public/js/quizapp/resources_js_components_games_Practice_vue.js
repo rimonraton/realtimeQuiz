@@ -160,6 +160,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
 
 
 
@@ -239,16 +242,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       var qco = this.questions[this.qid].options.find(function (o) {
         return o.correct == 1;
       });
-      console.log('Bd =>', qco.bd_option, 'EN', qco.option);
+      if (qco.flag === 'img') {
+        console.log('qco.img_link', qco.img_link);
+        return qco.img_link;
+      }
+      console.log('this.tbe(qco.bd_option, qco.option, this.user.lang)', this.tbe(qco.bd_option, qco.option, this.user.lang));
       return this.tbe(qco.bd_option, qco.option, this.user.lang);
-      // if(qco.flag== null)
-      //   console.log('Flag is null...')
-      //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
-      //   if(qco.flag=='img')
-      //       return qco.img_link;
-      //   return this.tbe(qco.bd_option, qco.option, this.user.lang)
     },
-
     firstPlace: function firstPlace() {
       this.place = 1;
       this.stars = 5;
@@ -362,7 +362,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       window.location.reload();
     },
     tbe: function tbe(b, e, l) {
-      // console.log(b,e,l)
+      console.log(b, e, l);
       return l === 'bd' ? !!b ? b : e : !!e ? e : b;
       // if(l === 'bd') {
       //     if (!!b){
@@ -1121,7 +1121,7 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container p-1 px-md-3" },
+    { staticClass: "container mt-3 mt-md-0" },
     [
       _vm.winner_screen
         ? _c(
@@ -1148,6 +1148,10 @@ var render = function () {
                     attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
                   })
                 : _vm._e(),
+              _vm._v(" "),
+              _c("h2", { staticClass: "text-center" }, [
+                _vm._v("Quiz Game Over"),
+              ]),
               _vm._v(" "),
               _c("h3", [
                 _vm._v(
@@ -1202,7 +1206,7 @@ var render = function () {
                         { staticClass: "q_num text-right text-muted" },
                         [
                           _vm._v(
-                            "\n                        " +
+                            "\n                    " +
                               _vm._s(
                                 _vm.qne2b(
                                   _vm.qid,
@@ -1210,7 +1214,7 @@ var render = function () {
                                   _vm.user.lang
                                 )
                               ) +
-                              "\n                     "
+                              "\n                 "
                           ),
                         ]
                       ),
@@ -1230,7 +1234,7 @@ var render = function () {
                           _vm._v(" "),
                           _c("h5", { staticClass: "mt-1 ml-2" }, [
                             _vm._v(
-                              "\n                        " +
+                              "\n                    " +
                                 _vm._s(
                                   _vm.tbe(
                                     question.bd_question_text,
@@ -1238,7 +1242,7 @@ var render = function () {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                      "
+                                "\n                  "
                             ),
                           ]),
                         ]
@@ -1480,9 +1484,9 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                          " +
+                          "\n                      " +
                             _vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)) +
-                            "\n                        "
+                            "\n                    "
                         ),
                       ]
                     )
@@ -1500,22 +1504,22 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n                                " +
+                      "\n                            " +
                         _vm._s(_vm.__("games.time_taken")) +
-                        "\n                                "
+                        "\n                            "
                     ),
                     _c(
                       "span",
                       { staticClass: "badge badge-light badge-pill" },
                       [
                         _vm._v(
-                          "\n                            " +
+                          "\n                        " +
                             _vm._s(_vm.minutes) +
                             ": " +
                             _vm._s(
                               _vm.seconds > 9 ? _vm.seconds : "0" + _vm.seconds
                             ) +
-                            "\n                        "
+                            "\n                    "
                         ),
                       ]
                     ),
@@ -1530,9 +1534,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n                                " +
+                      "\n                            " +
                         _vm._s(_vm.__("games.correct")) +
-                        "\n                                "
+                        "\n                            "
                     ),
                     _c(
                       "span",
@@ -1550,9 +1554,9 @@ var render = function () {
                   },
                   [
                     _vm._v(
-                      "\n                                " +
+                      "\n                            " +
                         _vm._s(_vm.__("games.wrong")) +
-                        "\n                                "
+                        "\n                            "
                     ),
                     _c(
                       "span",
@@ -1614,7 +1618,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "text-right p-3" }, [
+  return _c("div", { staticClass: "text-right pt-3 pr-md-3" }, [
     _vm.success
       ? _c("div", { staticClass: "alert alert-success alert-dismissible" }, [
           _c(
@@ -2081,7 +2085,7 @@ var render = function () {
                                     _c("img", {
                                       staticClass:
                                         "image mt-1 rounded img-thumbnail",
-                                      staticStyle: { "max-height": "10vh" },
+                                      staticStyle: { "max-height": "40px" },
                                       attrs: {
                                         src: "/" + result.selected,
                                         alt: "",
@@ -2126,7 +2130,7 @@ var render = function () {
                                     _c("img", {
                                       staticClass:
                                         "image mt-1 rounded img-thumbnail",
-                                      staticStyle: { "max-height": "10vh" },
+                                      staticStyle: { "max-height": "40px" },
                                       attrs: {
                                         src: "/" + result.answer,
                                         alt: "",

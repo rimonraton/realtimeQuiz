@@ -1,5 +1,5 @@
 <template>
- <div class="text-right p-3">
+ <div class="text-right pt-3 pr-md-3">
    <!--Modal Launch Button-->
    <div v-if="success" class="alert alert-success alert-dismissible">
      <button type="button" class="close" data-dismiss="alert">&times;</button>

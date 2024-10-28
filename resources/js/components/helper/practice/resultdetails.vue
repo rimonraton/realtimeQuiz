@@ -24,14 +24,14 @@
                             <p v-else>
                                 <span> {{tbe('আপনার দেয়া উত্তরঃ ', 'Your answer: ', lang)}} </span>
                                 <span class="font-weight-light font-italic" v-if="isImg(result.selected)">
-                                    <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:10vh" alt="">
+                                    <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.selected" style="max-height:40px" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.selected" v-else></span>
                                 <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                 <br>
                                 <span>{{tbe('সঠিক উত্তরঃ ','Correct answer: ', lang)}}</span>
                                 <span class="font-weight-light font-italic" v-if="isImg(result.answer)">
-                                     <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.answer" style="max-height:10vh" alt="">
+                                     <img  class="image mt-1 rounded img-thumbnail" :src="'/'+ result.answer" style="max-height:40px" alt="">
                                 </span>
                                 <span class="font-weight-light font-italic" v-html="result.answer" v-else></span>
                                 <i class="fa fa-check text-success" aria-hidden="true"></i>
