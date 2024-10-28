@@ -72,8 +72,8 @@ Route::post('create-institute',[PaymentController::class,'store'])->name('create
 Route::get('userCredential/{token}',[UserCredential::class,'userCredential'])->name('userCredential');
 
 
-//Auth::routes();
-Auth::routes(['verify' => true]);
+Auth::routes();
+//Auth::routes(['verify' => true]);
 
 Route::get('/home', function () {
 	return redirect('/dashboard');
