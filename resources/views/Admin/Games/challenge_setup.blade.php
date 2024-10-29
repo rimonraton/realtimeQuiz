@@ -65,15 +65,7 @@
         });
         $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
             var id = $(this).attr('data-id');
-            if (state == true) {
-
-                publishedOrNot(id, 1);
-                // $(this).prop('checked', true);
-            } else {
-                publishedOrNot(id, 0);
-                // $(this).removeProp('checked');
-
-            }
+            publishedOrNot(id, state);
         });
         function publishedOrNot(id, value) {
             $.ajax({
@@ -82,7 +74,7 @@
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'id': id,
-                    'value': value
+                    'value': value === true ? 1 : 0
                 },
                 success: function(data) {
                     Swal.fire({

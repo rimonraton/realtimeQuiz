@@ -372,9 +372,13 @@ class QuestionController extends Controller
 
     public function editQuestion($id)
     {
+      $isImage = false;
       $QwithO = Question::with('options')->where('id', $id)->first();
+      if(count($QwithO->options) > 0) {
+        $isImage = $QwithO->options[0]['flag'] == 'img';
+      }
       $difficulty = Difficulty::all();
-      return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty'));
+      return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty', 'isImage'));
     }
 
     public function viewQuestion($id)

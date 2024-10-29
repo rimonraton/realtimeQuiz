@@ -32,15 +32,8 @@
                 <span class="js-fileName">
                     <i class="icon fa fa-upload"></i> {{__('form.choose_file')}}
                 </span>
-{{--                <small class="">({{__('form.video_image_audio')}})</small>--}}
             </label>
         </div>
-{{--        <label for="optionOne" class="d-none img-label">--}}
-{{--            <img class="img-preview js-labelFilepreview" src="" alt="">--}}
-{{--        </label>--}}
-{{--        <div class="d-none text-center">--}}
-{{--            <i class="ti-close removePreview" style="color:red;cursor:pointer;"></i>--}}
-{{--        </div>--}}
     </div>
 </div>
 @endif
@@ -149,7 +142,7 @@
         var optOrImage = ''
         var id = ''
         var qid = '{{$QwithO->id}}'
-        if ('{{$QwithO->options[0]['flag']}}' == 'img') {
+        if ({{$isImage}}) {
             optOrImage = `<div class="col-md-2">
                                 <div class="form-group">
                                     <input type="file" class="optipt changeFile" data-id="" data-qid="${qid}" data-old="" accept="image/*">
