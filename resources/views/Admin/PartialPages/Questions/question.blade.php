@@ -142,7 +142,7 @@
         var optOrImage = ''
         var id = ''
         var qid = '{{$QwithO->id}}'
-        if ({{$isImage}}) {
+        if ({{$isImage }} === 1) {
             optOrImage = `<div class="col-md-2">
                                 <div class="form-group">
                                     <input type="file" class="optipt changeFile" data-id="" data-qid="${qid}" data-old="" accept="image/*">

@@ -16,20 +16,20 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-7 p-0 p-md-3">
+            <div class="col-md-7 p-md-3">
                 <div class="card" v-for="question in questions" v-if="question.id === current" >
-                  <div class="card-header" v-show="av">
-                     <span class="q_num text-right text-muted">
-                        {{ qne2b(qid, questions.length, user.lang) }}
-                     </span>
-                    <div class="d-flex flex-row align-items-center question-title">
-                      <h3 class="text-danger">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
-                      <h5 class="mt-1 ml-2">
+                  <div class="card-header py-1" v-show="av">
+                    <div class="d-flex flex-row align-items-center question-title relative">
+                      <h3 class="text-danger mr-2">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
+                      <h5 class="mb-0 q_text">
                         {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
                       </h5>
+                      <span class="q_num text-muted">
+                        {{ qne2b(qid, questions.length, user.lang) }}
+                      </span>
                     </div>
                   </div>
-                    <div class="card-body p-1 p-md-3 animate__animated animate__backInDown animate__faster" :key="qid">
+                    <div class="card-body p-1 pt-4 animate__animated animate__backInDown animate__faster" :key="qid">
 
                         <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
@@ -100,7 +100,7 @@
                 </div>
 
             </div>
-            <div class="col-md-5 p-0 py-3 p-md-3">
+            <div class="col-md-5 py-3 p-md-3">
                 <div class="card ">
                     <div class="card-header text-center card-title py-1">
                         <strong>{{ __('games.information') }}</strong>
@@ -343,8 +343,10 @@ export default {
         },
         qne2b(q, qn, l) {
           if (l === 'gb')
-            return `Question ${q + 1} of ${qn} `;
-          return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+            // return `Question ${q + 1} of ${qn} `;
+            return `${q + 1} of ${qn} `;
+          // return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+          return `${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
         },
         onEnd() {
           console.log('onEnded....')
@@ -477,10 +479,15 @@ export default {
     }
 
     @media screen and (min-width: 480px) {
-        .imageOption {
-            height: 170px;
-            width: 100%;
-        }
+      .imageOption {
+        height: 170px;
+        width: 100%;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .q_text{
+        font-size: 1rem;
+      }
     }
 
 </style>

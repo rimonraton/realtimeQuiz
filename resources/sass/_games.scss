@@ -53,9 +53,12 @@
 
 .q_num {
   position: absolute;
-  right: 5px;
-  width: 100%;
-  top: 0px;
+  bottom: -5px;
+  font-size: x-small;
+  left: -5px;
+}
+.relative {
+  position: relative;
 }
 
 .fade-leave-active,

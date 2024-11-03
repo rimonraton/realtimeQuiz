@@ -582,7 +582,7 @@
         </div>
     </div>
     <script src="{{asset('js/theme-site.js')}}"></script>
-    <script src="https://www.google.com/recaptcha/api.js" defer></script>
+{{--    <script src="https://www.google.com/recaptcha/api.js" defer></script>--}}
 
     <script>
         function onSubmit(token) {

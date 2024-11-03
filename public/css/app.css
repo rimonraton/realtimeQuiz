@@ -570,8 +570,8 @@ pre code {
 .row {
   display: flex;
   flex-wrap: wrap;
-  /*margin-right: -15px;*/
-  /*margin-left: -15px;*/
+  margin-right: -15px;
+  margin-left: -15px;
 }
 
 .no-gutters {
@@ -9294,9 +9294,13 @@ a.text-dark:hover, a.text-dark:focus {
 
 .q_num {
   position: absolute;
-  right: 5px;
-  width: 100%;
-  top: 0px;
+  bottom: -5px;
+  font-size: x-small;
+  left: -5px;
+}
+
+.relative {
+  position: relative;
 }
 
 .fade-leave-active,

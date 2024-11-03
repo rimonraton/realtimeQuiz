@@ -379,8 +379,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       // }
     },
     qne2b: function qne2b(q, qn, l) {
-      if (l === 'gb') return "Question ".concat(q + 1, " of ").concat(qn, " ");
-      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+      if (l === 'gb')
+        // return `Question ${q + 1} of ${qn} `;
+        return "".concat(q + 1, " of ").concat(qn, " ");
+      // return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+      return "".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     },
     onEnd: function onEnd() {
       console.log('onEnded....');
@@ -748,7 +751,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#ar[data-v-2e0baf74] {\n    position: absolute;\n    background: transparent;\n    width: 60%;\n    height: 50px;\n    top: 18px;\n}\n.shadow-1[data-v-2e0baf74]:before {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);\n}\n.shadow-1[data-v-2e0baf74]:after {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);\n}\n.imageDiv[data-v-2e0baf74]:hover {\n    background-color: #38c172\n}\n.imageOption[data-v-2e0baf74] {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-2e0baf74] {\n        height: 170px;\n        width: 100%;\n}\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#ar[data-v-2e0baf74] {\n    position: absolute;\n    background: transparent;\n    width: 60%;\n    height: 50px;\n    top: 18px;\n}\n.shadow-1[data-v-2e0baf74]:before {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);\n}\n.shadow-1[data-v-2e0baf74]:after {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);\n}\n.imageDiv[data-v-2e0baf74]:hover {\n    background-color: #38c172\n}\n.imageOption[data-v-2e0baf74] {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-2e0baf74] {\n    height: 170px;\n    width: 100%;\n}\n}\n@media screen and (max-width: 480px) {\n.q_text[data-v-2e0baf74]{\n    font-size: 1rem;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1183,7 +1186,7 @@ var render = function () {
       _c("div", { staticClass: "row justify-content-center" }, [
         _c(
           "div",
-          { staticClass: "col-md-7 p-0 p-md-3" },
+          { staticClass: "col-md-7 p-md-3" },
           _vm._l(_vm.questions, function (question) {
             return question.id === _vm.current
               ? _c("div", { staticClass: "card" }, [
@@ -1198,47 +1201,43 @@ var render = function () {
                           expression: "av",
                         },
                       ],
-                      staticClass: "card-header",
+                      staticClass: "card-header py-1",
                     },
                     [
-                      _c(
-                        "span",
-                        { staticClass: "q_num text-right text-muted" },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(
-                                _vm.qne2b(
-                                  _vm.qid,
-                                  _vm.questions.length,
-                                  _vm.user.lang
-                                )
-                              ) +
-                              "\n                 "
-                          ),
-                        ]
-                      ),
-                      _vm._v(" "),
                       _c(
                         "div",
                         {
                           staticClass:
-                            "d-flex flex-row align-items-center question-title",
+                            "d-flex flex-row align-items-center question-title relative",
                         },
                         [
-                          _c("h3", { staticClass: "text-danger" }, [
+                          _c("h3", { staticClass: "text-danger mr-2" }, [
                             _vm._v(
                               _vm._s(_vm.tbe("প্রশ্ন.", "Q.", _vm.user.lang))
                             ),
                           ]),
                           _vm._v(" "),
-                          _c("h5", { staticClass: "mt-1 ml-2" }, [
+                          _c("h5", { staticClass: "mb-0 q_text" }, [
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
                                   _vm.tbe(
                                     question.bd_question_text,
                                     question.question_text,
+                                    _vm.user.lang
+                                  )
+                                ) +
+                                "\n                  "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "q_num text-muted" }, [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(
+                                  _vm.qne2b(
+                                    _vm.qid,
+                                    _vm.questions.length,
                                     _vm.user.lang
                                   )
                                 ) +
@@ -1255,7 +1254,7 @@ var render = function () {
                     {
                       key: _vm.qid,
                       staticClass:
-                        "card-body p-1 p-md-3 animate__animated animate__backInDown animate__faster",
+                        "card-body p-1 pt-4 animate__animated animate__backInDown animate__faster",
                     },
                     [
                       question.fileType == "image"
@@ -1467,7 +1466,7 @@ var render = function () {
           0
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-5 p-0 py-3 p-md-3" }, [
+        _c("div", { staticClass: "col-md-5 py-3 p-md-3" }, [
           _c("div", { staticClass: "card" }, [
             _c(
               "div",
@@ -1618,7 +1617,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "text-right pt-3 pr-md-3" }, [
+  return _c("div", { staticClass: "text-right pt-3" }, [
     _vm.success
       ? _c("div", { staticClass: "alert alert-success alert-dismissible" }, [
           _c(

@@ -274,6 +274,7 @@ class QuestionController extends Controller
     }
     public function getlist($id, $keyword = '', $qType = '')
     {
+        $isCatId = request()->query('isCatId');
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $questions = null;
@@ -282,15 +283,17 @@ class QuestionController extends Controller
             $et = $qType;
         }
         if($keyword){
-            $questions = Question::where('status', 0)
-                ->whereIn('user_id', $admin_users)
-                ->where('question_text', 'like', '%' . $keyword . '%')
-                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                ->where('category_id', $id)
-                ->with('difficulty')
-                ->where('quizcategory_id', $et)
-                ->orderBy('id','desc')
-                ->paginate(10);
+          $questions = Question::where('status', 0)
+            ->whereIn('user_id', $admin_users)
+            ->where('question_text', 'like', '%' . $keyword . '%')
+            ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+            ->when($isCatId == 'true', function ($q) use($id) {
+              return $q->where('category_id', $id);
+            })
+            ->where('quizcategory_id', $et)
+            ->with('difficulty')
+            ->orderBy('id','desc')
+            ->paginate(10);
         } else {
             $questions = Question::where('category_id', $id)
                 ->where('quizcategory_id', $et)
@@ -372,10 +375,10 @@ class QuestionController extends Controller
 
     public function editQuestion($id)
     {
-      $isImage = false;
+      $isImage = 0;
       $QwithO = Question::with('options')->where('id', $id)->first();
       if(count($QwithO->options) > 0) {
-        $isImage = $QwithO->options[0]['flag'] == 'img';
+        $isImage = $QwithO->options[0]['flag'] == 'img'? 1 : 0;
       }
       $difficulty = Difficulty::all();
       return view('Admin.PartialPages.Questions.question', compact('QwithO', 'difficulty', 'isImage'));
