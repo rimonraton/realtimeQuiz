@@ -1571,7 +1571,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     back: function back() {
       // window.history.back()
-      window.location = '/game/practice/challenge';
+      window.location = '/challenge';
     },
     getMedel: function getMedel(index) {
       if (index == 0) return '<span class="badge badge-success m-1">1<sup>st</sup></span> <i class="fas fa-award fa-lg ml-1" style="color: gold"></i>';

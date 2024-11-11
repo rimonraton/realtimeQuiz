@@ -217,8 +217,8 @@ export default {
     return {
       qt: {
         ms: 0,
-        defaultTime: 300,
-        time: 300,
+        defaultTime: 30,
+        time: 30,
         timer: null
       },
       counter: 2,
