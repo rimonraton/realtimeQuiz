@@ -77,7 +77,7 @@
         </div>
         <div class="card mt-1" style="width: 24rem;" v-else>
             <div class="card-header">Result Detail</div>
-            <div class="card-body overflow-auto" style="height: 500px;">
+            <div class="card-body overflow-auto" style="height: 80vh;">
 <!--                {{ resultDetailData}}-->
                 <!--                <img class="card-img img-responsive" :src="addImage()">-->
 <!--                <ul class="list-group">-->

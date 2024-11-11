@@ -62,7 +62,7 @@
     </waiting>
 
     <div class="row justify-content-center">
-      <div class="col-md-8 pxs-0">
+      <div class="col-md-8 px-2">
         <div class="progress">
           <div class="progress-bar progress-bar-striped"
                :style="progressWidth"
@@ -71,10 +71,18 @@
           </div>
         </div>
         <div class="card my-4" v-for="question in questions" v-if="question.id == current">
-          <div class="card-body animate__animated animate__backInRight animate__faster">
-                        <span class="q_num text-right text-muted">
-                            {{ qne2b(qid, questions.length, user.lang) }}
-                        </span>
+          <div class="card-header p-2" v-show="av">
+            <div class="d-flex flex-row align-items-center question-title relative">
+              <h3 class="text-danger mr-2">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
+              <h5 class="mb-0 q_text">
+                {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+              </h5>
+              <span class="q_num text-muted mt-1">
+                {{ qne2b(qid, questions.length, user.lang) }}
+              </span>
+            </div>
+          </div>
+          <div class="card-body animate__animated animate__backInRight animate__faster p-1">
             <img v-if="question.fileType == 'image'" class="image w-100 mt-1 rounded img-thumbnail"
                  :src="'/' + question.question_file_link" style="max-height:70vh" alt="">
 
@@ -113,18 +121,6 @@
               </div>
 
               <div v-show="av">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="d-flex align-items-center question-title">
-                      <h3 class="text-danger">Q.</h3>
-                      <h5 class="mt-1 ml-2">
-<!--                        Question Text-->
-                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-
                 <div v-if="sqo" class="animate__animated animate__zoomIn animate__faster d-flex flex-wrap"
                      :class="{'row justify-content-center justify-item-center': imageOption(question['options'])}"
                 >
@@ -221,8 +217,8 @@ export default {
     return {
       qt: {
         ms: 0,
-        defaultTime: 30,
-        time: 30,
+        defaultTime: 300,
+        time: 300,
         timer: null
       },
       counter: 2,
@@ -367,7 +363,7 @@ export default {
   //         window.removeEventListener("beforeunload", this.preventNav);
   //     });
   // },
-  //
+
   // beforeRouteLeave(to, from, next) {
   //     console.log('beforeRouteLeave')
   //
@@ -380,7 +376,7 @@ export default {
   // },
 
   methods: {
-    gameStart: function (defaultTime = 30) {
+    gameStart: function (defaultTime = 300) {
         console.log('gameStart...')
         this.sqo = true
         let ids = this.users.map(u => u.id)

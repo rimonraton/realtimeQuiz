@@ -163,6 +163,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -705,6 +716,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'ws', 'correct', 'wrong', 'lang', 'vh'],
@@ -751,7 +764,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#ar[data-v-2e0baf74] {\n    position: absolute;\n    background: transparent;\n    width: 60%;\n    height: 50px;\n    top: 18px;\n}\n.shadow-1[data-v-2e0baf74]:before {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);\n}\n.shadow-1[data-v-2e0baf74]:after {\n    content: \"\";\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 0;\n    bottom: 0;\n    width: inherit;\n    height: inherit;\n    z-index: -2;\n    box-sizing: border-box;\n    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);\n}\n.imageDiv[data-v-2e0baf74]:hover {\n    background-color: #38c172\n}\n.imageOption[data-v-2e0baf74] {\n    height: 100px;\n    width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-2e0baf74] {\n    height: 170px;\n    width: 100%;\n}\n}\n@media screen and (max-width: 480px) {\n.q_text[data-v-2e0baf74]{\n    font-size: 1rem;\n}\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.relative[data-v-2e0baf74]{\n  position: relative;\n}\n#ar[data-v-2e0baf74] {\n        position: absolute;\n        background: transparent;\n        width: 60%;\n        height: 50px;\n        top: 18px;\n}\n.shadow-1[data-v-2e0baf74]:before {\n        content: \"\";\n        position: absolute;\n        left: 0;\n        right: 0;\n        top: 0;\n        bottom: 0;\n        width: inherit;\n        height: inherit;\n        z-index: -2;\n        box-sizing: border-box;\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);\n}\n.shadow-1[data-v-2e0baf74]:after {\n        content: \"\";\n        position: absolute;\n        left: 0;\n        right: 0;\n        top: 0;\n        bottom: 0;\n        width: inherit;\n        height: inherit;\n        z-index: -2;\n        box-sizing: border-box;\n        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);\n}\n.imageDiv[data-v-2e0baf74]:hover {\n        background-color: #38c172\n}\n.imageOption[data-v-2e0baf74] {\n        height: 100px;\n        width: 100%;\n}\n@media screen and (min-width: 480px) {\n.imageOption[data-v-2e0baf74] {\n        height: 170px;\n        width: 100%;\n}\n}\n@media screen and (max-width: 480px) {\n.q_text[data-v-2e0baf74]{\n        font-size: 1rem;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1127,60 +1140,72 @@ var render = function () {
     { staticClass: "container mt-3 mt-md-0" },
     [
       _vm.winner_screen
-        ? _c(
-            "div",
-            { staticClass: "winner" },
-            [
-              _vm.place == 1
-                ? _c("img", {
-                    staticStyle: { width: "100px", "margin-right": "15px" },
-                    attrs: { src: "/img/quiz/position/1st.gif", alt: "" },
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.place == 2
-                ? _c("img", {
-                    staticStyle: { width: "100px", "margin-right": "15px" },
-                    attrs: { src: "/img/quiz/position/2nd.gif", alt: "" },
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.place == 3
-                ? _c("img", {
-                    staticStyle: { width: "100px", margin: "15px" },
-                    attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _c("h2", { staticClass: "text-center" }, [
-                _vm._v("Quiz Game Over"),
-              ]),
-              _vm._v(" "),
-              _c("h3", [
-                _vm._v(
-                  _vm._s(
-                    _vm.tbe(
-                      _vm.pm.bd_perform_message,
-                      _vm.pm.perform_message,
-                      _vm.user.lang
-                    )
-                  )
+        ? _c("div", { staticClass: "winner" }, [
+            _c(
+              "div",
+              {
+                staticClass: "d-flex flex-column justify-content-center w-100",
+              },
+              [
+                _c("div", { staticClass: "text-center" }, [
+                  _vm.place == 1
+                    ? _c("img", {
+                        staticStyle: { width: "100px", "margin-right": "15px" },
+                        attrs: { src: "/img/quiz/position/1st.gif", alt: "" },
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.place == 2
+                    ? _c("img", {
+                        staticStyle: { width: "100px", "margin-right": "15px" },
+                        attrs: { src: "/img/quiz/position/2nd.gif", alt: "" },
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.place == 3
+                    ? _c("img", {
+                        staticStyle: { width: "100px", margin: "15px" },
+                        attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "h3" }, [
+                    _c("strong", [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(
+                            _vm.tbe(
+                              _vm.pm.bd_perform_message,
+                              _vm.pm.perform_message,
+                              _vm.user.lang
+                            )
+                          ) +
+                          "\n            "
+                      ),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex justify-content-center" },
+                  [
+                    _c("resultdetails", {
+                      attrs: {
+                        results: _vm.results,
+                        ws: _vm.winner_screen,
+                        correct: _vm.correct,
+                        wrong: _vm.wrong,
+                        lang: _vm.user.lang,
+                        vh: _vm.place > 0 ? "60vh" : "70vh",
+                      },
+                    }),
+                  ],
+                  1
                 ),
-              ]),
-              _vm._v(" "),
-              _c("resultdetails", {
-                attrs: {
-                  results: _vm.results,
-                  ws: _vm.winner_screen,
-                  correct: _vm.correct,
-                  wrong: _vm.wrong,
-                  lang: _vm.user.lang,
-                  vh: "70vh",
-                },
-              }),
-            ],
-            1
-          )
+              ]
+            ),
+          ])
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "row justify-content-center" }, [
@@ -1201,7 +1226,7 @@ var render = function () {
                           expression: "av",
                         },
                       ],
-                      staticClass: "card-header py-1",
+                      staticClass: "card-header p-2",
                     },
                     [
                       _c(
@@ -1219,7 +1244,7 @@ var render = function () {
                           _vm._v(" "),
                           _c("h5", { staticClass: "mb-0 q_text" }, [
                             _vm._v(
-                              "\n                    " +
+                              "\n                  " +
                                 _vm._s(
                                   _vm.tbe(
                                     question.bd_question_text,
@@ -1227,13 +1252,13 @@ var render = function () {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                  "
+                                "\n                "
                             ),
                           ]),
                           _vm._v(" "),
-                          _c("span", { staticClass: "q_num text-muted" }, [
+                          _c("span", { staticClass: "q_num text-muted mt-1" }, [
                             _vm._v(
-                              "\n                    " +
+                              "\n                  " +
                                 _vm._s(
                                   _vm.qne2b(
                                     _vm.qid,
@@ -1241,7 +1266,7 @@ var render = function () {
                                     _vm.user.lang
                                   )
                                 ) +
-                                "\n                  "
+                                "\n                "
                             ),
                           ]),
                         ]
@@ -1254,7 +1279,7 @@ var render = function () {
                     {
                       key: _vm.qid,
                       staticClass:
-                        "card-body p-1 pt-4 animate__animated animate__backInDown animate__faster",
+                        "card-body p-1 animate__animated animate__backInDown animate__faster",
                     },
                     [
                       question.fileType == "image"
@@ -1416,7 +1441,7 @@ var render = function () {
                                             "div",
                                             {
                                               staticClass:
-                                                "cursor my-1 imageDiv",
+                                                "cursor imageDiv p-2",
                                               class: _vm.getOptionClass(
                                                 i,
                                                 _vm.quiz.quiz_time
@@ -1957,12 +1982,12 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-100 px-1", attrs: { id: "accordion" } }, [
-    _c("div", { staticClass: "card" }, [
+  return _c("div", { staticClass: "px-1", attrs: { id: "accordion" } }, [
+    _c("div", { staticClass: "card border-primary" }, [
       _c(
         "div",
         {
-          staticClass: "card-header py-1",
+          staticClass: "card-header py-2",
           attrs: {
             id: "headingOne",
             "data-toggle": "collapse",
@@ -2234,6 +2259,8 @@ var render = function () {
           )
         : _vm._e(),
     ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "my-5" }),
   ])
 }
 var staticRenderFns = []

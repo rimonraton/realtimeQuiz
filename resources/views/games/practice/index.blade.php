@@ -270,7 +270,7 @@
         @include('games.practice._quiz_card', ['qz'=> $qz])
       @endforeach
 
-      <div class="d-flex justify-content-center my-3 table-responsive">
+      <div class="justify-content-center mx-3 table-responsive">
         {{ $quiz->links() }}
       </div>
     </div>

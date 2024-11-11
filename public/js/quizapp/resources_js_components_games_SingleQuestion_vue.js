@@ -1645,17 +1645,20 @@ var quizHelpers = {
       if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b) && (0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) {
         return 'No options found!';
       }
-      if (l !== 'bd') {
+      if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b) || (0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) {
+        if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b)) return e;
         if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) return b;
+      }
+      if (l !== 'bd') {
         return e;
       }
       return b;
     },
     qne2b: function qne2b(q, qn, l) {
       if (l === 'gb') {
-        return "Question ".concat(q + 1, " of ").concat(qn, " ");
+        return "".concat(q + 1, " of ").concat(qn, " ");
       }
-      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+      return "".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     },
     q2bNumber: function q2bNumber(numb) {
       var numbString = numb.toString();
@@ -11664,7 +11667,7 @@ var render = function () {
               "div",
               {
                 staticClass: "card-body overflow-auto",
-                staticStyle: { height: "500px" },
+                staticStyle: { height: "80vh" },
               },
               _vm._l(_vm.resultDetailData, function (result, i) {
                 return _c("div", { key: "resD" + i }, [

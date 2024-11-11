@@ -1,36 +1,47 @@
 <template>
     <div class="container mt-3 mt-md-0">
         <div class="winner" v-if="winner_screen">
-          <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
-          <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
-          <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
-            <h2 class="text-center">Quiz Game Over</h2>
-            <h3>{{ tbe(pm.bd_perform_message, pm.perform_message, user.lang) }}</h3>
-            <resultdetails
-              :results='results'
-              :ws="winner_screen"
-              :correct="correct"
-              :wrong="wrong"
-              :lang="user.lang"
-              :vh="'70vh'"/>
+          <div class="d-flex flex-column justify-content-center w-100">
+            <div class="text-center ">
+
+              <img v-if="place == 1" src="/img/quiz/position/1st.gif" alt="" style="width: 100px; margin-right: 15px;">
+              <img v-if="place == 2" src="/img/quiz/position/2nd.gif" alt="" style="width: 100px; margin-right: 15px;">
+              <img v-if="place == 3" src="/img/quiz/position/3rd.gif" alt="" style="width: 100px; margin: 15px;">
+
+              <p class="h3">
+                <strong>
+                  {{ tbe(pm.bd_perform_message, pm.perform_message, user.lang) }}
+                </strong>
+              </p>
+            </div>
+            <div class="d-flex justify-content-center">
+              <resultdetails
+                :results='results'
+                :ws="winner_screen"
+                :correct="correct"
+                :wrong="wrong"
+                :lang="user.lang"
+                :vh="place > 0? '60vh': '70vh'"/>
+            </div>
+
+          </div>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-md-7 p-md-3">
-                <div class="card" v-for="question in questions" v-if="question.id === current" >
-                  <div class="card-header py-1" v-show="av">
-                    <div class="d-flex flex-row align-items-center question-title relative">
-                      <h3 class="text-danger mr-2">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
-                      <h5 class="mb-0 q_text">
-                        {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
-                      </h5>
-                      <span class="q_num text-muted">
-                        {{ qne2b(qid, questions.length, user.lang) }}
-                      </span>
-                    </div>
+                <div class="card " v-for="question in questions" v-if="question.id === current" >
+                <div class="card-header p-2" v-show="av">
+                  <div class="d-flex flex-row align-items-center question-title relative">
+                    <h3 class="text-danger mr-2">{{ tbe('প্রশ্ন.', 'Q.', user.lang) }}</h3>
+                    <h5 class="mb-0 q_text">
+                      {{ tbe(question.bd_question_text, question.question_text, user.lang) }}
+                    </h5>
+                    <span class="q_num text-muted mt-1">
+                      {{ qne2b(qid, questions.length, user.lang) }}
+                    </span>
                   </div>
-                    <div class="card-body p-1 pt-4 animate__animated animate__backInDown animate__faster" :key="qid">
-
+                </div>
+                    <div class="card-body p-1 animate__animated animate__backInDown animate__faster" :key="qid">
                         <img v-if="question.fileType == 'image'" class="image w-50 mt-1 rounded img-thumbnail"
                              :src="'/' + question.question_file_link" style="max-height:50vh" alt="">
                         <div v-if="endAVWait">
@@ -83,7 +94,7 @@
                                     <div
                                         v-else
                                         @click="checkAnswer(question.id, option.img_link, option.correct)"
-                                        class="cursor my-1 imageDiv"
+                                        class="cursor imageDiv p-2"
                                         :class="getOptionClass(i, quiz.quiz_time)"
                                     >
                                         <img  class="imageOption mt-1 rounded img-thumbnail" :src="'/'+ option.img_link" alt="">
@@ -437,6 +448,9 @@ export default {
 };
 </script>
 <style scoped>
+.relative{
+  position: relative;
+}
     #ar {
         position: absolute;
         background: transparent;

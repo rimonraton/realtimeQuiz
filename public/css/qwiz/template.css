@@ -1,8 +1,8 @@
 body {
-  background: url("{{asset('mobiletemplate/images/cover.png')}}");
-  background: white;
+  background: url("/mobiletemplate/images/cover.png");
   background-size: contain;
   background-repeat: no-repeat;
+  background-color: white;
   background-position: right;
 }
 .avatar {

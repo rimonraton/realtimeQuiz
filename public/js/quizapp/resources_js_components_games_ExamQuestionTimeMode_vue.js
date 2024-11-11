@@ -4033,7 +4033,7 @@ var render = function () {
               "div",
               {
                 staticClass: "card-body overflow-auto",
-                staticStyle: { height: "500px" },
+                staticStyle: { height: "80vh" },
               },
               _vm._l(_vm.resultDetailData, function (result, i) {
                 return _c("div", { key: "resD" + i }, [

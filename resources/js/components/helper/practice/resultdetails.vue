@@ -1,7 +1,7 @@
 <template>
-    <div id="accordion" class="w-100 px-1">
-        <div class="card" >
-            <div class="card-header py-1 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+    <div id="accordion" class="px-1">
+        <div class="card border-primary" >
+            <div class="card-header py-2 " id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <strong class="mb-0 cursor">
                 {{ tbe('ফলাফল', 'Result Details', lang) }}
               </strong>
@@ -56,6 +56,8 @@
                 <button @click="reloadPage" class="btn btn-sm btn-secondary">Replay</button>
             </div>
         </div>
+      <div class="my-5"></div>
+
     </div>
 </template>
 
@@ -66,7 +68,7 @@
         methods: {
           getStyle(){
             let Hight = '50vh'
-            if (this.vh) Hight =this.vh
+            if (this.vh) Hight = this.vh
 
             return {
               'max-height': Hight,

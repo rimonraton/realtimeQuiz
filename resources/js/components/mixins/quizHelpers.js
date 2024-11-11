@@ -35,17 +35,21 @@ export const quizHelpers = {
           if(isEmpty(b) && isEmpty(e)){
             return 'No options found!'
           }
-          if(l !== 'bd') {
+          if(isEmpty(b) || isEmpty(e)){
+            if(isEmpty(b)) return e;
             if(isEmpty(e)) return b;
+          }
+
+          if(l !== 'bd') {
             return e;
           }
           return b;
         },
         qne2b(q, qn, l) {
             if (l === 'gb') {
-                return `Question ${q + 1} of ${qn} `;
+                return `${q + 1} of ${qn} `;
             }
-            return `প্রশ্ন ${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
+            return `${this.q2bNumber(qn)} এর ${this.q2bNumber(q + 1)} `;
         },
         q2bNumber(numb) {
             let numbString = numb.toString();

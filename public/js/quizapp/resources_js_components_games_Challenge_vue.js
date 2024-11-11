@@ -222,10 +222,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -245,8 +241,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     return {
       qt: {
         ms: 0,
-        defaultTime: 30,
-        time: 30,
+        defaultTime: 300,
+        time: 300,
         timer: null
       },
       counter: 2,
@@ -380,7 +376,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   //         window.removeEventListener("beforeunload", this.preventNav);
   //     });
   // },
-  //
+
   // beforeRouteLeave(to, from, next) {
   //     console.log('beforeRouteLeave')
   //
@@ -395,7 +391,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   methods: {
     gameStart: function gameStart() {
       var _this3 = this;
-      var defaultTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30;
+      var defaultTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 300;
       console.log('gameStart...');
       this.sqo = true;
       var ids = this.users.map(function (u) {
@@ -1173,6 +1169,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'ws', 'correct', 'wrong', 'lang', 'vh'],
@@ -1666,17 +1664,20 @@ var quizHelpers = {
       if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b) && (0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) {
         return 'No options found!';
       }
-      if (l !== 'bd') {
+      if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b) || (0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) {
+        if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(b)) return e;
         if ((0,lodash_lang__WEBPACK_IMPORTED_MODULE_0__.isEmpty)(e)) return b;
+      }
+      if (l !== 'bd') {
         return e;
       }
       return b;
     },
     qne2b: function qne2b(q, qn, l) {
       if (l === 'gb') {
-        return "Question ".concat(q + 1, " of ").concat(qn, " ");
+        return "".concat(q + 1, " of ").concat(qn, " ");
       }
-      return "\u09AA\u09CD\u09B0\u09B6\u09CD\u09A8 ".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
+      return "".concat(this.q2bNumber(qn), " \u098F\u09B0 ").concat(this.q2bNumber(q + 1), " ");
     },
     q2bNumber: function q2bNumber(numb) {
       var numbString = numb.toString();
@@ -11048,7 +11049,7 @@ var render = function () {
       _c("div", { staticClass: "row justify-content-center" }, [
         _c(
           "div",
-          { staticClass: "col-md-8 pxs-0" },
+          { staticClass: "col-md-8 px-2" },
           [
             _c("div", { staticClass: "progress" }, [
               _c(
@@ -11058,11 +11059,7 @@ var render = function () {
                   class: _vm.progressClass,
                   style: _vm.progressWidth,
                 },
-                [
-                  _vm._v(
-                    " " + _vm._s(Math.floor(_vm.progress)) + "\n          "
-                  ),
-                ]
+                [_vm._v(" " + _vm._s(Math.floor(_vm.progress)) + "\n        ")]
               ),
             ]),
             _vm._v(" "),
@@ -11072,28 +11069,73 @@ var render = function () {
                     _c(
                       "div",
                       {
-                        staticClass:
-                          "card-body animate__animated animate__backInRight animate__faster",
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.av,
+                            expression: "av",
+                          },
+                        ],
+                        staticClass: "card-header p-2",
                       },
                       [
                         _c(
-                          "span",
-                          { staticClass: "q_num text-right text-muted" },
+                          "div",
+                          {
+                            staticClass:
+                              "d-flex flex-row align-items-center question-title relative",
+                          },
                           [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(
-                                  _vm.qne2b(
-                                    _vm.qid,
-                                    _vm.questions.length,
-                                    _vm.user.lang
-                                  )
-                                ) +
-                                "\n                        "
+                            _c("h3", { staticClass: "text-danger mr-2" }, [
+                              _vm._v(
+                                _vm._s(_vm.tbe("প্রশ্ন.", "Q.", _vm.user.lang))
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("h5", { staticClass: "mb-0 q_text" }, [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(
+                                    _vm.tbe(
+                                      question.bd_question_text,
+                                      question.question_text,
+                                      _vm.user.lang
+                                    )
+                                  ) +
+                                  "\n            "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "q_num text-muted mt-1" },
+                              [
+                                _vm._v(
+                                  "\n              " +
+                                    _vm._s(
+                                      _vm.qne2b(
+                                        _vm.qid,
+                                        _vm.questions.length,
+                                        _vm.user.lang
+                                      )
+                                    ) +
+                                    "\n            "
+                                ),
+                              ]
                             ),
                           ]
                         ),
-                        _vm._v(" "),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card-body animate__animated animate__backInRight animate__faster p-1",
+                      },
+                      [
                         question.fileType == "image"
                           ? _c("img", {
                               staticClass:
@@ -11186,37 +11228,6 @@ var render = function () {
                               ],
                             },
                             [
-                              _c("div", { staticClass: "card" }, [
-                                _c("div", { staticClass: "card-header" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "d-flex align-items-center question-title",
-                                    },
-                                    [
-                                      _c("h3", { staticClass: "text-danger" }, [
-                                        _vm._v("Q."),
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("h5", { staticClass: "mt-1 ml-2" }, [
-                                        _vm._v(
-                                          "\n                        " +
-                                            _vm._s(
-                                              _vm.tbe(
-                                                question.bd_question_text,
-                                                question.question_text,
-                                                _vm.user.lang
-                                              )
-                                            ) +
-                                            "\n                      "
-                                        ),
-                                      ]),
-                                    ]
-                                  ),
-                                ]),
-                              ]),
-                              _vm._v(" "),
                               _vm.sqo
                                 ? _c(
                                     "div",
@@ -11317,7 +11328,7 @@ var render = function () {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "Submit\n                          "
+                                                                "Submit\n                        "
                                                               ),
                                                             ]
                                                           ),
@@ -11393,7 +11404,7 @@ var render = function () {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "\n                        " +
+                                                                "\n                      " +
                                                                   _vm._s(
                                                                     _vm.tbe(
                                                                       option.bd_option +
@@ -11404,7 +11415,7 @@ var render = function () {
                                                                         .lang
                                                                     )
                                                                   ) +
-                                                                  "\n\n                      "
+                                                                  "\n\n                    "
                                                               ),
                                                             ]
                                                           ),
@@ -11470,7 +11481,7 @@ var render = function () {
           _vm.results.length > 0
             ? _c("div", { staticClass: "card my-4" }, [
                 _c("div", { staticClass: "card-header" }, [
-                  _vm._v("\n            Score Board\n            "),
+                  _vm._v("\n          Score Board\n          "),
                   _vm._v(" "),
                   _vm.user.id == _vm.uid && _vm.qid > 0
                     ? _c(
@@ -11479,7 +11490,7 @@ var render = function () {
                           staticClass: "btn btn-sm btn-danger float-right",
                           on: { click: _vm.gameResetCall },
                         },
-                        [_vm._v("\n                RESET\n            ")]
+                        [_vm._v("\n              RESET\n          ")]
                       )
                     : _vm._e(),
                 ]),
@@ -11508,9 +11519,7 @@ var render = function () {
                                 innerHTML: _vm._s(_vm.getMedel(index)),
                               },
                             }),
-                            _vm._v(
-                              "\n                " + _vm._s(res.name) + " "
-                            ),
+                            _vm._v("\n              " + _vm._s(res.name) + " "),
                             _c(
                               "span",
                               {
@@ -11928,12 +11937,12 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-100 px-1", attrs: { id: "accordion" } }, [
-    _c("div", { staticClass: "card" }, [
+  return _c("div", { staticClass: "px-1", attrs: { id: "accordion" } }, [
+    _c("div", { staticClass: "card border-primary" }, [
       _c(
         "div",
         {
-          staticClass: "card-header py-1",
+          staticClass: "card-header py-2",
           attrs: {
             id: "headingOne",
             "data-toggle": "collapse",
@@ -12205,6 +12214,8 @@ var render = function () {
           )
         : _vm._e(),
     ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "my-5" }),
   ])
 }
 var staticRenderFns = []
@@ -12510,7 +12521,7 @@ var render = function () {
               "div",
               {
                 staticClass: "card-body overflow-auto",
-                staticStyle: { height: "500px" },
+                staticStyle: { height: "80vh" },
               },
               _vm._l(_vm.resultDetailData, function (result, i) {
                 return _c("div", { key: "resD" + i }, [
