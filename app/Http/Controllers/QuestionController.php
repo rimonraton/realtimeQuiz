@@ -84,14 +84,13 @@ class QuestionController extends Controller
     // Questions
     public function list($id = '')
     {
-//        return Question::with('options')->where('id',1)->first();
         $admin = auth()->user()->admin;
         $admin_users = $admin->users()->pluck('id');
         $catName = '';
         if ($id) {
             $catName = Category::find($id)->name;
         }
-        $topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+        $topic = Category::where('sub_topic_id', 0)->whereIn('admin_id',$admin->id)->get();
         $questionType = QuestionType::all();
         return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName', 'questionType']));
     }
