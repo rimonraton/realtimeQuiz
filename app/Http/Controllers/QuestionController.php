@@ -90,7 +90,7 @@ class QuestionController extends Controller
         if ($id) {
             $catName = Category::find($id)->name;
         }
-        $topic = Category::where('sub_topic_id', 0)->whereIn('admin_id',$admin->id)->get();
+        $topic = Category::where('sub_topic_id', 0)->where('admin_id',$admin->id)->get();
         $questionType = QuestionType::all();
         return view('Admin.PartialPages.Questions.questions_list', compact(['topic', 'id', 'catName', 'questionType']));
     }
