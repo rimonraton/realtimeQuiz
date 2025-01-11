@@ -10,6 +10,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helper/practice/resultdetails */ "./resources/js/components/helper/practice/resultdetails.vue");
 /* harmony import */ var _helper_FeedBack_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helper/FeedBack.vue */ "./resources/js/components/helper/FeedBack.vue");
+/* harmony import */ var _helper_BackButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helper/BackButton.vue */ "./resources/js/components/helper/BackButton.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -174,12 +175,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['id', 'user', 'questions', 'gmsg', 'quiz'],
   components: {
+    BackButton: _helper_BackButton_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     resultdetails: _helper_practice_resultdetails__WEBPACK_IMPORTED_MODULE_0__["default"],
     feedBack: _helper_FeedBack_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
@@ -494,6 +500,36 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   computed: {
     currentQuestionType: function currentQuestionType() {
       return this.questions[this.qid].fileType;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['backLink'],
+  computed: {
+    url: function url() {
+      return "".concat(this.backLink);
     }
   }
 });
@@ -926,6 +962,41 @@ component.options.__file = "resources/js/components/games/Practice.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/helper/BackButton.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/helper/BackButton.vue ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BackButton.vue?vue&type=template&id=4635d742& */ "./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742&");
+/* harmony import */ var _BackButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BackButton.vue?vue&type=script&lang=js& */ "./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BackButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/helper/BackButton.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/helper/FeedBack.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/helper/FeedBack.vue ***!
@@ -1012,6 +1083,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BackButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BackButton.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BackButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/helper/FeedBack.vue?vue&type=script&lang=js&":
 /*!******************************************************************************!*\
   !*** ./resources/js/components/helper/FeedBack.vue?vue&type=script&lang=js& ***!
@@ -1088,6 +1171,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742& ***!
+  \**************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BackButton_vue_vue_type_template_id_4635d742___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BackButton.vue?vue&type=template&id=4635d742& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/helper/FeedBack.vue?vue&type=template&id=9fa7aaea&scoped=true&":
 /*!************************************************************************************************!*\
   !*** ./resources/js/components/helper/FeedBack.vue?vue&type=template&id=9fa7aaea&scoped=true& ***!
@@ -1135,490 +1234,516 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container mt-3 mt-md-0" },
-    [
-      _vm.winner_screen
-        ? _c("div", { staticClass: "winner" }, [
-            _c(
-              "div",
-              {
-                staticClass: "d-flex flex-column justify-content-center w-100",
-              },
-              [
-                _c("div", { staticClass: "text-center" }, [
-                  _vm.place == 1
-                    ? _c("img", {
-                        staticStyle: { width: "100px", "margin-right": "15px" },
-                        attrs: { src: "/img/quiz/position/1st.gif", alt: "" },
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.place == 2
-                    ? _c("img", {
-                        staticStyle: { width: "100px", "margin-right": "15px" },
-                        attrs: { src: "/img/quiz/position/2nd.gif", alt: "" },
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.place == 3
-                    ? _c("img", {
-                        staticStyle: { width: "100px", margin: "15px" },
-                        attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "h3" }, [
-                    _c("strong", [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(
-                            _vm.tbe(
-                              _vm.pm.bd_perform_message,
-                              _vm.pm.perform_message,
-                              _vm.user.lang
-                            )
-                          ) +
-                          "\n            "
-                      ),
-                    ]),
+  return _c("div", { staticClass: "container mt-3 mt-md-0" }, [
+    _vm.winner_screen
+      ? _c("div", { staticClass: "winner" }, [
+          _c(
+            "div",
+            { staticClass: "d-flex flex-column justify-content-center w-100" },
+            [
+              _c("div", { staticClass: "text-center" }, [
+                _vm.place == 1
+                  ? _c("img", {
+                      staticStyle: { width: "100px", "margin-right": "15px" },
+                      attrs: { src: "/img/quiz/position/1st.gif", alt: "" },
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.place == 2
+                  ? _c("img", {
+                      staticStyle: { width: "100px", "margin-right": "15px" },
+                      attrs: { src: "/img/quiz/position/2nd.gif", alt: "" },
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.place == 3
+                  ? _c("img", {
+                      staticStyle: { width: "100px", margin: "15px" },
+                      attrs: { src: "/img/quiz/position/3rd.gif", alt: "" },
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("p", { staticClass: "h3" }, [
+                  _c("strong", [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(
+                          _vm.tbe(
+                            _vm.pm.bd_perform_message,
+                            _vm.pm.perform_message,
+                            _vm.user.lang
+                          )
+                        ) +
+                        "\n            "
+                    ),
                   ]),
                 ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "d-flex justify-content-center" },
+                [
+                  _c("resultdetails", {
+                    attrs: {
+                      results: _vm.results,
+                      ws: _vm.winner_screen,
+                      correct: _vm.correct,
+                      wrong: _vm.wrong,
+                      lang: _vm.user.lang,
+                      vh: _vm.place > 0 ? "60vh" : "70vh",
+                    },
+                  }),
+                ],
+                1
+              ),
+            ]
+          ),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-7 p-md-3" },
+        _vm._l(_vm.questions, function (question) {
+          return question.id === _vm.current
+            ? _c("div", { staticClass: "card" }, [
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.av,
+                        expression: "av",
+                      },
+                    ],
+                    staticClass: "card-header p-2",
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex flex-row align-items-center question-title relative",
+                      },
+                      [
+                        _c("h3", { staticClass: "text-danger mr-2" }, [
+                          _vm._v(
+                            _vm._s(_vm.tbe("প্রশ্ন.", "Q.", _vm.user.lang))
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("h5", { staticClass: "mb-0 q_text" }, [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(
+                                _vm.tbe(
+                                  question.bd_question_text,
+                                  question.question_text,
+                                  _vm.user.lang
+                                )
+                              ) +
+                              "\n                "
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "q_num text-muted mt-1" }, [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(
+                                _vm.qne2b(
+                                  _vm.qid,
+                                  _vm.questions.length,
+                                  _vm.user.lang
+                                )
+                              ) +
+                              "\n                "
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "d-flex justify-content-center" },
+                  {
+                    key: _vm.qid,
+                    staticClass:
+                      "card-body p-1 animate__animated animate__backInDown animate__faster",
+                  },
                   [
-                    _c("resultdetails", {
-                      attrs: {
-                        results: _vm.results,
-                        ws: _vm.winner_screen,
-                        correct: _vm.correct,
-                        wrong: _vm.wrong,
-                        lang: _vm.user.lang,
-                        vh: _vm.place > 0 ? "60vh" : "70vh",
-                      },
-                    }),
-                  ],
-                  1
-                ),
-              ]
-            ),
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c(
-          "div",
-          { staticClass: "col-md-7 p-md-3" },
-          _vm._l(_vm.questions, function (question) {
-            return question.id === _vm.current
-              ? _c("div", { staticClass: "card" }, [
-                  _c(
-                    "div",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.av,
-                          expression: "av",
-                        },
-                      ],
-                      staticClass: "card-header p-2",
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "d-flex flex-row align-items-center question-title relative",
-                        },
-                        [
-                          _c("h3", { staticClass: "text-danger mr-2" }, [
-                            _vm._v(
-                              _vm._s(_vm.tbe("প্রশ্ন.", "Q.", _vm.user.lang))
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("h5", { staticClass: "mb-0 q_text" }, [
-                            _vm._v(
-                              "\n                  " +
-                                _vm._s(
-                                  _vm.tbe(
-                                    question.bd_question_text,
-                                    question.question_text,
-                                    _vm.user.lang
-                                  )
-                                ) +
-                                "\n                "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "q_num text-muted mt-1" }, [
-                            _vm._v(
-                              "\n                  " +
-                                _vm._s(
-                                  _vm.qne2b(
-                                    _vm.qid,
-                                    _vm.questions.length,
-                                    _vm.user.lang
-                                  )
-                                ) +
-                                "\n                "
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      key: _vm.qid,
-                      staticClass:
-                        "card-body p-1 animate__animated animate__backInDown animate__faster",
-                    },
-                    [
-                      question.fileType == "image"
-                        ? _c("img", {
-                            staticClass:
-                              "image w-50 mt-1 rounded img-thumbnail",
-                            staticStyle: { "max-height": "50vh" },
-                            attrs: {
-                              src: "/" + question.question_file_link,
-                              alt: "",
-                            },
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.endAVWait
-                        ? _c("div", [
-                            question.fileType == "video"
-                              ? _c("div", { staticClass: "video" }, [
-                                  question.fileType == "video"
-                                    ? _c("video", {
-                                        staticClass:
-                                          "image w-100 mt-1 rounded img-thumbnail",
-                                        attrs: {
-                                          id: "myVideo",
-                                          src:
-                                            "/" + question.question_file_link,
-                                          autoplay: "",
-                                          controls: "",
+                    question.fileType == "image"
+                      ? _c("img", {
+                          staticClass: "image w-50 mt-1 rounded img-thumbnail",
+                          staticStyle: { "max-height": "50vh" },
+                          attrs: {
+                            src: "/" + question.question_file_link,
+                            alt: "",
+                          },
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.endAVWait
+                      ? _c("div", [
+                          question.fileType == "video"
+                            ? _c("div", { staticClass: "video" }, [
+                                question.fileType == "video"
+                                  ? _c("video", {
+                                      staticClass:
+                                        "image w-100 mt-1 rounded img-thumbnail",
+                                      attrs: {
+                                        id: "myVideo",
+                                        src: "/" + question.question_file_link,
+                                        autoplay: "",
+                                        controls: "",
+                                      },
+                                      on: {
+                                        error: function ($event) {
+                                          return _vm.audioVideoError()
                                         },
-                                        on: {
-                                          error: function ($event) {
-                                            return _vm.audioVideoError()
-                                          },
-                                          ended: function ($event) {
-                                            return _vm.onEnd()
-                                          },
-                                          play: function ($event) {
-                                            return _vm.onStart()
-                                          },
+                                        ended: function ($event) {
+                                          return _vm.onEnd()
                                         },
-                                      })
-                                    : _vm._e(),
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            question.fileType == "audio"
-                              ? _c("div", { staticClass: "audio" }, [
-                                  _c("audio", {
-                                    attrs: {
-                                      src: "/" + question.question_file_link,
-                                      controls: "",
-                                      autoplay: "",
-                                    },
-                                    on: {
-                                      error: function ($event) {
-                                        return _vm.audioVideoError()
+                                        play: function ($event) {
+                                          return _vm.onStart()
+                                        },
                                       },
-                                      ended: function ($event) {
-                                        return _vm.onEnd()
-                                      },
-                                      play: function ($event) {
-                                        return _vm.onStart()
-                                      },
-                                    },
-                                  }),
-                                ])
-                              : _vm._e(),
-                          ])
-                        : _c("div", [
-                            _vm.currentQuestionType == "audio"
-                              ? _c("div", [
-                                  _c("h1", [_vm._v("Audio Question... ")]),
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.currentQuestionType == "video"
-                              ? _c("div", [
-                                  _c("h1", [_vm._v("Video Question... ")]),
-                                ])
-                              : _vm._e(),
-                          ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.av,
-                              expression: "av",
-                            },
-                          ],
-                        },
-                        [
-                          _vm.sqo
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
-                                  class: {
-                                    "row justify-content-center justify-item-center":
-                                      _vm.imageOption(question.options),
+                                    })
+                                  : _vm._e(),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          question.fileType == "audio"
+                            ? _c("div", { staticClass: "audio" }, [
+                                _c("audio", {
+                                  attrs: {
+                                    src: "/" + question.question_file_link,
+                                    controls: "",
+                                    autoplay: "",
                                   },
-                                },
-                                _vm._l(question.options, function (option, i) {
-                                  return _c(
-                                    "div",
-                                    {
-                                      staticClass: "col-md-6 px-1",
-                                      class: [
-                                        option.flag == "img"
-                                          ? "col-6"
-                                          : " col-12",
-                                      ],
+                                  on: {
+                                    error: function ($event) {
+                                      return _vm.audioVideoError()
                                     },
-                                    [
-                                      option.flag != "img"
-                                        ? _c(
-                                            "div",
-                                            {
-                                              staticClass: "list-group",
-                                              class: _vm.getOptionClass(
-                                                i,
-                                                _vm.quiz.quiz_time
-                                              ),
-                                            },
-                                            [
-                                              _c("span", {
-                                                staticClass:
-                                                  "list-group-item list-group-item-action cursor my-1",
-                                                domProps: {
-                                                  innerHTML: _vm._s(
+                                    ended: function ($event) {
+                                      return _vm.onEnd()
+                                    },
+                                    play: function ($event) {
+                                      return _vm.onStart()
+                                    },
+                                  },
+                                }),
+                              ])
+                            : _vm._e(),
+                        ])
+                      : _c("div", [
+                          _vm.currentQuestionType == "audio"
+                            ? _c("div", [
+                                _c("h1", [_vm._v("Audio Question... ")]),
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.currentQuestionType == "video"
+                            ? _c("div", [
+                                _c("h1", [_vm._v("Video Question... ")]),
+                              ])
+                            : _vm._e(),
+                        ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.av,
+                            expression: "av",
+                          },
+                        ],
+                      },
+                      [
+                        _vm.sqo
+                          ? _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "animate__animated animate__zoomIn animate__faster d-flex flex-wrap",
+                                class: {
+                                  "row justify-content-center justify-item-center":
+                                    _vm.imageOption(question.options),
+                                },
+                              },
+                              _vm._l(question.options, function (option, i) {
+                                return _c(
+                                  "div",
+                                  {
+                                    staticClass: "col-md-6 px-1",
+                                    class: [
+                                      option.flag == "img"
+                                        ? "col-6"
+                                        : " col-12",
+                                    ],
+                                  },
+                                  [
+                                    option.flag != "img"
+                                      ? _c(
+                                          "div",
+                                          {
+                                            staticClass: "list-group",
+                                            class: _vm.getOptionClass(
+                                              i,
+                                              _vm.quiz.quiz_time
+                                            ),
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass:
+                                                "list-group-item list-group-item-action cursor my-1",
+                                              domProps: {
+                                                innerHTML: _vm._s(
+                                                  _vm.tbe(
+                                                    option.bd_option,
+                                                    option.option,
+                                                    _vm.user.lang
+                                                  )
+                                                ),
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  _vm.checkAnswer(
+                                                    question.id,
                                                     _vm.tbe(
                                                       option.bd_option,
                                                       option.option,
                                                       _vm.user.lang
-                                                    )
-                                                  ),
-                                                },
-                                                on: {
-                                                  click: function ($event) {
-                                                    _vm.checkAnswer(
-                                                      question.id,
-                                                      _vm.tbe(
-                                                        option.bd_option,
-                                                        option.option,
-                                                        _vm.user.lang
-                                                      ),
-                                                      option.correct
-                                                    )
-                                                  },
-                                                },
-                                              }),
-                                            ]
-                                          )
-                                        : _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "cursor imageDiv p-2",
-                                              class: _vm.getOptionClass(
-                                                i,
-                                                _vm.quiz.quiz_time
-                                              ),
-                                              on: {
-                                                click: function ($event) {
-                                                  return _vm.checkAnswer(
-                                                    question.id,
-                                                    option.img_link,
+                                                    ),
                                                     option.correct
                                                   )
                                                 },
                                               },
+                                            }),
+                                          ]
+                                        )
+                                      : _c(
+                                          "div",
+                                          {
+                                            staticClass: "cursor imageDiv p-2",
+                                            class: _vm.getOptionClass(
+                                              i,
+                                              _vm.quiz.quiz_time
+                                            ),
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.checkAnswer(
+                                                  question.id,
+                                                  option.img_link,
+                                                  option.correct
+                                                )
+                                              },
                                             },
-                                            [
-                                              _c("img", {
-                                                staticClass:
-                                                  "imageOption mt-1 rounded img-thumbnail",
-                                                attrs: {
-                                                  src: "/" + option.img_link,
-                                                  alt: "",
-                                                },
-                                              }),
-                                            ]
-                                          ),
-                                    ]
-                                  )
-                                }),
-                                0
-                              )
-                            : _c("div", { staticClass: "text-center" }, [
-                                _c("img", {
-                                  staticStyle: { width: "200px" },
-                                  attrs: {
-                                    src: "/img/loading.gif",
-                                    alt: "Loading...",
-                                  },
-                                }),
-                              ]),
-                        ]
+                                          },
+                                          [
+                                            _c("img", {
+                                              staticClass:
+                                                "imageOption mt-1 rounded img-thumbnail",
+                                              attrs: {
+                                                src: "/" + option.img_link,
+                                                alt: "",
+                                              },
+                                            }),
+                                          ]
+                                        ),
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          : _c("div", { staticClass: "text-center" }, [
+                              _c("img", {
+                                staticStyle: { width: "200px" },
+                                attrs: {
+                                  src: "/img/loading.gif",
+                                  alt: "Loading...",
+                                },
+                              }),
+                            ]),
+                      ]
+                    ),
+                  ]
+                ),
+              ])
+            : _vm._e()
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-5 py-3 p-md-3" }, [
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "div",
+            { staticClass: "card-header text-center card-title py-1" },
+            [
+              _c("strong", [_vm._v(_vm._s(_vm.__("games.information")))]),
+              _vm._v(" "),
+              _vm.qid > 0
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "btn btn-sm btn-warning float-right",
+                      on: { click: _vm.reloadPage },
+                    },
+                    [
+                      _vm._v(
+                        "\n                      " +
+                          _vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)) +
+                          "\n                    "
                       ),
                     ]
+                  )
+                : _vm._e(),
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("ul", { staticClass: "list-group text-dark" }, [
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between align-items-center",
+                },
+                [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.__("games.time_taken")) +
+                      "\n                            "
                   ),
-                ])
-              : _vm._e()
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-5 py-3 p-md-3" }, [
-          _c("div", { staticClass: "card" }, [
-            _c(
-              "div",
-              { staticClass: "card-header text-center card-title py-1" },
-              [
-                _c("strong", [_vm._v(_vm._s(_vm.__("games.information")))]),
-                _vm._v(" "),
-                _vm.qid > 0
-                  ? _c(
-                      "div",
-                      {
-                        staticClass: "btn btn-sm btn-warning float-right",
-                        on: { click: _vm.reloadPage },
-                      },
-                      [
-                        _vm._v(
-                          "\n                      " +
-                            _vm._s(_vm.tbe("রিসেট", "Reset", _vm.user.lang)) +
-                            "\n                    "
-                        ),
-                      ]
-                    )
-                  : _vm._e(),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("ul", { staticClass: "list-group text-dark" }, [
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center",
-                  },
-                  [
+                  _c("span", { staticClass: "badge badge-light badge-pill" }, [
                     _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.__("games.time_taken")) +
-                        "\n                            "
+                      "\n                        " +
+                        _vm._s(_vm.minutes) +
+                        ": " +
+                        _vm._s(
+                          _vm.seconds > 9 ? _vm.seconds : "0" + _vm.seconds
+                        ) +
+                        "\n                    "
                     ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-light badge-pill" },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.minutes) +
-                            ": " +
-                            _vm._s(
-                              _vm.seconds > 9 ? _vm.seconds : "0" + _vm.seconds
-                            ) +
-                            "\n                    "
-                        ),
-                      ]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center",
-                  },
-                  [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.__("games.correct")) +
-                        "\n                            "
-                    ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-success badge-pill" },
-                      [_vm._v(_vm._s(_vm.correct))]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center",
-                  },
-                  [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(_vm.__("games.wrong")) +
-                        "\n                            "
-                    ),
-                    _c(
-                      "span",
-                      { staticClass: "badge badge-danger badge-pill" },
-                      [_vm._v(_vm._s(_vm.wrong))]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.qid > 0
-                  ? _c(
-                      "li",
-                      {
-                        staticClass:
-                          "list-group-item d-flex justify-content-between align-items-center p-0 py-2",
-                      },
-                      [
-                        _c("resultdetails", {
-                          attrs: {
-                            results: _vm.results,
-                            ws: _vm.winner_screen,
-                            lang: _vm.user.lang,
-                          },
-                        }),
-                      ],
-                      1
-                    )
-                  : _vm._e(),
-              ]),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between align-items-center",
+                },
+                [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.__("games.correct")) +
+                      "\n                            "
+                  ),
+                  _c(
+                    "span",
+                    { staticClass: "badge badge-success badge-pill" },
+                    [_vm._v(_vm._s(_vm.correct))]
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between align-items-center",
+                },
+                [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.__("games.wrong")) +
+                      "\n                            "
+                  ),
+                  _c("span", { staticClass: "badge badge-danger badge-pill" }, [
+                    _vm._v(_vm._s(_vm.wrong)),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _vm.qid > 0
+                ? _c(
+                    "li",
+                    {
+                      staticClass:
+                        "list-group-item d-flex justify-content-between align-items-center p-0 py-2",
+                    },
+                    [
+                      _c("resultdetails", {
+                        attrs: {
+                          results: _vm.results,
+                          ws: _vm.winner_screen,
+                          lang: _vm.user.lang,
+                        },
+                      }),
+                    ],
+                    1
+                  )
+                : _vm._e(),
             ]),
           ]),
         ]),
       ]),
-      _vm._v(" "),
-      _c("feed-back", { attrs: { user: _vm.user } }),
-    ],
-    1
-  )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "d-flex justify-content-between" },
+      [
+        _c("back-button", { attrs: { backLink: "/Practice" } }),
+        _vm._v(" "),
+        _c("feed-back", { attrs: { user: _vm.user } }),
+      ],
+      1
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/helper/BackButton.vue?vue&type=template&id=4635d742& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* binding */ render; },
+/* harmony export */   "staticRenderFns": function() { return /* binding */ staticRenderFns; }
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "pt-3" }, [
+    _c(
+      "a",
+      {
+        staticClass: "btn btn-lg bg-danger text-white",
+        attrs: { href: _vm.url },
+      },
+      [_vm._v("\n    Exit\n  ")]
+    ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

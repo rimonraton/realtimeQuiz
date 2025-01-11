@@ -7,23 +7,35 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="{{url('/')}}">
+            <a class="navbar-brand" href="{{url('/dashboard')}}">
                 <!-- Logo icon -->
                 <b class="logo-icon">
+                  @php
+                    $logo = asset('mobiletemplate/images/logot.png');
+                    $logoWidth = 100;
+                    if(auth()->user()->admin->logo > 0) {
+                      $logoWidth = auth()->user()->admin->logo;
+                    }
+                    $filename = asset(auth()->user()->admin->photo);
+                    if (file_exists($filename)) {
+                        $logo = $filename;
+                    }
+
+                  @endphp
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
-                    <img src="{{asset(auth()->user()->admin->photo)}}" width="50px" alt="homepage" class="dark-logo" />
+                    <img src="{{ $logo }}" width="50px" alt="homepage" class="dark-logo" />
                     <!-- Light Logo icon -->
-                    <img src="{{asset(auth()->user()->admin->photo)}}" width="{{auth()->user()->admin->logo? auth()->user()->admin->logo: 50}}px" alt="homepage" class="light-logo" />
+                    <img src="{{ $logo }}" width="{{ $logoWidth }}px" alt="homepage" class="light-logo" />
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
                 <span class="logo-text">
                     <!-- dark Logo text -->
-                    <span class="dark-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>
+{{--                    <span class="dark-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>--}}
                     <!-- <img src="{{asset('Admin/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" /> -->
                     <!-- Light Logo text -->
-                    <span class="light-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>
+{{--                    <span class="light-logo" onclick="window.location='{{url('/')}}'">{{__('msg.slogan')}}</span>--}}
                     <!-- <img src="{{asset('Admin/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /> -->
                 </span>
             </a>
@@ -92,18 +104,10 @@
                 </li> -->
                 <li class="nav-item">
                     <a class="nav-link">
-                        @if($lang == 'gb')
-                            @if(auth()->user()->admin->institute_name != null)
-                            {{auth()->user()->admin->institute_name}}
-                            @else
-                                {{auth()->user()->admin->bn_institute_name}}
-                            @endif
+                        @if($lang != 'bd')
+                          {{auth()->user()->admin->institute_name}}
                         @else
-                            @if(auth()->user()->admin->bn_institute_name != null)
-                                {{auth()->user()->admin->bn_institute_name}}
-                            @else
-                                {{auth()->user()->admin->institute_name}}
-                            @endif
+                          {{auth()->user()->admin->bn_institute_name}}
                         @endif
                     </a>
                 </li>

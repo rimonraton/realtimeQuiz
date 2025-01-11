@@ -146,7 +146,10 @@
                 </div>
             </div>
         </div>
-      <feed-back :user="user" />
+     <div class="d-flex justify-content-between">
+       <back-button backLink="/Practice" />
+       <feed-back :user="user" />
+     </div>
     </div>
 </template>
 
@@ -154,10 +157,11 @@
 
 import resultdetails from '../helper/practice/resultdetails'
 import feedBack from "../helper/FeedBack.vue";
+import BackButton from "../helper/BackButton.vue";
 
 export default {
     props: ['id', 'user', 'questions', 'gmsg', 'quiz'],
-    components: {resultdetails, feedBack},
+    components: {BackButton, resultdetails, feedBack},
 
     data() {
         return {

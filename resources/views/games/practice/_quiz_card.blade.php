@@ -22,7 +22,9 @@
         </div>
         <a href="{{ url('Practice/'. $qz->id . '/' . Auth::id()) }}" class="" >
             <div class="card-body py-0 ">
-                <h5 class="my-3 text-primary">{{ $qz->quiz_name }}</h5>
+                <h5 class="my-3 text-primary">
+                  {{ app()->getLocale() == 'bd'? $qz->bd_quiz_name : $qz->quiz_name }}
+                </h5>
                 <div id="shareBtn{{ $qz->id }}" class="show_share shareBtnDiv"></div>
             </div>
         </a>

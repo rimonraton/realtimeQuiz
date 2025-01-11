@@ -100,8 +100,7 @@ class PracticeController extends Controller
   public function quizPracticeCreate()
   {
     $admin = auth()->user()->admin;
-    $admin_users = $admin->users()->pluck('id');
-    $question_topic = Category::where('sub_topic_id', 0)->whereIn('user_id',$admin_users)->get();
+    $question_topic = Category::where('sub_topic_id', 0)->where('admin_id',$admin->id)->get();
     // $question_category = QuizCategory::all();
     $gameType = Game::all();
     return view('Admin.Games.practice.cteate', compact(['question_topic', 'gameType']));
@@ -141,9 +140,8 @@ class PracticeController extends Controller
 
     $admin = auth()->user()->admin;
     if ($request->NOQ){
-      $admin_users = $admin->users()->pluck('id');
       $q_random = Question::where('category_id',$request->cid)
-        ->whereIn('user_id',$admin_users)
+        ->where('admin_id',$admin->id)
         ->where('status', 1)
         ->inRandomOrder()
         ->limit($request->NOQ)

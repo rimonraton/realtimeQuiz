@@ -70,7 +70,7 @@ class ChallengeController extends Controller
             ->get();
 
         $challenges_own = Challenge::where('user_id',Auth::user()->id)
-            ->where('is_published', 0)
+            ->where('is_published', 1)
             ->latest()->get();
 
         $challenges = $challenges_published->merge($challenges_own)->paginate(12);

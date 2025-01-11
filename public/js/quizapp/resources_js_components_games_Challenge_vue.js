@@ -430,7 +430,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
       if (question !== 'onEnd') {
         //onEnd is made up text to check audioVideo end
-        if (this.currentQuestionType == 'audio' || this.currentQuestionType == 'video') {
+        if (this.currentQuestionType === 'audio' || this.currentQuestionType === 'video') {
           timeout += 3000;
           this.av = false;
           setTimeout(function () {
@@ -448,7 +448,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     QuestionTimer: function QuestionTimer() {
       var _this5 = this;
       console.log('QuestionTimer...');
-      if (this.qid == this.questions.length || this.av == false || this.gameEnded === true) {
+      if (this.qid == this.questions.length || this.av === false || this.gameEnded === true) {
         return;
       }
       var pdec = 100 / (10 * this.qt.time);

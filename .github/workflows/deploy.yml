@@ -30,6 +30,6 @@ jobs:
           cd /var/www/sites/gyankosh.org/
           git checkout -f
           git pull
-#          npm install
-#          npm run prod
+          npm install
+          npm run prod
 
