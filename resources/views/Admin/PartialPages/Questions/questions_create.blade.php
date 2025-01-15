@@ -253,7 +253,6 @@
                 <hr>
                 <form class="form-horizontal r-separator" id="smtform" action="{{url('question/save')}}" method="POST" autocomplete="off" enctype="multipart/form-data">
                     @csrf
-
                     <input type="hidden" name="cid" id="selectedCid">
                     <div class="card-body">
                         <input type="hidden" id="fileType" value="" name="fileType" class="custom-control-input">
@@ -292,7 +291,9 @@
                             </div>
                         </div>
                         <div class="form-group row pb-3">
-                            <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.questions_type_level')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
+                            <label for="category" class="col-sm-3 text-right control-label col-form-label">
+                              {{__('form.questions_type_level')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :
+                            </label>
                             <div class="col-sm-3">
                                 <select class="form-control custom-select" name="questionType" id="category" required>
                                     <option value="">{{__('form.question_type')}}</option>
@@ -320,14 +321,23 @@
                             <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_en')}} :</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control txtareaValidation" id="question" placeholder="{{__('form.question_placeholder')}}" name="question"></textarea>
+                              <div class="" id="questions_exist"
+                                   style="background: lightcyan;z-index: 20; padding: 10px;">
+
+                              </div>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
                             <label for="question" class="col-sm-3 text-right control-label col-form-label">{{__('form.question_bn')}} :</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="bdquestion" placeholder="{{__('form.question_placeholder')}}" name="questionbd"></textarea>
+
+                            <div class="text-right" id="bdquestions_exist"
+                                 style="background: #e0ffff;z-index: 20; padding: 10px;">
                             </div>
+                          </div>
                         </div>
+
                         <div class="form-group row pb-3">
                             <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.topic')}}<span class="text-danger" style="font-size: 1.5rem;">*</span> :</label>
                             <div class="col-sm-7">
@@ -945,6 +955,57 @@
             getAllQuestions(id)
             $('#qModal').modal('show')
         })
+      $('#question').on('change keyup paste', function() {
+        let question = this.value;
+        let words = question.split(' ');
+        if(words.length > 2) {
+          getQuestion('gb', question, 'questions_exist');
+        }
+      });
+      $('#bdquestion').on('change keyup paste', function() {
+        let question = this.value;
+        let words = question.split(' ');
+        if(words.length > 2) {
+          getQuestion('bd', question, 'bdquestions_exist');
+        }
+      });
+        function getQuestion(lng, question, place){
+          $.ajax({
+            url: "{{url('question/review')}}/" + lng+'/'+ question,
+            type: "GET",
+            success: function(data) {
+              $("#"+place).html(data)
+            }
+          })
+        }
+
+        $('body').on('click', '.pagination a', function(e) {
+          e.preventDefault();
+          const prevUrl = '/question/create';
+          let url = $(this).attr('href');
+          console.log(url, 'urls')
+          getArticles(url);
+          setTimeout(() =>{
+            window.history.pushState("", "", prevUrl);
+          }, 50)
+        });
+
+        function getArticles(url) {
+          let place = 'questions_exist';
+          let lng = url.split('/')[5];
+          console.log(lng, 'lango')
+          if(lng === 'bd'){
+            place ='bdquestions_exist';
+          }
+          $.ajax({
+            url: url,
+            type: "GET",
+            success: function(data) {
+              $("#"+place).html(data)
+            }
+          })
+        }
+
         $(document).on('click','.refreash_btn', function () {
             const id = $(this).attr('data-cid');
             getAllQuestions(id)

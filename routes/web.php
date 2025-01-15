@@ -192,10 +192,12 @@ Route::middleware(['hasAccess'])->group(function () {
 
     //review question
     Route::get('question/get-review-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getreviewlist'])->name('question.getReviewList');
-    Route::get('reviewQuestion/edit/{id}', [QuestionController::class,'editQuestion'])->name('reviewQuestion.edit');
-    Route::post('verify-question-update', [QuestionController::class, 'verifyQuestionUpdate'])->name('verifyQuestionUpdate');
+  Route::get('reviewQuestion/edit/{id}', [QuestionController::class,'editQuestion'])->name('reviewQuestion.edit');
+  Route::post('verify-question-update', [QuestionController::class, 'verifyQuestionUpdate'])->name('verifyQuestionUpdate');
 
-    //Draft question
+  Route::get('question/review/{lang}/{keyword}', [QuestionController::class, 'questionReview'])->name('question.questionReview');
+
+  //Draft question
     Route::post('verify-draft-question-update', [QuestionController::class, 'verifyDraftQuestionUpdate'])->name('verifyDraftQuestionUpdate');
     Route::get('question/get-draft-list/{id}/{keyword?}/{qType?}', [QuestionController::class, 'getDraftList'])->name('question.getDraftList');
     Route::get('draftQuestion/edit/{id}', [QuestionController::class,'editQuestion'])->name('draftQuestion.edit');

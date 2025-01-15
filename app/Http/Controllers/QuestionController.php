@@ -308,43 +308,59 @@ class QuestionController extends Controller
         return '';
 
     }
-    public function getreviewlist($id, $keyword = '', $qType = '')
-    {
-        $admin = auth()->user()->admin;
-        $admin_users = $admin->users()->pluck('id');
-        $questions = null;
-        $et = 1;
-        if ($qType){
-            $et = $qType;
-        }
-        if($keyword){
-            $questions = Question::where('status', 0)
-                ->whereIn('user_id', $admin_users)
-                ->where('question_text', 'like', '%' . $keyword . '%')
-                ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
-                ->where('category_id', $id)
-                ->with('difficulty')
-                ->where('isDraft', 0)
-                ->where('status', 0)
-                ->where('quizcategory_id', $et)
-                ->orderBy('id','desc')
-                ->paginate(10);
-        } else {
-            $questions = Question::where('category_id', $id)
-                ->where('isDraft', 0)
-                ->where('status', 0)
-                ->where('quizcategory_id', $et)
-                ->whereIn('user_id',$admin_users)
-                ->orderBy('id','desc')
-                ->paginate(10);
-        }
+  public function getreviewlist($id, $keyword = '', $qType = '')
+  {
+    $admin = auth()->user()->admin;
+    $admin_users = $admin->users()->pluck('id');
+    $questions = null;
+    $et = 1;
+    if ($qType){
+      $et = $qType;
+    }
+    if($keyword){
+      $questions = Question::where('status', 0)
+        ->whereIn('user_id', $admin_users)
+        ->where('question_text', 'like', '%' . $keyword . '%')
+        ->orWhere('bd_question_text', 'like', '%' . $keyword . '%')
+        ->where('category_id', $id)
+        ->with('difficulty')
+        ->where('isDraft', 0)
+        ->where('status', 0)
+        ->where('quizcategory_id', $et)
+        ->orderBy('id','desc')
+        ->paginate(10);
+    } else {
+      $questions = Question::where('category_id', $id)
+        ->where('isDraft', 0)
+        ->where('status', 0)
+        ->where('quizcategory_id', $et)
+        ->whereIn('user_id',$admin_users)
+        ->orderBy('id','desc')
+        ->paginate(10);
+    }
 //        $questionType = QuestionType::all();
 //       return count($questions);
-        if(count($questions)){
-            return view('Admin.PartialPages.Questions.review_questions_data', compact('questions', 'id', 'et'));
-        }
-        return '';
+    if(count($questions)){
+      return view('Admin.PartialPages.Questions.review_questions_data', compact('questions', 'id', 'et'));
     }
+    return '';
+  }
+
+  public function questionReview($lng, $keyword = '')
+  {
+    $col = 'question_text';
+    if ($lng == 'bd'){
+      $col = 'bd_question_text';
+    }
+      $questions = Question::where('admin_id', auth()->user()->admin->id)
+        ->where($col, 'like', '%' . $keyword . '%')
+        ->orderBy('id','desc')
+        ->paginate(5);
+    if(count($questions)){
+      return view('Admin.PartialPages.Questions.review_questions', compact('questions', 'lng'));
+    }
+    return '';
+  }
 
 
     public function qListByTopic($tid)
