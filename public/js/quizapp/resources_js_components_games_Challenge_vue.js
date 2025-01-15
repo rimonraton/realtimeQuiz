@@ -221,7 +221,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
-//
 
 
 
@@ -1212,6 +1211,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -11368,57 +11371,36 @@ var render = function () {
                                                             ),
                                                         },
                                                         [
-                                                          _c(
-                                                            "span",
-                                                            {
-                                                              staticClass:
-                                                                "list-group-item list-group-item-action cursor my-1",
-                                                              domProps: {
-                                                                innerHTML:
-                                                                  _vm._s(
+                                                          _c("span", {
+                                                            staticClass:
+                                                              "list-group-item list-group-item-action cursor my-1",
+                                                            domProps: {
+                                                              innerHTML: _vm._s(
+                                                                _vm.tbe(
+                                                                  option.bd_option,
+                                                                  option.option,
+                                                                  _vm.user.lang
+                                                                )
+                                                              ),
+                                                            },
+                                                            on: {
+                                                              "~click":
+                                                                function (
+                                                                  $event
+                                                                ) {
+                                                                  _vm.checkAnswer(
+                                                                    question.id,
                                                                     _vm.tbe(
                                                                       option.bd_option,
                                                                       option.option,
                                                                       _vm.user
                                                                         .lang
-                                                                    )
-                                                                  ),
-                                                              },
-                                                              on: {
-                                                                "~click":
-                                                                  function (
-                                                                    $event
-                                                                  ) {
-                                                                    _vm.checkAnswer(
-                                                                      question.id,
-                                                                      _vm.tbe(
-                                                                        option.bd_option,
-                                                                        option.option,
-                                                                        _vm.user
-                                                                          .lang
-                                                                      ),
-                                                                      option.correct
-                                                                    )
-                                                                  },
-                                                              },
+                                                                    ),
+                                                                    option.correct
+                                                                  )
+                                                                },
                                                             },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                      " +
-                                                                  _vm._s(
-                                                                    _vm.tbe(
-                                                                      option.bd_option +
-                                                                        "Raton",
-                                                                      option.option +
-                                                                        "Rimon",
-                                                                      _vm.user
-                                                                        .lang
-                                                                    )
-                                                                  ) +
-                                                                  "\n\n                    "
-                                                              ),
-                                                            ]
-                                                          ),
+                                                          }),
                                                         ]
                                                       )
                                                     : _c(
@@ -12514,14 +12496,28 @@ var render = function () {
           { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
           [
             _c("div", { staticClass: "card-header" }, [
-              _vm._v("Result Detail"),
+              _vm._v("\n              Result Detail\n              "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button" },
+                  on: { click: _vm.showDetail },
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×"),
+                  ]),
+                  _c("span", { staticClass: "sr-only" }, [_vm._v("Close")]),
+                ]
+              ),
             ]),
             _vm._v(" "),
             _c(
               "div",
               {
                 staticClass: "card-body overflow-auto",
-                staticStyle: { height: "80vh" },
+                staticStyle: { height: "75vh" },
               },
               _vm._l(_vm.resultDetailData, function (result, i) {
                 return _c("div", { key: "resD" + i }, [

@@ -133,6 +133,7 @@ return [
     'update_question' => 'প্রশ্ন আপডেট',
     'file' => 'ফাইল',
     'logo' => "লগো",
+    'file_list' => 'ফাইল তালিকা',
     'menu_list' => 'মেনু তালিকা',
     'add_menu' => 'নতুন মেনু যুক্ত করুন',
     'add_menu_header' => 'নতুন মেনু',

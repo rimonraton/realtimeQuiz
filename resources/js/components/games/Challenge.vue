@@ -152,7 +152,6 @@
                           @click.once="checkAnswer(question.id, tbe(option.bd_option, option.option, user.lang), option.correct)"
                           class="list-group-item list-group-item-action cursor my-1"
                           v-html="tbe(option.bd_option, option.option, user.lang)">
-                        {{ tbe(option.bd_option + "Raton", option.option + 'Rimon', user.lang) }}
 
                       </span>
                     </div>

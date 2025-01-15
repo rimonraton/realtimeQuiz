@@ -1036,6 +1036,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['results', 'lastQuestion', 'resultDetail', 'user', 'uid', 'requestHostUser', 'mode'],
@@ -2615,14 +2619,28 @@ var render = function () {
           { staticClass: "card mt-1", staticStyle: { width: "24rem" } },
           [
             _c("div", { staticClass: "card-header" }, [
-              _vm._v("Result Detail"),
+              _vm._v("\n              Result Detail\n              "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button" },
+                  on: { click: _vm.showDetail },
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×"),
+                  ]),
+                  _c("span", { staticClass: "sr-only" }, [_vm._v("Close")]),
+                ]
+              ),
             ]),
             _vm._v(" "),
             _c(
               "div",
               {
                 staticClass: "card-body overflow-auto",
-                staticStyle: { height: "80vh" },
+                staticStyle: { height: "75vh" },
               },
               _vm._l(_vm.resultDetailData, function (result, i) {
                 return _c("div", { key: "resD" + i }, [

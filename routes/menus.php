@@ -2,6 +2,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\Game\ChallengeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
@@ -83,4 +84,7 @@ Route::middleware(['hasAccess', 'verified'])->group(function () {
 
     //new user
     Route::get('new-user',[NewUserController::class,'index'])->name('newUser');
+
+    Route::get('files', [FileController::class, 'index'])->name('files');
+    Route::get('files', [FileController::class, 'index'])->name('files');
 });

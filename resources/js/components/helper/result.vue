@@ -76,8 +76,12 @@
             </div>
         </div>
         <div class="card mt-1" style="width: 24rem;" v-else>
-            <div class="card-header">Result Detail</div>
-            <div class="card-body overflow-auto" style="height: 80vh;">
+            <div class="card-header">
+              Result Detail
+              <button @click="showDetail" type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
+            </div>
+            <div class="card-body overflow-auto" style="height: 75vh;">
 <!--                {{ resultDetailData}}-->
                 <!--                <img class="card-img img-responsive" :src="addImage()">-->
 <!--                <ul class="list-group">-->

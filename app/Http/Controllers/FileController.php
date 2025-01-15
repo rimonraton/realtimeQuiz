@@ -12,6 +12,13 @@ class FileController extends Controller
     {
         $this->middleware('auth');
     }
+
+  public function index()
+  {
+    $menus = \App\Menu::where('show_menu', 1)->with('childs')->paginate(10);
+    $parent_menus = \App\Menu::where('show_menu', 1)->get();
+    return view('Admin.Files.index', compact('menus', 'parent_menus'));
+  }
     public function store(Request $request)
     {
         $filePath = '';
