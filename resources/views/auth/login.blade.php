@@ -37,6 +37,10 @@
         .align-items-center {
             align-items: center !important;
         }
+        .form-control::placeholder{
+          color: lightgrey;
+          font-size: 11px;
+        }
 
 
     </style>
@@ -48,7 +52,7 @@
 
             <div class="dropdown show">
                 <a class="btn btn-default dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png">
+                    <img src="https://flagcdn.com/40x30/{{ session('locale', config('app.locale')) }}.png" style="width: 20px;">
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -64,7 +68,7 @@
             </div>
             <div class="form-group mb-0">
                 <div class="col-sm-12 text-center p-0 pt-2 ">
-                    <img src="{{asset('mobiletemplate/images/logo.png')}}" alt="" width="120px">
+                    <img src="{{asset('mobiletemplate/images/logo.png')}}" alt="" width="140px">
                 </div>
             </div>
 
@@ -72,7 +76,9 @@
 
         <div id="loginform">
             <div class="logo">
-                <h5 class="box-title mb-3">{{__('auth.login')}}</h5>
+                <h5 class="box-title mb-3">
+{{--                  {{__('auth.login')}}--}}
+                </h5>
             </div>
             <!-- Form -->
             <div class="row">
@@ -81,8 +87,9 @@
                         @csrf
                         <div class="form-group mb-3">
                             <div class="">
-                                <input id="emailormobile" class="form-control" type="text"  required  autofocus placeholder="{{__('auth.emailOrMobile')}}">
-                                <input id="email" class="form-control @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <input id="emailormobile" class="form-control form-control-sm text-center" type="text"  required  autofocus
+                                       placeholder="{{__('auth.emailOrMobile')}}">
+                                <input id="email" class="form-control form-control-sm text-center @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
                                 <span id="show_msg" class="text-danger"></span>
                             </div>
                             @error('email')
@@ -94,7 +101,7 @@
 
                         <div class="input-group mb-3 ">
                             <input id="password" type="password"
-                                   class="form-control @error('password') is-invalid @enderror"
+                                   class="form-control form-control-sm text-center @error('password') is-invalid @enderror"
                                    name="password" required autocomplete="current-password"
                                    autofocus placeholder="{{__('form.password')}}">
                             <div class="input-group-append">
@@ -126,32 +133,43 @@
                         </div>
                         <div class="form-group text-center mt-4">
                             <div class="col-xs-12">
-                                <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">
-                                    {{__('auth.login')}}</button>
+                                <button class="btn btn-info px-4 btn-sm text-uppercase waves-effect waves-light" type="submit">
+                                    {{__('auth.login')}}
+                                </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
                                 <div class="social mb-3">
-{{--                                    <a href="{{ url('login/facebook') }}" class="btn  btn-primary btn-sm" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> {{__('form.facebook')}} </a>--}}
-                                    <a href="{{ url('login/google') }}" class="btn-block btn btn-danger btn-lg" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fab fa-google"></i>
-                                        {{__('form.google')}}
+                                    <a href="{{ url('login/facebook') }}" class="btn  btn-primary btn-sm" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> {{__('form.facebook')}} </a>
+                                    <a href="{{ url('login/google') }}" class="btn btn-sm btn-outline-info p-0 "
+                                       data-toggle="tooltip" title="Login with Google">
+                                       <img src="{{asset('/images/google.svg')}}" style="width: 30px;" >
+                                      {{-- <i aria-hidden="true" class="fab fa-google"></i> --}}
+                                        <span class="pr-2">{{__('form.google')}}</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12 justify-content-center d-flex">
-                                <p>{{__('auth.do_not_have_account')}} <a href="{{ route('register') }}" class="text-info font-weight-normal ml-1">{{__('auth.register')}}</a></p>
+                                <p class="mb-0 mt-2" style="font-size: 11px">
+                                  {{__('auth.do_not_have_account')}}
+                                  <a href="{{ route('register') }}" class="text-info font-weight-normal ml-1">
+                                    {{__('auth.register')}}
+                                  </a>
+                                </p>
                             </div>
                         </div>
                     </form>
 {{--                    @if(Session::has('status'))--}}
 {{--                        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('status') }}</p>--}}
 {{--                    @endif--}}
-                    <div class="form-group mb-0 mt-4">
+                    <div class="form-group mb-0">
                         <div class="col-sm-12 justify-content-center d-flex">
-                            <a href="{{ url('/') }}" class="text-white font-weight-normal ml-1 btn btn-info">{{__('auth.go_to_home')}}</a>
+                            <a href="{{ url('/') }}" class="text-white ml-1 btn btn-sm btn-light text-info" style="font-size: 11px">
+                              {{__('auth.go_to_home')}}
+                            </a>
                         </div>
                     </div>
                 </div>

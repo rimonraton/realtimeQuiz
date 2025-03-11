@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../kwiz/.idea/kwiz.iml" filepath="$PROJECT_DIR$/../kwiz/.idea/kwiz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/quiz.iml" filepath="$PROJECT_DIR$/.idea/quiz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gyankosh.iml" filepath="$PROJECT_DIR$/.idea/gyankosh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../OpenSource/upgyankosh/.idea/upgyankosh.iml" filepath="$PROJECT_DIR$/../../OpenSource/upgyankosh/.idea/upgyankosh.iml" />
     </modules>
   </component>
 </project>

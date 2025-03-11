@@ -28,7 +28,7 @@ class QuestionPolicy
 //        else if ($user->roleuser->role_id === 1) {
 //            return $user->id === $question->user_id;
 //        }
-        elseif ($user->roleuser->role_id === 1 || $user->roleuser->role_id === 2) {
+        elseif ($user->roleuser->role_id < 3 ) {
             return true;
         }
     }

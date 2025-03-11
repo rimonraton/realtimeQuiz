@@ -130,7 +130,7 @@ return [
     'en_options' => 'Options( English )',
     'bn_options' => 'Options( Bangla )',
     'update_question' => 'Update Question',
-    'file' => 'file',
+    'file' => 'File',
     'logo' => "Logo",
   'file_list' => 'File List',
   'menu_setup'=>'Menu Setup',
@@ -162,6 +162,7 @@ return [
     'add_user'=>'Add New User',
     'new_user'=>'New User',
     'name' =>'Name',
+    'title' =>'Title',
     'auto'=>'Generated Password',
     'custom'=>'Custom Password',
 //    'select_role'=>'Select Role',
@@ -239,4 +240,6 @@ return [
     'shareBy' => 'Shared by',
     'createSuccess' => 'Create Successfully',
     'short_answer' => 'Short answer',
+  'dropzone_msg' => 'Drop files here to upload',
+
 ];

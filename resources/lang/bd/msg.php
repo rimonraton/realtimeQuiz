@@ -84,4 +84,5 @@ return [
     'draftQuestionsList' => 'খসড়া প্রশ্নের তালিকা',
     'reviewQuestionsList' => 'পর্যালোচনা প্রশ্নের তালিকা',
     'shareQuestion' => 'শেয়ারকৃত প্রশ্নের তালিকা',
+    'file_upload' => 'ফাইল আপলোড করুন',
 ];

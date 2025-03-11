@@ -6,10 +6,10 @@ File: js
 */
 $(function () {
     "use strict";
-    // ============================================================== 
+    // ==============================================================
     // Newsletter
-    // ============================================================== 
-    
+    // ==============================================================
+
     var chart = new Chartist.Line('.campaign', {
           labels: [1, 2, 3, 4, 5, 6, 7, 8],
           series: [
@@ -25,7 +25,7 @@ $(function () {
           ],
             axisY: {
             onlyInteger: true
-            , scaleMinSpace: 40    
+            , scaleMinSpace: 40
             , offset: 20
             , labelInterpolationFnc: function (value) {
                 return (value / 1) + 'k';
@@ -34,10 +34,10 @@ $(function () {
         });
 
         // Offset x1 a tiny amount so that the straight stroke gets a bounding box
-        // Straight lines don't get a bounding box 
+        // Straight lines don't get a bounding box
         // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-        chart.on('draw', function(ctx) {  
-          if(ctx.type === 'area') {    
+        chart.on('draw', function(ctx) {
+          if(ctx.type === 'area') {
             ctx.element.attr({
               x1: ctx.x1 + 0.001
             });
@@ -61,14 +61,14 @@ $(function () {
             'stop-color': 'rgba(38, 198, 218, 1)'
           });
         });
-    
-            
+
+
     var chart = [chart];
 
-    // ============================================================== 
+    // ==============================================================
     // This is for the animation
     // ==============================================================
-    
+
     for (var i = 0; i < chart.length; i++) {
         chart[i].on('draw', function(data) {
             if (data.type === 'line' || data.type === 'area') {
@@ -100,11 +100,11 @@ $(function () {
             }
         });
     }
-    
-    // ============================================================== 
+
+    // ==============================================================
     // Our visitor
-    // ============================================================== 
-    
+    // ==============================================================
+
     var chart = c3.generate({
         bindto: '#visitor',
         data: {
@@ -114,7 +114,7 @@ $(function () {
                 ['Tablet', 40],
                 ['Mobile', 50],
             ],
-            
+
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -126,9 +126,9 @@ $(function () {
               },
             title: "Our visitor",
             width:20,
-            
+
         },
-        
+
         legend: {
           hide: true
           //or hide: 'data1'
@@ -138,10 +138,10 @@ $(function () {
               pattern: ['#eceff1', '#745af2', '#26c6da', '#1e88e5']
         }
     });
- 
-    // ============================================================== 
+
+    // ==============================================================
     // Badnwidth usage
-    // ============================================================== 
+    // ==============================================================
     new Chartist.Line('.usage', {
         labels: ['0', '4', '8', '12', '16', '20', '24', '30']
         , series: [
@@ -172,9 +172,9 @@ $(function () {
             , offset: 0
         }
     });
-    // ============================================================== 
+    // ==============================================================
     // Download count
-    // ============================================================== 
+    // ==============================================================
     var sparklineLogin = function () {
         $('.spark-count').sparkline([4, 5, 0, 10, 9, 12, 4, 9, 4, 5, 3, 10, 9, 12, 10, 9, 12, 4, 9], {
             type: 'bar'
@@ -187,12 +187,12 @@ $(function () {
         });
     }
     var sparkResize;
-    
+
     sparklineLogin();
-    // ============================================================== 
+    // ==============================================================
     // This is for the map
     // ==============================================================
-    
+
     $('#usa').vectorMap({
             map : 'us_aea_en',
             backgroundColor : 'transparent',
@@ -217,5 +217,5 @@ $(function () {
                 , style: {fill: '#26c6da'}
               }]
         });
-    
+
 });

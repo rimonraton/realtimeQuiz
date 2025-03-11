@@ -1,68 +1,29 @@
 @extends('Admin.Layout.dashboard')
 @php $lang = App::getLocale(); @endphp
+
+@section('css')
+  <style>
+    iframe {
+      width: 100%;
+      border: none;
+      height: 85vh;
+    }
+    .view{
+      cursor: pointer;
+    }
+
+
+  </style>
+@endsection
+
 @section('content')
+
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title text-center">{{__('form.file_list')}}</h4>
           <hr>
-          <button type="button" class="btn btn-info btn-rounded m-t-10 mb-2 float-right" data-toggle="modal" data-target="#add-topic">{{__('form.add_menu')}}</button>
-          <!-- Add Contact Popup Model -->
-          <div id="add-topic" data-backdrop="static" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="myModalLabel">{{__('form.add_menu_header')}}</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                  <form class="form-horizontal form-material" method="POST" action="{{url('saveMenu')}}" autocomplete="off">
-                    @csrf
-                    <div class="form-group">
-                      <!-- <label for="category" class="col-sm-3 text-right control-label col-form-label">{{__('form.menu')}}</label> -->
-                      <div class="col-sm-12" id="options">
-                        <select class="form-control" name="parent_id" id="">
-                          <option value="0">{{__('form.select_menu')}}</option>
-                          @foreach($parent_menus as $menu)
-                            <option value="{{$menu->id}}">{{$lang=='gb'?$menu->name:$menu->bn_name}}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-12 m-b-20">
-                        <input type="text" class="form-control" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}" require>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-12 m-b-20">
-                        <input type="text" class="form-control" name="bn_menu" placeholder="{{__('form.menu_placholder_bn')}}" require>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-12 m-b-20">
-                        <input type="text" class="form-control" name="route_name" placeholder="{{__('form.route_name')}}" require>
-                      </div>
-                    </div>
-                    <div class="form-check">
-                      <input class="material-inputs" type="checkbox" value="1" id="defaultCheck1" name="actionRoute">
-                      <label class="form-check-label" for="defaultCheck1">
-                        Action Route
-                      </label>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-info waves-effect">{{__('form.save')}}</button>
-                      <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
-                    </div>
-                  </form>
-                </div>
-
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
           <div class="table-responsive" style="overflow-x: hidden">
 
             <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -71,44 +32,104 @@
                   <table class="table table-striped table-bordered">
                     <thead>
                     <tr role="row">
-                      <th style="width: 0px;">{{__('form.sl')}}</th>
-                      <th style="width: 0px;">{{__('form.menu_en')}}</th>
-                      <th style="width: 0px;">{{__('form.menu_bn')}}</th>
-                      <th style="width: 0px;">{{__('form.action')}}</th>
+                      <th class="text-center" width="8%">{{__('form.sl')}}</th>
+                      <th class="text-center" width="8%">{{ __('form.file') }}</th>
+                      <th class="text-center" >{{__('form.title')}}</th>
+                      <th class="text-center" >{{__('form.shareBy')}}</th>
+                      <th class="text-center" width="5%">{{__('form.publish')}}</th>
+                      <th class="text-center" style="width: 15%">{{__('form.action')}}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($menus as $menu)
+                    @foreach($files as $file)
                       <tr>
-                        <td>{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
-                        <th>{{$menu->name}}</th>
-                        <th>{{$menu->bn_name}}</th>
-                        <th>
-                          <a class="edit" href="" data-id="{{$menu->id}}" data-name="{{$menu->name}}" data-bnname="{{$menu->bn_name}}" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                          <a class="delete text-danger" style="cursor: pointer;" data-id="{{$menu->id}}" title="Remove"><i class="fas fa-trash"></i></a>
-                          <a class="delete text-success" style="cursor: pointer;" data-id="{{$menu->id}}" title="Remove">
-                            <i class="fas fa-share-alt"></i>
-                          </a>
+                        <td class="text-center">{{$lang=='gb'?$loop->iteration:$bang->bn_number($loop->iteration)}}</td>
+                        <td class="text-center view " data-id={{$file->id}}>
+                          @switch($file->ext)
+                            @case('pptx')
+                              <i class="fa fa-file-powerpoint fa-3x text-muted"></i>
+                              @break
+                            @case('docx')
+                              <i class="fa fa-file-word fa-3x text-muted"></i>
+                              @break
+                            @case('xlsx')
+                              <i class="fa fa-file-excel fa-3x text-muted"></i>
+                              @break
+                            @case('mp3')
+                              <i class="fas fa-file-audio fa-3x"></i>
+                              @break
 
-                        </th>
+                            @case('pdf')
+                              <i class="fa fa-file-pdf fa-3x text-danger"></i>
+                              @break
+
+                            @case('mp4')
+                              <i class="fas fa-video fa-3x"></i>
+                              @break
+
+                            @default
+                              <i class="fa fa-file-image fa-3x"></i>
+{{--                              <img src="{{Storage::url($file->path)}}" alt="" style="width: 100px; height: 80px; object-fit: cover;">--}}
+                          @endswitch
+                        </td>
+
+                        <td class="text-center view" data-id={{$file->id}}>
+                          {{$file->title}}
+                        </td>
+
+                        <td class="text-center">
+                          {{$file->user->name}}
+                        </td>
+
+                        <td class="text-center">
+                          <div class="bt-switch">
+                            <input type="checkbox" class="chk"
+                               data-id="{{$file->id}}"
+                               data-on-text="{{__('form.yes')}}"
+                               data-off-text="{{__('form.no')}}"
+                               data-size="normal"
+                              {{ $file->status == 1 ? "checked" : "" }}
+                            />
+                          </div>
+                        </td>
+                        <td class="text-center">
+{{--                          @can('view', $file)--}}
+                          <button
+                            class="view btn btn-xs btn-outline-warning"
+                            data-id="{{$file->id}}"
+                            title="View File">
+                            <i class="fas fa-eye fa-lg"></i>
+                          </button>
+{{--                          @endcan--}}
+                          <button class="edit btn btn-xs btn-outline-info"
+                             data-id="{{$file->id}}"
+                             data-title="{{$file->title}}"
+                             data-status="{{$file->status}}"
+                             title="Edit">
+                            <i class="fas fa-pencil-alt fa-lg"></i>
+                          </button>
+                          @can('delete', $file)
+                            <button
+                              class="delete btn btn-xs btn-outline-danger"
+                              style="cursor: pointer;"
+                              data-id="{{$file->id}}"
+                              title="Remove">
+                              <i class="fas fa-trash fa-lg"></i>
+                            </button>
+                          @endcan
+{{--                          <a--}}
+{{--                            class="delete text-success"--}}
+{{--                             style="cursor: pointer;"--}}
+{{--                             data-id="{{$file->id}}"--}}
+{{--                             title="Remove">--}}
+{{--                            <i class="fas fa-share-alt"></i>--}}
+{{--                          </a>--}}
+                        </td>
                       </tr>
                     @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr>
-                      <th rowspan="1" colspan="1">{{__('form.sl')}}</th>
-                      <th rowspan="1" colspan="1">{{__('form.menu_en')}}</th>
-                      <th rowspan="1" colspan="1">{{__('form.menu_bn')}}</th>
-                      <th rowspan="1" colspan="1">{{__('form.action')}}</th>
-                    </tr>
-                    </tfoot>
                   </table>
-                  {{$menus->links()}}
-                  <!-- <div class="text-center">
-                                    <p>
-                                        No Data Found..
-                                    </p>
-                                </div> -->
+                  {{$files->links()}}
                 </div>
               </div>
 
@@ -118,30 +139,57 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          @include('includes.dropzone', [
+            'directory' => 'files',
+            'maxFiles' => 1,
+            'maxSize' => 200,
+            'callback' => 'dropzoneCallback'
+          ])
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="edit-category" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">{{__('form.menu_update')}}</h4>
+          <h4 class="modal-title" id="myModalLabel">Files</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         </div>
         <div class="modal-body">
-          <form class="form-horizontal form-material" method="POST" action="{{url('menuUpdate')}}" autocomplete="off">
+
+          <form class="form-horizontal form-material" id="fileTitleForm" method="POST" action="" autocomplete="off">
             @csrf
-            <input type="hidden" id="uid" name="id">
-            <div class="form-group">
-              <div class="col-md-12 m-b-20">
-                <input type="text" class="form-control" id="editName" name="menu" pattern="^[a-zA-Z0-9 ]+$" placeholder="{{__('form.menu_placholder_en')}}">
+            @method('patch')
+            <input type="hidden" id="fileId" name="id">
+
+            <div class="form-group row">
+              <label for="Publish" class="col-sm-3 col-form-label">Publish</label>
+              <div class="col-sm-9">
+                <div class="bt-switch" id="Publish">
+                  <input type="checkbox" class="chk" id="publishedStatus" name="published"
+                         data-on-text="{{__('form.yes')}}"
+                         data-off-text="{{__('form.no')}}"
+                         data-id=""
+                         data-size="normal"
+                  />
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <div class="col-md-12 m-b-20">
-                <input type="text" class="form-control" id="editbanglaName" name="bn_menu" placeholder="{{__('form.menu_placholder_bn')}}">
+            <div class="form-group row">
+              <label for="fileTitle" class="col-sm-3 col-form-label">File Title</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="fileTitle" name="title" onClick="this.select();">
               </div>
             </div>
+
             <div class="modal-footer">
-              <button type="submit" class="btn btn-info waves-effect">{{__('form.update')}}</button>
+              <button type="button" id="titleUpdateBtn" class="btn btn-info waves-effect">{{__('form.update')}}</button>
               <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">{{__('form.cancel')}}</button>
             </div>
 
@@ -152,16 +200,92 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <div id="file_view" class="modal fade " data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body p-0" >
+          <iframe id="fileUrl" src="http://gyankosh.test/viewer">
+
+          </iframe>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 @endsection
 
 @section('js')
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
   <script>
+    $.noConflict();
+    // $('#edit-category').modal('show');
+    function dropzoneCallback(fileData){
+      console.log('dropzoneCallback', fileData)
+
+      $.ajax({
+        url: "{{url('files')}}/",
+        type: "POST",
+        data: fileData,
+        success: function(data) {
+          console.log('data', data);
+          if(!fileData['removedFile']) {
+            $('#edit-category').modal('show');
+            console.log(data['id'])
+            $('#fileId').val(data['id']);
+            $('#fileTitle').val(data['name']);
+          }
+        }
+      })
+    }
+
     $(function() {
+
+      $('#titleUpdateBtn').click(function () {
+          let url = "{{url('files')}}/"+ $('#fileId').val();
+          $('#fileTitleForm').attr('action', url).submit();
+      })
+
+      $(".bt-switch input[type='checkbox'], .bt-switch input[type='radio']").bootstrapSwitch();
+      $(document).on('switchChange.bootstrapSwitch', '.chk', function(event, state) {
+        let status = state ? 1 : 0;
+        $.ajax({
+          type: "GET",
+          url: "{{ url('files') }}/" + $(this).attr('data-id') +'/'+status,
+          success: function (data) {
+            console.log(data)
+          }
+        });
+
+      });
+
+      $(document).on('click', '.view', function(e) {
+        e.preventDefault();
+        let file = $(this).attr('data-id');
+        console.log(file);
+        let newUrl = "{{url('files')}}/"+file;
+        $('#fileUrl').attr('src', newUrl);
+        $('#file_view').modal('show');
+      })
+      $("#file_view").on('hide.bs.modal', function(){
+        let newUrl = "{{url('/viewer')}}";
+        $('#fileUrl').attr('src', newUrl);
+      });
+
       $(document).on('click', '.edit', function(e) {
         e.preventDefault();
-        $('#uid').val($(this).attr('data-id'));
-        $('#editName').val($(this).attr('data-name'));
-        $('#editbanglaName').val($(this).attr('data-bnname'));
+        let file_id = $(this).attr('data-id');
+        $('#fileId').val(file_id);
+        $('#fileTitle').val($(this).attr('data-title'));
+        let status = $(this).attr('data-status')
+        console.log('status', status);
+        $('#publishedStatus').attr('data-id', file_id);
+        $('#publishedStatus').bootstrapSwitch('state', status==='1' );
+
         $('#edit-category').modal('show');
       })
 
@@ -180,10 +304,10 @@
             var $this = $(this);
             var id = $this.attr('data-id');
             $.ajax({
-              url: "{{url('deleteMenu')}}/" + id,
+              url: "{{url('files/delete')}}/" + id,
               type: "GET",
               success: function(data) {
-                // $(this).parent().parent().remove();
+                $(this).parent().parent().remove();
                 // alert($this.parent().parent());
                 $this.closest("tr").remove();
                 Swal.fire({
@@ -198,6 +322,9 @@
           }
         })
       });
+
+
     })
   </script>
 @endsection
+

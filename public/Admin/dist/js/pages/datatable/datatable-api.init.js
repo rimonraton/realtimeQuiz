@@ -103,7 +103,7 @@ function format(d) {
 }
 
 //=============================================//
-// -- Child rows 
+// -- Child rows
 //=============================================//
 var tableChildRows = $('.show-child-rows').DataTable({
     "ajax": "../../dist/js/pages/datatable/data.json",

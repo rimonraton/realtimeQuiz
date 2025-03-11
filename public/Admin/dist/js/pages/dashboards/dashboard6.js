@@ -6,9 +6,9 @@ File: js
 */
 $(function () {
     "use strict";
-    // ============================================================== 
+    // ==============================================================
     // Sales overview
-    // ============================================================== 
+    // ==============================================================
     var chart2 = new Chartist.Bar('.amp-pxl', {
           labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           series: [
@@ -31,12 +31,12 @@ $(function () {
             Chartist.plugins.tooltip()
         ]
     });
-    
-    
-    // ============================================================== 
+
+
+    // ==============================================================
     // Our visitor
-    // ============================================================== 
-    
+    // ==============================================================
+
     var chart = c3.generate({
         bindto: '#visitor',
         data: {
@@ -46,7 +46,7 @@ $(function () {
                 ['Tablet', 40],
                 ['Mobile', 50],
             ],
-            
+
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -58,9 +58,9 @@ $(function () {
               },
             title: "Yearly Sales",
             width:20,
-            
+
         },
-        
+
         legend: {
           hide: true
           //or hide: 'data1'
@@ -70,15 +70,15 @@ $(function () {
               pattern: ['#eceff1', '#745af2', '#26c6da', '#1e88e5']
         }
     });
- 
-     
 
-    // ============================================================== 
+
+
+    // ==============================================================
     // sparkline charts
     // ==============================================================
-    var sparklineLogin = function() { 
-       
-  
+    var sparklineLogin = function() {
+
+
         $("#spark1").sparkline([2,4,4,6,8,5,6,4,8,6,6,2 ], {
             type: 'line',
             width: '100%',
@@ -110,7 +110,7 @@ $(function () {
             highlightLineColor: 'rgba(0, 0, 0, 0.2)',
             highlightSpotColor: '#7460ee'
         });
-        
+
         $('.spark-count').sparkline([4, 5, 0, 10, 9, 12, 4, 9, 4, 5, 3, 10, 9, 12, 10, 9, 12, 4, 9], {
             type: 'bar'
             , width: '100%'
@@ -120,11 +120,11 @@ $(function () {
             , barSpacing: '6'
             , barColor: 'rgba(255, 255, 255, 0.3)'
         });
-    
-       
+
+
    }
     var sparkResize;
- 
+
         $(window).resize(function(e) {
             clearTimeout(sparkResize);
             sparkResize = setTimeout(sparklineLogin, 500);

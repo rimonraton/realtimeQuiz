@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Friend\Friend;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -38,10 +39,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserInfo::class);
     }
-    // public function role()
-    // {
-    //     return $this->belongsToMany(Role::class);
-    // }
+     public function roles()
+     {
+         return $this->belongsToMany(Role::class);
+     }
+    public function hasRole($roleName)
+    {
+      return $this->roles()->where('role_name', $roleName)->exists();
+    }
     public function roleuser()
     {
         return $this->hasOne(RoleUser::class);
@@ -64,5 +69,18 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Challenge');
     }
+
+  public function friendsTo() {
+    return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+      ->withPivot('id','status')
+      ->withTimestamps();
+  }
+
+  public function friendsFrom() {
+    return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+      ->withPivot('id','status')
+      ->withTimestamps();
+  }
+
 
 }

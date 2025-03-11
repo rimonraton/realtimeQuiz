@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileController;
@@ -83,8 +84,20 @@ Route::middleware(['hasAccess', 'verified'])->group(function () {
     Route::get('exams/{id?}', [ExamController::class, 'traineeExams'])->name('exams');
 
     //new user
-    Route::get('new-user',[NewUserController::class,'index'])->name('newUser');
+  Route::get('new-user',[NewUserController::class,'index'])->name('newUser');
 
-    Route::get('files', [FileController::class, 'index'])->name('files');
-    Route::get('files', [FileController::class, 'index'])->name('files');
+//  Route::get('files', [FileController::class, 'index'])->name('files');
+//  Route::post('files', [FileController::class, 'createOrDelete'])->name('files.store');
+//  Route::get('/files/{file}', [FileController::class, 'show'])->name('show');
+  Route::resource('files', 'FileController');
+
+  Route::get('files/delete/{file}', [FileController::class, 'Delete'])->name('files.delete');
+  Route::get('files/{file}/{state}', [FileController::class, 'published'])->name('files.published');
+  Route::get('/viewer', [FileController::class, 'Preview'])->name('viewer.index');
+
+
 });
+
+Route::get('dropzone', [DropzoneController::class, 'dropzone'])->name('dropzone');
+Route::post('dropzone', [DropzoneController::class, 'dropzoneUpload'])->name('dropzone.upload');
+Route::post('/dropzoneRemove', [DropzoneController::class, 'dropzoneRemove'])->name('dropzone.remove');

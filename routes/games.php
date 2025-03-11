@@ -34,6 +34,7 @@ Route::get('challenge/temp{id?}', [ChallengeController::class, 'gameInAdmin'])->
 Route::get('challenge/{challenge}/{user}', [HomeController::class, 'Challenge'])->name('game.challenge.start');
 Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout'])->name('updateChallengeOptionLayout');
 Route::post('createChallenge', [HomeController::class, 'createChallenge'])->name('createChallenge');
+
 //challamge setup
 Route::post('challange-Published',[HomeController::class,'challenge_publish'])->name('challangePublished');
 Route::get('delete_challange/{id}',[HomeController::class,'delete_challange'])->name('deleteChallange');

@@ -32,7 +32,7 @@ File: css
     position: absolute;
     left: -99999px
 }
-.wizard-content  .wizard > .steps .current a, .wizard-content .wizard > .actions a,.wizard-content .wizard > .actions a:hover, 
+.wizard-content  .wizard > .steps .current a, .wizard-content .wizard > .actions a,.wizard-content .wizard > .actions a:hover,
 .wizard-content .wizard > .steps .disabled a, .wizard-content .wizard > .steps .disabled a:hover, .wizard-content .wizard > .steps .disabled a:active,
 .wizard-content .wizard > .content,.wizard-content .wizard > .steps .done a, .wizard-content .wizard > .steps .done a:hover, .wizard-content .wizard > .steps .done a:active{
     background: transparent;
@@ -86,7 +86,7 @@ File: css
 .wizard-content .wizard>.steps>ul>li.current .step {
     border-color: #2962FF ;
     background-color: #fff;
-    color: #2962FF 
+    color: #2962FF
 }
 
 .wizard-content .wizard>.steps>ul>li.disabled a,
@@ -230,7 +230,7 @@ File: css
     top: 45px;
     width: 50%;
     height: 3px;
-    background-color: #2962FF 
+    background-color: #2962FF
 }
 
 .wizard-content .wizard.wizard-circle>.steps>ul>li.current:after,
@@ -253,7 +253,7 @@ File: css
     top: 39px;
     width: 50%;
     height: 2px;
-    background-color: #2962FF 
+    background-color: #2962FF
 }
 
 .wizard-content .wizard.wizard-notification>.steps>ul>li.current .step {
@@ -264,7 +264,7 @@ File: css
 
 .wizard-content .wizard.wizard-notification>.steps>ul>li.current .step:after,
 .wizard-content .wizard.wizard-notification>.steps>ul>li.done .step:after {
-    border-top-color: #2962FF 
+    border-top-color: #2962FF
 }
 
 .wizard-content .wizard.wizard-notification>.steps>ul>li.current:after,
@@ -339,7 +339,7 @@ File: css
     }
     .wizard-content .wizard>.steps>ul>li:last-child:after {
         content: '';
-        background-color: #2962FF 
+        background-color: #2962FF
     }
     .wizard-content .wizard.vertical>.steps {
         width: 15%
@@ -351,7 +351,7 @@ File: css
         width: 100%
     }
     .wizard-content .wizard>.steps>ul>li.current:after {
-        background-color: #2962FF 
+        background-color: #2962FF
     }
      .wizard-content .wizard.vertical>.steps>ul>li {
         display: block;
