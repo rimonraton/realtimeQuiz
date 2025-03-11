@@ -2,27 +2,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class Question extends Model
 {
-  use Searchable;
 
     protected $guarded = [];
     // protected $fillable = ['question_text', 'code_snippet', 'answer_explanation', 'more_info_link', 'topic_id', 'course_id', 'exam_id'];
 
-  public function searchableAs()
-  {
-    return 'questions_index';
-  }
-  public function toSearchableArray()
-  {
-    $array = $this->toArray();
-
-    // Customize array...
-
-    return $array;
-  }
 
   public function shareQuestion()
     {
