@@ -87,9 +87,9 @@
                         @csrf
                         <div class="form-group mb-3">
                             <div class="">
-                                <input id="emailormobile" class="form-control form-control-sm text-center" type="text"  required  autofocus
+                                <input id="emailormobile" class="form-control form-control-sm" type="text"  required  autofocus
                                        placeholder="{{__('auth.emailOrMobile')}}">
-                                <input id="email" class="form-control form-control-sm text-center @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
+                                <input id="email" class="form-control form-control-sm @error('email') is-invalid @enderror" type="hidden" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{__('form.email')}}">
                                 <span id="show_msg" class="text-danger"></span>
                             </div>
                             @error('email')
@@ -101,7 +101,7 @@
 
                         <div class="input-group mb-3 ">
                             <input id="password" type="password"
-                                   class="form-control form-control-sm text-center @error('password') is-invalid @enderror"
+                                   class="form-control form-control-sm @error('password') is-invalid @enderror"
                                    name="password" required autocomplete="current-password"
                                    autofocus placeholder="{{__('form.password')}}">
                             <div class="input-group-append">
@@ -142,7 +142,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
                                 <div class="social mb-3">
                                     <a href="{{ url('login/facebook') }}" class="btn  btn-primary btn-sm" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> {{__('form.facebook')}} </a>
-                                    <a href="{{ url('login/google') }}" class="btn btn-sm btn-outline-info p-0 "
+                                    <a href="{{ url('login/google') }}" class="btn btn-sm btn-dark p-0 "
                                        data-toggle="tooltip" title="Login with Google">
                                        <img src="{{asset('/images/google.svg')}}" style="width: 30px;" >
                                       {{-- <i aria-hidden="true" class="fab fa-google"></i> --}}

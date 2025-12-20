@@ -1535,6 +1535,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user', 'uid', 'users', 'time', 'challenge', 'defTime'],
   components: {
@@ -1576,7 +1577,7 @@ __webpack_require__.r(__webpack_exports__);
       return name.substring(0, 2);
     },
     getFlag: function getFlag(country) {
-      return 'https://flagcdn.com/40x30/' + country + '.png';
+      return 'https://flagcdn.com/32x24/' + country + '.png';
     },
     scheduledTimer: function scheduledTimer() {
       var _this = this;
@@ -1666,7 +1667,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.circle {\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 50%;\r\n    text-align: center;\r\n    position: absolute;\r\n    top: 4px;\r\n    left: 15px;\r\n    font-size: 1.5rem;\r\n    background: gray;\r\n    color: white;\n}\n.flag {\r\n    position: absolute;\r\n    right: 15px;\r\n    top: 8px;\n}\n.close {\r\n    position: absolute;\r\n    top: -5px;\r\n    right: 0px;\r\n    color: red;\n}\n.activeItem {\r\n    z-index: 2;\r\n    color: #20c899;\r\n    border-color: #3490dc;\r\n    border-radius: 5px;\n}\n.iframe-size {\r\n    width: 90vw;\r\n    height: 90vh;\r\n    left: 3vw;\n}\n.show_share {\r\n    position: absolute;\r\n    right: 0;\r\n    height: 40px;\r\n    width: 300px;\r\n    overflow: hidden;\r\n    transition: .5s linear;\r\n    opacity: 1;\r\n    top: -45px;\n}\n.todos {\r\n    position: relative;\n}\n.todos ul {\r\n    position: relative;\n}\n.todos li {\r\n    display: block;\r\n    margin-bottom: 5px;\n}\n.list-move {\r\n    transition: all 0.4s ease;\n}\n.list-enter-from {\r\n    opacity: 0;\r\n    transform: scale(0.5);\n}\n.list-enter-to {\r\n    opacity: 1;\r\n    transform: scale(1.2);\n}\n.list-enter-active {\r\n    transition: all 0.4s ease;\n}\n.list-leave-from {\r\n    opacity: 1;\r\n    transform: scale(.8);\n}\n.list-leave-to {\r\n    opacity: 0;\r\n    transform: scale(0.5);\n}\n.list-leave-active {\r\n    transition: all 0.4s ease;\r\n    position: absolute;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.circle {\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 50%;\r\n    text-align: center;\r\n    position: absolute;\r\n    top: 4px;\r\n    left: 15px;\r\n    font-size: 1.5rem;\r\n    background: gray;\r\n    color: white;\n}\n.flag {\r\n    position: absolute;\r\n    right: 15px;\r\n    top: 8px;\n}\n.close {\r\n    position: absolute;\r\n    top: -5px;\r\n    right: 0px;\r\n    color: red;\n}\n.activeItem {\r\n    z-index: 2;\r\n    color: #20c899;\r\n    border-color: #3490dc;\r\n    border-radius: 5px;\n}\n.iframe-size {\r\n    width: 90vw;\r\n    height: 90vh;\r\n    left: 3vw;\n}\n.show_share {\r\n    position: absolute;\r\n    right: 0;\r\n    height: 40px;\r\n    width: 300px;\r\n    overflow: hidden;\r\n    transition: .5s linear;\r\n    opacity: 1;\r\n    top: -45px;\n}\n.todos {\r\n    position: relative;\n}\n.todos ul {\r\n    position: relative;\n}\n.todos li {\r\n    display: block;\r\n    margin-bottom: 5px;\n}\n.list-container {\r\n   list-style-type: none;\r\n   padding: 0;\n}\n.list-item {\r\n  padding: 10px;\r\n  margin: 5px 0;\r\n  background: #f4f4f4;\r\n  border: 1px solid #ccc;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\n}\r\n\r\n/* Define the enter/leave transition */\n.list-slide-enter-active,\r\n.list-slide-leave-active {\r\n  transition: all 0.5s ease;\n}\r\n\r\n/* Starting state for entering elements, ending state for leaving elements */\n.list-slide-enter-from,\r\n.list-slide-leave-to {\r\n  opacity: 0;\r\n  transform: translateX(-50px); /* Slide in from the left */\n}\r\n\r\n/* Ensure leaving items are taken out of flow so siblings can move smoothly */\n.list-slide-leave-active {\r\n  position: absolute;\n}\r\n\r\n/* Transition for moving elements */\n.list-slide-move {\r\n  transition: transform 0.5s ease;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -4443,7 +4444,11 @@ var render = function () {
           _vm._v(" "),
           _c(
             "transition-group",
-            { attrs: { tag: "ul", name: "list" } },
+            {
+              staticClass: "list-container",
+              staticStyle: { padding: "0" },
+              attrs: { tag: "ul", name: "list-slide" },
+            },
             _vm._l(_vm.users, function (u) {
               return _c(
                 "li",
@@ -4477,7 +4482,9 @@ var render = function () {
                     : _vm._e(),
                   _vm._v(" "),
                   _c("span", { staticClass: "flag" }, [
-                    _c("img", { attrs: { src: _vm.getFlag(u.country) } }),
+                    _c("img", {
+                      attrs: { src: _vm.getFlag(u.country), s: "" },
+                    }),
                   ]),
                   _vm._v(" "),
                   u.id != _vm.user.id && _vm.user.id == _vm.uid

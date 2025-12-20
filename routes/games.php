@@ -30,6 +30,9 @@ Route::get('practiceViewQuestions/{quiz}',[PracticeController::class,'practiceVi
 
 
 //Challenge
+Route::get('challenge', function (){
+  return redirect()->route('game.challenge');
+});
 Route::get('challenge/temp{id?}', [ChallengeController::class, 'gameInAdmin'])->name('game.challenge');
 Route::get('challenge/{challenge}/{user}', [HomeController::class, 'Challenge'])->name('game.challenge.start');
 Route::post('update-challenge-option-layout', [HomeController::class, 'updateChallengeOptionLayout'])->name('updateChallengeOptionLayout');

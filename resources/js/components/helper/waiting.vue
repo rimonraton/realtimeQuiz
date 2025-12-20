@@ -34,7 +34,7 @@
                 <!--  <img v-if="qr" :src="getQr" alt="QR Code" class="img-thumbnail">-->
                 <div id="reader" width="300px"></div>
                 <qrcode-vue :value="value" :size="size" level="H" v-if="qr" class="text-center"/>
-                <transition-group tag="ul" name="list">
+                <transition-group tag="ul" name="list-slide" class="list-container" style="padding: 0;">
                     <li class="list-group-item rounded-lg"
                         v-for="u in users" :key="u.id"
                         :class="{ 'border border-success text-success' : u.id == user.id}"
@@ -44,7 +44,7 @@
                         <span v-if="u.id == uid" class="ml-1 badge badge-danger">Host</span>
 
                         <span class="flag">
-                          <img :src="getFlag(u.country)">
+                          <img :src="getFlag(u.country)" s>
                         </span>
                         <button
                             v-if="(u.id != user.id) && (user.id == uid)"
@@ -81,7 +81,7 @@
 <script>
 import QrcodeVue from 'qrcode.vue'
 import info from '../helper/moderator/info.vue'
-
+import { ref } from 'vue';
 export default {
     props: ['user', 'uid', 'users', 'time', 'challenge', 'defTime'],
     components: {
@@ -103,11 +103,11 @@ export default {
         };
     },
     methods: {
-        back() {
+      back() {
             window.history.back()
             //window.location = '/game/practice/challenge';
         },
-        isHost() {
+      isHost() {
             console.log('isHost =>', this.uid === this.user.id)
             return this.uid === this.user.id
         },
@@ -124,7 +124,7 @@ export default {
         },
 
         getFlag(country) {
-            return 'https://flagcdn.com/40x30/' + country + '.png';
+            return 'https://flagcdn.com/32x24/' + country + '.png';
         },
         scheduledTimer() {
             let countDownDate = new Date(this.time).getTime();
@@ -160,6 +160,7 @@ export default {
 };
 
 </script>
+
 <style>
 .circle {
     width: 40px;
@@ -225,36 +226,43 @@ export default {
     margin-bottom: 5px;
 }
 
-.list-move {
-    transition: all 0.4s ease;
+
+ .list-container {
+   list-style-type: none;
+   padding: 0;
+ }
+
+.list-item {
+  padding: 10px;
+  margin: 5px 0;
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.list-enter-from {
-    opacity: 0;
-    transform: scale(0.5);
+/* Define the enter/leave transition */
+.list-slide-enter-active,
+.list-slide-leave-active {
+  transition: all 0.5s ease;
 }
 
-.list-enter-to {
-    opacity: 1;
-    transform: scale(1.2);
+/* Starting state for entering elements, ending state for leaving elements */
+.list-slide-enter-from,
+.list-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-50px); /* Slide in from the left */
 }
 
-.list-enter-active {
-    transition: all 0.4s ease;
+/* Ensure leaving items are taken out of flow so siblings can move smoothly */
+.list-slide-leave-active {
+  position: absolute;
 }
 
-.list-leave-from {
-    opacity: 1;
-    transform: scale(.8);
+/* Transition for moving elements */
+.list-slide-move {
+  transition: transform 0.5s ease;
 }
 
-.list-leave-to {
-    opacity: 0;
-    transform: scale(0.5);
-}
-
-.list-leave-active {
-    transition: all 0.4s ease;
-    position: absolute;
-}
 </style>

@@ -3,9 +3,6 @@
 use App\Http\Controllers\Game\ChallengeController;
 use Illuminate\Support\Facades\Route;
 
-
-
-
 Route::post('user-remove/{user}', [\App\Http\Controllers\AdminController::class, 'userRemove']);
 
 Route::get('setAdminId/{modelName}', function ($modelName){

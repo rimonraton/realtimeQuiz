@@ -1742,9 +1742,9 @@ Author: Wrappixel
 
 File: js
 */
-// ============================================================== 
+// ==============================================================
 // Auto select left navbar
-// ============================================================== 
+// ==============================================================
 $(function() {
     "use strict";
      var url = window.location + "";
@@ -1764,26 +1764,26 @@ $(function() {
             else if(!$(this).is("ul") && $(this).children("a").length === 0)
             {
                 $(this).addClass("selected");
-                
+
             }
             else if($(this).is("ul")){
                 $(this).addClass('in');
             }
-            
+
         });
 
-    element.addClass("active"); 
+    element.addClass("active");
     $('#sidebarnav a').on('click', function (e) {
-        
+
             if (!$(this).hasClass("active")) {
                 // hide any open menus and remove all other classes
                 $("ul", $(this).parents("ul:first")).removeClass("in");
                 $("a", $(this).parents("ul:first")).removeClass("active");
-                
+
                 // open our new menu and add the open class
                 $(this).next("ul").addClass("in");
                 $(this).addClass("active");
-                
+
             }
             else if ($(this).hasClass("active")) {
                 $(this).removeClass("active");
@@ -1796,13 +1796,14 @@ $(function() {
     });
 
     // Auto scroll to the active nav
-    if ( $(window).width() > 768 || window.Touch) { 
+    if ( $(window).width() > 768 || window.Touch) {
          $('.scroll-sidebar').animate({
             scrollTop: $("#sidebarnav .sidebar-item.selected").offset().top -250
         }, 500);
     }
-    
+
 });
+
 $(function(){"use strict";$(".preloader").fadeOut(),$(".left-sidebar").hover(function(){$(".navbar-header").addClass("expand-logo")},function(){$(".navbar-header").removeClass("expand-logo")}),$(".nav-toggler").on("click",function(){$("#main-wrapper").toggleClass("show-sidebar"),$(".nav-toggler i").toggleClass("ti-menu")}),$(".nav-lock").on("click",function(){$("body").toggleClass("lock-nav"),$(".nav-lock i").toggleClass("mdi-toggle-switch-off"),$("body, .page-wrapper").trigger("resize")}),$(".search-box a, .search-box .app-search .srh-btn").on("click",function(){$(".app-search").toggle(200),$(".app-search input").focus()}),$(function(){$(".service-panel-toggle").on("click",function(){$(".customizer").toggleClass("show-service-panel")}),$(".page-wrapper").on("click",function(){$(".customizer").removeClass("show-service-panel")})}),$(".floating-labels .form-control").on("focus blur",function(e){$(this).parents(".form-group").toggleClass("focused","focus"===e.type||0<this.value.length)}).trigger("blur"),$(function(){$('[data-toggle="tooltip"]').tooltip()}),$(function(){$('[data-toggle="popover"]').popover()}),$(".message-center, .customizer-body, .scrollable").perfectScrollbar({wheelPropagation:!0}),$("body, .page-wrapper").trigger("resize"),$(".page-wrapper").delay(20).show(),$(".list-task li label").click(function(){$(this).toggleClass("task-done")}),$('a[data-action="collapse"]').on("click",function(e){e.preventDefault(),$(this).closest(".card").find('[data-action="collapse"] i').toggleClass("ti-minus ti-plus"),$(this).closest(".card").children(".card-body").collapse("toggle")}),$('a[data-action="expand"]').on("click",function(e){e.preventDefault(),$(this).closest(".card").find('[data-action="expand"] i').toggleClass("mdi-arrow-expand mdi-arrow-compress"),$(this).closest(".card").toggleClass("card-fullscreen")}),$('a[data-action="close"]').on("click",function(){$(this).closest(".card").removeClass().slideUp("fast")}),$(document).on("click",".mega-dropdown",function(e){e.stopPropagation()}),$("#monthchart").sparkline([5,6,2,9,4,7,10,12],{type:"bar",height:"35",barWidth:"4",resize:!0,barSpacing:"4",barColor:"#1e88e5"}),$("#lastmonthchart").sparkline([5,6,2,9,4,7,10,12],{type:"bar",height:"35",barWidth:"4",resize:!0,barSpacing:"4",barColor:"#7460ee"}),$(".show-left-part").on("click",function(){$(".left-part").toggleClass("show-panel"),$(".show-left-part").toggleClass("ti-menu")}),$(".custom-file-input").on("change",function(){var e=$(this).val();$(this).next(".custom-file-label").html(e)})});
 /* Chartist.js 0.11.0
  * Copyright © 2017 Gion Kunz
@@ -1838,10 +1839,10 @@ File: js
 */
 $(function () {
     "use strict";
-    // ============================================================== 
+    // ==============================================================
     // Newsletter
-    // ============================================================== 
-    
+    // ==============================================================
+
     var chart = new Chartist.Line('.campaign', {
           labels: [1, 2, 3, 4, 5, 6, 7, 8],
           series: [
@@ -1857,7 +1858,7 @@ $(function () {
           ],
             axisY: {
             onlyInteger: true
-            , scaleMinSpace: 40    
+            , scaleMinSpace: 40
             , offset: 20
             , labelInterpolationFnc: function (value) {
                 return (value / 1) + 'k';
@@ -1866,10 +1867,10 @@ $(function () {
         });
 
         // Offset x1 a tiny amount so that the straight stroke gets a bounding box
-        // Straight lines don't get a bounding box 
+        // Straight lines don't get a bounding box
         // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-        chart.on('draw', function(ctx) {  
-          if(ctx.type === 'area') {    
+        chart.on('draw', function(ctx) {
+          if(ctx.type === 'area') {
             ctx.element.attr({
               x1: ctx.x1 + 0.001
             });
@@ -1893,14 +1894,14 @@ $(function () {
             'stop-color': 'rgba(38, 198, 218, 1)'
           });
         });
-    
-            
+
+
     var chart = [chart];
 
-    // ============================================================== 
+    // ==============================================================
     // This is for the animation
     // ==============================================================
-    
+
     for (var i = 0; i < chart.length; i++) {
         chart[i].on('draw', function(data) {
             if (data.type === 'line' || data.type === 'area') {
@@ -1932,11 +1933,11 @@ $(function () {
             }
         });
     }
-    
-    // ============================================================== 
+
+    // ==============================================================
     // Our visitor
-    // ============================================================== 
-    
+    // ==============================================================
+
     var chart = c3.generate({
         bindto: '#visitor',
         data: {
@@ -1946,7 +1947,7 @@ $(function () {
                 ['Tablet', 40],
                 ['Mobile', 50],
             ],
-            
+
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -1958,9 +1959,9 @@ $(function () {
               },
             title: "Our visitor",
             width:20,
-            
+
         },
-        
+
         legend: {
           hide: true
           //or hide: 'data1'
@@ -1970,10 +1971,10 @@ $(function () {
               pattern: ['#eceff1', '#745af2', '#26c6da', '#1e88e5']
         }
     });
- 
-    // ============================================================== 
+
+    // ==============================================================
     // Badnwidth usage
-    // ============================================================== 
+    // ==============================================================
     new Chartist.Line('.usage', {
         labels: ['0', '4', '8', '12', '16', '20', '24', '30']
         , series: [
@@ -2004,9 +2005,9 @@ $(function () {
             , offset: 0
         }
     });
-    // ============================================================== 
+    // ==============================================================
     // Download count
-    // ============================================================== 
+    // ==============================================================
     var sparklineLogin = function () {
         $('.spark-count').sparkline([4, 5, 0, 10, 9, 12, 4, 9, 4, 5, 3, 10, 9, 12, 10, 9, 12, 4, 9], {
             type: 'bar'
@@ -2019,12 +2020,12 @@ $(function () {
         });
     }
     var sparkResize;
-    
+
     sparklineLogin();
-    // ============================================================== 
+    // ==============================================================
     // This is for the map
     // ==============================================================
-    
+
     $('#usa').vectorMap({
             map : 'us_aea_en',
             backgroundColor : 'transparent',
@@ -2049,7 +2050,7 @@ $(function () {
                 , style: {fill: '#26c6da'}
               }]
         });
-    
+
 });
 
 /*!
@@ -2345,6 +2346,7 @@ $('#lang_opt').DataTable({
         "infoFiltered": "(filtered from _MAX_ total records)"
     }
 });
+
 /*!
  * FullCalendar v3.10.0
  * Docs & License: https://fullcalendar.io/
