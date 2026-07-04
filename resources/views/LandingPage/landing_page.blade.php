@@ -540,7 +540,7 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; {{__('msg.copyright')}} <strong><span>{{__('msg.companyName')}}</span></strong>. {{__('msg.rights')}}.
+                &copy; {{__('msg.copyright')}} <strong><span>{{__('msg.companyName')}}</span></strong>. {{__('msg.rights')}}
             </div>
             <div class="credits">
             </div>

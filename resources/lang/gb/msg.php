@@ -47,7 +47,7 @@ return [
     'links' => 'Links',
     'copyright' => 'Copyright',
     'companyName' => 'Darco Technologies Limited',
-    'rights' => 'All Rights Reserved',
+    'rights' => 'All Rights Reserved.',
     'adminDashboard' => 'Admin Dashboard',
     'dashboard' => 'Dashboard',
     'questions' => 'Questions',
